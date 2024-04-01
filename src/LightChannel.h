@@ -1,0 +1,26 @@
+#pragma once
+
+#include <Arduino.h>
+#include "OpenKNX.h"
+#include "LedModuleHW.h"
+
+// converts a relative (to the channel start) KO number to an absolute KO number of the device
+#define AbsKO(asap)    (LED_KoOffset + LED_KoBlockSize * _channelIndex + asap)
+
+// converts a absolute KO number to a relative KO number (offset to the starting KO number of the channel)
+#define RelKO(asap)    (asap - LED_KoOffset - LED_KoBlockSize * _channelIndex)
+
+class LightChannel : public OpenKNX::Channel
+{
+  private:
+    const std::string name() override;
+    LedModuleHW* light;
+    void activateScene(uint8_t sceneId);
+  public:
+    LightChannel(uint8_t channel_number);
+    void Setup(LedModuleHW* light_x);
+    void Loop();
+    void ProcessInputKo(GroupObject& ko);
+    void Save();
+    void Restore();
+};
