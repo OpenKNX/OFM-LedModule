@@ -2,6 +2,7 @@
     "name": "OFM-LedModule",
     "version": "0.1.0",
     "dependencies": {
-        "external-repo": "https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library.git#3.0.2"
+        "adafruit/Adafruit PWM Servo Driver Library" :"3.0.2",
+        "jeremycole/I2C Temperature Sensors derived from the LM75" : "1.0.3"
     }
   }
