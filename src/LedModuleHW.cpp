@@ -3,7 +3,7 @@
 
 
 
-LedModuleHW::LedModuleHW(Adafruit_PWMServoDriver pwm) : pwm(pwm) {
+LedModuleHW::LedModuleHW(HWDimmer *dimmer) : dimmer(dimmer) {
     // Set all channels of all lights to -1 (=undefined) that we later 
     // can distinguish which channels are mapped
     for (uint8_t lightId=0;lightId<LEDMODULE_MAX_LIGHT_CHANNELS;lightId++) {
@@ -63,9 +63,10 @@ void LedModuleHW::dimmLightTo(uint8_t lightId, uint32_t targetBrightness[LEDMODU
         //logDebugP("CH %i new target brightnesses %d - current: %d",channelId,targetBrightness[channelId],lights[lightId].currentBrightness[channelId]);
 
         lights[lightId].targetBrightness[channelId] = targetBrightness[channelId];
+        dimmer->dimToLevel(channelId,lights[lightId].targetBrightness[channelId]);
 
         //calculate the difference for each channel
-        diffSteps[channelId] = targetBrightness[channelId] - lights[lightId].currentBrightness[channelId];
+        //diffSteps[channelId] = targetBrightness[channelId] - lights[lightId].currentBrightness[channelId];
     }
 
 
@@ -78,7 +79,7 @@ void LedModuleHW::dimmLightTo(uint8_t lightId, uint32_t targetBrightness[LEDMODU
     * First we identify the channel with the max brightness steps to do. Based on this value we can
     * calculate waitSteps for each LED channel.
     */
-    int maxSteps = 0;
+   /* int maxSteps = 0;
     for (uint8_t channelId = 0; channelId < LEDMODULE_MAX_LIGHT_CHANNELS; channelId++) {
 
         //Ignore not mapped hw channels
@@ -128,7 +129,7 @@ void LedModuleHW::dimmLightTo(uint8_t lightId, uint32_t targetBrightness[LEDMODU
     lights[lightId].processingStarted = millis();
     lights[lightId].dimmStepEveryMillis = lights[lightId].dimmDuration / lights[lightId].maxSteps;
 
-    logDebugP("lightID %d is processing",lightId);
+    logDebugP("lightID %d is processing",lightId);*/
 
 }
 
@@ -137,7 +138,21 @@ void LedModuleHW::dimmLightTo(uint8_t lightId, uint32_t targetBrightness[LEDMODU
 // dimmLoop is the main dimmLoop
 void LedModuleHW::dimmLoop() {
 
-    uint32_t dimmLoopStartMillis = millis();
+    dimmer->dimLoop();
+    /*uint32_t dimmLoopStartMillis = millis();
+    static uint32_t lastMillis = 0;
+    static uint8_t lvl = 0;
+
+    if(millis() - lastMillis > 1000)
+    {
+        lastMillis = millis();
+        lvl += 64;
+        for(int i; i<LED_UP1_4x24_NUM_CHANNELS; i++)
+        {
+            dimmer->setLevel(lvl,i);
+        }
+    }
+
 
     for (uint8_t lightId=0;lightId<LEDMODULE_MAX_LIGHT_CHANNELS;lightId++) {
 
@@ -184,7 +199,7 @@ void LedModuleHW::dimmLoop() {
             // Ignore not configured channels
             if (lights[lightId].channelMapping[lightChannel] == -1) continue;
 
-            logDebugP("dimmstep; lightID: %d, channel: %d, hwchannel %d", lightId, lightChannel, lights[lightId].channelMapping[lightChannel]);
+            //logDebugP("dimmstep; lightID: %d, channel: %d, hwchannel %d", lightId, lightChannel, lights[lightId].channelMapping[lightChannel]);
 
             //If we have to wait for consistent dimming go to next channel
             if (lights[lightId].cyclesWaited[lightChannel] < lights[lightId].cyclesToWait[lightChannel]) {
@@ -197,10 +212,10 @@ void LedModuleHW::dimmLoop() {
 
 
             if (lights[lightId].currentBrightness[lightChannel] < lights[lightId].targetBrightness[lightChannel]) {
-                lights[lightId].currentBrightness[lightChannel]++;
+                lights[lightId].currentBrightness[lightChannel]+=5;
                 processing++;
             } else if (lights[lightId].currentBrightness[lightChannel] > lights[lightId].targetBrightness[lightChannel]) {
-                lights[lightId].currentBrightness[lightChannel]--;
+                lights[lightId].currentBrightness[lightChannel]-=5;
                 processing++;
             }
 
@@ -210,7 +225,7 @@ void LedModuleHW::dimmLoop() {
              //logDebugP("light %i - set hardware channel: %i -> %i (%i)", lightId, hardwareChannel, lights[lightId].currentBrightness[lightChannel], lights[lightId].targetBrightness[lightChannel]);
 
 
-            pwm.setPWM(hardwareChannel, 0, lights[lightId].currentBrightness[lightChannel] * 16);
+            dimmer->setLevel(hardwareChannel, lights[lightId].currentBrightness[lightChannel]);
 
         }
 
@@ -235,7 +250,7 @@ void LedModuleHW::dimmLoop() {
             return;
         }
 
-    }
+    }*/
 
 }
 

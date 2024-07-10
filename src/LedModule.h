@@ -5,6 +5,9 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#include "HWDimmer.h"
+#include "HWDimmerPCA.h"
+#include "HWDimmerRP2040.h"
 #include "ledmodulecfg.h"
 
 class LedModule : public OpenKNX::Module
@@ -33,11 +36,7 @@ class LedModule : public OpenKNX::Module
 
     LedModuleHW* lights;
     
-
-    
-
-
-    Adafruit_PWMServoDriver pwm;
+    HWDimmer *dimmer;
 
     void setupCustomFlash();
     void setupChannels();

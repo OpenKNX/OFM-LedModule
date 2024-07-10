@@ -2,13 +2,15 @@
 #include "OpenKNX.h"
 #include "LedModuleHW.h"
 #include <Adafruit_PWMServoDriver.h>
+#include "HWDimmer.h"
 #include "ledmodulecfg.h"
 
+#define LEDMODULE_MAX_LIGHT_CHANNELS 4
 
 class LedModuleHW {
 
   public:
-    LedModuleHW(Adafruit_PWMServoDriver pwm);
+    LedModuleHW(HWDimmer *dimmer);
     void addLight(uint8_t lightId, uint8_t lightType, uint8_t hwChannels[LEDMODULE_MAX_LIGHT_CHANNELS], uint32_t dimmDuration);
     void dimmLoop();
     void dimmLightTo(uint8_t lightId, uint32_t targetBrightness[LEDMODULE_MAX_LIGHT_CHANNELS]);
@@ -19,7 +21,7 @@ class LedModuleHW {
   private:
 
     uint8_t latestLightIdInMainLoop = 0;
-    Adafruit_PWMServoDriver pwm;
+    HWDimmer *dimmer;
 
     //uint32_t currentLedChannelValues[MAX_LIGHT_CHANNELS];
 

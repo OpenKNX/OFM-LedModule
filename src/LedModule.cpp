@@ -3,6 +3,7 @@
 #include "LightChannel.h"
 
 #include "OpenKNX.h"
+#include "ledmodulecfg.h"
 
 const std::string LedModule::name()
 {
@@ -19,22 +20,14 @@ void LedModule::init()
 {
     
     if (LEDMODULE_PWMDRIVER == "PCA9685PW") {
-        logInfoP("PWM driver used: %s", LEDMODULE_PWMDRIVER);
-
-        logInfoP("Define Wire1 SDA/SCL");
-        Wire1.setSDA(LEDMODULE_WIRE1_SDA);
-        Wire1.setSCL(LEDMODULE_WIRE1_SCL);
-        logInfoP("Wire1.begin()");
-        Wire1.begin(); // I2C1
-        logInfoP("Configure Adafruit PWM lib");
-        pwm = Adafruit_PWMServoDriver(0x40, Wire1);
-        logInfoP("pwm.begin()");
-        pwm.begin();
-        logInfoP("pwm.setPWMFreq(1000)");
-        pwm.setPWMFreq(1000);
-        logInfoP("Wire1.setClock(1000000)");
-        Wire1.setClock(1000000);
-    } else {
+        
+        dimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685);
+    } 
+    else if(LEDMODULE_PWMDRIVER == "RP2040")
+    {
+        dimmer = new HWDimmerRP2040(dimmPins, LED_UP1_4x24_NUM_CHANNELS);
+    }
+    else {
         logErrorP("Unknown PWM driver %s ('RP2040' and 'PCA9685PW' are supported)", LEDMODULE_PWMDRIVER);
     }
 
@@ -50,7 +43,7 @@ void LedModule::setup(bool configured)
 
     setupCustomFlash();
 
-    lights = new LedModuleHW(pwm);
+    lights = new LedModuleHW(dimmer);
 
     setupChannels();
 
@@ -58,8 +51,9 @@ void LedModule::setup(bool configured)
 
     logInfoP("Switch off all light on boot");
     for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++) {
-        pwm.setPWM(i, 0, 0);
+        dimmer->setLevel(55, i);
     }
+    delay(1000);
 
 }
 
@@ -79,7 +73,7 @@ void LedModule::setupCustomFlash()
 #ifdef ARDUINO_ARCH_ESP32
     _ledStorage.init("ledModule");
 #else
-    _ledStorage.init("ledModule", LEDMODULE_FLASH_OFFSET, LEDMODULE_FLASH_SIZE);
+   // _ledStorage.init("ledModule", LEDMODULE_FLASH_OFFSET, LEDMODULE_FLASH_SIZE);
 #endif
 
     // logTraceP("write ledModule data");
@@ -110,20 +104,19 @@ void LedModule::loop(bool configured)
     if (delayCheck(_timerCheckConnection, 500)) {
 
         //If PWM side of the Adum1251 has no power and power returns, the PWM lib is not initialized
-        if (checkConnection() && doResetPwm) {
-            logInfoP("Reset PWM as connection is back");
-            pwm = Adafruit_PWMServoDriver(0x40, Wire1);
-            logInfoP("pwm.begin()");
-            pwm.begin();
-            logInfoP("pwm.setPWMFreq(1000)");
-            pwm.setPWMFreq(1000);
-            doResetPwm = false;
-
-            logInfoP("Dimm back to last known values");
-
+        if (dimmer->checkConnection())
+        { 
+            if(doResetPwm) {
+            dimmer->reconnect();
             lights->dimmToLastAfterI2cIsBack();
+            }
 
         }
+        else
+        {
+            doResetPwm = true;
+        }
+        
         _timerCheckConnection = millis();
     }
 
@@ -165,8 +158,8 @@ void LedModule::loop1(bool configured)
 
 void LedModule::processInputKo(GroupObject &ko)
 {
-    logDebugP("processInputKo GA%04X", ko.asap());
-    logHexDebugP(ko.valueRef(), ko.valueSize());
+    //logDebugP("processInputKo GA%04X", ko.asap());
+    //logHexDebugP(ko.valueRef(), ko.valueSize());
 
     uint16_t asap = ko.asap();
 
@@ -178,10 +171,10 @@ void LedModule::processInputKo(GroupObject &ko)
     // }
 
     
-    int16_t channelnumber = (asap - LED_KoOffset ) / LED_KoBlockSize;
+    uint16_t channelnumber = (asap - LED_KoOffset ) / LED_KoBlockSize;
     if(channelnumber < LEDMODULE_MAX_LIGHT_CHANNELS)
         if(_channels[channelnumber] != nullptr) {
-            logInfoP("KO for lightchannel received");
+            //logInfoP("KO for lightchannel received");
             _channels[channelnumber]->ProcessInputKo(ko);
         }
 
