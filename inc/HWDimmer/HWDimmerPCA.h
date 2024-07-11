@@ -5,7 +5,7 @@
 #include "HWDimmer.h"
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include "ledmodulecfg.h"
+#include "LedModuleConfig.h"
 
 class HWDimmerPCA : public HWDimmer
 {
@@ -24,4 +24,5 @@ class HWDimmerPCA : public HWDimmer
 
     private:
         Adafruit_PWMServoDriver pwm;
+        static HWDimmer::LUT<256> lut;
 };

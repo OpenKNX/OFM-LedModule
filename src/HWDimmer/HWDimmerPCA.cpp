@@ -5,17 +5,21 @@
  * 
  * @param type PCA dimmer type
  */
-HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) :HWDimmer(16)
+HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) :HWDimmer(LEDMODULE_MAX_LIGHT_CHANNELS)
 {
-    Wire1.setSDA(LEDMODULE_WIRE1_SDA);
-    Wire1.setSCL(LEDMODULE_WIRE1_SCL);
-    Wire1.begin(); // I2C1
+    #ifdef LEDMODULE_WIRE_SDA
+        LEDMODULE_WIRE.setSDA(LEDMODULE_WIRE_SDA);
+    #endif
+    #ifdef LEDMODULE_WIRE_SCL
+        LEDMODULE_WIRE.setSCL(LEDMODULE_WIRE_SCL);
+    #endif
+    LEDMODULE_WIRE.begin(); // I2C1
     pwm.begin();
-    logInfoP("pwm.setPWMFreq(1000)");
-    pwm.setPWMFreq(1000);
-    logInfoP("Wire1.setClock(1000000)");
-    Wire1.setClock(1000000);
-    pwm = Adafruit_PWMServoDriver(0x40, Wire1);
+    pwm.setPWMFreq(LEDMODULE_PWM_FREQ);
+    #ifdef LEDMODULE_WIRE_CLOCK_FREQ
+        LEDMODULE_WIRE.setClock(LEDMODULE_WIRE_CLOCK_FREQ);
+    #endif
+    pwm = Adafruit_PWMServoDriver(0x40, LEDMODULE_WIRE);
 
     for(uint8_t ch = 0; ch < numChannels; ch++)
     {
@@ -38,7 +42,7 @@ bool HWDimmerPCA::setLevel(uint8_t level, uint8_t channel)
     if(HWDimmer::setLevel(level, channel))
     {
         isValidChannel = true;
-        pwm.setPWM(channel, 0, level*16);
+        pwm.setPWM(channel, 0, dimLUT[DimLUTType::Log1_5].Val(level));
     }
     return isValidChannel;
 }
@@ -87,5 +91,11 @@ void HWDimmerPCA::reconnect()
     logInfoP("pwm.setPWMFreq(1000)");
     pwm.setPWMFreq(1000);
 
-    logInfoP("Dimm back to last known values");
+    logInfoP("Dim back to last known values");
 }
+
+/**
+ * @brief Linear lookup tables to map 255% level to PCA driver levels
+ *  0: Linear, 1: logarithmic x^1.5
+ */
+HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(4095, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(4095, 1.5)};

@@ -7,7 +7,7 @@
 class HWDimmerRP2040 : public HWDimmer
 {
     public:
-        HWDimmerRP2040(uint8_t pins[], uint8_t numChannels);
+        HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwmFreq);
 
         bool setLevel(uint8_t level, uint8_t channel);
         std::string logPrefix();

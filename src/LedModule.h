@@ -8,7 +8,7 @@
 #include "HWDimmer.h"
 #include "HWDimmerPCA.h"
 #include "HWDimmerRP2040.h"
-#include "ledmodulecfg.h"
+#include "LedModuleConfig.h"
 
 class LedModule : public OpenKNX::Module
 {

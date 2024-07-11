@@ -103,7 +103,7 @@ void LightChannel::activateScene(uint8_t sceneId) {
     }
     logDebugP("lightID %d - RGBW: %d,%d,%d,%d ",lightId, values[0],values[1],values[2],values[3]);
 
-    light->dimmLightTo(lightId,values);
+    light->dimmLightTo(lightId, values, ParamLED_LightDimmTime_);
 
     KoLED_StateOnOff_.value(stateOnOff, DPT_Switch);
     KoLED_SceneStatus_.value(sceneId, DPT_SceneNumber);
@@ -134,7 +134,7 @@ void LightChannel::activateScene(uint8_t sceneId) {
     }
     logDebugP("lightID %d - RGB: %d,%d,%d ",lightId, values[0],values[1],values[2]);
 
-    light->dimmLightTo(lightId,values);
+    light->dimmLightTo(lightId, values, ParamLED_LightDimmTime_);
 
     KoLED_StateOnOff_.value(stateOnOff, DPT_Switch);
     KoLED_SceneStatus_.value(sceneId, DPT_SceneNumber);
@@ -160,7 +160,7 @@ void LightChannel::activateScene(uint8_t sceneId) {
     }
     logDebugP("lightID %d - TW: %d,%d",lightId, values[0],values[1]);
 
-    light->dimmLightTo(lightId,values);
+    light->dimmLightTo(lightId, values, ParamLED_LightDimmTime_);
 
     KoLED_StateOnOff_.value(stateOnOff, DPT_Switch);
     KoLED_SceneStatus_.value(sceneId, DPT_SceneNumber);
@@ -183,7 +183,7 @@ void LightChannel::activateScene(uint8_t sceneId) {
     }
     logDebugP("lightID %d - single channel: %d",lightId, values[0]);
 
-    light->dimmLightTo(lightId,values);
+    light->dimmLightTo(lightId,values, ParamLED_LightDimmTime_);
 
     KoLED_StateOnOff_.value(stateOnOff, DPT_Switch);
     KoLED_SceneStatus_.value(sceneId, DPT_SceneNumber);

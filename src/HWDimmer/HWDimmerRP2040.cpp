@@ -7,7 +7,7 @@
  * @param pins pointer to array holding pin numbers to be used as PWM
  * @param numChannels number of channels
  */
-HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels) :HWDimmer(numChannels)
+HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwmFreq) :HWDimmer(numChannels)
 {
     this->pins = pins;
     for(uint8_t ch = 0; ch < numChannels; ch++)
@@ -15,7 +15,17 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels) :HWDimmer(nu
         pinMode(this->pins[ch], OUTPUT);
         setLevel(0, ch);
     }
-    
+    analogWriteFreq(pwmFreq); 
+    analogWriteRange(UINT16_MAX);
+
+    #if 0
+        logDebugP("Lookup table:");
+        for(int i=0; i<256; i+=16)
+        {
+            int idx = i;
+            logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d",lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++));
+        }
+    #endif
 }
 
 /**
@@ -32,7 +42,7 @@ bool HWDimmerRP2040::setLevel(uint8_t level, uint8_t channel)
     if(HWDimmer::setLevel(level, channel))
     {
         isValidChannel = true;
-        analogWrite(pins[channel],level);
+        analogWrite(pins[channel], dimLUT[DimLUTType::Log1_5].Val(level));
     }
     else
     {
@@ -50,3 +60,9 @@ std::string HWDimmerRP2040::logPrefix()
 {
     return "PicoHWDimmer";
 }
+
+/**
+ * @brief Linear lookup tables to map 255% level to RP2040 PWM range
+ *  0: Linear, 1: logarithmic x^1.5
+ */
+HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(UINT16_MAX, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(UINT16_MAX, 1.5)};
