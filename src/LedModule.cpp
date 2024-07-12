@@ -163,8 +163,8 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("LED MODULE INFORMATION");
         logInfoP("PWM driver:              %s", LEDMODULE_PWMDRIVER);
 #ifdef LEDMODULE_DIMMER_PCA9685
-        logInfoP("1Wire SDA:              %s", LEDMODULE_WIRE1_SDA);
-        logInfoP("1Wire SCL:              %s", LEDMODULE_WIRE1_SCL);
+        logInfoP("1Wire SDA:              %s", LEDMODULE_WIRE_SDA);
+        logInfoP("1Wire SCL:              %s", LEDMODULE_WIRE_SCL);
 #endif
 #ifdef LEDMODULE_DIMMMER_RP2040
         std::string tmp = "Dimmer Pins: ";

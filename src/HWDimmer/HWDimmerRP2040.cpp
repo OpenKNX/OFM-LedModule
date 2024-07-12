@@ -44,10 +44,6 @@ bool HWDimmerRP2040::setLevel(uint8_t level, uint8_t channel)
         isValidChannel = true;
         analogWrite(pins[channel], dimLUT[DimLUTType::Log1_5].Val(level));
     }
-    else
-    {
-        logErrorP("Invalif channel %d", channel);
-    }
     return isValidChannel;
 }
 

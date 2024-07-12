@@ -13,7 +13,7 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) :HWDimmer(LEDMODULE_MAX_LIGH
     #ifdef LEDMODULE_WIRE_SCL
         LEDMODULE_WIRE.setSCL(LEDMODULE_WIRE_SCL);
     #endif
-    LEDMODULE_WIRE.begin(); // I2C1
+    LEDMODULE_WIRE.begin();
     pwm.begin();
     pwm.setPWMFreq(LEDMODULE_PWM_FREQ);
     #ifdef LEDMODULE_WIRE_CLOCK_FREQ
@@ -25,7 +25,6 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) :HWDimmer(LEDMODULE_MAX_LIGH
     {
         setLevel(0, ch);
     }
-    
 }
 
 /**

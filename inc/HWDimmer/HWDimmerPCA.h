@@ -24,5 +24,4 @@ class HWDimmerPCA : public HWDimmer
 
     private:
         Adafruit_PWMServoDriver pwm;
-        static HWDimmer::LUT<256> lut;
 };

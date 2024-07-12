@@ -1,6 +1,5 @@
 #include "HWDimmer.h"
 
-
 /**
  * @brief Construct a new HWDimmer::HWDimmer object
  * 
@@ -8,6 +7,7 @@
  */
 HWDimmer::HWDimmer(uint8_t numChannels)
 {
+    this->numChannels = numChannels;
     dimChannels = new DimChannel[numChannels];
 }
 
@@ -36,6 +36,10 @@ bool HWDimmer::setLevel(uint8_t level, uint8_t channel)
         dimChannels[channel].level = level;
         isValidChannel = true;
     }
+    else
+    {
+        logErrorP("Invalid channel: %d", channel);
+    }
     return isValidChannel;
 }
 
@@ -63,7 +67,7 @@ uint8_t HWDimmer::getLevel(uint8_t channel)
  */
 std::string HWDimmer::logPrefix()
 {
-    return "IHWDimmer";
+    return "HWDimmer";
 }
 
 /**
@@ -149,5 +153,9 @@ void HWDimmer::dimToLevel(uint8_t channel, uint8_t level, uint32_t dimTime)
         dimChannels[channel].dimDurationAbs = dimTime >= 1 ? dimTime : 1;
         dimChannels[channel].startTimestamp = millis();
         logInfoP("Dimming CH: %d from %d to %d", channel, dimChannels[channel].lastLevel, dimChannels[channel].targetLevel);
+    }
+    else
+    {
+        logErrorP("Invalid channel: %d", channel);
     }
 }
