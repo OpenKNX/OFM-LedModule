@@ -1,5 +1,4 @@
 #include "LedModule.h"
-#include "LedModuleHW.h"
 #include "LightChannel.h"
 
 #include "OpenKNX.h"
@@ -38,8 +37,6 @@ void LedModule::setup(bool configured)
 
     setupCustomFlash();
 
-    lights = new LedModuleHW(dimmer);
-
     setupChannels();
 
     logIndentDown();
@@ -56,8 +53,7 @@ void LedModule::setupChannels()
 {
     for (uint8_t i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
     {
-        _channels[i] = new LightChannel(i);
-        _channels[i]->Setup(lights);
+        _channels[i] = new LightChannel(i, dimmer);
     }
 }
 
@@ -103,7 +99,7 @@ void LedModule::loop(bool configured)
             if (doResetPwm)
             {
                 dimmer->reconnect();
-                lights->dimmToLastAfterI2cIsBack();
+                //lights->dimmToLastAfterI2cIsBack(); // TODO: Implement in PCA dimmer
             }
         }
         else
@@ -112,7 +108,7 @@ void LedModule::loop(bool configured)
         }
         _timerCheckConnection = millis();
     }
-    lights->dimmLoop();
+    dimmer->dimLoop();
 }
 
 #ifdef OPENKNX_DUALCORE

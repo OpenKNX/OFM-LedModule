@@ -1,7 +1,6 @@
 #pragma once
 #include "OpenKNX.h"
 #include "LightChannel.h"
-#include "LedModuleHW.h"
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
@@ -34,7 +33,6 @@ class LedModule : public OpenKNX::Module
     // * ...
     // 
 
-    LedModuleHW* lights;
     
     HWDimmer *dimmer;
 
