@@ -1,11 +1,13 @@
 #pragma once
 #include "OpenKNX.h"
 #include "LightChannel.h"
-#include "LedModuleHW.h"
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include "ledmodulecfg.h"
+#include "HWDimmer.h"
+#include "HWDimmerPCA.h"
+#include "HWDimmerRP2040.h"
+#include "LedModuleConfig.h"
 
 class LedModule : public OpenKNX::Module
 {
@@ -31,13 +33,8 @@ class LedModule : public OpenKNX::Module
     // * ...
     // 
 
-    LedModuleHW* lights;
     
-
-    
-
-
-    Adafruit_PWMServoDriver pwm;
+    HWDimmer *dimmer;
 
     void setupCustomFlash();
     void setupChannels();

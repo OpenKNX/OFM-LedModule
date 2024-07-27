@@ -112,14 +112,18 @@
               <ComObject Id="%AID%_O-%T%%CCC%000" Name="Scene_%C%" Text="Scene" Number="%K0%" FunctionText="Licht %Z% - Szene" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
               <ComObject Id="%AID%_O-%T%%CCC%001" Name="SceneStatus_%C%" Text="Scene Status" Number="%K1%" FunctionText="Licht %Z% - Szene Status" ObjectSize="1 Byte" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
               <ComObject Id="%AID%_O-%T%%CCC%002" Name="OnOff_%C%" Text="On/Off" Number="%K2%" FunctionText="Licht %Z% - An/Aus" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
-              <ComObject Id="%AID%_O-%T%%CCC%003" Name="StateOnOff_%C%" Text="State On/Off" Number="%K3%" FunctionText="Licht %Z% -  Status" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
-
+              <ComObject Id="%AID%_O-%T%%CCC%003" Name="StateOnOff_%C%" Text="State On/Off" Number="%K3%" FunctionText="Licht %Z% -  Status" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" /> 
+              <ComObject Id="%AID%_O-%T%%CCC%004" Name="Brightness_%C%" Text="Brightness" Number="%K4%" FunctionText="Licht %Z% - Helligkeit" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-4" />
+              <ComObject Id="%AID%_O-%T%%CCC%005" Name="BrightnessStatus_%C%" Text="Brightness Status" Number="%K5%" FunctionText="Licht %Z% - Helligkeit Status" ObjectSize="1 Byte" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-4" />
+              
             </ComObjectTable>
             <ComObjectRefs>
               <ComObjectRef Id="%AID%_O-%T%%CCC%000_R-%T%%CCC%00001" RefId="%AID%_O-%T%%CCC%000" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" RefId="%AID%_O-%T%%CCC%001" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_O-%T%%CCC%002" />
               <ComObjectRef Id="%AID%_O-%T%%CCC%003_R-%T%%CCC%00301" RefId="%AID%_O-%T%%CCC%003" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%004_R-%T%%CCC%00401" RefId="%AID%_O-%T%%CCC%004" />
+              <ComObjectRef Id="%AID%_O-%T%%CCC%005_R-%T%%CCC%00501" RefId="%AID%_O-%T%%CCC%005" />
             </ComObjectRefs>
           </Static>
           <Dynamic>
@@ -133,6 +137,8 @@
                     <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" /> <!-- Scene Status -->
                     <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" /> <!-- On/Off -->
                     <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00301" /> <!-- On/Off Status -->
+                    <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00401" /> <!-- Brightness -->
+                    <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00501" /> <!-- Brightness Status -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text=" " />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Licht-Einstellungen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%T%%CCC%003_R-%T%%CCC%00301" />
@@ -158,7 +164,7 @@
                         <ParameterRefRef RefId="%AID%_P-%T%%CCC%004_R-%T%%CCC%00401" />
                         <ParameterRefRef RefId="%AID%_P-%T%%CCC%005_R-%T%%CCC%00501" />
                       </when>
-                      <when test="4"><!-- if light is TW -->
+                      <when test="4"><!-- if light is Single Channel -->
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="A: was auch immer angeschlossen ist" />
                         <ParameterRefRef RefId="%AID%_P-%T%%CCC%004_R-%T%%CCC%00401" />
                       </when>
