@@ -1,5 +1,4 @@
 #include "LedModule.h"
-#include "LightChannel.h"
 
 #include "OpenKNX.h"
 #include "LedModuleConfig.h"
@@ -51,9 +50,82 @@ void LedModule::setup(bool configured)
 
 void LedModule::setupChannels()
 {
-    for (uint8_t i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
+    memset(SC_HWChannels, 255, LED_SC_ChannelCount);
+    memset(TW_HWChannels, 255, LED_TW_ChannelCount * 2);
+    memset(RGB_HWChannels, 255, LED_RGB_ChannelCount * 3);
+
+    delay(5000);
+    for (uint8_t _channelIndex = 0; _channelIndex < LED_ChannelCount; _channelIndex++)
     {
-        _channels[i] = new LightChannel(i, dimmer);
+        switch (ParamLED_CH_Lighttype)
+        {
+        case 1:
+            SC_HWChannels[ParamLED_CH_SC_Light-1][0] = _channelIndex;
+            break;
+
+        case 2:
+            if(ParamLED_CH_TW_Function == 1)
+            {
+                TW_HWChannels[ParamLED_CH_TW_Light-1][0] = _channelIndex;
+            }
+            else if (ParamLED_CH_TW_Function == 2)
+            {
+                TW_HWChannels[ParamLED_CH_TW_Light-1][1] = _channelIndex;
+            }
+            break;
+            
+        case 3:
+            if(ParamLED_CH_RGB_Function == 1)
+            {
+                RGB_HWChannels[ParamLED_CH_RGB_Light-1][0] = _channelIndex;
+            }
+            else if (ParamLED_CH_RGB_Function == 2)
+            {
+                RGB_HWChannels[ParamLED_CH_RGB_Light-1][1] = _channelIndex;
+            }
+            else if (ParamLED_CH_RGB_Function == 3)
+            {
+                RGB_HWChannels[ParamLED_CH_RGB_Light-1][2] = _channelIndex;
+            }
+            break;
+        
+        default:
+            break;
+        }
+    }
+    
+    for (uint8_t ch = 0; ch < LED_ChannelCount; ch++)
+    {
+        if(ch < LED_SC_ChannelCount)
+        {
+            _singleChannels[ch] = new SingleChannel(ch, dimmer, SC_HWChannels[ch]);
+        }
+        if(ch < LED_TW_ChannelCount)
+        {
+            _twChannels[ch] = new TWChannel(ch, dimmer, TW_HWChannels[ch]);
+        }
+        if(ch < LED_RGB_ChannelCount)
+        {
+            _rgbChannels[ch] = new RGBChannel(ch, dimmer, RGB_HWChannels[ch]);
+        }
+    }
+
+   logDebugP("CH\tTYPE\tSC\tTW\tFNC\tRGB\tFNC");
+    for(int _channelIndex = 0; _channelIndex < LED_ChannelCount; _channelIndex++)
+    {
+        logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d",_channelIndex, ParamLED_CH_Lighttype, ParamLED_CH_SC_Light, ParamLED_CH_TW_Light, ParamLED_CH_TW_Function, ParamLED_CH_RGB_Light, ParamLED_CH_RGB_Function);
+    }
+    for(int i=0; i<LED_SC_ChannelCount; i++)
+    {
+        logDebugP("SC %d: %d", i, SC_HWChannels[i][0]);
+    }
+    for(int i=0; i<LED_TW_ChannelCount; i++)
+    {
+        logDebugP("TW %d: %d, %d", i, TW_HWChannels[i][0],TW_HWChannels[i][1]);
+    }
+    for(int i=0; i<LED_RGB_ChannelCount; i++)
+    {
+        logDebugP("RGB %d: %d, %d, %d", i, RGB_HWChannels[i][0], RGB_HWChannels[i][1], RGB_HWChannels[i][2]);
     }
 }
 
@@ -108,6 +180,19 @@ void LedModule::loop(bool configured)
         }
         _timerCheckConnection = millis();
     }
+    
+    for(int i = 0; i < LED_SC_ChannelCount; i++)
+    {
+        _singleChannels[i]->loop();
+    }
+    for(int i = 0; i < LED_TW_ChannelCount; i++)
+    {
+        _twChannels[i]->loop();
+    }
+    for(int i = 0; i < LED_RGB_ChannelCount; i++)
+    {
+        _rgbChannels[i]->loop();
+    }
     dimmer->dimLoop();
 }
 
@@ -131,18 +216,29 @@ void LedModule::loop1(bool configured)
 
 void LedModule::processInputKo(GroupObject &ko)
 {
-    // logDebugP("processInputKo GA%04X", ko.asap());
-    // logHexDebugP(ko.valueRef(), ko.valueSize());
+     logDebugP("processInputKo GA%04X", ko.asap());
+     logHexDebugP(ko.valueRef(), ko.valueSize());
 
     uint16_t asap = ko.asap();
-    uint16_t channelnumber = (asap - LED_KoOffset) / LED_KoBlockSize;
-    if (channelnumber < LEDMODULE_MAX_LIGHT_CHANNELS)
+    uint16_t channelnumber = 0;
+    
+    if(asap >= LED_SC_KoBlockOffset && asap < LED_TW_KoBlockOffset)
     {
-        if (_channels[channelnumber] != nullptr)
-        {
-            // logInfoP("KO for lightchannel received");
-            _channels[channelnumber]->ProcessInputKo(ko);
-        }
+        channelnumber = (asap - LED_SC_KoBlockOffset) / LED_SC_KoBlockSize;
+     logDebugP("SC %d", channelnumber);
+        _singleChannels[channelnumber]->processInputKo(ko);
+    }
+    else if(asap >= LED_TW_KoBlockOffset && asap < LED_RGB_KoBlockOffset)
+    {
+        channelnumber = (asap - LED_TW_KoBlockOffset) / LED_TW_KoBlockSize;
+     logDebugP("TW %d", channelnumber);
+        _twChannels[channelnumber]->processInputKo(ko);
+    }
+    else if(asap >= LED_RGB_KoBlockOffset && asap < (LED_RGB_KoBlockOffset + LED_RGB_ChannelCount * LED_RGB_KoBlockSize))
+    {
+        channelnumber = (asap - LED_RGB_KoBlockOffset) / LED_RGB_KoBlockSize;
+     logDebugP("RGB %d", channelnumber);
+        _rgbChannels[channelnumber]->processInputKo(ko);
     }
 }
 

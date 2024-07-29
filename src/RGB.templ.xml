@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <ManufacturerData>
+    <Manufacturer>
+      <ApplicationPrograms>
+        <ApplicationProgram>
+          <Static>
+            <Parameters>
+
+              <Parameter Id="%AID%_P-%TT%%CC%001" Name="LightActive_%C%" ParameterType="%AID%_PT-OnOffYesNo" Text="Licht Aktiv" Value="0" />
+               <Parameter Id="%AID%_P-%TT%%CC%002" Name="LightText_%C%" ParameterType="%AID%_PT-Text40Byte" Text="Licht Bezeichnung" Value="" />
+              <Parameter Id="%AID%_P-%TT%%CC%003" Name="LightDimmTime_%C%" ParameterType="%AID%_PT-ValueDpt7" Text="Dimmzeit / ms" Value="1000">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
+              </Parameter>
+
+              <Union SizeInBit="280"> <!-- 7 (Scenes) * (3 * 8bit [RGB] + 1 * 8bit [W] + 1 * 8bit [CW]) = 7 * (24 + 8 + 8) = -->
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="7" BitOffset="0" />
+
+                <!-- Scene Emergency Light -->
+                <Parameter Id="%AID%_UP-%TT%%CC%011" Name="LightColorRGB_SceneEmergencylight_%C%" Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="#303030" />
+                <Parameter Id="%AID%_UP-%TT%%CC%012" Name="LightColorW_SceneEmergencylight_%C%" Offset="3" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe W" Value="30" />
+                <Parameter Id="%AID%_UP-%TT%%CC%013" Name="LightColorCW_SceneEmergencylight_%C%" Offset="4" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe CW" Value="30" />
+
+                <!-- Scene 1 -->
+                <Parameter Id="%AID%_UP-%TT%%CC%111" Name="LightColorRGB_Scene1_%C%" Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="#000000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%112" Name="LightColorW_Scene1_%C%" Offset="3" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe W" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%113" Name="LightColorCW_Scene1_%C%" Offset="4" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe CW" Value="0" />
+
+                <!-- Scene 2 -->
+                <Parameter Id="%AID%_UP-%TT%%CC%121" Name="LightColorRGB_Scene2_%C%" Offset="5" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="#000000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%122" Name="LightColorW_Scene2_%C%" Offset="8" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe W" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%123" Name="LightColorCW_Scene2_%C%" Offset="9" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe CW" Value="0" />
+                <!-- Scene 3 -->
+                <Parameter Id="%AID%_UP-%TT%%CC%131" Name="LightColorRGB_Scene3_%C%" Offset="10" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="#000000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%132" Name="LightColorW_Scene3_%C%" Offset="13" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe W" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%133" Name="LightColorCW_Scene3_%C%" Offset="14" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe CW" Value="0" />
+                <!-- Scene 4 -->
+                <Parameter Id="%AID%_UP-%TT%%CC%141" Name="LightColorRGB_Scene4_%C%" Offset="15" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="#000000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%142" Name="LightColorW_Scene4_%C%" Offset="18" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe W" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%143" Name="LightColorCW_Scene4_%C%" Offset="19" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe CW" Value="0" />
+                <!-- Scene 5 -->
+                <Parameter Id="%AID%_UP-%TT%%CC%151" Name="LightColorRGB_Scene5_%C%" Offset="20" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="#000000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%152" Name="LightColorW_Scene5_%C%" Offset="23" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe W" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%153" Name="LightColorCW_Scene5_%C%" Offset="24" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe CW" Value="0" />
+                <!-- Scene 6 -->
+                <Parameter Id="%AID%_UP-%TT%%CC%161" Name="LightColorRGB_Scene6_%C%" Offset="25" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="#000000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%162" Name="LightColorW_Scene6_%C%" Offset="28" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe W" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%163" Name="LightColorCW_Scene6_%C%" Offset="29" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Lichtfarbe CW" Value="0" />
+              </Union>
+            </Parameters>
+
+            <ParameterRefs>
+              <!-- ParameterRef have to be defined for each parameter, pay attention, that the ID-part (number) after R- is unique! -->
+              <!-- ParameterRef are used in the ETS UI -->
+              <ParameterRef Id="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_P-%TT%%CC%001" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_P-%TT%%CC%002" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_P-%TT%%CC%003" />
+
+              <!-- Scene Emergency Light -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_UP-%TT%%CC%011" /> <!-- RGB -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%012_R-%TT%%CC%01201" RefId="%AID%_UP-%TT%%CC%012" /> <!-- W-->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%013_R-%TT%%CC%01301" RefId="%AID%_UP-%TT%%CC%013" /> <!-- CW-->
+
+              <!-- Scene 1 -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%111_R-%TT%%CC%11101" RefId="%AID%_UP-%TT%%CC%111" /> <!-- RGB -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%112_R-%TT%%CC%11201" RefId="%AID%_UP-%TT%%CC%112" /> <!-- W-->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%113_R-%TT%%CC%11301" RefId="%AID%_UP-%TT%%CC%113" /> <!-- CW-->
+
+              <!-- Scene 2 -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%121_R-%TT%%CC%12101" RefId="%AID%_UP-%TT%%CC%121" /> <!-- RGB -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%122_R-%TT%%CC%12201" RefId="%AID%_UP-%TT%%CC%122" /> <!-- W-->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%123_R-%TT%%CC%12301" RefId="%AID%_UP-%TT%%CC%123" /> <!-- CW-->
+
+              <!-- Scene 3 -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%131_R-%TT%%CC%13101" RefId="%AID%_UP-%TT%%CC%131" /> <!-- RGB -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%132_R-%TT%%CC%13201" RefId="%AID%_UP-%TT%%CC%132" /> <!-- W-->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%133_R-%TT%%CC%13301" RefId="%AID%_UP-%TT%%CC%133" /> <!-- CW-->
+
+              <!-- Scene 4 -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%141_R-%TT%%CC%14101" RefId="%AID%_UP-%TT%%CC%141" /> <!-- RGB -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%142_R-%TT%%CC%14201" RefId="%AID%_UP-%TT%%CC%142" /> <!-- W-->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%143_R-%TT%%CC%14301" RefId="%AID%_UP-%TT%%CC%143" /> <!-- CW-->
+
+              <!-- Scene 5 -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%151_R-%TT%%CC%15101" RefId="%AID%_UP-%TT%%CC%151" /> <!-- RGB -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%152_R-%TT%%CC%15201" RefId="%AID%_UP-%TT%%CC%152" /> <!-- W-->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%153_R-%TT%%CC%15301" RefId="%AID%_UP-%TT%%CC%153" /> <!-- CW-->
+              
+              <!-- Scene 6 -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%161_R-%TT%%CC%16101" RefId="%AID%_UP-%TT%%CC%161" /> <!-- RGB -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%162_R-%TT%%CC%16201" RefId="%AID%_UP-%TT%%CC%162" /> <!-- W-->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%163_R-%TT%%CC%16301" RefId="%AID%_UP-%TT%%CC%163" /> <!-- CW-->
+
+            </ParameterRefs>
+
+            <ComObjectTable>
+              <ComObject Id="%AID%_O-%TT%%CC%000" Name="Switch_%C%" Text="Schalten" Number="%K0%" FunctionText="RGB %C% - Ein/Aus" ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="%AID%_O-%TT%%CC%001" Name="StateOnOff_%C%" Text="Status Ein/Aus" Number="%K1%" FunctionText="RGB %C% - Status" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" /> 
+              <ComObject Id="%AID%_O-%TT%%CC%002" Name="Locking_%C%" Text="Sperren" Number="%K2%" FunctionText="TW %C% - Sperre" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%003" Name="Brightness_%C%" Text="Helligkeit" Number="%K3%" FunctionText="RGB %C% - Helligkeit" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-4" />
+              <ComObject Id="%AID%_O-%TT%%CC%004" Name="BrightnessStatus_%C%" Text="Helligkeit Status" Number="%K4%" FunctionText="RGB %C% - Helligkeit Status" ObjectSize="1 Byte" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-4" />
+              <ComObject Id="%AID%_O-%TT%%CC%005" Name="DimRel_%C%" Text="Dimmen Relativ" Number="%K5%" FunctionText="RGB %C% - Dimmen" ObjectSize="4 Bit"  ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-1" />
+              <ComObject Id="%AID%_O-%TT%%CC%006" Name="Scene_%C%" Text="Szene" Number="%K6%" FunctionText="RGB %C% - Szene" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
+              <ComObject Id="%AID%_O-%TT%%CC%007" Name="SceneStatus_%C%" Text="Szene Status" Number="%K7%" FunctionText="RGB %C% - Szene Status" ObjectSize="1 Byte" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
+              <ComObject Id="%AID%_O-%TT%%CC%008" Name="RGB_%C%" Text="RGB" Number="%K8%" FunctionText="RGB %C% - RGB" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%009" Name="RGBStatus_%C%" Text="RGB Status" Number="%K9%" FunctionText="RGB %C% - RGB Status" ObjectSize="3 Bytes" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%010" Name="HSV_%C%" Text="HSV" Number="%K10%" FunctionText="RGB %C% - HSV" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%011" Name="HSVStatus_%C%" Text="HSV Status" Number="%K11%" FunctionText="RGB %C% - HSV Status" ObjectSize="3 Bytes" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+            </ComObjectTable>
+
+            <ComObjectRefs>
+              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_O-%TT%%CC%001" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_O-%TT%%CC%002" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_O-%TT%%CC%003" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_O-%TT%%CC%004" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_O-%TT%%CC%005" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_O-%TT%%CC%011" />
+            </ComObjectRefs>
+            
+          </Static>
+          <Dynamic>
+            <ChannelIndependentBlock>
+              <choose ParamRefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101">
+                <when test="1">
+              <ParameterBlock Id="%AID%_PB-2" Name="RGBLight_%CC%" Text="RGB %C%: {{0:--}}" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201">
+                
+
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" /> <!-- On/Off -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" /> <!-- On/Off Status -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" /> <!-- Lock -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" /> <!-- Brightness -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" /> <!-- Brightness Status -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" /> <!-- Dim Rel -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" /> <!-- Scene -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- Scene Status -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" /> <!-- RGB -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" /> <!-- RGB Status -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" /> <!-- HSV -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" /> <!-- HSV Status -->
+                
+                <ParameterRefRef RefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text=" " />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Licht-Einstellungen" UIHint="Headline" />
+                <ParameterRefRef RefId="%AID%_P-%TT%%CC%003_R-%TT%%CC%00301" />
+                
+              </ParameterBlock>
+            </when>
+          </choose>
+            </ChannelIndependentBlock>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

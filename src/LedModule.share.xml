@@ -1,51 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../Organization/knxprod-support/knx_project_14/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
-<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/14" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+
   <ManufacturerData>
     <Manufacturer>
       <ApplicationPrograms>
         <ApplicationProgram>
+
+          <op:part href="ChannelActivation.part.xml" name="LED_SC" instances="4">
+            <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
+            <op:param name="%TT%" value="21" increment="0" digits="2"/> <!-- Module Type -->
+            <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
+          </op:part>
+
+          <op:part href="ChannelActivation.part.xml" name="LED_TW" instances="2">
+            <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
+            <op:param name="%TT%" value="22" increment="0" digits="2"/> <!-- Module Type -->
+            <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
+          </op:part>
+
+          <op:part href="ChannelActivation.part.xml" name="LED_RGB" instances="1">
+            <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
+            <op:param name="%TT%" value="23" increment="0" digits="2"/> <!-- Module Type -->
+            <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
+          </op:part>
+
           <Static>
             <ParameterTypes>
-
               <ParameterType Id="%AID%_PT-Lighttype" Name="Lighttype">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="Deaktiviert" Value="0" Id="%AID%_PT-Lighttype_EN-0" />
-                  <Enumeration Text="RGBW" Value="1" Id="%AID%_PT-Lighttype_EN-1" />
-                  <Enumeration Text="RGB" Value="2" Id="%AID%_PT-Lighttype_EN-2" />
-                  <Enumeration Text="TW" Value="3" Id="%AID%_PT-Lighttype_EN-3" />
-                  <Enumeration Text="Einfacher Kanal" Value="4" Id="%AID%_PT-Lighttype_EN-4" />
+                  <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Einfacher Kanal" Value="1" Id="%ENID%" />
+                  <Enumeration Text="TW" Value="2" Id="%ENID%" />
+                  <Enumeration Text="RGB" Value="3" Id="%ENID%" />
+                  <!-- <Enumeration Text="RGBW" Value="4" Id="%ENID%" />
+                  <Enumeration Text="RGBTW" Value="5" Id="%ENID%" /> -->
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-DimmTime" Name="Dimmzeit">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="0" maxInclusive="65535" />
+              <ParameterType Id="%AID%_PT-Percentage" Name="Percentage">
+                <TypeNumber SizeInBit="8" Type="signedInt" minInclusive="0" maxInclusive="100" />
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-ChannelAssignment" Name="Kanal-Zuordnung">
-                <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="-" Value="99" Id="%AID%_PT-ChannelAssignment_EN-99" />
-                  <Enumeration Text="Kanal 1" Value="0" Id="%AID%_PT-ChannelAssignment_EN-0" />
-                  <Enumeration Text="Kanal 2" Value="1" Id="%AID%_PT-ChannelAssignment_EN-1" />
-                  <Enumeration Text="Kanal 3" Value="2" Id="%AID%_PT-ChannelAssignment_EN-2" />
-                  <Enumeration Text="Kanal 4" Value="3" Id="%AID%_PT-ChannelAssignment_EN-3" />
-                  <Enumeration Text="Kanal 5" Value="4" Id="%AID%_PT-ChannelAssignment_EN-4" />
-                  <Enumeration Text="Kanal 6" Value="5" Id="%AID%_PT-ChannelAssignment_EN-5" />
-                </TypeRestriction>
-              </ParameterType>
-
-
-              <ParameterType Id="%AID%_PT-LightColorRGB" Name="LightColorRGB">
-                <TypeColor Space="RGB" />
-              </ParameterType>
-
-              <ParameterType Id="%AID%_PT-LightColorW" Name="LightColorW">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="255" />
-              </ParameterType>
-
-              <ParameterType Id="%AID%_PT-LEDChannelBrightness" Name="LEDChannelBrightness">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="255" />
-              </ParameterType>
             </ParameterTypes>
 
             <Parameters>
@@ -56,8 +52,10 @@
 
             <ComObjectTable>
             </ComObjectTable>
+
             <ComObjectRefs>
             </ComObjectRefs>
+
             <Extension>
               <Baggage RefId="%FILE-HELP-de%" />
               <Baggage RefId="%FILE-ICONS%" />
@@ -66,24 +64,35 @@
               <Baggage RefId="%FILE-pics-or%" />
             </Extension>
           </Static>
+
           <Dynamic>
-            <Channel Name="MainChannel" Text="Lichter" Number="%TT%" Id="%AID%_CH-%TT%" Icon="lightbulb-group-outline" HelpContext="Empty">
-              <ParameterBlock Id="%AID%_PB-nnn" Name="Documentation" Text="Dokumentation" Icon="information-outline">
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Dokumentation" UIHint="Headline" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Bla bla bla" />
+            <Channel Name="MainChannel" Text="Lichter" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
+              <ParameterBlock Id="%AID%_PB-nnn" Name="Docu" Text="Konfiguration" Icon="table-edit">
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung:" UIHint="Headline"/>
+                <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table">
+                  <Rows>
+                    <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='HWChannels']/Rows/*" prefix="LED" type="template" IsInner="true"/>
+                  </Rows>
+                  <Columns>
+                    <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Typ" Width="33%" />
+                    <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Instanz" Width="33%" />
+                    <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="Funktion" Width="33%" />
+                  </Columns>
+                  <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTable']/*" prefix="LED" type="template" IsInner="true"/>
+                </ParameterBlock>
+                <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='FunctionAssignment']/*" prefix="LED" type="template" IsInner="true"/>
               </ParameterBlock>
-              <op:include href="./LedModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED" IsInner="true"/>
+
+              <op:include href="Single.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_SC"/>
+              <op:include href="TW.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_TW"/>
+              <op:include href="RGB.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_RGB"/>
             </Channel>
 
-            <ChannelIndependentBlock>
-            </ChannelIndependentBlock>
           </Dynamic>
+
         </ApplicationProgram>
       </ApplicationPrograms>
       <Baggages>
-        <Baggage TargetPath="" Name="Help_de.zip" Id="%FILE-HELP-de%">
-          <FileInfo TimeInfo="%DATETIME%" />
-        </Baggage>
         <Baggage TargetPath="" Name="Icons.zip" Id="%FILE-ICONS%">
           <FileInfo TimeInfo="%DATETIME%" />
         </Baggage>

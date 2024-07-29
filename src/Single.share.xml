@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  
+  <ManufacturerData>
+    <Manufacturer RefId="M-00FA">
+      <ApplicationPrograms>
+        <ApplicationProgram >
+        
+          <Static>
+            <ParameterTypes>
+              <ParameterType Id="%AID%_PT-SCLights" Name="SCLights">
+                <TypeNumber SizeInBit="8" Type="signedInt" minInclusive="0" maxInclusive="%N%" />
+              </ParameterType>
+            </ParameterTypes>
+
+            <Parameters>
+            </Parameters>
+
+            <ParameterRefs>
+            </ParameterRefs>
+
+            <ComObjectTable>
+            </ComObjectTable>
+
+            <ComObjectRefs>
+            </ComObjectRefs>
+          </Static>
+
+          <Dynamic>
+            <ChannelIndependentBlock>
+            <ParameterBlock Text="EK" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="lightbulb-outline">
+              <ParameterSeparator Id="%AID%_PS-nnn" Text="Instanzen erscheinen automatisch, wenn sie konfiguriert sind." />
+              <op:include href="Single.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_SC" IsInner="true"/>
+            </ParameterBlock>
+          </ChannelIndependentBlock>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

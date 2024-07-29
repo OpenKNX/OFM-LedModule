@@ -1,6 +1,5 @@
 #pragma once
 #include "OpenKNX.h"
-#include "LightChannel.h"
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
@@ -8,12 +7,17 @@
 #include "HWDimmerPCA.h"
 #include "HWDimmerRP2040.h"
 #include "LedModuleConfig.h"
+#include "SingleChannel.h"
+#include "TWChannel.h"
+#include "RGBChannel.h"
 
 class LedModule : public OpenKNX::Module
 {
   private:
 
-    LightChannel *_channels[LEDMODULE_MAX_LIGHT_CHANNELS];
+    SingleChannel *_singleChannels[LED_SC_ChannelCount];
+    TWChannel *_twChannels[LED_TW_ChannelCount];
+    RGBChannel *_rgbChannels[LED_RGB_ChannelCount];
     uint8_t _channelIterator = 0;
     uint32_t _timer1 = 0;
     uint32_t _timer2 = 0;
@@ -21,6 +25,9 @@ class LedModule : public OpenKNX::Module
 
     bool doResetPwm = false;
 
+    uint8_t SC_HWChannels[LED_SC_ChannelCount][1];
+    uint8_t TW_HWChannels[LED_TW_ChannelCount][2];
+    uint8_t RGB_HWChannels[LED_RGB_ChannelCount][3];
 
     OpenKNX::Flash::Driver * _ledStorage = nullptr;
 

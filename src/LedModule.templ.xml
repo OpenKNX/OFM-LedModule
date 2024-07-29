@@ -6,362 +6,77 @@
       <ApplicationPrograms>
         <ApplicationProgram>
           <Static>
+
             <Parameters>
-              <Parameter Id="%AID%_P-%T%%CCC%001" Name="Lighttype_%C%" ParameterType="%AID%_PT-Lighttype" Text="Licht" Value="0">
+              <Union SizeInBit="56">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-              </Parameter>
-              <Parameter Id="%AID%_P-%T%%CCC%002" Name="LightText_%C%" ParameterType="%AID%_PT-Text40Byte" Text="Licht Bezeichnung" Value="" />
-              <Parameter Id="%AID%_P-%T%%CCC%003" Name="LightDimmTime_%C%" ParameterType="%AID%_PT-DimmTime" Text="Dimmzeit / ms" Value="1000">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
-              </Parameter>
-
-              <Parameter Id="%AID%_P-%T%%CCC%004" Name="LightChannelA_%C%" ParameterType="%AID%_PT-ChannelAssignment" Text="Kanal A" Value="99">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="3" BitOffset="0" />
-              </Parameter>
-              <Parameter Id="%AID%_P-%T%%CCC%005" Name="LightChannelB_%C%" ParameterType="%AID%_PT-ChannelAssignment" Text="Kanal B" Value="99">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="4" BitOffset="0" />
-              </Parameter>
-              <Parameter Id="%AID%_P-%T%%CCC%006" Name="LightChannelC_%C%" ParameterType="%AID%_PT-ChannelAssignment" Text="Kanal C" Value="99">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="5" BitOffset="0" />
-              </Parameter>
-              <Parameter Id="%AID%_P-%T%%CCC%007" Name="LightChannelD_%C%" ParameterType="%AID%_PT-ChannelAssignment" Text="Kanal D" Value="99">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="6" BitOffset="0" />
-              </Parameter>
-
-              <Union SizeInBit="280"> <!-- 7 (Scenes) * (3 * 8bit [RGB] + 1 * 8bit [W] + 1 * 8bit [CW]) = 7 * (24 + 8 + 8) = -->
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="7" BitOffset="0" />
-
-                <!-- Scene Emergency Light -->
-                <Parameter Id="%AID%_UP-%T%%CCC%011" Name="LightColorRGB_SceneEmergencylight_%C%" Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="303030" />
-                <Parameter Id="%AID%_UP-%T%%CCC%012" Name="LightColorW_SceneEmergencylight_%C%" Offset="3" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe W" Value="30" />
-                <Parameter Id="%AID%_UP-%T%%CCC%013" Name="LightColorCW_SceneEmergencylight_%C%" Offset="4" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe CW" Value="30" />
-
-                <!-- Scene 1 -->
-                <Parameter Id="%AID%_UP-%T%%CCC%111" Name="LightColorRGB_Scene1_%C%" Offset="0" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="000000" />
-                <Parameter Id="%AID%_UP-%T%%CCC%112" Name="LightColorW_Scene1_%C%" Offset="3" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe W" Value="0" />
-                <Parameter Id="%AID%_UP-%T%%CCC%113" Name="LightColorCW_Scene1_%C%" Offset="4" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe CW" Value="0" />
-
-                <!-- Scene 2 -->
-                <Parameter Id="%AID%_UP-%T%%CCC%121" Name="LightColorRGB_Scene2_%C%" Offset="5" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="000000" />
-                <Parameter Id="%AID%_UP-%T%%CCC%122" Name="LightColorW_Scene2_%C%" Offset="8" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe W" Value="0" />
-                <Parameter Id="%AID%_UP-%T%%CCC%123" Name="LightColorCW_Scene2_%C%" Offset="9" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe CW" Value="0" />
-                <!-- Scene 3 -->
-                <Parameter Id="%AID%_UP-%T%%CCC%131" Name="LightColorRGB_Scene3_%C%" Offset="10" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="000000" />
-                <Parameter Id="%AID%_UP-%T%%CCC%132" Name="LightColorW_Scene3_%C%" Offset="13" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe W" Value="0" />
-                <Parameter Id="%AID%_UP-%T%%CCC%133" Name="LightColorCW_Scene3_%C%" Offset="14" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe CW" Value="0" />
-                <!-- Scene 4 -->
-                <Parameter Id="%AID%_UP-%T%%CCC%141" Name="LightColorRGB_Scene4_%C%" Offset="15" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="000000" />
-                <Parameter Id="%AID%_UP-%T%%CCC%142" Name="LightColorW_Scene4_%C%" Offset="18" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe W" Value="0" />
-                <Parameter Id="%AID%_UP-%T%%CCC%143" Name="LightColorCW_Scene4_%C%" Offset="19" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe CW" Value="0" />
-                <!-- Scene 5 -->
-                <Parameter Id="%AID%_UP-%T%%CCC%151" Name="LightColorRGB_Scene5_%C%" Offset="20" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="000000" />
-                <Parameter Id="%AID%_UP-%T%%CCC%152" Name="LightColorW_Scene5_%C%" Offset="23" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe W" Value="0" />
-                <Parameter Id="%AID%_UP-%T%%CCC%153" Name="LightColorCW_Scene5_%C%" Offset="24" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe CW" Value="0" />
-                <!-- Scene 6 -->
-                <Parameter Id="%AID%_UP-%T%%CCC%161" Name="LightColorRGB_Scene6_%C%" Offset="25" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="000000" />
-                <Parameter Id="%AID%_UP-%T%%CCC%162" Name="LightColorW_Scene6_%C%" Offset="28" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe W" Value="0" />
-                <Parameter Id="%AID%_UP-%T%%CCC%163" Name="LightColorCW_Scene6_%C%" Offset="29" BitOffset="0" ParameterType="%AID%_PT-LightColorW" Text="Lichtfarbe CW" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%001" Name="CH%C%_Lighttype" ParameterType="%AID%_PT-Lighttype" Offset="0" BitOffset="0" Text="Licht" Value="0"/>
+                <Parameter Id="%AID%_UP-%TT%%CC%005" Name="CH%C%_TW_Light" ParameterType="%AID%_PT-TWLights" Offset="1" BitOffset="0" Text="TW Licht" Value="0"/>
+                <Parameter Id="%AID%_UP-%TT%%CC%006" Name="CH%C%_RGB_Light" ParameterType= "%AID%_PT-RGBLights" Offset="2" BitOffset="0" Text="RGB Licht" Value="0"/>
+                <Parameter Id="%AID%_UP-%TT%%CC%007" Name="CH%C%_TW_Function" ParameterType= "%AID%_PT-TWAssignment" Offset="3" BitOffset="0" Text="Licht" Value="0"/>
+                <Parameter Id="%AID%_UP-%TT%%CC%008" Name="CH%C%_RGB_Function" ParameterType= "%AID%_PT-RGBAssignment" Offset="4" BitOffset="0" Text="Licht" Value="0"/>
+                <Parameter Id="%AID%_UP-%TT%%CC%009" Name="CH%C%_SC_Light" ParameterType= "%AID%_PT-SCLights" Offset="5" BitOffset="0" Text="Licht" Value="0"/>
               </Union>
             </Parameters>
+
             <ParameterRefs>
-              <ParameterRef Id="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101" RefId="%AID%_P-%T%%CCC%001" />
-              <ParameterRef Id="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_P-%T%%CCC%002" />
-              <ParameterRef Id="%AID%_P-%T%%CCC%003_R-%T%%CCC%00301" RefId="%AID%_P-%T%%CCC%003" />
-              <ParameterRef Id="%AID%_P-%T%%CCC%004_R-%T%%CCC%00401" RefId="%AID%_P-%T%%CCC%004" /> <!-- Channel A -->
-              <ParameterRef Id="%AID%_P-%T%%CCC%005_R-%T%%CCC%00501" RefId="%AID%_P-%T%%CCC%005" /> <!-- Channel B -->
-              <ParameterRef Id="%AID%_P-%T%%CCC%006_R-%T%%CCC%00601" RefId="%AID%_P-%T%%CCC%006" /> <!-- Channel C -->
-              <ParameterRef Id="%AID%_P-%T%%CCC%007_R-%T%%CCC%00701" RefId="%AID%_P-%T%%CCC%007" /> <!-- Channel D -->
-              
-              <!-- Scene Emergency Light -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%011_R-%T%%CCC%01101" RefId="%AID%_UP-%T%%CCC%011" /> <!-- RGB -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%012_R-%T%%CCC%01201" RefId="%AID%_UP-%T%%CCC%012" /> <!-- W-->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%013_R-%T%%CCC%01301" RefId="%AID%_UP-%T%%CCC%013" /> <!-- CW-->
-
-              <!-- Scene 1 -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%111_R-%T%%CCC%11101" RefId="%AID%_UP-%T%%CCC%111" /> <!-- RGB -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%112_R-%T%%CCC%11201" RefId="%AID%_UP-%T%%CCC%112" /> <!-- W-->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%113_R-%T%%CCC%11301" RefId="%AID%_UP-%T%%CCC%113" /> <!-- CW-->
-
-              <!-- Scene 2 -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%121_R-%T%%CCC%12101" RefId="%AID%_UP-%T%%CCC%121" /> <!-- RGB -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%122_R-%T%%CCC%12201" RefId="%AID%_UP-%T%%CCC%122" /> <!-- W-->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%123_R-%T%%CCC%12301" RefId="%AID%_UP-%T%%CCC%123" /> <!-- CW-->
-
-              <!-- Scene 3 -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%131_R-%T%%CCC%13101" RefId="%AID%_UP-%T%%CCC%131" /> <!-- RGB -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%132_R-%T%%CCC%13201" RefId="%AID%_UP-%T%%CCC%132" /> <!-- W-->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%133_R-%T%%CCC%13301" RefId="%AID%_UP-%T%%CCC%133" /> <!-- CW-->
-
-              <!-- Scene 4 -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%141_R-%T%%CCC%14101" RefId="%AID%_UP-%T%%CCC%141" /> <!-- RGB -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%142_R-%T%%CCC%14201" RefId="%AID%_UP-%T%%CCC%142" /> <!-- W-->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%143_R-%T%%CCC%14301" RefId="%AID%_UP-%T%%CCC%143" /> <!-- CW-->
-
-              <!-- Scene 5 -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%151_R-%T%%CCC%15101" RefId="%AID%_UP-%T%%CCC%151" /> <!-- RGB -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%152_R-%T%%CCC%15201" RefId="%AID%_UP-%T%%CCC%152" /> <!-- W-->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%153_R-%T%%CCC%15301" RefId="%AID%_UP-%T%%CCC%153" /> <!-- CW-->
-              
-              <!-- Scene 6 -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%161_R-%T%%CCC%16101" RefId="%AID%_UP-%T%%CCC%161" /> <!-- RGB -->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%162_R-%T%%CCC%16201" RefId="%AID%_UP-%T%%CCC%162" /> <!-- W-->
-              <ParameterRef Id="%AID%_UP-%T%%CCC%163_R-%T%%CCC%16301" RefId="%AID%_UP-%T%%CCC%163" /> <!-- CW-->
-
+              <ParameterRef Id="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_UP-%TT%%CC%001" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_UP-%TT%%CC%005" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_UP-%TT%%CC%006" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_UP-%TT%%CC%007" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_UP-%TT%%CC%008" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_UP-%TT%%CC%009" />
             </ParameterRefs>
+
             <ComObjectTable>
-              <ComObject Id="%AID%_O-%T%%CCC%000" Name="Scene_%C%" Text="Scene" Number="%K0%" FunctionText="Licht %Z% - Szene" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
-              <ComObject Id="%AID%_O-%T%%CCC%001" Name="SceneStatus_%C%" Text="Scene Status" Number="%K1%" FunctionText="Licht %Z% - Szene Status" ObjectSize="1 Byte" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
-              <ComObject Id="%AID%_O-%T%%CCC%002" Name="OnOff_%C%" Text="On/Off" Number="%K2%" FunctionText="Licht %Z% - An/Aus" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
-              <ComObject Id="%AID%_O-%T%%CCC%003" Name="StateOnOff_%C%" Text="State On/Off" Number="%K3%" FunctionText="Licht %Z% -  Status" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" /> 
-              <ComObject Id="%AID%_O-%T%%CCC%004" Name="Brightness_%C%" Text="Brightness" Number="%K4%" FunctionText="Licht %Z% - Helligkeit" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-4" />
-              <ComObject Id="%AID%_O-%T%%CCC%005" Name="BrightnessStatus_%C%" Text="Brightness Status" Number="%K5%" FunctionText="Licht %Z% - Helligkeit Status" ObjectSize="1 Byte" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-4" />
-              
             </ComObjectTable>
+
             <ComObjectRefs>
-              <ComObjectRef Id="%AID%_O-%T%%CCC%000_R-%T%%CCC%00001" RefId="%AID%_O-%T%%CCC%000" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" RefId="%AID%_O-%T%%CCC%001" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_O-%T%%CCC%002" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%003_R-%T%%CCC%00301" RefId="%AID%_O-%T%%CCC%003" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%004_R-%T%%CCC%00401" RefId="%AID%_O-%T%%CCC%004" />
-              <ComObjectRef Id="%AID%_O-%T%%CCC%005_R-%T%%CCC%00501" RefId="%AID%_O-%T%%CCC%005" />
             </ComObjectRefs>
+
           </Static>
+
           <Dynamic>
             <ChannelIndependentBlock>
-              <ParameterBlock Id="%AID%_PB-2" Name="Light_%ZZ%" Text="Licht %ZZ%: {{0:--}}" TextParameterRefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201">
-                <ParameterRefRef RefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101" />
-                <ParameterRefRef RefId="%AID%_P-%T%%CCC%002_R-%T%%CCC%00201" />
-                <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">
-                  <when test="1 2 3 4"><!-- if light is defined -->
-                    <ComObjectRefRef RefId="%AID%_O-%T%%CCC%000_R-%T%%CCC%00001" /> <!-- Scene -->
-                    <ComObjectRefRef RefId="%AID%_O-%T%%CCC%001_R-%T%%CCC%00101" /> <!-- Scene Status -->
-                    <ComObjectRefRef RefId="%AID%_O-%T%%CCC%002_R-%T%%CCC%00201" /> <!-- On/Off -->
-                    <ComObjectRefRef RefId="%AID%_O-%T%%CCC%003_R-%T%%CCC%00301" /> <!-- On/Off Status -->
-                    <ComObjectRefRef RefId="%AID%_O-%T%%CCC%004_R-%T%%CCC%00401" /> <!-- Brightness -->
-                    <ComObjectRefRef RefId="%AID%_O-%T%%CCC%005_R-%T%%CCC%00501" /> <!-- Brightness Status -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text=" " />
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Licht-Einstellungen" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_P-%T%%CCC%003_R-%T%%CCC%00301" />
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Dimmzeit muss zwischen 0 und 65535 ms liegen" />
+              <ParameterBlock Id="%AID%_PB-nnn" Name="HWChannels">
+                <Rows>
+                  <Row Id="%AID%_PB-nnn_R-%CC%" Name="Row%CC%" Text="%Z%" />
+                </Rows>
+              </ParameterBlock>
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanal-Zuordnung" UIHint="Headline" />
-                    <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">
-                      <when test="1"><!-- if light is RGBW -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="A: rot, B: grün, C: blau, D: weiß" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%004_R-%T%%CCC%00401" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%005_R-%T%%CCC%00501" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%006_R-%T%%CCC%00601" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%007_R-%T%%CCC%00701" />
-                      </when>
-                      <when test="2"><!-- if light is RGB -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="A: rot, B: grün, C: blau" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%004_R-%T%%CCC%00401" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%005_R-%T%%CCC%00501" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%006_R-%T%%CCC%00601" />
-                      </when>                      
-                      <when test="3"><!-- if light is TW -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="A: warmweiß, B: kaltweiß" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%004_R-%T%%CCC%00401" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%005_R-%T%%CCC%00501" />
-                      </when>
-                      <when test="4"><!-- if light is Single Channel -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="A: was auch immer angeschlossen ist" />
-                        <ParameterRefRef RefId="%AID%_P-%T%%CCC%004_R-%T%%CCC%00401" />
-                      </when>
-                    </choose>
-
-
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen-Definition" UIHint="Headline" />
-                    <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">
-                      <when test="1"><!-- if light is RGBW -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="RGBW" />
-                        <ParameterBlock Id="%AID%_PB-12" Name="Table1RGBWScene1" Text="#" Inline="true" Layout="Table">
-                          <Rows>
-                            <Row Id="%AID%_PB-12_R-1" Name="Row1" Text="Szene 1" />
-                            <Row Id="%AID%_PB-12_R-2" Name="Row2" Text="Szene 2" />
-                            <Row Id="%AID%_PB-12_R-3" Name="Row3" Text="Szene 3" />
-                            <Row Id="%AID%_PB-12_R-4" Name="Row4" Text="Szene 4" />
-                            <Row Id="%AID%_PB-12_R-5" Name="Row5" Text="Szene 5" />
-                            <Row Id="%AID%_PB-12_R-6" Name="Row6" Text="Szene 6" />
-                          </Rows>
-                          <Columns>
-                            <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="RGB" Width="50%" />
-                            <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="W" Width="50%" />
-                            <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="HCL" Width="50%" />
-                          </Columns>
-
-                          <!-- Scene 1 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%111_R-%T%%CCC%11101" Cell="1,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%112_R-%T%%CCC%11201" Cell="1,2"/>
-
-                          <!-- Scene 2 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%121_R-%T%%CCC%12101" Cell="2,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%122_R-%T%%CCC%12201" Cell="2,2"/>
-
-                          <!-- Scene 3 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%131_R-%T%%CCC%13101" Cell="3,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%132_R-%T%%CCC%13201" Cell="3,2"/>
-
-                          <!-- Scene 4 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%141_R-%T%%CCC%14101" Cell="4,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%142_R-%T%%CCC%14201" Cell="4,2"/>
-
-                          <!-- Scene 5 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%151_R-%T%%CCC%15101" Cell="5,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%152_R-%T%%CCC%15201" Cell="5,2"/>
-                          
-                          <!-- Scene 6 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%161_R-%T%%CCC%16101" Cell="6,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%162_R-%T%%CCC%16201" Cell="6,2"/>
-
-                        </ParameterBlock>
-
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Notlicht" UIHint="Headline" />
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Das Notlicht wird aktiviert, wenn die KNX-Spannung wegbricht" />
-
-                        <ParameterBlock Id="%AID%_PB-12" Name="Table1RGBWEmergencyScene" Text="#" Inline="true" Layout="Table">
-                          <Rows>
-                            <Row Id="%AID%_PB-12_R-1" Name="Row1" Text="Szene Notlicht" />
-                          </Rows>
-                          <Columns>
-                            <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="RGB" Width="50%" />
-                            <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="W" Width="50%" />
-                            <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="HCL" Width="50%" />
-                          </Columns>
-                          <!-- Scene 1 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%011_R-%T%%CCC%01101" Cell="1,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%012_R-%T%%CCC%01201" Cell="1,2"/>
-                        </ParameterBlock>
-                      </when>
-                    </choose>
-                    <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">
-                      <when test="2"><!-- if light is RGB -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="RGB" />
-                        <ParameterBlock Id="%AID%_PB-12" Name="Table1RGBScene1" Text="#" Inline="true" Layout="Table">
-                          <Rows>
-                            <Row Id="%AID%_PB-12_R-1" Name="Row1" Text="Szene 1" />
-                            <Row Id="%AID%_PB-12_R-2" Name="Row2" Text="Szene 2" />
-                            <Row Id="%AID%_PB-12_R-3" Name="Row3" Text="Szene 3" />
-                            <Row Id="%AID%_PB-12_R-4" Name="Row4" Text="Szene 4" />
-                            <Row Id="%AID%_PB-12_R-5" Name="Row5" Text="Szene 5" />
-                            <Row Id="%AID%_PB-12_R-6" Name="Row6" Text="Szene 6" />
-                          </Rows>
-                          <Columns>
-                            <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="RGB" Width="50%" />
-                            <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="HCL" Width="50%" />
-                          </Columns>
-
-                          <!-- Scene 1 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%111_R-%T%%CCC%11101" Cell="1,1"/>
-
-                          <!-- Scene 2 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%121_R-%T%%CCC%12101" Cell="2,1"/>
-
-                          <!-- Scene 3 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%131_R-%T%%CCC%13101" Cell="3,1"/>
-
-                          <!-- Scene 4 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%141_R-%T%%CCC%14101" Cell="4,1"/>
-
-                          <!-- Scene 5 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%151_R-%T%%CCC%15101" Cell="5,1"/>
-
-                          <!-- Scene 6 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%161_R-%T%%CCC%16101" Cell="6,1"/>
-
-                        </ParameterBlock>
-
-                      </when>
-                    </choose>
-
-                    <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">
-                      <when test="3"><!-- if light is TW -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="TW" />
-                        <ParameterBlock Id="%AID%_PB-12" Name="Table1TWScene1" Text="#" Inline="true" Layout="Table">
-                          <Rows>
-                            <Row Id="%AID%_PB-12_R-1" Name="Row1" Text="Szene 1" />
-                            <Row Id="%AID%_PB-12_R-2" Name="Row2" Text="Szene 2" />
-                            <Row Id="%AID%_PB-12_R-3" Name="Row3" Text="Szene 3" />
-                            <Row Id="%AID%_PB-12_R-4" Name="Row4" Text="Szene 4" />
-                            <Row Id="%AID%_PB-12_R-5" Name="Row5" Text="Szene 5" />
-                            <Row Id="%AID%_PB-12_R-6" Name="Row6" Text="Szene 6" />
-                          </Rows>
-                          <Columns>
-                            <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="WW" Width="33%" />
-                            <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="CW" Width="33%" />
-                            <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="HCL" Width="33%" />
-                          </Columns>
-                          <!-- Scene 1 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%112_R-%T%%CCC%11201" Cell="1,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%113_R-%T%%CCC%11301" Cell="1,2"/>
-
-                          <!-- Scene 2 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%122_R-%T%%CCC%12201" Cell="2,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%123_R-%T%%CCC%12301" Cell="2,2"/>
-
-                          <!-- Scene 3 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%132_R-%T%%CCC%13201" Cell="3,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%133_R-%T%%CCC%13301" Cell="3,2"/>
-
-                          <!-- Scene 4 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%142_R-%T%%CCC%14201" Cell="4,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%143_R-%T%%CCC%14301" Cell="4,2"/>
-
-                          <!-- Scene 5 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%152_R-%T%%CCC%15201" Cell="5,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%153_R-%T%%CCC%15301" Cell="5,2"/>
-                          
-                          <!-- Scene 6 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%162_R-%T%%CCC%16201" Cell="6,1"/>
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%163_R-%T%%CCC%16301" Cell="6,2"/>
-
-                        </ParameterBlock>
-
-                      </when>
-                    </choose>
-                    <choose ParamRefId="%AID%_P-%T%%CCC%001_R-%T%%CCC%00101">
-                      <when test="4"><!-- if light is single channel -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Einzelner Kanal" />
-                        <ParameterBlock Id="%AID%_PB-12" Name="Table1TWScene1" Text="#" Inline="true" Layout="Table">
-                          <Rows>
-                            <Row Id="%AID%_PB-12_R-1" Name="Row1" Text="Szene 1" />
-                            <Row Id="%AID%_PB-12_R-2" Name="Row2" Text="Szene 2" />
-                            <Row Id="%AID%_PB-12_R-3" Name="Row3" Text="Szene 3" />
-                            <Row Id="%AID%_PB-12_R-4" Name="Row4" Text="Szene 4" />
-                            <Row Id="%AID%_PB-12_R-5" Name="Row5" Text="Szene 5" />
-                            <Row Id="%AID%_PB-12_R-6" Name="Row6" Text="Szene 6" />
-                          </Rows>
-                          <Columns>
-                            <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Einfacher Kanal" Width="100%" />
-                          </Columns>
-
-                          <!-- Scene 1 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%112_R-%T%%CCC%11201" Cell="1,1"/>
-
-                          <!-- Scene 2 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%122_R-%T%%CCC%12201" Cell="2,1"/>
-
-                          <!-- Scene 3 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%132_R-%T%%CCC%13201" Cell="3,1"/>
-
-                          <!-- Scene 4 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%142_R-%T%%CCC%14201" Cell="4,1"/>
-
-                          <!-- Scene 5 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%152_R-%T%%CCC%15201" Cell="5,1"/>
-                          
-                          <!-- Scene 6 -->
-                          <ParameterRefRef RefId="%AID%_UP-%T%%CCC%162_R-%T%%CCC%16201" Cell="6,1"/>
-
-                        </ParameterBlock>
-
-                      </when>
-                    </choose>
+              <ParameterBlock Id="%AID%_PB-nnn" Name="AssignmentTable">
+                <ParameterRefRef RefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101" Cell="%CC%,1"/>
+                <choose ParamRefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101">
+                  <when test="1">                    <!-- single channel -->
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901" Cell="%CC%,2"/>
                   </when>
+                  <when test="2">                    <!-- TW channel -->
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%005_R-%TT%%CC%00501" Cell="%CC%,2"/>
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%007_R-%TT%%CC%00701" Cell="%CC%,3"/>
+                  </when>
+                  <when test="3">                    <!-- RGB channel -->
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%006_R-%TT%%CC%00601" Cell="%CC%,2"/>
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%008_R-%TT%%CC%00801" Cell="%CC%,3"/>
+                  </when>
+                </choose>
+              </ParameterBlock>
+
+              <ParameterBlock Id="%AID%_PB-nnn" Name="FunctionAssignment">
+                <choose ParamRefId="%AID%_P-%TT%%CC%005_R-%TT%%CC%00501">                  <!-- TW Light -->
+                  <op:usePart name="LED_TW" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock/*" />
+                </choose>
+
+                <choose ParamRefId="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901">                  <!-- SC Light -->
+                  <op:usePart name="LED_SC" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock/*" />
+                </choose>
+
+                <choose ParamRefId="%AID%_P-%TT%%CC%006_R-%TT%%CC%00601">                  <!-- RGB Light -->
+                  <op:usePart name="LED_RGB" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock/*" />
                 </choose>
               </ParameterBlock>
             </ChannelIndependentBlock>
           </Dynamic>
+
         </ApplicationProgram>
       </ApplicationPrograms>
     </Manufacturer>
