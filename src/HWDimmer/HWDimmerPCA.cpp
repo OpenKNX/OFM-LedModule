@@ -35,15 +35,38 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) :HWDimmer(LEDMODULE_MAX_LIGH
  * @return true when channel is available
  * @return false when channel is invalid
  */
-bool HWDimmerPCA::setLevel(uint8_t level, uint8_t channel)
+bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
 {
     bool isValidChannel = false;
     if(HWDimmer::setLevel(level, channel))
     {
         isValidChannel = true;
-        pwm.setPWM(channel, 0, dimLUT[DimLUTType::Log1_5].Val(level));
+        pwm.setPWM(channel, 0, min(level, DIM_RANGE));
     }
     return isValidChannel;
+}
+
+/**
+ * @brief Scale uint8 value to range of this HWDimmer (uint16)
+ * 
+ * @param level level as uint8
+ * @param lutType lookup table selection
+ * @return uint16_t level in new scale
+ */
+uint16_t HWDimmerPCA::scale(uint8_t level, HWDimmer::DimLUTType lutType)
+{
+    return dimLUT[lutType].Val(level);
+}
+
+ /**
+ * @brief Get maximum allowed value in selected scale
+ * 
+ * @param lutType lookup table selection
+ * @return uint16_t maximum value of range
+ */
+uint16_t HWDimmerPCA::getScaleMax(HWDimmer::DimLUTType lutType)
+{
+    return dimLUT[lutType].Max();
 }
 
 /**
@@ -97,4 +120,4 @@ void HWDimmerPCA::reconnect()
  * @brief Linear lookup tables to map 255% level to PCA driver levels
  *  0: Linear, 1: logarithmic x^1.5
  */
-HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(4095, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(4095, 1.5)};
+HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.5)};

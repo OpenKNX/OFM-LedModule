@@ -4,15 +4,25 @@
 #include "OpenKNX.h"
 #include "HWDimmer.h"
 #include "LightChannel.h"
+#include  "Colors.h"
 
 class RGBChannel : public LightChannel
 {
   public:
+
     RGBChannel(uint8_t channel_number, HWDimmer* pDimmer, uint8_t hwChannels[3]);
     void processInputKo(GroupObject& ko);
     void update();
+    void loop();
 
   private:
+  
     const std::string name() override;
+
+    uint8_t _lastHueValue = 0;
+    uint8_t _lastSatValue = 0;
+
+    DimmableValue<uint8_t> _hue;
+    DimmableValue<uint8_t> _saturation;
 
 };

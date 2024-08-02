@@ -7,9 +7,13 @@
 #include <Adafruit_PWMServoDriver.h>
 #include "LedModuleConfig.h"
 
+#define DIM_RESOLUTION_BIT  12
+#define DIM_RANGE           ((1 << DIM_RESOLUTION_BIT) - 1)
+
 class HWDimmerPCA : public HWDimmer
 {
     public:
+
         enum PCAType
         {
             PCA9685,
@@ -18,10 +22,13 @@ class HWDimmerPCA : public HWDimmer
         HWDimmerPCA(HWDimmerPCA::PCAType type);
 
         std::string logPrefix();
-        bool setLevel(uint8_t level, uint8_t channel);
+        bool setLevel(uint16_t level, uint8_t channel);
+        uint16_t scale(uint8_t level, HWDimmer::DimLUTType lutType);
+        uint16_t getScaleMax(HWDimmer::DimLUTType lutType);
         bool checkConnection();
         void reconnect();
 
     private:
+    
         Adafruit_PWMServoDriver pwm;
 };

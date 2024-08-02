@@ -16,7 +16,7 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
         setLevel(0, ch);
     }
     analogWriteFreq(pwmFreq); 
-    analogWriteRange(UINT16_MAX);
+    analogWriteRange(DIM_RANGE);
 
     #if 0
         logDebugP("Lookup table:");
@@ -36,15 +36,38 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
  * @return true when channel is available
  * @return false when channel is invalid
  */
-bool HWDimmerRP2040::setLevel(uint8_t level, uint8_t channel)
+bool HWDimmerRP2040::setLevel(uint16_t level, uint8_t channel)
 {
     bool isValidChannel = false;
     if(HWDimmer::setLevel(level, channel))
     {
         isValidChannel = true;
-        analogWrite(pins[channel], dimLUT[DimLUTType::Log1_5].Val(level));
+        analogWrite(pins[channel], min(level, DIM_RANGE));
     }
     return isValidChannel;
+}
+
+/**
+ * @brief Scale uint8 value to range of this HWDimmer (uint16)
+ * 
+ * @param level level as uint8
+ * @param lutType lookup table selection
+ * @return uint16_t level in new scale
+ */
+uint16_t HWDimmerRP2040::scale(uint8_t level, HWDimmer::DimLUTType lutType)
+{
+    return dimLUT[lutType].Val(level);
+}
+
+/**
+ * @brief Get maximum allowed value in selected scale
+ * 
+ * @param lutType lookup table selection
+ * @return uint16_t maximum value of range
+ */
+uint16_t HWDimmerRP2040::getScaleMax(HWDimmer::DimLUTType lutType)
+{
+    return dimLUT[lutType].Max();
 }
 
 /**
@@ -61,4 +84,4 @@ std::string HWDimmerRP2040::logPrefix()
  * @brief Linear lookup tables to map 255% level to RP2040 PWM range
  *  0: Linear, 1: logarithmic x^1.5
  */
-HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(UINT16_MAX, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(UINT16_MAX, 1.5)};
+HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.5)};

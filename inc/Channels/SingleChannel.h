@@ -8,12 +8,13 @@
 class SingleChannel : public LightChannel
 {
   public:
+
     SingleChannel(uint8_t channel_number, HWDimmer* pDimmer, uint8_t hwChannels[1]);
     void processInputKo(GroupObject& ko);
     void update();
-
+    void loop();
 
   private:
-    const std::string name() override;
 
+    const std::string name() override;
 };
