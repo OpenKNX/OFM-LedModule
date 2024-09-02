@@ -61,6 +61,7 @@ class LedModule : public OpenKNX::Module
       RGBW = 4,
       RGBTW = 5
     };
+
 };
 
 extern LedModule openknxLedModule;

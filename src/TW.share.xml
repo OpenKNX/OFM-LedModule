@@ -22,15 +22,39 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ColorTemperatureWW" Name="ColorTemperatureWW">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="4000" />
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="4000" Increment="50"/>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-ColorTemperatureCW" Name="ColorTemperatureCW">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="4000" maxInclusive="8000" />
+              <ParameterType Id="%AID%_PT-ColorTemperatureCW" Name="ColorTemperatureCW" >
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="4000" maxInclusive="8000" Increment="50"/>
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ColorTemperature" Name="ColorTemperature">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="8000" />
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="8000" Increment="50"/>
+              </ParameterType>
+              
+              <ParameterType Id="%AID%_PT-TWFunction" Name="TWFunction">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Ein" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Aus" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Funktion 3" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-TWValueType" Name="TWValueType">
+                <TypeRestriction Base="Value" SizeInBit="3" UIHint="DropDown">
+                  <Enumeration Text="Helligkeit" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Farbtemperatur" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Kombiniert" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+              
+              <ParameterType Id="%AID%_PT-TWSequence" Name="TWSequence">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="HCL" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Auto Helligkeit" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Auto Temperatur" Value="2" Id="%ENID%" />
+                </TypeRestriction>
               </ParameterType>
 
             </ParameterTypes>

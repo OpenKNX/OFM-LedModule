@@ -22,7 +22,16 @@ class RGBChannel : public LightChannel
     uint8_t _lastHueValue = 0;
     uint8_t _lastSatValue = 0;
 
-    DimmableValue<uint8_t> _hue;
-    DimmableValue<uint8_t> _saturation;
+    DimmableValue<uint16_t> _hue;
+    DimmableValue<uint16_t> _saturation;
+
+    void handleScene(uint8_t sceneNr);
+    enum ValueType
+    {
+      BRIGHTNESS = 0,
+      COLOR = 1,
+      HUE = 2,
+      SATURATION = 3
+    };
 
 };

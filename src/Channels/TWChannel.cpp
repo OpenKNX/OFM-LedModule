@@ -4,7 +4,15 @@
 
 TWChannel::TWChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[2]) : LightChannel(index, pDimmer, hwChannels, 2), _colorTemperature(4000)
 {
-
+  logInfoP("Trying to read Config from KNX...");
+  logHexInfoP((uint8_t*) knx.paramData(LED_TW_ParamCalcIndex(LED_TW_SceneA_Type_)), 8);
+  _scenes = new SceneConfig[N_SCENES];
+  memcpy(_scenes, knx.paramData(LED_TW_ParamCalcIndex(LED_TW_SceneA_Type_)), N_SCENES * sizeof(SceneConfig));
+  logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
+  for(int i = 0; i < N_SCENES; i++)
+  {
+    logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d",_channelIndex, _scenes[i].sceneNr,_scenes[i].funcType, _scenes[i].valueType, _scenes[i].lockObj, _scenes[i].lockFunc, _scenes[i].isFixed,   _scenes[i].value[0],  _scenes[i].value[1], _scenes[i].value[2]);
+  }
 }
 
 const std::string TWChannel::name()
@@ -58,17 +66,22 @@ void TWChannel::loop()
 
 void TWChannel::processInputKo(GroupObject& ko)
 {
+  uint16_t colorTemp = 0;
+  uint8_t tmpu8 = 0;
+  int16_t relKO = (ko.asap() - LED_TW_KoOffset);
+
   logDebugP("processInputKo Channel");
   logHexDebugP(ko.valueRef(), ko.valueSize());
 
-  uint16_t colorTemp = 0;
-  uint8_t tmpu8=0;
-  int16_t relKO = (ko.asap() - LED_TW_KoOffset);
   // check if channel is valid
   if ((int8_t)(relKO / LED_TW_KoBlockSize) == channelIndex())
-      relKO = relKO % LED_TW_KoBlockSize;
+  {
+    relKO = relKO % LED_TW_KoBlockSize;
+  }
   else
-      relKO = -1;
+  {
+    relKO = -1;
+  }
 
   if(relKO == LED_TW_KoLocking_)
   {
@@ -82,22 +95,30 @@ void TWChannel::processInputKo(GroupObject& ko)
         if(ko.value(DPT_Switch))
         {
           tmpu8 = KoLED_SC_Brightness_.value(DPT_DecimalFactor);
-          _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : 255, millis(), ParamLED_TW_LightDimmTime_);
+          _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_TW_LightDimmTime_);
         }
         else
         {
           _brightness.setTargetValue(0, millis(), ParamLED_TW_LightDimmTime_);
         }
       break;
+
       case LED_TW_KoStateOnOff_: break;
       case LED_TW_KoLocking_: break;
+
       case LED_TW_KoBrightness_: 
         _brightness.setTargetValue(ko.value(DPT_DecimalFactor), millis(), ParamLED_TW_LightDimmTime_);
       break;
+
       case LED_TW_KoBrightnessStatus_: break;
       case LED_TW_KoDimRel_: break;
-      case LED_TW_KoScene_: break;
+      
+      case LED_TW_KoScene_: 
+        handleScene(ko.value(DPT_SceneNumber));
+        break;
+      
       case LED_TW_KoSceneStatus_: break;
+
       case LED_TW_KoColorTemperature_:
         colorTemp = ko.value(Dpt(7,600));
         if(colorTemp > ParamLED_TW_ColorTempCW_)
@@ -124,4 +145,34 @@ void TWChannel::dimLoop()
 {
 
 
+}
+
+void TWChannel::handleScene(uint8_t sceneNr)
+{
+  for(int i = 0; i < N_SCENES; i++)
+  {
+    if(sceneNr == _scenes[i].sceneNr)
+    {
+      switch(_scenes[i].funcType)
+      {
+        default:
+        case SceneConfig::FuncType::INACTIVE: break;
+
+        case SceneConfig::FuncType::VALUE: 
+          if(_scenes[i].valueType == ValueType::BRIGHTNESS || _scenes[i].valueType == ValueType::COMBINED)
+          {
+            _brightness.setTargetValue(_scenes[i].Brightness(), millis(), ParamLED_TW_LightDimmTime_);
+          }
+          if(_scenes[i].valueType == ValueType::TEMTPERATURE || _scenes[i].valueType == ValueType::COMBINED)
+          {
+            _colorTemperature.setTargetValue(_scenes[i].ColorTemperature(), millis(), ParamLED_TW_LightDimmTime_);
+          }
+        break;
+
+        case SceneConfig::FuncType::FUNCTION: break;
+        case SceneConfig::FuncType::SEQUENCE: break;
+        case SceneConfig::FuncType::LOCKING: break;
+      }
+    }
+  }
 }

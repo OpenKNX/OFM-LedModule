@@ -6,6 +6,7 @@
       <ApplicationPrograms>
         <ApplicationProgram>
 
+
           <Static>
             <ParameterTypes>
 
@@ -21,6 +22,34 @@
                   <Enumeration Text="Blau" Value="3" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
+
+              
+              <ParameterType Id="%AID%_PT-RGBValueType" Name="RGBValueType">
+                <TypeRestriction Base="Value" SizeInBit="3" UIHint="DropDown">
+                  <Enumeration Text="Helligkeit" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Farbe" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Farbton" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Sättigung" Value="3" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              
+              <ParameterType Id="%AID%_PT-RGBSequence" Name="RGBSequence">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Ablauf 1" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Ablauf 2" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Ablauf 3" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-RGBFunction" Name="RGBFunction">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Ein" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Aus" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Funktion 3" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+              
 
               <ParameterType Id="%AID%_PT-LightColorRGB" Name="LightColorRGB">
                 <TypeColor Space="RGB" />
@@ -47,7 +76,7 @@
               <ParameterBlock Text="RGB" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Instanzen erscheinen automatisch, wenn sie konfiguriert sind." />
                 <op:include href="RGB.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_RGB" IsInner="true"/>
-              </ParameterBlock>
+                </ParameterBlock>
             </ChannelIndependentBlock>
           </Dynamic>
 

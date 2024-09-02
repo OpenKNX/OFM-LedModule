@@ -21,4 +21,12 @@ class TWChannel : public LightChannel
   
     uint16_t _lastColorTemp = 0;
     DimmableValue<uint16_t> _colorTemperature;
+
+    void handleScene(uint8_t sceneNr);
+    enum ValueType
+    {
+      BRIGHTNESS = 0,
+      TEMTPERATURE = 1,
+      COMBINED = 2,
+    };
 };

@@ -15,6 +15,11 @@ class SingleChannel : public LightChannel
     void loop();
 
   private:
-
     const std::string name() override;
+    void handleScene(uint8_t sceneNr);
+    enum ValueType
+    {
+      BRIGHTNESS = 0
+    };
+
 };

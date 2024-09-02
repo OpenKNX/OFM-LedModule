@@ -12,6 +12,29 @@
               <ParameterType Id="%AID%_PT-SCLights" Name="SCLights">
                 <TypeNumber SizeInBit="8" Type="signedInt" minInclusive="0" maxInclusive="%N%" />
               </ParameterType>
+
+              <ParameterType Id="%AID%_PT-SCValueType" Name="SCValueType">
+                <TypeRestriction Base="Value" SizeInBit="3" UIHint="DropDown">
+                  <Enumeration Text="Helligkeit" Value="0" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-SCSequence" Name="SCSequence">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Ablauf 1" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Ablauf 2" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Ablauf 3" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-SCFunction" Name="SCFunction">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Ein" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Aus" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Funktion 3" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+              
             </ParameterTypes>
 
             <Parameters>

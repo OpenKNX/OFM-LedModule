@@ -6,6 +6,14 @@
       <ApplicationPrograms>
         <ApplicationProgram>
 
+          <op:part href="SceneBuilder.part.xml" name="LED_SC_SC" instances="8">
+            <op:param name="%SZ%" value="1" increment="1" digits="1"/> <!-- Szene number -->
+            <op:param name="%SN%" value="0" increment="1" digits="1" asLetter="true"/> <!-- Szene number -->
+            <op:param name="%TT%" value="21" increment="0" digits="2"/> <!-- Module Type -->
+            <op:param name="%id%" value="130" increment="13" digits="3"/> <!-- Ref ID Base-->
+            <op:param name="%MO%" value="0" increment="5" digits="1"/> <!-- Memory Offset -->
+          </op:part>
+
           <Static>
             <Parameters>
 
@@ -14,6 +22,12 @@
               <Parameter Id="%AID%_P-%TT%%CC%003" Name="LightDimmTime_%C%" ParameterType="%AID%_PT-ValueDpt7" Text="Dimmzeit / ms" Value="1000">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
               </Parameter>
+              
+              <Union SizeInBit="320"> <!-- 8 Scenes * 5 bytes: total 40 bytes -->
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="7" BitOffset="0" />
+                <!-- Scenes -->
+                <op:usePart name="LED_SC_SC" xpath="//Static/Parameters/Block[@Name='ScenesSC']/*" />                
+              </Union>
 
             </Parameters>
 
@@ -21,6 +35,8 @@
               <ParameterRef Id="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_P-%TT%%CC%001" />
               <ParameterRef Id="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_P-%TT%%CC%002" />
               <ParameterRef Id="%AID%_P-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_P-%TT%%CC%003" />
+              <!-- Scene Parameter Refs -->             
+              <op:usePart name="LED_SC_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSC']/*" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -65,6 +81,32 @@
                     <ParameterSeparator Id="%AID%_PS-nnn" Text=" " />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Licht-Einstellungen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%003_R-%TT%%CC%00301" />
+
+                    <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
+                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline"/>
+                      <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
+                        <Rows>
+                          <op:usePart name="LED_SC_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='Rows']/*" />
+                        </Rows>
+
+                        <Columns>
+                          <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Szene" Width="15%" />
+                          <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Typ" Width="20%" />
+                          <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="Funktion" Width="25%" />
+                          <Column Id="%AID%_PB-12_C-4" Name="Col4" Text="Wert" Width="20%" />
+                          <Column Id="%AID%_PB-12_C-5" Name="Col5" Text="Fix" Width="15%" />
+                          <!-- <Column Id="%AID%_PB-12_C-6" Name="Col6" Text="Lock1" Width="15%" /> -->
+                          <!-- <Column Id="%AID%_PB-12_C-7" Name="Col7" Text="Lock2" Width="15%" /> -->
+                        </Columns>
+                        
+                        <!-- Scene Control-->
+                        <op:usePart name="LED_SC_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='SceneSelectionSC']/*" />
+
+                      </ParameterBlock>
+                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Fix: Wenn aktiv kann diese Szene nicht im Betrieb per Speichern überschrieben werden."/>
+
+                    </ParameterBlock>
+
                   </ParameterBlock>
                 </when>
               </choose>
