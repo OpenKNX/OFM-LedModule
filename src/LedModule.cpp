@@ -355,7 +355,14 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("--------------------------------------------------------------------------------");
         return true;
     }
-
+    
+    if (cmd.substr(0, 8) == "ledState")
+    {
+        for(int i=0; i<LED_ChannelCount; i++)
+        {
+           logDebugP("CH%d: %d",i, _pDimmer->getLevel(i));
+        }
+    }
     return false;
 }
 
