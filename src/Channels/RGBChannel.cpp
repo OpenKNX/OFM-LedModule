@@ -2,17 +2,20 @@
 #include "RGBChannel.h"
 
 
-RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3]) : LightChannel(index, pDimmer, hwChannels, 3), _hue(0), _saturation(0)
+RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3]) : LightChannel(index, pDimmer, hwChannels, 3), _hue(0, 0, H_PART - 1), _saturation(0, 0, VAL_RANGE)
 {
   logInfoP("Trying to read Config from KNX...");
   logHexInfoP((uint8_t*) knx.paramData(LED_RGB_ParamCalcIndex(LED_RGB_SceneA_Type_)), 8);
   _scenes = new SceneConfig[N_SCENES];
   memcpy(_scenes, knx.paramData(LED_RGB_ParamCalcIndex(LED_RGB_SceneA_Type_)), N_SCENES * sizeof(SceneConfig));
+  
+#ifdef EXT_DEBUG_LOG
   logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
   for(int i = 0; i < N_SCENES; i++)
   {
     logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d",_channelIndex, _scenes[i].sceneNr,_scenes[i].funcType, _scenes[i].valueType, _scenes[i].lockObj, _scenes[i].lockFunc, _scenes[i].isFixed,   _scenes[i].value[0],  _scenes[i].value[1], _scenes[i].value[2]);
   }
+#endif
 }
 
 const std::string RGBChannel::name()

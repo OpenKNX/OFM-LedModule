@@ -8,11 +8,14 @@ SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannel
   logHexInfoP((uint8_t*) knx.paramData(LED_SC_ParamCalcIndex(LED_SC_SceneA_Type_)), 8);
   _scenes = new SceneConfig[N_SCENES];
   memcpy(_scenes, knx.paramData(LED_SC_ParamCalcIndex(LED_SC_SceneA_Type_)), N_SCENES * sizeof(SceneConfig));
+  
+#ifdef EXT_DEBUG_LOG  
   logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
   for(int i = 0; i < N_SCENES; i++)
   {
     logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d",_channelIndex, _scenes[i].sceneNr,_scenes[i].funcType, _scenes[i].valueType, _scenes[i].lockObj, _scenes[i].lockFunc, _scenes[i].isFixed,   _scenes[i].value[0],  _scenes[i].value[1], _scenes[i].value[2]);
   }
+#endif
 }
 
 const std::string SingleChannel::name()

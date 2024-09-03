@@ -86,6 +86,5 @@ class Colors
     };
 
     static RGB hsv2rgb(HSV hsv);
-    static RGB hsv2rgbF(HSV hsv);
     static HSV rgb2hsv(RGB rgb);
 };

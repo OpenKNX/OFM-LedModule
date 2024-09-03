@@ -24,13 +24,28 @@ class LightChannel : public OpenKNX::Channel
     {
       public:
         DimmableValue() { }
-        DimmableValue(T val) { currentValue = val; }
+        DimmableValue(T val) { currentValue = minValue = maxValue = val;}
+        DimmableValue(T val, T min, T max) { currentValue = val; minValue = min; maxValue = max;}
 
         const std::string logPrefix() { return "DimValues:"; }
+
+        void setRange(T min, T max)
+        {
+          minValue = min;
+          maxValue = max;
+        }
 
         void setTargetValue(T target, uint32_t timestamp, uint16_t dimTime)
         {
           lastValue = currentValue;
+          if(target > maxValue)
+          {
+            target = maxValue;
+          }
+          else if(target < minValue)
+          {
+            target = minValue;
+          }
           targetValue = target;
           deltaValue = (int32_t)targetValue - (int32_t)lastValue;
           startTimestamp = timestamp;
@@ -62,6 +77,8 @@ class LightChannel : public OpenKNX::Channel
         
         T lastValue = 0;
         T targetValue = 0;
+        T minValue = 0;
+        T maxValue = 0;
         int32_t currentValue = 0;
         int32_t deltaValue = 0;
         

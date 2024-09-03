@@ -4,6 +4,7 @@
 
 #include "Colors.h"
 
+
 const std::string LedModule::name()
 {
     return LEDMODULE_HARDWARE_NAME;
@@ -29,9 +30,9 @@ void LedModule::init()
 #endif
 #endif
 
-    delay(2500);
 
-#if 1
+#if 0
+    delay(2500);
     Colors::HSV tmpHSV;
     Colors::RGB tmpRGB;
     Colors::HSV tmpHSV2;
@@ -55,9 +56,9 @@ void LedModule::init()
     toc = millis();
     logDebugP("rgb2hsv: count: %d, time [ms]: %d, per calc [us]: %f", n, toc - tic, ((toc - tic) * 1000.0f) / n);
 
-    delay(5000);
 #endif
 #if 0  
+    delay(5000);
     int16_t errCount =0;
 
     for(uint16_t h=00; h<2048*4; h+=32)
