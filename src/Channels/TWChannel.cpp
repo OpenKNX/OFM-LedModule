@@ -52,6 +52,7 @@ void TWChannel::loop()
 
     uint16_t ww = ((uint32_t)brightValue * (colorTempValue - ParamLED_TW_ColorTempWW_)) / (ParamLED_TW_ColorTempCW_ - ParamLED_TW_ColorTempWW_);
     uint16_t cw = ((uint32_t)brightValue * (ParamLED_TW_ColorTempCW_ - colorTempValue)) / (ParamLED_TW_ColorTempCW_ - ParamLED_TW_ColorTempWW_);
+
     if(_pHWChannels[0] < LED_ChannelCount)
     {
       _pDimmer->setLevel(ww, _pHWChannels[0]);
@@ -151,7 +152,7 @@ void TWChannel::handleScene(uint8_t sceneNr)
 {
   for(int i = 0; i < N_SCENES; i++)
   {
-    if(sceneNr == _scenes[i].sceneNr)
+    if(sceneNr+1 == _scenes[i].sceneNr)
     {
       switch(_scenes[i].funcType)
       {
@@ -167,6 +168,7 @@ void TWChannel::handleScene(uint8_t sceneNr)
           {
             _colorTemperature.setTargetValue(_scenes[i].ColorTemperature(), millis(), ParamLED_TW_LightDimmTime_);
           }
+          logDebugP("Scene: %d, BR: %d, CT: %d", sceneNr,_scenes[i].Brightness(),_scenes[i].ColorTemperature() );
         break;
 
         case SceneConfig::FuncType::FUNCTION: break;

@@ -21,7 +21,7 @@
               <Parameter Id="%AID%_P-%TT%%CC%001" Name="LightActive_%C%" ParameterType="%AID%_PT-OnOffYesNo" Text="Licht Aktiv" Value="0" />
                <Parameter Id="%AID%_P-%TT%%CC%002" Name="LightText_%C%" ParameterType="%AID%_PT-Text40Byte" Text="Licht Bezeichnung" Value="" />
               <Parameter Id="%AID%_P-%TT%%CC%003" Name="LightDimmTime_%C%" ParameterType="%AID%_PT-ValueDpt7" Text="Dimmzeit [ms]" Value="1000">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
               </Parameter>
               
               <Parameter Id="%AID%_P-%TT%%CC%004" Name="Brighness1_%C%" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit (Tag)" Value="255" />
