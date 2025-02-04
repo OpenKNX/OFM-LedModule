@@ -25,10 +25,10 @@ const std::string RGBChannel::name()
 
 void RGBChannel::update()
 { 
-  uint8_t tmpHue = _hue.value();
-  uint8_t tmpSat = _saturation.value();
+  uint16_t tmpHue = _hue.value();
+  uint16_t tmpSat = _saturation.value();
   uint8_t tmpBright = _brightness.value();
-  Colors::HSV hsv(tmpHue, tmpSat, tmpBright);
+  Colors::HSV hsv(tmpHue, tmpSat, _UFP16(tmpBright,2));
 
   if(_lastBrightnessLevel != tmpBright)
   {

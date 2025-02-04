@@ -23,8 +23,8 @@ class RGBChannel : public LightChannel
   
     const std::string name() override;
 
-    uint8_t _lastHueValue = 0;
-    uint8_t _lastSatValue = 0;
+    uint16_t _lastHueValue = 0;
+    uint16_t _lastSatValue = 0;
 
     DimmableValue<uint16_t> _hue;
     DimmableValue<uint16_t> _saturation;
