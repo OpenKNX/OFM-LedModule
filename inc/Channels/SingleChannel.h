@@ -5,6 +5,7 @@
 #include "HWDimmer.h"
 #include "LightChannel.h"
 
+
 class SingleChannel : public LightChannel
 {
   public:
@@ -13,6 +14,8 @@ class SingleChannel : public LightChannel
     void processInputKo(GroupObject& ko);
     void update();
     void loop();
+    bool _sc_night = 0;
+    bool SC_night();
 
   private:
     const std::string name() override;

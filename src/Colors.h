@@ -31,9 +31,9 @@ class Colors
         
         RGB(uint32_t rgbval)
         {
-            _red = _UFP16((rgbval >> 16) & 0xFF, 2);
-            _green = _UFP16((rgbval >> 8) & 0xFF, 2);
-            _blue = _UFP16(rgbval & 0xFF, 2);
+            _red   = _UFP16((rgbval >> 16) & 0xFF, 2);
+            _green = _UFP16((rgbval >> 8)  & 0xFF, 2);
+            _blue  = _UFP16( rgbval        & 0xFF, 2);
         }
         
         uint32_t toUint32()

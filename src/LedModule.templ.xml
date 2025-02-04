@@ -16,6 +16,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%007" Name="CH%C%_TW_Function" ParameterType= "%AID%_PT-TWAssignment" Offset="3" BitOffset="0" Text="Licht" Value="0"/>
                 <Parameter Id="%AID%_UP-%TT%%CC%008" Name="CH%C%_RGB_Function" ParameterType= "%AID%_PT-RGBAssignment" Offset="4" BitOffset="0" Text="Licht" Value="0"/>
                 <Parameter Id="%AID%_UP-%TT%%CC%009" Name="CH%C%_SC_Light" ParameterType= "%AID%_PT-SCLights" Offset="5" BitOffset="0" Text="Licht" Value="0"/>
+                <Parameter Id="%AID%_UP-%TT%%CC%010" Name="CH%C%_DimModule" ParameterType="%AID%_PT-DimModule" Offset="6" BitOffset="0" Text="DimmModule" Value="0" />
               </Union>
             </Parameters>
 
@@ -26,6 +27,7 @@
               <ParameterRef Id="%AID%_P-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_UP-%TT%%CC%007" />
               <ParameterRef Id="%AID%_P-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_UP-%TT%%CC%008" />
               <ParameterRef Id="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_UP-%TT%%CC%009" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_UP-%TT%%CC%010" />
             </ParameterRefs>
 
             <ComObjectTable>

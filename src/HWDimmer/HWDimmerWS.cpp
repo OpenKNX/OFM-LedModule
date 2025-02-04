@@ -1,14 +1,14 @@
-#include "HWDimmerPCA.h"
+#include "HWDimmerWS.h"
 
-
+//// test file for led stripes with ws2811 chip
 /**
  * @brief Construct a new HWDimmerPCA::HWDimmerPCA object
  * 
- * @param type PCA dimmer type
+ * @param type WS dimmer type
  */
-HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) :HWDimmer(LEDMODULE_MAX_LIGHT_CHANNELS)
+HWDimmerWS::HWDimmerWS(HWDimmerWS::WSType type) :HWDimmer(LEDMODULE_MAX_LIGHT_CHANNELS)
 {
-    #ifdef LEDMODULE_WIRE_SDA
+    /*#ifdef LEDMODULE_WIRE_SDA
         LEDMODULE_WIRE.setSDA(LEDMODULE_WIRE_SDA);
     #endif
     #ifdef LEDMODULE_WIRE_SCL
@@ -18,9 +18,10 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) :HWDimmer(LEDMODULE_MAX_LIGH
     #ifdef LEDMODULE_WIRE_CLOCK_FREQ
         LEDMODULE_WIRE.setClock(LEDMODULE_WIRE_CLOCK_FREQ);
     #endif
-    pwm = Adafruit_PWMServoDriver(LEDMODULE_I2C, LEDMODULE_WIRE);
-    pwm.begin();
-    pwm.setPWMFreq(LEDMODULE_PWM_FREQ);
+    */
+    pwm = Adafruit_NeoPixel(100 , 20 , NEO_KHZ400);
+    //pwm.begin();
+    //pwm.setPWMFreq(LEDMODULE_PWM_FREQ);
     for(uint8_t ch = 0; ch < numChannels; ch++)
     {
         setLevel(0, ch);
@@ -35,7 +36,7 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) :HWDimmer(LEDMODULE_MAX_LIGH
  * @return true when channel is available
  * @return false when channel is invalid
  */
-bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
+bool HWDimmerWS::setLevel(uint16_t level, uint8_t channel)
 {
     //logInfoP("setLevel_1");
     bool isValidChannel = false;
@@ -43,7 +44,13 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
     {
         //logInfoP("setLevel_2");
         isValidChannel = true;
-        pwm.setPWM(channel,0, min(level, DIM_RANGE));
+        //pwm.setPWM(channel,0, min(level, DIM_RANGE));
+        pwm.clear();
+        for ( int i=0 ; i < 100 ; i++)
+        {
+            pwm.setPixelColor(i, pwm.Color(level, level , level ) );
+            pwm.show();
+        }
         //logInfoP("setLevel_3");
     }
     return isValidChannel;
@@ -56,7 +63,7 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
  * @param lutType lookup table selection
  * @return uint16_t level in new scale
  */
-uint16_t HWDimmerPCA::scale(uint8_t level, HWDimmer::DimLUTType lutType)
+uint16_t HWDimmerWS::scale(uint8_t level, HWDimmer::DimLUTType lutType)
 {
     return dimLUT[lutType].Val(level);
 }
@@ -67,7 +74,7 @@ uint16_t HWDimmerPCA::scale(uint8_t level, HWDimmer::DimLUTType lutType)
  * @param lutType lookup table selection
  * @return uint16_t maximum value of range
  */
-uint16_t HWDimmerPCA::getScaleMax(HWDimmer::DimLUTType lutType)
+uint16_t HWDimmerWS::getScaleMax(HWDimmer::DimLUTType lutType)
 {
     return dimLUT[lutType].Max();
 }
@@ -77,9 +84,9 @@ uint16_t HWDimmerPCA::getScaleMax(HWDimmer::DimLUTType lutType)
  * 
  * @return std::string Prefix
  */
-std::string HWDimmerPCA::logPrefix()
+std::string HWDimmerWS::logPrefix()
 {
-    return "PCAHWDimmer";
+    return "WSHWDimmer";
 }
 
 /**
@@ -88,7 +95,7 @@ std::string HWDimmerPCA::logPrefix()
  * @return true connection is ok
  * @return false connection has error
  */
-bool HWDimmerPCA::checkConnection()
+bool HWDimmerWS::checkConnection()
 {
     byte error;
     bool isOK = false;
@@ -122,13 +129,13 @@ LEDMODULE_WIRE.requestFrom(LEDMODULE_I2C,1);
  * @brief Reconnecto to PCA driver and reinit
  * 
  */
-void HWDimmerPCA::reconnect()
+void HWDimmerWS::reconnect()
 {
     logInfoP("Reset PWM as connection is back");
     logInfoP("pwm.begin()");
-    pwm.begin();
+    //pwm.begin();
     logInfoP("pwm.setPWMFreq(1000)");
-    pwm.setPWMFreq(1000);
+    //pwm.setPWMFreq(1000);
 
     logInfoP("Dim back to last known values");
 }

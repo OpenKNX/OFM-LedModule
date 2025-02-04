@@ -7,19 +7,19 @@
       <ApplicationPrograms>
         <ApplicationProgram>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_SC" instances="4">
+          <op:part href="ChannelActivation.part.xml" name="LED_SC" instances="16">
             <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
             <op:param name="%TT%" value="21" increment="0" digits="2"/> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
           </op:part>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_TW" instances="2">
+          <op:part href="ChannelActivation.part.xml" name="LED_TW" instances="8">
             <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
             <op:param name="%TT%" value="22" increment="0" digits="2"/> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
           </op:part>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_RGB" instances="1">
+          <op:part href="ChannelActivation.part.xml" name="LED_RGB" instances="4">
             <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
             <op:param name="%TT%" value="23" increment="0" digits="2"/> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
@@ -31,6 +31,15 @@
 
           <Static>
             <ParameterTypes>
+              <ParameterType Id="%AID%_PT-DimModule" Name="DimmerModule">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="LED-UP1-Module" Value="0" Id="%ENID%" />
+                  <Enumeration Text="LED-REG5-Module" Value="1" Id="%ENID%" />
+                  <Enumeration Text="LED-PICO-Module" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+
               <ParameterType Id="%AID%_PT-Lighttype" Name="Lighttype">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
@@ -50,12 +59,13 @@
               </ParameterType>
               
               <ParameterType Id="%AID%_PT-DimCurve" Name="DimCurve">
-                <TypeRestriction Base="Value" SizeInBit="8">
+                <TypeRestriction Base="Value" SizeInBit="3">
                   <Enumeration Text="Linear" Value="0" Id="%ENID%" />
                   <Enumeration Text="Exponentiell 1.5" Value="1" Id="%ENID%" />
                   <Enumeration Text="Exponentiell 2.0" Value="2" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
+
 
               <ParameterType Id="%AID%_PT-Percentage" Name="Percentage">
                 <TypeNumber SizeInBit="8" Type="signedInt" minInclusive="0" maxInclusive="100" />
@@ -99,12 +109,36 @@
                 </TypeRestriction>
               </ParameterType>
 
+              <ParameterType Id="%AID%_PT-TimeFactor" Name="TimeFactor">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="0.5" Value="1" Id="%ENID%" />
+                  <Enumeration Text="1.0" Value="2" Id="%ENID%" />
+                  <Enumeration Text="1.5" Value="3" Id="%ENID%" />
+                  <Enumeration Text="2.0" Value="4" Id="%ENID%" />
+                  <Enumeration Text="3.0" Value="6" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-MinDim" Name="MinDimValue">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="127" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-MaxDim" Name="MaxDimValue">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="128" maxInclusive="255" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-DimTime" Name="DimTime">
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="0" maxInclusive="10000" />
+              </ParameterType>
+
             </ParameterTypes>
 
             <Parameters>
+            <Parameter Id="%AID%_P-%TT%%CC%001" Name="DimmerModule_%C%"        ParameterType="%AID%_PT-DimModule"           Text="Dimmer Modul"                Value="0" />  <!-- Modul Type -->
             </Parameters>
 
             <ParameterRefs>
+            <ParameterRef Id="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" RefId="%AID%_P-%TT%%CC%001" />  <!-- Modul Type -->
             </ParameterRefs>
 
             <ComObjectTable>
@@ -125,6 +159,8 @@
           <Dynamic>
             <Channel Name="MainChannel" Text="Lichter" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
               <ParameterBlock Id="%AID%_PB-nnn" Name="Docu" Text="Konfiguration" Icon="table-edit">
+                <ParameterRefRef RefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" />  <!-- Modul Type -->
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version 04.02.2025 19:10" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung:" UIHint="Headline"/>
                 <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table">
                   <Rows>

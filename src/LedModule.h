@@ -3,6 +3,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#include <Adafruit_NeoPixel.h>
 #include "HWDimmer.h"
 #if defined(LEDMODULE_DIMMER_PCA9685)
   #include "HWDimmerPCA.h"
@@ -33,6 +34,7 @@ class LedModule : public OpenKNX::Module
     SingleChannel *_singleChannels[LED_SC_ChannelCount];
     TWChannel *_twChannels[LED_TW_ChannelCount];
     RGBChannel *_rgbChannels[LED_RGB_ChannelCount];
+    
 
     void setupCustomFlash();
     void setupChannels();
@@ -52,6 +54,7 @@ class LedModule : public OpenKNX::Module
     void savePower() override; 
     void showHelp() override;
     void init();
+    
 
     enum LightType
     {

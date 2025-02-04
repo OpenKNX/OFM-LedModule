@@ -19,11 +19,17 @@ const std::string LedModule::version()
 void LedModule::init()
 {
     logDebugP("INIT");
+
+
 #if defined(LEDMODULE_DIMMER_PCA9685)
-    dimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685);
+    logInfoP("LEDMODULE_DIMMER_PCA9685");
+    _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685);
+    logInfoP("LEDMODULE_DIMMER_PCA9685 SET");
+    
 #else
 #if defined(LEDMODULE_DIMMMER_RP2040)
     _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, LEDMODULE_PWM_FREQ);
+    logInfoP("LEDMODULE_DIMMER_RP2040");
 #else // create dummy driver to have dimmer initialized
     dimmer = new HWDimmer(1);
     logErrorP("Unknown PWM driver %s ('RP2040' and 'PCA9685PW' are supported)", LEDMODULE_PWMDRIVER);
@@ -284,6 +290,7 @@ void LedModule::processInputKo(GroupObject &ko)
 {
     logDebugP("proc.Ko GA%04X", ko.asap());
     logHexDebugP(ko.valueRef(), ko.valueSize());
+    
 
     uint16_t asap = ko.asap();
     uint16_t channelnumber = 0;
@@ -306,6 +313,7 @@ void LedModule::processInputKo(GroupObject &ko)
         logDebugP("RGB %d", channelnumber);
         _rgbChannels[channelnumber]->processInputKo(ko);
     }
+    
 }
 
 void LedModule::showHelp()

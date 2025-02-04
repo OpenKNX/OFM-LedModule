@@ -55,6 +55,29 @@
                 <TypeColor Space="RGB" />
               </ParameterType>
 
+              <ParameterType Id="%AID%_PT-ColorPicker" Name="ColorPicker">
+                <TypeRestriction Base="Value" SizeInBit="5">
+                    <Enumeration Text="Rot"       Value="1"  Id="%ENID%" />
+                    <Enumeration Text="Orange"    Value="2"  Id="%ENID%" />
+                    <Enumeration Text="Gelb"      Value="3"  Id="%ENID%" />
+                    <Enumeration Text="GelbGrün"  Value="4"  Id="%ENID%" />
+                    <Enumeration Text="Grün"      Value="5"  Id="%ENID%" />
+                    <Enumeration Text="Aquamarin" Value="6"  Id="%ENID%" />
+                    <Enumeration Text="Türkis"    Value="7"  Id="%ENID%" />
+                    <Enumeration Text="Mint"      Value="8"  Id="%ENID%" />
+                    <Enumeration Text="Blau"      Value="9"  Id="%ENID%" />
+                    <Enumeration Text="Lila"      Value="10" Id="%ENID%" />
+                    <Enumeration Text="Rosa"      Value="11" Id="%ENID%" />
+                    <Enumeration Text="Violett"   Value="12" Id="%ENID%" />
+                    <Enumeration Text="Weiß"      Value="13" Id="%ENID%" />
+                    <Enumeration Text="Random Steady"    Value="14" Id="%ENID%" />
+                    <Enumeration Text="Random Changing"  Value="15" Id="%ENID%" />
+                    <Enumeration Text="Custom"    Value="16" Id="%ENID%" />
+                    <Enumeration Text="Farbtemperatur" Value="17" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+
             </ParameterTypes>
 
             <Parameters>
