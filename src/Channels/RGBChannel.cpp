@@ -1,6 +1,6 @@
 #include <knx.h>
 #include "RGBChannel.h"
-
+#include <Math.h>
 
 RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3]) : LightChannel(index, pDimmer, hwChannels, 3), _hue(0, 0, H_PART - 1), _saturation(0, 0, VAL_RANGE)
 {
@@ -86,13 +86,13 @@ void RGBChannel::loop()
         {
         logInfoP("hue:%5X%",_hue.value());
         _brightness.setRGBChangingTime(millis());
-        _hue.setTargetValue( random(4095) , millis(), ParamLED_RGB_ColorTimeDay_);
+        _hue.setTargetValue( random(255) , millis(), ParamLED_RGB_ColorTimeDay_);
         _saturation.setTargetValue( 255 , millis(), ParamLED_RGB_ColorTimeDay_ ) ;
         }
   if ( _brightness.getRGBChangingTrigger() &&  RGB_night() && (_brightness.getRGBChangingTime() + ParamLED_RGB_ColorTimeNight_) <= millis() ) 
         {
         _brightness.setRGBChangingTime(millis());
-        _hue.setTargetValue( random(4095)  , millis(), ParamLED_RGB_ColorTimeNight_);
+        _hue.setTargetValue( random(255)  , millis(), ParamLED_RGB_ColorTimeNight_);
         _saturation.setTargetValue( 255 , millis(), ParamLED_RGB_ColorTimeNight_ ) ;
         logInfoP("hue_val:%5X%",_hue.value());
         }
@@ -462,7 +462,7 @@ void RGBChannel::set_RGB(uint8_t _selection)
     case 15:
       /* color  random changing*/
       logDebugP("color random changing");
-      _hue.setTargetValue( random(4095) , millis() , ParamLED_RGB_LightDimmTimeDayON_);
+      _hue.setTargetValue( random(255) , millis() , ParamLED_RGB_LightDimmTimeDayON_);
       _saturation.setTargetValue(255, millis(), ParamLED_RGB_LightDimmTimeDayON_);
       break;
     case 16:
@@ -471,9 +471,64 @@ void RGBChannel::set_RGB(uint8_t _selection)
       _hue.setTargetValue( 0 , millis() , ParamLED_RGB_LightDimmTimeDayON_);
       _saturation.setTargetValue(255, millis(), ParamLED_RGB_LightDimmTimeDayON_);
       break;
+    case 17:
+      /* color temperature */
+      logDebugP("color temperature");
+/*  
+      Colors::HSV hsv;
+      if ( !RGB_night() ) 
+            { 
+            hsv = Colors::rgb2hsv( conv_Temp2RGB(ParamLED_RGB_ColorDay_) );  
+            _hue.setTargetValue( hsv._hue , millis() , ParamLED_RGB_LightDimmTimeDayON_);
+            _saturation.setTargetValue( hsv._sat , millis() , ParamLED_RGB_LightDimmTimeDayON_);
+            }
+      if (  RGB_night() ) 
+            { 
+            hsv = Colors::rgb2hsv( conv_Temp2RGB(ParamLED_RGB_ColorNight_) );  
+            _hue.setTargetValue( hsv._hue , millis() , ParamLED_RGB_LightDimmTimeNightON_);
+            _saturation.setTargetValue( hsv._sat , millis() , ParamLED_RGB_LightDimmTimeNightON_);
+            }
+*/            
+      break;
 
     default:
       break;
     }
   
 }
+
+
+uint32_t RGBChannel::conv_Temp2RGB(int _temp)
+{
+  uint8_t _r,_g,_b = 0;
+  if ( _temp > 10000)   {    return 0x000000;   }
+
+
+//red
+//unter 6500 = 255
+//über 6500 = _temp^-1,02 * 1.000.000 + 125,9
+    if ( _temp >= 6500 ) { _r = (uint8_t)round( pow((float)_temp , -1.02) * 1000000.0 + 125.9) ; }
+    else { _r = 255;}
+
+//green  
+//unter 6500 = 100 x ln(_temp) - 623
+//über 6500 = _temp^-1,06 * 1.000.000 +165
+    if ( _temp <= 6500 ) { _g = (uint8_t)round( 100.0 * (float)log10(_temp) - 623.0) ;}
+    if ( _temp >= 6500 ) { _g = (uint8_t)round( pow( (float)_temp , -1.06 ) * 1000000.0 + 164.16) ;}
+
+//blue
+//unter 2000 = 0
+//2000 - 6500 = 200 x ln(_temp)-1500
+//über 6500 = 255
+    if ( _temp <= 1900 ) { _b = 0; }
+    if ( _temp >= 1900 ) { _b = (uint8_t)round( 477.5 * log10(_temp) - 1565.6 ) ;}
+    if ( _temp >= 6800 ) { _b = 255; }
+
+
+return (uint32_t) _r << 16 | _g << 8 | _b;
+}
+
+
+
+
+//EOF

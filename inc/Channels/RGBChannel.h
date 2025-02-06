@@ -17,6 +17,7 @@ class RGBChannel : public LightChannel
     bool _rgb_night = 0;
     bool RGB_night();
     void set_RGB(uint8_t _selection);
+    uint32_t conv_Temp2RGB(int _temp);
 
 
   private:

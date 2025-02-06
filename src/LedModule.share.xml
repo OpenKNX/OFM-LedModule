@@ -160,7 +160,7 @@
             <Channel Name="MainChannel" Text="Lichter" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
               <ParameterBlock Id="%AID%_PB-nnn" Name="Docu" Text="Konfiguration" Icon="table-edit">
                 <ParameterRefRef RefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" />  <!-- Modul Type -->
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version 04.02.2025 19:10" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version 05.02.2025 16:00" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung:" UIHint="Headline"/>
                 <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table">
                   <Rows>
