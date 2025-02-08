@@ -3,19 +3,19 @@
 
 /**
  * @brief Construct a new HWDimmerRP2040::HWDimmerRP2040 object
- * 
+ *
  * @param pins pointer to array holding pin numbers to be used as PWM
  * @param numChannels number of channels
  */
-HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwmFreq) :HWDimmer(numChannels)
+HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwmFreq) : HWDimmer(numChannels)
 {
     this->pins = pins;
-    for(uint8_t ch = 0; ch < numChannels; ch++)
+    for (uint8_t ch = 0; ch < numChannels; ch++)
     {
         pinMode(this->pins[ch], OUTPUT);
         setLevel(0, ch);
     }
-    analogWriteFreq(pwmFreq); 
+    analogWriteFreq(pwmFreq);
     analogWriteRange(DIM_RANGE);
 
     #if 0
@@ -30,7 +30,7 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
 
 /**
  * @brief Set level of selected channel to value
- * 
+ *
  * @param level new value
  * @param channel selected channel
  * @return true when channel is available
@@ -39,7 +39,7 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
 bool HWDimmerRP2040::setLevel(uint16_t level, uint8_t channel)
 {
     bool isValidChannel = false;
-    if(HWDimmer::setLevel(level, channel))
+    if (HWDimmer::setLevel(level, channel))
     {
         isValidChannel = true;
         analogWrite(pins[channel], min(level, DIM_RANGE));
@@ -49,7 +49,7 @@ bool HWDimmerRP2040::setLevel(uint16_t level, uint8_t channel)
 
 /**
  * @brief Scale uint8 value to range of this HWDimmer (uint16)
- * 
+ *
  * @param level level as uint8
  * @param lutType lookup table selection
  * @return uint16_t level in new scale
@@ -61,7 +61,7 @@ uint16_t HWDimmerRP2040::scale(uint8_t level, HWDimmer::DimLUTType lutType)
 
 /**
  * @brief Get maximum allowed value in selected scale
- * 
+ *
  * @param lutType lookup table selection
  * @return uint16_t maximum value of range
  */
@@ -72,7 +72,7 @@ uint16_t HWDimmerRP2040::getScaleMax(HWDimmer::DimLUTType lutType)
 
 /**
  * @brief Prefix of this module when using OpenKNX log functions
- * 
+ *
  * @return std::string Prefix
  */
 std::string HWDimmerRP2040::logPrefix()

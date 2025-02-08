@@ -9,9 +9,8 @@
 class SingleChannel : public LightChannel
 {
   public:
-
-    SingleChannel(uint8_t channel_number, HWDimmer* pDimmer, uint8_t hwChannels[1]);
-    void processInputKo(GroupObject& ko);
+    SingleChannel(uint8_t channel_number, HWDimmer *pDimmer, uint8_t hwChannels[1]);
+    void processInputKo(GroupObject &ko);
     void update();
     void loop();
     bool _sc_night = 0;
@@ -22,7 +21,6 @@ class SingleChannel : public LightChannel
     void handleScene(uint8_t sceneNr);
     enum ValueType
     {
-      BRIGHTNESS = 0
+        BRIGHTNESS = 0
     };
-
 };

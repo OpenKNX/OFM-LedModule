@@ -8,9 +8,8 @@
 class TWChannel : public LightChannel
 {
   public:
-
-    TWChannel(uint8_t channel_number, HWDimmer* pDimmer, uint8_t hwChannels[2]);
-    void processInputKo(GroupObject& ko);
+    TWChannel(uint8_t channel_number, HWDimmer *pDimmer, uint8_t hwChannels[2]);
+    void processInputKo(GroupObject &ko);
     void dimLoop();
     void update();
     void loop();
@@ -18,17 +17,16 @@ class TWChannel : public LightChannel
     bool TW_night();
 
   private:
-  
     const std::string name() override;
-  
+
     uint16_t _lastColorTemp = 0;
     DimmableValue<uint16_t> _colorTemperature;
 
     void handleScene(uint8_t sceneNr);
     enum ValueType
     {
-      BRIGHTNESS = 0,
-      TEMTPERATURE = 1,
-      COMBINED = 2,
+        BRIGHTNESS = 0,
+        TEMTPERATURE = 1,
+        COMBINED = 2,
     };
 };

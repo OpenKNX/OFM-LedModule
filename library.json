@@ -2,15 +2,15 @@
     "name": "OFM-LedModule",
     "version": "0.1.1",
     "dependencies": {
-        "adafruit/Adafruit PWM Servo Driver Library" :"3.0.2",
-		"adafruit/Adafruit NeoPixel" :"1.12.4",
-        "adafruit/Adafruit BusIO":"1.16.1",
-        "jeremycole/I2C Temperature Sensors derived from the LM75" : "1.0.3"
+        "adafruit/Adafruit PWM Servo Driver Library": "3.0.2",
+        "adafruit/Adafruit NeoPixel": "1.12.4",
+        "adafruit/Adafruit BusIO": "1.16.1",
+        "jeremycole/I2C Temperature Sensors derived from the LM75": "1.0.3"
     },
     "build": {
-		"flags": [
-			"-Iinc/HWDimmer",
-			"-Iinc/Channels"
-		]
+        "flags": [
+            "-Iinc/HWDimmer",
+            "-Iinc/Channels"
+        ]
     }
-  }
+}

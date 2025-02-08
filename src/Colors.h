@@ -13,8 +13,8 @@
 
 class Colors
 {
-    public:
-    static const std::string logPrefix() { return "Color";}
+  public:
+    static const std::string logPrefix() { return "Color"; }
     struct RGB
     {
         RGB()
@@ -28,35 +28,35 @@ class Colors
             _green = g;
             _blue = b;
         }
-        
+
         RGB(uint32_t rgbval)
         {
             _red   = _UFP16((rgbval >> 16) & 0xFF, 2);
             _green = _UFP16((rgbval >> 8)  & 0xFF, 2);
             _blue  = _UFP16( rgbval        & 0xFF, 2);
         }
-        
+
         uint32_t toUint32()
         {
             return (uint32_t) Red() << 16 | Green() << 8 | Blue();
         }
 
-         uint8_t Red() {return _UFP16_TO_U8(_red, 2);}
-         uint8_t Green() {return _UFP16_TO_U8(_green, 2);}
-         uint8_t Blue() {return _UFP16_TO_U8(_blue, 2);}
+        uint8_t Red() { return _UFP16_TO_U8(_red, 2); }
+        uint8_t Green() { return _UFP16_TO_U8(_green, 2); }
+        uint8_t Blue() { return _UFP16_TO_U8(_blue, 2); }
 
         uint16_t _red;
         uint16_t _green;
         uint16_t _blue;
     };
-    
+
     struct HSV
     {
         HSV()
         {
             _hue = _sat = _val = 0;
         }
-        
+
         HSV(uint16_t h, uint16_t s, uint16_t v)
         {
             _hue = h;

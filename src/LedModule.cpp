@@ -4,7 +4,6 @@
 
 #include "Colors.h"
 
-
 const std::string LedModule::name()
 {
     return LEDMODULE_HARDWARE_NAME;
@@ -20,12 +19,11 @@ void LedModule::init()
 {
     logDebugP("INIT");
 
-
 #if defined(LEDMODULE_DIMMER_PCA9685)
     logInfoP("LEDMODULE_DIMMER_PCA9685");
     _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685);
     logInfoP("LEDMODULE_DIMMER_PCA9685 SET");
-    
+
 #else
 #if defined(LEDMODULE_DIMMMER_RP2040)
     _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, LEDMODULE_PWM_FREQ);
@@ -290,7 +288,6 @@ void LedModule::processInputKo(GroupObject &ko)
 {
     logDebugP("proc.Ko GA%04X", ko.asap());
     logHexDebugP(ko.valueRef(), ko.valueSize());
-    
 
     uint16_t asap = ko.asap();
     uint16_t channelnumber = 0;
@@ -313,7 +310,6 @@ void LedModule::processInputKo(GroupObject &ko)
         logDebugP("RGB %d", channelnumber);
         _rgbChannels[channelnumber]->processInputKo(ko);
     }
-    
 }
 
 void LedModule::showHelp()
@@ -364,12 +360,12 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("--------------------------------------------------------------------------------");
         return true;
     }
-    
+
     if (cmd.substr(0, 8) == "ledState")
     {
-        for(int i=0; i<LED_ChannelCount; i++)
+        for (int i = 0; i < LED_ChannelCount; i++)
         {
-           logDebugP("CH%d: %d",i, _pDimmer->getLevel(i));
+            logDebugP("CH%d: %d", i, _pDimmer->getLevel(i));
         }
     }
     return false;

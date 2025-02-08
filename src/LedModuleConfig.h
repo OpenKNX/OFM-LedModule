@@ -2,7 +2,6 @@
 
 #include "OpenKNX.h"
 
-
 #if !defined(LEDMODULE_DIMMER_PCA9685) & !defined(LEDMODULE_DIMMMER_RP2040)
     #warning Define LEDMODULE_DIMMER_PCA9685 or LEDMODULE_DIMMMER_RP2040 in LedModuleHWConfig.h
     #define LEDMODULE_PWMDRIVER "Not Configured!"
@@ -51,7 +50,7 @@
 #ifdef LEDMODULE_DIMMMER_RP2040
     #define LEDMODULE_PWMDRIVER "RP2040"
     #define LEDMODULE_FLASH_SIZE 128 // TODO: find proper values
-    #define LEDMODULE_FLASH_OFFSET 128  
+    #define LEDMODULE_FLASH_OFFSET 128
 
     extern uint8_t dimPins[LEDMODULE_MAX_LIGHT_CHANNELS];
 #endif
