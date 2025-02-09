@@ -176,15 +176,16 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     if (!RGB_night())
                     // on with last known value
                     {
+                        // set random color + set trigger + set time
+                        set_RGB(ParamLED_RGB_ColorDay_);
+                        if (ParamLED_RGB_ColorDay_ == 15)
+                        {
+                            _brightness.setRGBChangingTrigger(true);
+                            _brightness.setRGBChangingTime(millis());
+                        }
+
                         if (ParamLED_RGB_StartupBehavior_)
                         {
-                            // set random color + set trigger + set time
-                            set_RGB(ParamLED_RGB_ColorDay_);
-                            if (ParamLED_RGB_ColorDay_ == 15)
-                            {
-                                _brightness.setRGBChangingTrigger(true);
-                                _brightness.setRGBChangingTime(millis());
-                            }
                             // start with min brightness + dimm up to last on
                             _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
                             _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_RGB_LightDimmTimeDayON_);
@@ -192,13 +193,6 @@ void RGBChannel::processInputKo(GroupObject& ko)
                         // on with max value
                         else
                         {
-                            // set random color + set trigger + set time
-                            set_RGB(ParamLED_RGB_ColorDay_);
-                            if (ParamLED_RGB_ColorDay_ == 15)
-                            {
-                                _brightness.setRGBChangingTrigger(true);
-                                _brightness.setRGBChangingTime(millis());
-                            }
                             // start with min brightness + dimm up to max brightness
                             _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
                             _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_RGB_LightDimmTimeDayON_);
@@ -208,15 +202,16 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     else if (RGB_night())
                     // on with last known value
                     {
+                        // set random color + set trigger + set time
+                        set_RGB(ParamLED_RGB_ColorNight_);
+                        if (ParamLED_RGB_ColorNight_ == 15)
+                        {
+                            _brightness.setRGBChangingTrigger(true);
+                            _brightness.setRGBChangingTime(millis());
+                        }
+
                         if (ParamLED_RGB_StartupBehavior_)
                         {
-                            // set random color + set trigger + set time
-                            set_RGB(ParamLED_RGB_ColorNight_);
-                            if (ParamLED_RGB_ColorNight_ == 15)
-                            {
-                                _brightness.setRGBChangingTrigger(true);
-                                _brightness.setRGBChangingTime(millis());
-                            }
                             // start with min brightness + dimm up to last on
                             _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
                             _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_RGB_LightDimmTimeNightON_);
@@ -224,13 +219,6 @@ void RGBChannel::processInputKo(GroupObject& ko)
                         // on with max value
                         else
                         {
-                            // set random color + set trigger + set time
-                            set_RGB(ParamLED_RGB_ColorNight_);
-                            if (ParamLED_RGB_ColorNight_ == 15)
-                            {
-                                _brightness.setRGBChangingTrigger(true);
-                                _brightness.setRGBChangingTime(millis());
-                            }
                             // start with min brightness + dimm up to max brightness
                             _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
                             _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_RGB_LightDimmTimeNightON_);
