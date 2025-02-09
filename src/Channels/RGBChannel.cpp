@@ -181,21 +181,22 @@ void RGBChannel::processInputKo(GroupObject& ko)
                         _brightness.setRGBChangingTime(millis());
                     }
 
+                    // start with min brightness
+                    _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
+
                     if (!RGB_night())
                     {
                         // => switching on daytime
 
                         if (ParamLED_RGB_StartupBehavior_)
                         {
-                            // start with min brightness + dimm up to last on
-                            _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
+                            // ... + dimm up to last on
                             _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_RGB_LightDimmTimeDayON_);
                         }
                         // on with max value
                         else
                         {
-                            // start with min brightness + dimm up to max brightness
-                            _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
+                            // ... + dimm up to max brightness
                             _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_RGB_LightDimmTimeDayON_);
                         }
                     }
@@ -205,15 +206,13 @@ void RGBChannel::processInputKo(GroupObject& ko)
 
                         if (ParamLED_RGB_StartupBehavior_)
                         {
-                            // start with min brightness + dimm up to last on
-                            _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
+                            // ... + dimm up to last on
                             _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_RGB_LightDimmTimeNightON_);
                         }
                         // on with max value
                         else
                         {
-                            // start with min brightness + dimm up to max brightness
-                            _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
+                            // ... + dimm up to max brightness
                             _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_RGB_LightDimmTimeNightON_);
                         }
                     }
