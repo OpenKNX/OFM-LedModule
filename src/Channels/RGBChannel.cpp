@@ -184,6 +184,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     // start with min brightness
                     _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
 
+                    const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_:
                     if (!RGB_night())
                     {
                         // => switching on daytime
@@ -191,13 +192,13 @@ void RGBChannel::processInputKo(GroupObject& ko)
                         if (ParamLED_RGB_StartupBehavior_)
                         {
                             // ... + dimm up to last on
-                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_RGB_LightDimmTimeDayON_);
+                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), dimTime);
                         }
                         // on with max value
                         else
                         {
                             // ... + dimm up to max brightness
-                            _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+                            _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), dimTime);
                         }
                     }
                     else if (RGB_night())
@@ -207,13 +208,13 @@ void RGBChannel::processInputKo(GroupObject& ko)
                         if (ParamLED_RGB_StartupBehavior_)
                         {
                             // ... + dimm up to last on
-                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_RGB_LightDimmTimeNightON_);
+                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), dimTime);
                         }
                         // on with max value
                         else
                         {
                             // ... + dimm up to max brightness
-                            _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_RGB_LightDimmTimeNightON_);
+                            _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), dimTime);
                         }
                     }
                     // start timer with ON trigger
