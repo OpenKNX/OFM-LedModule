@@ -172,18 +172,19 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 if (ko.value(DPT_Switch))
                 {
                     tmpu8 = KoLED_RGB_Brightness_.value(DPT_DecimalFactor);
+
+                    // set random color + set trigger + set time
+                    set_RGB(ParamLED_RGB_ColorDay_);
+                    if (ParamLED_RGB_ColorDay_ == 15)
+                    {
+                        _brightness.setRGBChangingTrigger(true);
+                        _brightness.setRGBChangingTime(millis());
+                    }
+
                     // switching on daytime
                     if (!RGB_night())
                     // on with last known value
                     {
-                        // set random color + set trigger + set time
-                        set_RGB(ParamLED_RGB_ColorDay_);
-                        if (ParamLED_RGB_ColorDay_ == 15)
-                        {
-                            _brightness.setRGBChangingTrigger(true);
-                            _brightness.setRGBChangingTime(millis());
-                        }
-
                         if (ParamLED_RGB_StartupBehavior_)
                         {
                             // start with min brightness + dimm up to last on
@@ -202,14 +203,6 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     else if (RGB_night())
                     // on with last known value
                     {
-                        // set random color + set trigger + set time
-                        set_RGB(ParamLED_RGB_ColorNight_);
-                        if (ParamLED_RGB_ColorNight_ == 15)
-                        {
-                            _brightness.setRGBChangingTrigger(true);
-                            _brightness.setRGBChangingTime(millis());
-                        }
-
                         if (ParamLED_RGB_StartupBehavior_)
                         {
                             // start with min brightness + dimm up to last on
