@@ -215,16 +215,9 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     }
                     else
                     {
-                        // switching off daytime
-                        if (!RGB_night())
-                        {
-                            _brightness.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-                        }
-                        // switching off nighttime
-                        else if (RGB_night())
-                        {
-                            _brightness.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeNightON_);
-                        }
+                        // dim to "switching off"
+                        const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_:
+                        _brightness.setTargetValue(0, millis(), dimTime);
                     }
                     // stop random color change
                     _brightness.setRGBChangingTrigger(false);
