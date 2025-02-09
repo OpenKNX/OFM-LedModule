@@ -181,10 +181,10 @@ void RGBChannel::processInputKo(GroupObject& ko)
                         _brightness.setRGBChangingTime(millis());
                     }
 
-                    // switching on daytime
                     if (!RGB_night())
-                    // on with last known value
                     {
+                        // => switching on daytime
+
                         if (ParamLED_RGB_StartupBehavior_)
                         {
                             // start with min brightness + dimm up to last on
@@ -199,10 +199,10 @@ void RGBChannel::processInputKo(GroupObject& ko)
                             _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_RGB_LightDimmTimeDayON_);
                         }
                     }
-                    // switching on nighttime
                     else if (RGB_night())
-                    // on with last known value
                     {
+                        // => switching on nighttime
+
                         if (ParamLED_RGB_StartupBehavior_)
                         {
                             // start with min brightness + dimm up to last on
