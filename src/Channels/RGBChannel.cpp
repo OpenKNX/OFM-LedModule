@@ -185,38 +185,17 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
 
                     const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_:
-                    if (!RGB_night())
+                    if (ParamLED_RGB_StartupBehavior_)
                     {
-                        // => switching on daytime
-
-                        if (ParamLED_RGB_StartupBehavior_)
-                        {
-                            // ... + dimm up to last on
-                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), dimTime);
-                        }
-                        // on with max value
-                        else
-                        {
-                            // ... + dimm up to max brightness
-                            _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), dimTime);
-                        }
+                        // ... + dimm up to last on
+                        _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), dimTime);
                     }
-                    else if (RGB_night())
+                    else
                     {
-                        // => switching on nighttime
-
-                        if (ParamLED_RGB_StartupBehavior_)
-                        {
-                            // ... + dimm up to last on
-                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), dimTime);
-                        }
-                        // on with max value
-                        else
-                        {
-                            // ... + dimm up to max brightness
-                            _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), dimTime);
-                        }
+                        // ... + dimm up to max brightness
+                        _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), dimTime);
                     }
+
                     // start timer with ON trigger
                     if (ParamLED_RGB_StairCaseActive_ && ParamLED_RGB_StaicCaseTrigger_ == 0)
                     {
