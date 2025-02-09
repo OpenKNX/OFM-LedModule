@@ -185,16 +185,16 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
 
                     const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_:
+                    uint8_t targetValue = BRIGHTNESS_MAX;
                     if (ParamLED_RGB_StartupBehavior_)
                     {
-                        // ... + dimm up to last on
-                        _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), dimTime);
+                        targetValue = _brightness.getLastOnValue();
                     }
-                    else
+                    else if (tmpu8 > 0)
                     {
-                        // ... + dimm up to max brightness
-                        _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), dimTime);
+                        targetValue = tmpu8;
                     }
+                    _brightness.setTargetValue(targetValue, millis(), dimTime);
 
                     // start timer with ON trigger
                     if (ParamLED_RGB_StairCaseActive_ && ParamLED_RGB_StaicCaseTrigger_ == 0)
