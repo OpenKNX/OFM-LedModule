@@ -173,8 +173,9 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 {
                     tmpu8 = KoLED_RGB_Brightness_.value(DPT_DecimalFactor);
 
-                    // set random color + set trigger + set time
                     set_RGB(ParamLED_RGB_ColorDay_);
+                    // special handling for random color
+                    // TODO check integration into set_RGB
                     if (ParamLED_RGB_ColorDay_ == 15)
                     {
                         _brightness.setRGBChangingTrigger(true);
@@ -184,6 +185,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     // start with min brightness
                     _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
 
+                    // ... and dim to target brightness
                     const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_:
                     uint8_t targetValue = BRIGHTNESS_MAX;
                     if (ParamLED_RGB_StartupBehavior_)
