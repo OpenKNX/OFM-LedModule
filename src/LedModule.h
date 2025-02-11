@@ -7,10 +7,12 @@
 #include "HWDimmer.h"
 #if defined(LEDMODULE_DIMMER_PCA9685)
   #include "HWDimmerPCA.h"
-#else
-  #if defined(LEDMODULE_DIMMMER_RP2040)
-    #include "HWDimmerRP2040.h"
-  #endif
+#endif
+#if defined(LEDMODULE_DIMMMER_RP2040)
+  #include "HWDimmerRP2040.h"
+#endif
+#if defined(LEDMODULE_DIMMMER_WS)
+  #include "HWDimmerWS.h"
 #endif
 #include "LedModuleConfig.h"
 #include "SingleChannel.h"

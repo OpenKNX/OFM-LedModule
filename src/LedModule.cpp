@@ -21,19 +21,23 @@ void LedModule::init()
 
 #if defined(LEDMODULE_DIMMER_PCA9685)
     logInfoP("LEDMODULE_DIMMER_PCA9685");
-    _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685);
+    _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685, LEDMODULE_PCA_ADDR);
     logInfoP("LEDMODULE_DIMMER_PCA9685 SET");
 
 #else
 #if defined(LEDMODULE_DIMMMER_RP2040)
     _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, LEDMODULE_PWM_FREQ);
     logInfoP("LEDMODULE_DIMMER_RP2040");
+#else
+#if defined(LEDMODULE_DIMMMER_WS)
+    _pDimmer = new HWDimmerWS(HWDimmerWS::WSType::WS2811, LEDMODULE_WS_PIN, LEDMOPDULE_WS_NUM_LEDS);
+    logInfoP("LEDMODULE_DIMMER_WS");
 #else // create dummy driver to have dimmer initialized
     dimmer = new HWDimmer(1);
     logErrorP("Unknown PWM driver %s ('RP2040' and 'PCA9685PW' are supported)", LEDMODULE_PWMDRIVER);
 #endif
 #endif
-
+#endif
 
 #if 0
     delay(2500);

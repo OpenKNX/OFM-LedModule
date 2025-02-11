@@ -19,7 +19,7 @@ class HWDimmerPCA : public HWDimmer
             PCA9685,
         };
 
-        HWDimmerPCA(HWDimmerPCA::PCAType type);
+        HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr);
 
         std::string logPrefix();
         bool setLevel(uint16_t level, uint8_t channel);
@@ -30,5 +30,6 @@ class HWDimmerPCA : public HWDimmer
 
     private:
     
-        Adafruit_PWMServoDriver pwm;
+        Adafruit_PWMServoDriver _pwm;
+        uint8_t _addr;
 };

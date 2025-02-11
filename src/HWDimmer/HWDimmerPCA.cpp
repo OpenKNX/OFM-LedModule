@@ -5,7 +5,7 @@
  *
  * @param type PCA dimmer type
  */
-HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) : HWDimmer(LEDMODULE_MAX_LIGHT_CHANNELS)
+HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr) : HWDimmer(LEDMODULE_MAX_LIGHT_CHANNELS), _addr(addr)
 {
     #ifdef LEDMODULE_WIRE_SDA
         LEDMODULE_WIRE.setSDA(LEDMODULE_WIRE_SDA);
@@ -17,9 +17,9 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type) : HWDimmer(LEDMODULE_MAX_LIG
     #ifdef LEDMODULE_WIRE_CLOCK_FREQ
         LEDMODULE_WIRE.setClock(LEDMODULE_WIRE_CLOCK_FREQ);
     #endif
-    pwm = Adafruit_PWMServoDriver(LEDMODULE_I2C, LEDMODULE_WIRE);
-    pwm.begin();
-    pwm.setPWMFreq(LEDMODULE_PWM_FREQ);
+    _pwm = Adafruit_PWMServoDriver(_addr, LEDMODULE_WIRE);
+    _pwm.begin();
+    _pwm.setPWMFreq(LEDMODULE_PWM_FREQ);
     for (uint8_t ch = 0; ch < numChannels; ch++)
     {
         setLevel(0, ch);
@@ -42,7 +42,7 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
     {
         // logInfoP("setLevel_2");
         isValidChannel = true;
-        pwm.setPWM(channel, 0, min(level, DIM_RANGE));
+        _pwm.setPWM(channel, 0, min(level, DIM_RANGE));
         // logInfoP("setLevel_3");
     }
     return isValidChannel;
@@ -92,7 +92,7 @@ bool HWDimmerPCA::checkConnection()
     byte error;
     bool isOK = false;
 // -----------------------------------------------------------------------------
-    LEDMODULE_WIRE.beginTransmission(LEDMODULE_I2C);
+    LEDMODULE_WIRE.beginTransmission(_addr);
     error = LEDMODULE_WIRE.endTransmission();
 
     if (error == 0)
@@ -105,7 +105,7 @@ bool HWDimmerPCA::checkConnection()
     }
 
 // -----------------------------------------------------------------------------
-    LEDMODULE_WIRE.requestFrom(LEDMODULE_I2C, 1);
+    LEDMODULE_WIRE.requestFrom(_addr, 1);
     if (LEDMODULE_WIRE.read() < 0)
     {
         logErrorP("PCA9685 0x40 fehler");
@@ -127,10 +127,10 @@ bool HWDimmerPCA::checkConnection()
 void HWDimmerPCA::reconnect()
 {
     logInfoP("Reset PWM as connection is back");
-    logInfoP("pwm.begin()");
-    pwm.begin();
-    logInfoP("pwm.setPWMFreq(1000)");
-    pwm.setPWMFreq(1000);
+    logInfoP("_pwm.begin()");
+    _pwm.begin();
+    logInfoP("_pwm.setPWMFreq(1000)");
+    _pwm.setPWMFreq(1000);
 
     logInfoP("Dim back to last known values");
 }

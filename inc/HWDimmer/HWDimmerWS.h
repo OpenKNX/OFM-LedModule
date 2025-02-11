@@ -20,16 +20,16 @@ class HWDimmerWS : public HWDimmer
             WS2811,
         };
 
-        HWDimmerWS(HWDimmerWS::WSType type);
+        HWDimmerWS(HWDimmerWS::WSType type, uint8_t pin, uint16_t numLeds);
 
         std::string logPrefix();
         bool setLevel(uint16_t level, uint8_t channel);
         uint16_t scale(uint8_t level, HWDimmer::DimLUTType lutType);
         uint16_t getScaleMax(HWDimmer::DimLUTType lutType);
-        bool checkConnection();
-        void reconnect();
 
     private:
     
-        Adafruit_NeoPixel pwm;
+        Adafruit_NeoPixel _pixels;
+        uint8_t _pin;
+        uint16_t _numLeds;
 };
