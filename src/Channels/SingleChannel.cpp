@@ -48,9 +48,9 @@ void SingleChannel::loop()
             _pDimmer->setLevel(_pDimmer->scale(_brightness.step(_lastDimTimestamp), HWDimmer::DimLUTType::Log1_5), _pHWChannels[0]);
         }
         // Stairway Timeout
-        if (((_brightness.getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && _brightness.getStairTrigger())
+        if (((getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
         {
-            _brightness.setStairTrigger(0);
+            setStairTrigger(0);
             if (!SC_night())
             {
                 _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
@@ -104,7 +104,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                         if (ParamLED_SC_StartupBehavior_)
                         {
                             _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), 1);
-                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_SC_LightDimmTimeDayON_);
+                            _brightness.setTargetValue(getLastOnValue(), millis(), ParamLED_SC_LightDimmTimeDayON_);
                         }
                         else
                         {
@@ -118,7 +118,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                         if (ParamLED_SC_StartupBehavior_)
                         {
                             _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), 1);
-                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_SC_LightDimmTimeNightON_);
+                            _brightness.setTargetValue(getLastOnValue(), millis(), ParamLED_SC_LightDimmTimeNightON_);
                         }
                         else
                         {
@@ -129,8 +129,8 @@ void SingleChannel::processInputKo(GroupObject& ko)
                     // in case of stairway light
                     if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 0)
                     {
-                        _brightness.setStairTime(millis());
-                        _brightness.setStairTrigger(1);
+                        setStairTime(millis());
+                        setStairTrigger(1);
                     }
                 }
                 else
@@ -138,8 +138,8 @@ void SingleChannel::processInputKo(GroupObject& ko)
                     // in case of stairway light
                     if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 1)
                     {
-                        _brightness.setStairTime(millis());
-                        _brightness.setStairTrigger(1);
+                        setStairTime(millis());
+                        setStairTrigger(1);
                     }
                     else
                     {

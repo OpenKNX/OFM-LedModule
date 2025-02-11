@@ -73,9 +73,9 @@ void RGBChannel::loop()
         }
     }
     // Stairway Timeout
-    if (((_brightness.getStairTime() + (ParamLED_RGB_StairCaseTimer_ * 1000)) <= millis()) && _brightness.getStairTrigger())
+    if (((getStairTime() + (ParamLED_RGB_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
     {
-        _brightness.setStairTrigger(0);
+        setStairTrigger(0);
         if (!RGB_night())
         {
             _brightness.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayOFF_);
@@ -86,16 +86,16 @@ void RGBChannel::loop()
         }
     }
     // Trigger RGB Change
-    if (_brightness.getRGBChangingTrigger() && !RGB_night() && (_brightness.getRGBChangingTime() + ParamLED_RGB_ColorTimeDay_) <= millis())
+    if (getRGBChangingTrigger() && !RGB_night() && (getRGBChangingTime() + ParamLED_RGB_ColorTimeDay_) <= millis())
     {
         logInfoP("hue:%5X%", _hue.value());
-        _brightness.setRGBChangingTime(millis());
+        setRGBChangingTime(millis());
         _hue.setTargetValue(random(255), millis(), ParamLED_RGB_ColorTimeDay_);
         _saturation.setTargetValue(255, millis(), ParamLED_RGB_ColorTimeDay_);
     }
-    if (_brightness.getRGBChangingTrigger() && RGB_night() && (_brightness.getRGBChangingTime() + ParamLED_RGB_ColorTimeNight_) <= millis())
+    if (getRGBChangingTrigger() && RGB_night() && (getRGBChangingTime() + ParamLED_RGB_ColorTimeNight_) <= millis())
     {
-        _brightness.setRGBChangingTime(millis());
+        setRGBChangingTime(millis());
         _hue.setTargetValue(random(255), millis(), ParamLED_RGB_ColorTimeNight_);
         _saturation.setTargetValue(255, millis(), ParamLED_RGB_ColorTimeNight_);
         logInfoP("hue_val:%5X%", _hue.value());
@@ -178,19 +178,19 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     // TODO check integration into set_RGB
                     if (ParamLED_RGB_ColorDay_ == 15)
                     {
-                        _brightness.setRGBChangingTrigger(true);
-                        _brightness.setRGBChangingTime(millis());
+                        setRGBChangingTrigger(true);
+                        setRGBChangingTime(millis());
                     }
 
                     // start with min brightness
                     _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_, millis(), 1);
 
                     // ... and dim to target brightness
-                    const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_:
+                    const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_;
                     uint8_t targetValue = BRIGHTNESS_MAX;
                     if (ParamLED_RGB_StartupBehavior_)
                     {
-                        targetValue = _brightness.getLastOnValue();
+                        targetValue = getLastOnValue();
                     }
                     else if (tmpu8 > 0)
                     {
@@ -201,8 +201,8 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     // start timer with ON trigger
                     if (ParamLED_RGB_StairCaseActive_ && ParamLED_RGB_StaicCaseTrigger_ == 0)
                     {
-                        _brightness.setStairTime(millis());
-                        _brightness.setStairTrigger(1);
+                        setStairTime(millis());
+                        setStairTrigger(1);
                     }
                 }
                 else
@@ -210,18 +210,18 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     // start timer with OFF trigger
                     if (ParamLED_RGB_StairCaseActive_ && ParamLED_RGB_StaicCaseTrigger_ == 1)
                     {
-                        _brightness.setStairTime(millis());
-                        _brightness.setStairTrigger(1);
+                        setStairTime(millis());
+                        setStairTrigger(1);
                     }
                     else
                     {
                         // dim to "switching off"
-                        const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_:
+                        const uint16_t dimTime = RGB_night() ? ParamLED_RGB_LightDimmTimeNightON_ : ParamLED_RGB_LightDimmTimeDayON_;
                         _brightness.setTargetValue(0, millis(), dimTime);
                     }
                     // stop random color change
-                    _brightness.setRGBChangingTrigger(false);
-                    _brightness.setRGBChangingTime(0);
+                    setRGBChangingTrigger(false);
+                    setRGBChangingTime(0);
                 }
                 break;
 
@@ -553,6 +553,28 @@ uint32_t RGBChannel::conv_Temp2RGB(int _temp)
     if ( _temp >= 6800 ) { _b = 255; }
 
     return (uint32_t)_r << 16 | _g << 8 | _b;
+}
+
+void RGBChannel::setRGBChangingTime(unsigned long time)
+{
+    _rgbChangingTime = time;
+    logInfoP("start change time");
+}
+
+unsigned long RGBChannel::getRGBChangingTime()
+{
+    return _rgbChangingTime;
+}
+
+void RGBChannel::setRGBChangingTrigger(bool trigger)
+{
+    _rgbChangingTrigger = trigger;
+    logDebugP("start change trigger");
+}
+
+bool RGBChannel::getRGBChangingTrigger()
+{
+    return _rgbChangingTrigger;
 }
 
 // EOF

@@ -17,12 +17,18 @@ class RGBChannel : public LightChannel
     bool RGB_night();
     void set_RGB(uint8_t _selection);
     uint32_t conv_Temp2RGB(int _temp);
+    void setRGBChangingTime(unsigned long time);
+    unsigned long getRGBChangingTime();
+    void setRGBChangingTrigger(bool trigger);
+    bool getRGBChangingTrigger();
 
   private:
     const std::string name() override;
 
     uint16_t _lastHueValue = 0;
     uint16_t _lastSatValue = 0;
+    unsigned long _rgbChangingTime = 0;
+    bool _rgbChangingTrigger = 0;
 
     DimmableValue<uint16_t> _hue;
     DimmableValue<uint16_t> _saturation;

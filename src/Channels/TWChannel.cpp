@@ -67,14 +67,14 @@ void TWChannel::loop()
         }
     }
     // Stairway Timeout
-    if (((_brightness.getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && _brightness.getStairTrigger())
+    if (((getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
     {
-        _brightness.setStairTrigger(0);
+        setStairTrigger(0);
         if (!TW_night())
         {
             if (ParamLED_TW_StartupBehavior_)
             {
-                _brightness.setLastOnValue(_brightness.value());
+                setLastOnValue(_brightness.value());
             }
             _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
         }
@@ -82,7 +82,7 @@ void TWChannel::loop()
         {
             if (ParamLED_TW_StartupBehavior_)
             {
-                _brightness.setLastOnValue(_brightness.value());
+                setLastOnValue(_brightness.value());
             }
             _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeNightOFF_);
         }
@@ -131,7 +131,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                         if (ParamLED_TW_StartupBehavior_)
                         {
                             _brightness.setTargetValue(ParamLED_TW_BrighnessMin_, millis(), 1);
-                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_TW_LightDimmTimeDayON_);
+                            _brightness.setTargetValue(getLastOnValue(), millis(), ParamLED_TW_LightDimmTimeDayON_);
                         }
                         else
                         {
@@ -145,7 +145,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                         if (ParamLED_TW_StartupBehavior_)
                         {
                             _brightness.setTargetValue(ParamLED_TW_BrighnessMin_, millis(), 1);
-                            _brightness.setTargetValue(_brightness.getLastOnValue(), millis(), ParamLED_TW_LightDimmTimeNightON_);
+                            _brightness.setTargetValue(getLastOnValue(), millis(), ParamLED_TW_LightDimmTimeNightON_);
                         }
                         else
                         {
@@ -156,8 +156,8 @@ void TWChannel::processInputKo(GroupObject& ko)
                     // in case of stairway light
                     if (ParamLED_TW_StairCaseActive_ && ParamLED_TW_StaicCaseTrigger_ == 0)
                     {
-                        _brightness.setStairTime(millis());
-                        _brightness.setStairTrigger(1);
+                        setStairTime(millis());
+                        setStairTrigger(1);
                     }
                 }
                 else
@@ -165,8 +165,8 @@ void TWChannel::processInputKo(GroupObject& ko)
                     // in case of stairway light
                     if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 1)
                     {
-                        _brightness.setStairTime(millis());
-                        _brightness.setStairTrigger(1);
+                        setStairTime(millis());
+                        setStairTrigger(1);
                     }
                     else
                     {
@@ -175,7 +175,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                         {
                             if (ParamLED_TW_StartupBehavior_)
                             {
-                                _brightness.setLastOnValue(_brightness.value());
+                                setLastOnValue(_brightness.value());
                             }
                             _brightness.setTargetValue(0, millis(), ParamLED_TW_LightDimmTimeDayOFF_);
                         }
@@ -184,7 +184,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                         {
                             if (ParamLED_TW_StartupBehavior_)
                             {
-                                _brightness.setLastOnValue(_brightness.value());
+                                setLastOnValue(_brightness.value());
                             }
                             _brightness.setTargetValue(0, millis(), ParamLED_TW_LightDimmTimeNightOFF_);
                         }
