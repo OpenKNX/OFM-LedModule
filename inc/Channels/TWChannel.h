@@ -13,8 +13,6 @@ class TWChannel : public LightChannel
     void dimLoop();
     void update();
     void loop();
-    bool _tw_night = 0;
-    bool TW_night();
 
   private:
     const std::string name() override;

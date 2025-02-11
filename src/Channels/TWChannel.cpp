@@ -70,7 +70,7 @@ void TWChannel::loop()
     if (((getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
     {
         setStairTrigger(0);
-        if (!TW_night())
+        if (!getNight())
         {
             if (ParamLED_TW_StartupBehavior_)
             {
@@ -78,7 +78,7 @@ void TWChannel::loop()
             }
             _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
         }
-        else if (TW_night())
+        else if (getNight())
         {
             if (ParamLED_TW_StartupBehavior_)
             {
@@ -87,11 +87,6 @@ void TWChannel::loop()
             _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeNightOFF_);
         }
     }
-}
-
-bool TWChannel::TW_night()
-{
-    return _tw_night;
 }
 
 void TWChannel::processInputKo(GroupObject& ko)
@@ -126,7 +121,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                 {
                     tmpu8 = KoLED_SC_Brightness_.value(DPT_DecimalFactor);
                     // switching on daytime
-                    if (!TW_night())
+                    if (!getNight())
                     {
                         if (ParamLED_TW_StartupBehavior_)
                         {
@@ -140,7 +135,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                         }
                     }
                     // switching on nighttime
-                    else if (TW_night())
+                    else if (getNight())
                     {
                         if (ParamLED_TW_StartupBehavior_)
                         {
@@ -171,7 +166,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                     else
                     {
                         // switching off daytime
-                        if (!TW_night())
+                        if (!getNight())
                         {
                             if (ParamLED_TW_StartupBehavior_)
                             {
@@ -180,7 +175,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                             _brightness.setTargetValue(0, millis(), ParamLED_TW_LightDimmTimeDayOFF_);
                         }
                         // switching off nighttime
-                        else if (TW_night())
+                        else if (getNight())
                         {
                             if (ParamLED_TW_StartupBehavior_)
                             {
@@ -196,11 +191,11 @@ void TWChannel::processInputKo(GroupObject& ko)
             case LED_TW_KoLocking_: break;
 
             case LED_TW_KoBrightness_:
-                if (!TW_night())
+                if (!getNight())
                 {
                     _brightness.setTargetValue(ko.value(DPT_DecimalFactor), millis(), ParamLED_TW_LightDimmTimeDayON_);
                 }
-                else if (TW_night())
+                else if (getNight())
                 {
                     _brightness.setTargetValue(ko.value(DPT_DecimalFactor), millis(), ParamLED_TW_LightDimmTimeNightON_);
                 }
@@ -214,11 +209,11 @@ void TWChannel::processInputKo(GroupObject& ko)
                 if (tmpu16 >= 0x09)
                 {
                     logDebugP("rel_dimming up");
-                    if (!TW_night())
+                    if (!getNight())
                     {
                         _brightness.setTargetValue(ParamLED_TW_BrighnessMaxDay_, millis(), ParamLED_TW_LightDimmTimeRel_);
                     }
-                    if (TW_night())
+                    if (getNight())
                     {
                         _brightness.setTargetValue(ParamLED_TW_BrighnessMaxNight_, millis(), ParamLED_TW_LightDimmTimeRel_);
                     }
@@ -226,11 +221,11 @@ void TWChannel::processInputKo(GroupObject& ko)
                 if (tmpu16 > 0x00 && tmpu16 < 0x08)
                 {
                     logDebugP("rel_dimming down");
-                    if (!TW_night())
+                    if (!getNight())
                     {
                         _brightness.setTargetValue(ParamLED_TW_BrighnessMin_, millis(), ParamLED_TW_LightDimmTimeRel_);
                     }
-                    if (TW_night())
+                    if (getNight())
                     {
                         _brightness.setTargetValue(ParamLED_TW_BrighnessMin_, millis(), ParamLED_TW_LightDimmTimeRel_);
                     }
@@ -258,11 +253,11 @@ void TWChannel::processInputKo(GroupObject& ko)
                 {
                     colorTemp = ParamLED_TW_ColorTempWW_;
                 }
-                if (!TW_night())
+                if (!getNight())
                 {
                     _colorTemperature.setTargetValue(colorTemp, millis(), ParamLED_TW_LightDimmTimeDayON_);
                 }
-                if (TW_night())
+                if (getNight())
                 {
                     _colorTemperature.setTargetValue(colorTemp, millis(), ParamLED_TW_LightDimmTimeNightON_);
                 }
@@ -275,7 +270,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                 if (!ko.value(DPT_Switch))
                 {
                     logDebugP("Tag");
-                    _tw_night = 0;
+                    setNight(false);
                     _brightness.setRange(ParamLED_TW_BrighnessMin_, ParamLED_TW_BrighnessMaxDay_); //// versuch max helligkeit
                     _colorTemperature.setTargetValue(ParamLED_TW_ColorTempDay_, millis(), ParamLED_TW_LightDimmTimeDayON_);
                     if (_brightness.value() == ParamLED_TW_BrighnessMaxNight_)
@@ -286,22 +281,13 @@ void TWChannel::processInputKo(GroupObject& ko)
                 else
                 {
                     logDebugP("Nacht");
-                    _tw_night = 1;
+                    setNight(true);
                     _brightness.setRange(ParamLED_TW_BrighnessMin_, ParamLED_TW_BrighnessMaxNight_); //// versuch max helligkeit
                     _colorTemperature.setTargetValue(ParamLED_TW_ColorTempNight_, millis(), ParamLED_TW_LightDimmTimeNightON_);
                     if (_brightness.value() > ParamLED_TW_BrighnessMaxNight_)
                     {
                         _brightness.setTargetValue(ParamLED_TW_BrighnessMaxNight_, millis(), 2 * ParamLED_TW_LightDimmTimeNightON_);
                     }
-                }
-
-                if (_tw_night)
-                {
-                    logDebugP("es ist nacht");
-                }
-                if (!_tw_night)
-                {
-                    logDebugP("es ist tag");
                 }
                 break;
 

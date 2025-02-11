@@ -42,3 +42,13 @@ void LightChannel::loop()
         update();
     }
 }
+
+bool LightChannel::getNight()
+{
+    return _isNight;
+}
+
+void LightChannel::setNight(bool night)
+{
+    _isNight = night;
+}

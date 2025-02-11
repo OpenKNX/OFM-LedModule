@@ -24,7 +24,8 @@ class LightChannel : public OpenKNX::Channel
     bool getStairTrigger() { return _stairTrigger; }
     void setLastOnValue(int32_t lastOnVal) { _lastOnValue = lastOnVal; }
     int32_t getLastOnValue() { return _lastOnValue; }
-
+    bool getNight();
+    void setNight(bool night);
 
     template<typename T> class DimmableValue
     {
@@ -136,6 +137,7 @@ class LightChannel : public OpenKNX::Channel
     int32_t _lastOnValue = 255;
     unsigned long _stairTime = 0;
     bool _stairTrigger = 0;
+    bool _isNight = false;
 
     SceneConfig *_scenes;
 

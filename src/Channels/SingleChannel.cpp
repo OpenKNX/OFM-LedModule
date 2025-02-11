@@ -51,21 +51,16 @@ void SingleChannel::loop()
         if (((getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
         {
             setStairTrigger(0);
-            if (!SC_night())
+            if (!getNight())
             {
                 _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
             }
-            else if (SC_night())
+            else if (getNight())
             {
                 _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeNightOFF_);
             }
         }
     }
-}
-
-bool SingleChannel::SC_night()
-{
-    return _sc_night;
 }
 
 void SingleChannel::processInputKo(GroupObject& ko)
@@ -99,7 +94,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 {
                     tmpu8 = KoLED_SC_Brightness_.value(DPT_DecimalFactor);
                     // switching on daytime
-                    if (!SC_night())
+                    if (!getNight())
                     {
                         if (ParamLED_SC_StartupBehavior_)
                         {
@@ -113,7 +108,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                         }
                     }
                     // switching on nighttime
-                    else if (SC_night())
+                    else if (getNight())
                     {
                         if (ParamLED_SC_StartupBehavior_)
                         {
@@ -144,12 +139,12 @@ void SingleChannel::processInputKo(GroupObject& ko)
                     else
                     {
                         // switching off daytime
-                        if (!SC_night())
+                        if (!getNight())
                         {
                             _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
                         }
                         // switching off nighttime
-                        else if (SC_night())
+                        else if (getNight())
                         {
                             _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeNightOFF_);
                         }
@@ -160,11 +155,11 @@ void SingleChannel::processInputKo(GroupObject& ko)
             case LED_SC_KoStateOnOff_: break;
 
             case LED_SC_KoBrightness_:
-                if (!SC_night())
+                if (!getNight())
                 {
                     _brightness.setTargetValue(ko.value(DPT_Percent_U8), millis(), ParamLED_SC_LightDimmTimeDayON_);
                 }
-                else if (SC_night())
+                else if (getNight())
                 {
                     _brightness.setTargetValue(ko.value(DPT_Percent_U8), millis(), ParamLED_SC_LightDimmTimeNightON_);
                 }
@@ -179,11 +174,11 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 if (tmpu16 >= 0x09)
                 {
                     logDebugP("rel_dimming up");
-                    if (!SC_night())
+                    if (!getNight())
                     {
                         _brightness.setTargetValue(ParamLED_SC_BrighnessMaxDay_, millis(), ParamLED_SC_LightDimmTimeRel_);
                     }
-                    if (SC_night())
+                    if (getNight())
                     {
                         _brightness.setTargetValue(ParamLED_SC_BrighnessMaxNight_, millis(), ParamLED_SC_LightDimmTimeRel_);
                     }
@@ -191,11 +186,11 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 if (tmpu16 > 0x00 && tmpu16 < 0x08)
                 {
                     logDebugP("rel_dimming down");
-                    if (!SC_night())
+                    if (!getNight())
                     {
                         _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), ParamLED_SC_LightDimmTimeRel_);
                     }
-                    if (SC_night())
+                    if (getNight())
                     {
                         _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), ParamLED_SC_LightDimmTimeRel_);
                     }
@@ -218,7 +213,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 if (!ko.value(DPT_Switch))
                 {
                     logDebugP("Tag");
-                    _sc_night = 0;
+                    setNight(false);
                     _brightness.setRange(ParamLED_SC_BrighnessMin_, ParamLED_SC_BrighnessMaxDay_);
                     if (_brightness.value() == ParamLED_SC_BrighnessMaxNight_)
                     {
@@ -228,21 +223,12 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 else
                 {
                     logDebugP("Nacht");
-                    _sc_night = 1;
+                    setNight(true);
                     _brightness.setRange(ParamLED_SC_BrighnessMin_, ParamLED_SC_BrighnessMaxNight_);
                     if (_brightness.value() > ParamLED_SC_BrighnessMaxNight_)
                     {
                         _brightness.setTargetValue(ParamLED_SC_BrighnessMaxNight_, millis(), 2 * ParamLED_SC_LightDimmTimeNightON_);
                     }
-                }
-
-                if (SC_night())
-                {
-                    logDebugP("es ist nacht");
-                }
-                if (!SC_night())
-                {
-                    logDebugP("es ist tag");
                 }
                 break;
 
