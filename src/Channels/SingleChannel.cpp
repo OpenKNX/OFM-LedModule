@@ -1,9 +1,8 @@
-#include <knx.h>
 #include "SingleChannel.h"
+#include <knx.h>
 
-
-
-SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[1]) : LightChannel(index, pDimmer, hwChannels, 1)
+SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[1])
+    : LightChannel(index, pDimmer, hwChannels, 1)
 {
     logInfoP("Trying to read Config from KNX...");
     logHexInfoP((uint8_t*)knx.paramData(LED_SC_ParamCalcIndex(LED_SC_SceneA_Type_)), 8);
@@ -56,8 +55,22 @@ void SingleChannel::loop()
                 setLastOnValue(_brightness.value());
             }
             _brightness.setTargetValue(0, millis(), dimmingTimeOFF());
+            /*
+                        if (!SC_night())
+                        {
+                            _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
+                        }
+                        else if (SC_night())
+                        {
+                            _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeNightOFF_);
+                        }*/
         }
     }
+}
+
+bool SingleChannel::SC_night()
+{
+    return _sc_night;
 }
 
 void SingleChannel::processInputKo(GroupObject& ko)
@@ -146,7 +159,8 @@ void SingleChannel::handleScene(uint8_t sceneNr)
             switch (_scenes[i].funcType)
             {
                 default:
-                case SceneConfig::FuncType::INACTIVE: break;
+                case SceneConfig::FuncType::INACTIVE:
+                    break;
 
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
@@ -155,14 +169,16 @@ void SingleChannel::handleScene(uint8_t sceneNr)
                     }
                     break;
 
-                case SceneConfig::FuncType::FUNCTION: break;
-                case SceneConfig::FuncType::SEQUENCE: break;
-                case SceneConfig::FuncType::LOCKING: break;
+                case SceneConfig::FuncType::FUNCTION:
+                    break;
+                case SceneConfig::FuncType::SEQUENCE:
+                    break;
+                case SceneConfig::FuncType::LOCKING:
+                    break;
             }
         }
     }
 }
-
 
 uint16_t SingleChannel::dimmingTimeON()
 {

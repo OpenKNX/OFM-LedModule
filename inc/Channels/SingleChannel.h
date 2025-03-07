@@ -1,20 +1,22 @@
 #pragma once
 
-#include <Arduino.h>
-#include "OpenKNX.h"
 #include "HWDimmer.h"
 #include "LightChannel.h"
-
+#include "OpenKNX.h"
+#include <Arduino.h>
 
 class SingleChannel : public LightChannel
 {
   public:
-    SingleChannel(uint8_t channel_number, HWDimmer *pDimmer, uint8_t hwChannels[1]);
-    void processInputKo(GroupObject &ko);
+    SingleChannel(uint8_t channel_number, HWDimmer* pDimmer, uint8_t hwChannels[1]);
+    void processInputKo(GroupObject& ko);
     void update();
     void loop();
     bool _sc_night = 0;
     bool SC_night();
+    uint16_t _SC_logix[10];
+    // 0 = ON/OFF // 1 = BRIGHTNESS // 2 = REL_DIMM // 3 = DAY/NIGHT
+    void SC_logix();
 
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();

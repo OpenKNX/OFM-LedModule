@@ -54,14 +54,14 @@ class LightChannel : public OpenKNX::Channel
         void setTargetValue(T target, uint32_t timestamp, uint16_t dimTime)
         {
             lastValue = currentValue;
-            if (target > maxValue)
+            /*if (target > maxValue)
             {
                 target = maxValue;
             }
             else if (target < minValue)
             {
                 target = minValue;
-            }
+            }*/
             targetValue = target;
             deltaValue = (int32_t)targetValue - (int32_t)lastValue;
             startTimestamp = timestamp;
