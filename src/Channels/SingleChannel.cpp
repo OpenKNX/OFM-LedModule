@@ -51,21 +51,18 @@ void SingleChannel::loop()
         if (((getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
         {
             setStairTrigger(0);
-            if (!getNight())
+            if (ParamLED_SC_StartupBehavior_)
             {
-                _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
+                setLastOnValue(_brightness.value());
             }
-            else if (getNight())
-            {
-                _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeNightOFF_);
-            }
+            _brightness.setTargetValue(0, millis(), dimmingTimeOFF());
         }
     }
 }
 
 void SingleChannel::processInputKo(GroupObject& ko)
 {
-    uint8_t tmpu8 = 0;
+    // uint8_t tmpu8 = 0;
     int16_t relKO = (ko.asap() - LED_SC_KoOffset);
 
     logDebugP("processInputKo Channel");
@@ -90,115 +87,34 @@ void SingleChannel::processInputKo(GroupObject& ko)
         switch (relKO)
         {
             case LED_SC_KoSwitch_:
-                if (ko.value(DPT_Switch))
-                {
-                    tmpu8 = KoLED_SC_Brightness_.value(DPT_DecimalFactor);
-                    // switching on daytime
-                    if (!getNight())
-                    {
-                        if (ParamLED_SC_StartupBehavior_)
-                        {
-                            _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), 1);
-                            _brightness.setTargetValue(getLastOnValue(), millis(), ParamLED_SC_LightDimmTimeDayON_);
-                        }
-                        else
-                        {
-                            _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), 1);
-                            _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_SC_LightDimmTimeDayON_);
-                        }
-                    }
-                    // switching on nighttime
-                    else if (getNight())
-                    {
-                        if (ParamLED_SC_StartupBehavior_)
-                        {
-                            _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), 1);
-                            _brightness.setTargetValue(getLastOnValue(), millis(), ParamLED_SC_LightDimmTimeNightON_);
-                        }
-                        else
-                        {
-                            _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), 1);
-                            _brightness.setTargetValue(tmpu8 > 0 ? tmpu8 : BRIGHTNESS_MAX, millis(), ParamLED_SC_LightDimmTimeNightON_);
-                        }
-                    }
-                    // in case of stairway light
-                    if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 0)
-                    {
-                        setStairTime(millis());
-                        setStairTrigger(1);
-                    }
-                }
-                else
-                {
-                    // in case of stairway light
-                    if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 1)
-                    {
-                        setStairTime(millis());
-                        setStairTrigger(1);
-                    }
-                    else
-                    {
-                        // switching off daytime
-                        if (!getNight())
-                        {
-                            _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
-                        }
-                        // switching off nighttime
-                        else if (getNight())
-                        {
-                            _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeNightOFF_);
-                        }
-                    }
-                }
+                setSwitch(ko.value(DPT_Switch));
                 break;
 
-            case LED_SC_KoStateOnOff_: break;
+            case LED_SC_KoStateOnOff_:
+                break;
 
             case LED_SC_KoBrightness_:
-                if (!getNight())
-                {
-                    _brightness.setTargetValue(ko.value(DPT_Percent_U8), millis(), ParamLED_SC_LightDimmTimeDayON_);
-                }
-                else if (getNight())
-                {
-                    _brightness.setTargetValue(ko.value(DPT_Percent_U8), millis(), ParamLED_SC_LightDimmTimeNightON_);
-                }
-                //_brightness.setTargetValue(   ko.value(DPT_Percent_U8),    millis(),    ParamLED_SC_LightDimmTimeDay_   );
+                setBrightness(ko.value(DPT_Percent_U8));
                 break;
 
-            case LED_SC_KoBrightnessStatus_: break;
+            case LED_SC_KoBrightnessStatus_:
+                break;
 
             case LED_SC_KoDimRel_:
                 int16_t tmpu16;
                 tmpu16 = *KoLED_SC_DimRel_.valueRef();
+
                 if (tmpu16 >= 0x09)
                 {
-                    logDebugP("rel_dimming up");
-                    if (!getNight())
-                    {
-                        _brightness.setTargetValue(ParamLED_SC_BrighnessMaxDay_, millis(), ParamLED_SC_LightDimmTimeRel_);
-                    }
-                    if (getNight())
-                    {
-                        _brightness.setTargetValue(ParamLED_SC_BrighnessMaxNight_, millis(), ParamLED_SC_LightDimmTimeRel_);
-                    }
+                    relDimUp();
                 }
                 if (tmpu16 > 0x00 && tmpu16 < 0x08)
                 {
-                    logDebugP("rel_dimming down");
-                    if (!getNight())
-                    {
-                        _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), ParamLED_SC_LightDimmTimeRel_);
-                    }
-                    if (getNight())
-                    {
-                        _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), ParamLED_SC_LightDimmTimeRel_);
-                    }
+                    relDimDown();
                 }
                 if (tmpu16 == 0x00 || tmpu16 == 0x08)
                 {
-                    logDebugP("rel_dimming stop");
-                    _brightness.setTargetValue(_brightness.value(), millis(), 1);
+                    relDimStop();
                 }
                 break;
 
@@ -206,30 +122,12 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 handleScene(ko.value(DPT_SceneNumber));
                 break;
 
-            case LED_SC_KoSceneStatus_: break;
+            case LED_SC_KoSceneStatus_:
+                break;
 
             // Day or Night
             case LED_SC_KoNight_:
-                if (!ko.value(DPT_Switch))
-                {
-                    logDebugP("Tag");
-                    setNight(false);
-                    _brightness.setRange(ParamLED_SC_BrighnessMin_, ParamLED_SC_BrighnessMaxDay_);
-                    if (_brightness.value() == ParamLED_SC_BrighnessMaxNight_)
-                    {
-                        _brightness.setTargetValue(ParamLED_SC_BrighnessMaxDay_, millis(), 2 * ParamLED_SC_LightDimmTimeDayON_);
-                    }
-                }
-                else
-                {
-                    logDebugP("Nacht");
-                    setNight(true);
-                    _brightness.setRange(ParamLED_SC_BrighnessMin_, ParamLED_SC_BrighnessMaxNight_);
-                    if (_brightness.value() > ParamLED_SC_BrighnessMaxNight_)
-                    {
-                        _brightness.setTargetValue(ParamLED_SC_BrighnessMaxNight_, millis(), 2 * ParamLED_SC_LightDimmTimeNightON_);
-                    }
-                }
+                setNight(ko.value(DPT_Switch));
                 break;
 
             default:
@@ -263,4 +161,121 @@ void SingleChannel::handleScene(uint8_t sceneNr)
             }
         }
     }
+}
+
+
+uint16_t SingleChannel::dimmingTimeON()
+{
+    return SC_night() ? ParamLED_SC_LightDimmTimeNightON_ : ParamLED_SC_LightDimmTimeDayON_;
+}
+
+uint16_t SingleChannel::dimmingTimeOFF()
+{
+    return SC_night() ? ParamLED_SC_LightDimmTimeNightOFF_ : ParamLED_SC_LightDimmTimeDayOFF_;
+}
+
+uint16_t SingleChannel::dimmingTime(bool _switch)
+{
+    return _switch ? dimmingTimeON() : dimmingTimeOFF();
+}
+
+uint8_t SingleChannel::dimmingValMaxBehavior()
+{
+    return ParamLED_SC_StartupBehavior_ ? getLastOnValue() : maxDimVal();
+}
+
+uint8_t SingleChannel::maxDimVal()
+{
+    return SC_night() ? ParamLED_SC_BrighnessMaxNight_ : ParamLED_SC_BrighnessMaxDay_;
+}
+
+uint8_t SingleChannel::upperTargetValue()
+{
+    return ParamLED_SC_StartupBehavior_ ? getLastOnValue() : maxDimVal();
+}
+
+uint8_t SingleChannel::dimmingTarget(bool _switch)
+{
+    return _switch ? dimmingValMaxBehavior() : 0;
+}
+
+void SingleChannel::setSwitch(bool _switch)
+{
+    if (_switch)
+    {
+        logDebugP("switch_ON");
+        _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), 1);
+        // in case of stairway light
+        if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 0)
+        {
+            setStairTime(millis());
+            setStairTrigger(1);
+        }
+        _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
+    }
+    else
+    {
+        logDebugP("switch_OFF");
+        // in case of stairway light
+        if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 1)
+        {
+            setStairTime(millis());
+            setStairTrigger(1);
+        }
+        else
+        {
+            _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
+        }
+    }
+    logDebugP("dimmingTarget: %3X", dimmingTarget(_switch));
+    logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+}
+
+void SingleChannel::setBrightness(uint8_t _bright)
+{
+    logDebugP("setBrightness: %3X", _bright);
+    _brightness.setTargetValue(_bright, millis(), dimmingTimeON());
+}
+
+void SingleChannel::setNight(bool _night)
+{
+    _sc_night = _night;
+    _brightness.setRange(ParamLED_SC_BrighnessMin_, maxDimVal());
+
+    if (_night)
+    {
+        logDebugP("Tag");
+
+        if (_brightness.value() == ParamLED_SC_BrighnessMaxNight_)
+        {
+            _brightness.setTargetValue(ParamLED_SC_BrighnessMaxDay_, millis(), 2 * ParamLED_SC_LightDimmTimeDayON_);
+        }
+    }
+    else
+    {
+        logDebugP("Nacht");
+
+        if (_brightness.value() > ParamLED_SC_BrighnessMaxNight_)
+        {
+            _brightness.setTargetValue(ParamLED_SC_BrighnessMaxNight_, millis(), 2 * ParamLED_SC_LightDimmTimeNightON_);
+        }
+    }
+}
+
+void SingleChannel::relDimUp()
+{
+    logDebugP("relDim_UP");
+    _brightness.setTargetValue(maxDimVal(), millis(), ParamLED_SC_LightDimmTimeRel_);
+}
+
+void SingleChannel::relDimDown()
+{
+    logDebugP("relDim_DOWN");
+    _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), ParamLED_SC_LightDimmTimeRel_);
+}
+
+void SingleChannel::relDimStop()
+{
+    logDebugP("relDim_STOP");
+    _brightness.setTargetValue(_brightness.value(), millis(), 1);
 }
