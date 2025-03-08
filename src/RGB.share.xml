@@ -6,7 +6,6 @@
       <ApplicationPrograms>
         <ApplicationProgram>
 
-
           <Static>
             <ParameterTypes>
 
@@ -23,7 +22,6 @@
                 </TypeRestriction>
               </ParameterType>
 
-              
               <ParameterType Id="%AID%_PT-RGBValueType" Name="RGBValueType">
                 <TypeRestriction Base="Value" SizeInBit="3" UIHint="DropDown">
                   <Enumeration Text="Helligkeit" Value="0" Id="%ENID%" />
@@ -33,7 +31,6 @@
                 </TypeRestriction>
               </ParameterType>
 
-              
               <ParameterType Id="%AID%_PT-RGBSequence" Name="RGBSequence">
                 <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="Ablauf 1" Value="0" Id="%ENID%" />
@@ -49,7 +46,6 @@
                   <Enumeration Text="Funktion 3" Value="2" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
-              
 
               <ParameterType Id="%AID%_PT-LightColorRGB" Name="LightColorRGB">
                 <TypeColor Space="RGB" />
@@ -57,26 +53,25 @@
 
               <ParameterType Id="%AID%_PT-ColorPicker" Name="ColorPicker">
                 <TypeRestriction Base="Value" SizeInBit="5">
-                    <Enumeration Text="Rot"       Value="1"  Id="%ENID%" />
-                    <Enumeration Text="Orange"    Value="2"  Id="%ENID%" />
-                    <Enumeration Text="Gelb"      Value="3"  Id="%ENID%" />
-                    <Enumeration Text="GelbGrün"  Value="4"  Id="%ENID%" />
-                    <Enumeration Text="Grün"      Value="5"  Id="%ENID%" />
-                    <Enumeration Text="Aquamarin" Value="6"  Id="%ENID%" />
-                    <Enumeration Text="Türkis"    Value="7"  Id="%ENID%" />
-                    <Enumeration Text="Mint"      Value="8"  Id="%ENID%" />
-                    <Enumeration Text="Blau"      Value="9"  Id="%ENID%" />
-                    <Enumeration Text="Lila"      Value="10" Id="%ENID%" />
-                    <Enumeration Text="Rosa"      Value="11" Id="%ENID%" />
-                    <Enumeration Text="Violett"   Value="12" Id="%ENID%" />
-                    <Enumeration Text="Weiß"      Value="13" Id="%ENID%" />
-                    <Enumeration Text="Random Steady"    Value="14" Id="%ENID%" />
-                    <Enumeration Text="Random Changing"  Value="15" Id="%ENID%" />
-                    <Enumeration Text="Custom"    Value="16" Id="%ENID%" />
-                    <Enumeration Text="Farbtemperatur" Value="17" Id="%ENID%" />
+                  <Enumeration Text="Rot"             Value="1"  Id="%ENID%" />
+                  <Enumeration Text="Orange"          Value="2"  Id="%ENID%" />
+                  <Enumeration Text="Gelb"            Value="3"  Id="%ENID%" />
+                  <Enumeration Text="GelbGrün"        Value="4"  Id="%ENID%" />
+                  <Enumeration Text="Grün"            Value="5"  Id="%ENID%" />
+                  <Enumeration Text="Aquamarin"       Value="6"  Id="%ENID%" />
+                  <Enumeration Text="Türkis"          Value="7"  Id="%ENID%" />
+                  <Enumeration Text="Mint"            Value="8"  Id="%ENID%" />
+                  <Enumeration Text="Blau"            Value="9"  Id="%ENID%" />
+                  <Enumeration Text="Lila"            Value="10" Id="%ENID%" />
+                  <Enumeration Text="Rosa"            Value="11" Id="%ENID%" />
+                  <Enumeration Text="Violett"         Value="12" Id="%ENID%" />
+                  <Enumeration Text="Weiß"            Value="13" Id="%ENID%" />
+                  <Enumeration Text="Random Steady"   Value="14" Id="%ENID%" />
+                  <Enumeration Text="Random Changing" Value="15" Id="%ENID%" />
+                  <Enumeration Text="Custom"          Value="16" Id="%ENID%" />
+                  <Enumeration Text="Farbtemperatur"  Value="17" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
-
 
             </ParameterTypes>
 
@@ -98,8 +93,8 @@
             <ChannelIndependentBlock>
               <ParameterBlock Text="RGB" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Instanzen erscheinen automatisch, wenn sie konfiguriert sind." />
-                <op:include href="RGB.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_RGB" IsInner="true"/>
-                </ParameterBlock>
+                <op:include href="RGB.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_RGB" IsInner="true" />
+              </ParameterBlock>
             </ChannelIndependentBlock>
           </Dynamic>
 

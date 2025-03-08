@@ -22,17 +22,17 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ColorTemperatureWW" Name="ColorTemperatureWW">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="4000" Increment="50"/>
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="4000" Increment="50" />
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-ColorTemperatureCW" Name="ColorTemperatureCW" >
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="4000" maxInclusive="8000" Increment="50"/>
+              <ParameterType Id="%AID%_PT-ColorTemperatureCW" Name="ColorTemperatureCW">
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="4000" maxInclusive="8000" Increment="50" />
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ColorTemperature" Name="ColorTemperature">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="8000" Increment="50"/>
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="8000" Increment="50" />
               </ParameterType>
-              
+
               <ParameterType Id="%AID%_PT-TWFunction" Name="TWFunction">
                 <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="Ein" Value="0" Id="%ENID%" />
@@ -48,7 +48,7 @@
                   <Enumeration Text="Kombiniert" Value="2" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
-              
+
               <ParameterType Id="%AID%_PT-TWSequence" Name="TWSequence">
                 <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="HCL" Value="0" Id="%ENID%" />
@@ -77,7 +77,7 @@
             <ChannelIndependentBlock>
               <ParameterBlock Text="TW" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="theme-light-dark">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Instanzen erscheinen automatisch, wenn sie konfiguriert sind." />
-                <op:include href="TW.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_TW" IsInner="true"/>
+                <op:include href="TW.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_TW" IsInner="true" />
               </ParameterBlock>
             </ChannelIndependentBlock>
           </Dynamic>

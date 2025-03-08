@@ -8,25 +8,25 @@
         <ApplicationProgram>
 
           <op:part href="ChannelActivation.part.xml" name="LED_SC" instances="16">
-            <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
-            <op:param name="%TT%" value="21" increment="0" digits="2"/> <!-- Module Type -->
-            <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
+            <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
+            <op:param name="%TT%" value="21" increment="0" digits="2" /> <!-- Module Type -->
+            <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
           </op:part>
 
           <op:part href="ChannelActivation.part.xml" name="LED_TW" instances="8">
-            <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
-            <op:param name="%TT%" value="22" increment="0" digits="2"/> <!-- Module Type -->
-            <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
+            <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
+            <op:param name="%TT%" value="22" increment="0" digits="2" /> <!-- Module Type -->
+            <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
           </op:part>
 
           <op:part href="ChannelActivation.part.xml" name="LED_RGB" instances="4">
-            <op:param name="%Cn%" value="1" increment="1" digits="2"/> <!-- Channel number -->
-            <op:param name="%TT%" value="23" increment="0" digits="2"/> <!-- Module Type -->
-            <op:param name="%id%" value="001" increment="0" digits="3"/> <!-- Ref ID Base-->
-          </op:part>        
+            <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
+            <op:param name="%TT%" value="23" increment="0" digits="2" /> <!-- Module Type -->
+            <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
+          </op:part>
 
           <op:part href="SceneBuilder.part.xml" name="LED_SC_NR" instances="64">
-            <op:param name="%SZ%" value="0" increment="1" digits="1"/> <!-- Szene number -->
+            <op:param name="%SZ%" value="0" increment="1" digits="1" /> <!-- Szene number -->
           </op:part>
 
           <Static>
@@ -39,7 +39,6 @@
                 </TypeRestriction>
               </ParameterType>
 
-
               <ParameterType Id="%AID%_PT-Lighttype" Name="Lighttype">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
@@ -50,14 +49,14 @@
                   <Enumeration Text="RGBTW" Value="5" Id="%ENID%" /> -->
                 </TypeRestriction>
               </ParameterType>
-              
+
               <ParameterType Id="%AID%_PT-StartupBehavior" Name="StartupBehavior">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Einschaltwert" Value="0" Id="%ENID%" />
                   <Enumeration Text="Letzter Wert" Value="1" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
-              
+
               <ParameterType Id="%AID%_PT-DimCurve" Name="DimCurve">
                 <TypeRestriction Base="Value" SizeInBit="3">
                   <Enumeration Text="Linear" Value="0" Id="%ENID%" />
@@ -66,12 +65,10 @@
                 </TypeRestriction>
               </ParameterType>
 
-
               <ParameterType Id="%AID%_PT-Percentage" Name="Percentage">
                 <TypeNumber SizeInBit="8" Type="signedInt" minInclusive="0" maxInclusive="100" />
               </ParameterType>
 
-              
               <ParameterType Id="%AID%_PT-SceneType" Name="SceneType">
                 <TypeRestriction Base="Value" SizeInBit="3">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
@@ -82,28 +79,25 @@
                 </TypeRestriction>
               </ParameterType>
 
-              
               <ParameterType Id="%AID%_PT-SceneNumber" Name="Szene">
                 <TypeNumber SizeInBit="7" Type="unsignedInt" minInclusive="1" maxInclusive="64" DisplayOffset="1" />
               </ParameterType>
 
-              
               <ParameterType Id="%AID%_PT-SceneNumberEN" Name="SzeneNr">
                 <TypeRestriction Base="Value" SizeInBit="6">
                   <op:usePart name="LED_SC_NR" xpath="//Static/ParameterTypes/ParameterType[@Name='SzeneNrEN']/*" />
                 </TypeRestriction>
               </ParameterType>
 
-              
-              <ParameterType Id="%AID%_PT-LockUnlock" Name="Sperren" >
-                <TypeRestriction Base="Value" SizeInBit="2" UIHint="DropDown" >
+              <ParameterType Id="%AID%_PT-LockUnlock" Name="Sperren">
+                <TypeRestriction Base="Value" SizeInBit="2" UIHint="DropDown">
                   <Enumeration Text="Entsperren" Value="0" Id="%ENID%" />
                   <Enumeration Text="Sperren" Value="1" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
-              
+
               <ParameterType Id="%AID%_PT-LockObject" Name="Sperrobjekt">
-                <TypeRestriction Base="Value" SizeInBit="1"  UIHint="DropDown" >
+                <TypeRestriction Base="Value" SizeInBit="1" UIHint="DropDown">
                   <Enumeration Text="Sperren 1" Value="0" Id="%ENID%" />
                   <Enumeration Text="Sperren 2" Value="1" Id="%ENID%" />
                 </TypeRestriction>
@@ -134,11 +128,11 @@
             </ParameterTypes>
 
             <Parameters>
-            <Parameter Id="%AID%_P-%TT%%CC%001" Name="DimmerModule_%C%"        ParameterType="%AID%_PT-DimModule"           Text="Dimmer Modul"                Value="0" />  <!-- Modul Type -->
+              <Parameter Id="%AID%_P-%TT%%CC%001" Name="DimmerModule_%C%"        ParameterType="%AID%_PT-DimModule"           Text="Dimmer Modul"                Value="0" />  <!-- Modul Type -->
             </Parameters>
 
             <ParameterRefs>
-            <ParameterRef Id="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" RefId="%AID%_P-%TT%%CC%001" />  <!-- Modul Type -->
+              <ParameterRef Id="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" RefId="%AID%_P-%TT%%CC%001" /> <!-- Modul Type -->
             </ParameterRefs>
 
             <ComObjectTable>
@@ -161,27 +155,27 @@
               <ParameterBlock Id="%AID%_PB-nnn" Name="Settings" Text="Allgemein" Icon="cog-outline" ShowInComObjectTree="true">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="LED-Dimmer Version %ModuleVersion%" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline"/>
-                <ParameterRefRef RefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" IndentLevel="1" />  <!-- Modul Type -->
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline" />
+                <ParameterRefRef RefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" IndentLevel="1" /> <!-- Modul Type -->
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline"/>
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline" />
                 <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table">
                   <Rows>
-                    <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='HWChannels']/Rows/*" prefix="LED" type="template" IsInner="true"/>
+                    <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='HWChannels']/Rows/*" prefix="LED" type="template" IsInner="true" />
                   </Rows>
                   <Columns>
                     <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Typ" Width="33%" />
                     <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Instanz" Width="33%" />
                     <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="Funktion" Width="33%" />
                   </Columns>
-                  <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTable']/*" prefix="LED" type="template" IsInner="true"/>
+                  <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTable']/*" prefix="LED" type="template" IsInner="true" />
                 </ParameterBlock>
-                <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='FunctionAssignment']/*" prefix="LED" type="template" IsInner="true"/>
+                <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='FunctionAssignment']/*" prefix="LED" type="template" IsInner="true" />
               </ParameterBlock>
 
-              <op:include href="Single.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_SC"/>
-              <op:include href="TW.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_TW"/>
-              <op:include href="RGB.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_RGB"/>
+              <op:include href="Single.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_SC" />
+              <op:include href="TW.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_TW" />
+              <op:include href="RGB.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_RGB" />
             </Channel>
 
           </Dynamic>
