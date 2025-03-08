@@ -155,36 +155,42 @@
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Treppenlicht" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%012_R-%TT%%CC%01201" IndentLevel="1" /> <!-- Stairway -->
-                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%013_R-%TT%%CC%01301" IndentLevel="1" /> <!-- StairwayTime -->
-                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%014_R-%TT%%CC%01401" IndentLevel="1" /> <!-- StairwayTrigger -->
+                    <choose ParamRefId="%AID%_P-%TT%%CC%012_R-%TT%%CC%01201">
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%013_R-%TT%%CC%01301" IndentLevel="1" /> <!-- StairwayTime -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%014_R-%TT%%CC%01401" IndentLevel="1" /> <!-- StairwayTrigger -->
+                      </when>
+                    </choose>
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Scenen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" IndentLevel="1" /> <!-- Scene -->
+                    <choose ParamRefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601">
+                      <when test="1">
+                        <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />
+                          <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
+                            <Rows>
+                              <op:usePart name="LED_SC_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='Rows']/*" />
+                            </Rows>
 
-                    <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />
-                      <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
-                        <Rows>
-                          <op:usePart name="LED_SC_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='Rows']/*" />
-                        </Rows>
+                            <Columns>
+                              <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Szene" Width="15%" />
+                              <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Typ" Width="20%" />
+                              <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="Funktion" Width="25%" />
+                              <Column Id="%AID%_PB-12_C-4" Name="Col4" Text="Wert" Width="20%" />
+                              <Column Id="%AID%_PB-12_C-5" Name="Col5" Text="Fix" Width="15%" />
+                              <!-- <Column Id="%AID%_PB-12_C-6" Name="Col6" Text="Lock1" Width="15%" /> -->
+                              <!-- <Column Id="%AID%_PB-12_C-7" Name="Col7" Text="Lock2" Width="15%" /> -->
+                            </Columns>
 
-                        <Columns>
-                          <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Szene" Width="15%" />
-                          <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Typ" Width="20%" />
-                          <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="Funktion" Width="25%" />
-                          <Column Id="%AID%_PB-12_C-4" Name="Col4" Text="Wert" Width="20%" />
-                          <Column Id="%AID%_PB-12_C-5" Name="Col5" Text="Fix" Width="15%" />
-                          <!-- <Column Id="%AID%_PB-12_C-6" Name="Col6" Text="Lock1" Width="15%" /> -->
-                          <!-- <Column Id="%AID%_PB-12_C-7" Name="Col7" Text="Lock2" Width="15%" /> -->
-                        </Columns>
+                            <!-- Scene Control-->
+                            <op:usePart name="LED_SC_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='SceneSelectionSC']/*" />
 
-                        <!-- Scene Control-->
-                        <op:usePart name="LED_SC_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='SceneSelectionSC']/*" />
-
-                      </ParameterBlock>
-                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Fix: Wenn aktiv kann diese Szene nicht im Betrieb per Speichern überschrieben werden." />
-
-                    </ParameterBlock>
+                          </ParameterBlock>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Fix: Wenn aktiv kann diese Szene nicht im Betrieb per Speichern überschrieben werden." />
+                        </ParameterBlock>
+                      </when>
+                    </choose>
 
                   </ParameterBlock>
                 </when>
