@@ -184,7 +184,7 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%014_R-%TT%%CC%01401" IndentLevel="1" /> <!-- StairwayTrigger -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Scenen" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" IndentLevel="1" /> <!-- Scene -->
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" IndentLevel="1" /> <!-- Scene -->
 
                     <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
                       <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />
