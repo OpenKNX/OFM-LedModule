@@ -158,10 +158,13 @@
 
           <Dynamic>
             <Channel Name="MainChannel" Text="Lichter" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
-              <ParameterBlock Id="%AID%_PB-nnn" Name="Docu" Text="Konfiguration" Icon="table-edit">
-                <ParameterRefRef RefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" />  <!-- Modul Type -->
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version 05.02.2025 16:00" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung:" UIHint="Headline"/>
+              <ParameterBlock Id="%AID%_PB-nnn" Name="Settings" Text="Allgemein" Icon="cog-outline" ShowInComObjectTree="true">
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="LED-Dimmer Version %ModuleVersion%" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline"/>
+                <ParameterRefRef RefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00199" IndentLevel="1" />  <!-- Modul Type -->
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline"/>
                 <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table">
                   <Rows>
                     <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='HWChannels']/Rows/*" prefix="LED" type="template" IsInner="true"/>

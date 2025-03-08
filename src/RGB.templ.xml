@@ -208,58 +208,59 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%013_R-%TT%%CC%01301" /> <!-- HSV -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%014_R-%TT%%CC%01401" /> <!-- HSV Status -->
                     
-                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" /> <!-- ChannelName -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text=" " />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaldefinition" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" IndentLevel="1"/> <!-- ChannelName -->
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Zeitverhalten" UIHint="Headline" />
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%003_R-%TT%%CC%00301" IndentLevel="2"/> <!-- DimTimeDay -->
-					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%006_R-%TT%%CC%00601" IndentLevel="2"/> <!-- DimTimeFactorDay -->
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%004_R-%TT%%CC%00401" IndentLevel="2"/> <!-- DimTimeNight -->
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%007_R-%TT%%CC%00701" IndentLevel="2"/> <!-- DimTimeFactorNight -->
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%005_R-%TT%%CC%00501" IndentLevel="2"/> <!-- DimTimeRel -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%003_R-%TT%%CC%00301" IndentLevel="1"/> <!-- DimTimeDay -->
+					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%006_R-%TT%%CC%00601" IndentLevel="1"/> <!-- DimTimeFactorDay -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%004_R-%TT%%CC%00401" IndentLevel="1"/> <!-- DimTimeNight -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%007_R-%TT%%CC%00701" IndentLevel="1"/> <!-- DimTimeFactorNight -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%005_R-%TT%%CC%00501" IndentLevel="1"/> <!-- DimTimeRel -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Maximalwerte" UIHint="Headline" />
-					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%008_R-%TT%%CC%00801" IndentLevel="2"/> <!-- DimMin -->
-					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901" IndentLevel="2"/> <!-- DimMaxDay -->
-					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%010_R-%TT%%CC%01001" IndentLevel="2"/> <!-- DimMaxNight -->
+					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%008_R-%TT%%CC%00801" IndentLevel="1"/> <!-- DimMin -->
+					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901" IndentLevel="1"/> <!-- DimMaxDay -->
+					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%010_R-%TT%%CC%01001" IndentLevel="1"/> <!-- DimMaxNight -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Farbeinstellung" UIHint="Headline" />
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" IndentLevel="2"/> <!-- Color Day -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" IndentLevel="1"/> <!-- Color Day -->
                         <choose ParamRefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601">
                             <when test="16">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%018_R-%TT%%CC%01801" IndentLevel="4"/> <!-- Red Day -->
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%018_R-%TT%%CC%01801" IndentLevel="2"/> <!-- Red Day -->
                             </when>
                             <when test="15">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%024_R-%TT%%CC%02401" IndentLevel="4"/> <!-- Color Change Time Day -->
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%024_R-%TT%%CC%02401" IndentLevel="2"/> <!-- Color Change Time Day -->
                             </when>
                             <when test="17">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="4"/>  <!-- Color Temperature Day-->
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="2"/>  <!-- Color Temperature Day-->
                             </when>
                         </choose>
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="2"/> <!-- Color Night -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="1"/> <!-- Color Night -->
                         <choose ParamRefId="%AID%_P-%TT%%CC%017_R-%TT%%CC%01701">
                             <when test="16">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%021_R-%TT%%CC%02101" IndentLevel="4"/> <!-- Red Night -->
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%021_R-%TT%%CC%02101" IndentLevel="2"/> <!-- Red Night -->
                             </when>
                             <when test="15">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%025_R-%TT%%CC%02501" IndentLevel="4"/> <!-- Color Change Time Night -->
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%025_R-%TT%%CC%02501" IndentLevel="2"/> <!-- Color Change Time Night -->
                             </when>
                             <when test="17">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%022_R-%TT%%CC%02201" IndentLevel="4"/>  <!-- Color Temperature Night-->
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%022_R-%TT%%CC%02201" IndentLevel="2"/>  <!-- Color Temperature Night-->
                             </when>
                         </choose>
                         <!-- <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" /> <a!a-a- Color RGB -->
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Sonstige Konfiguration" UIHint="Headline" />
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%011_R-%TT%%CC%01101" IndentLevel="2"/> <!-- DimCurve -->
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%015_R-%TT%%CC%01501" IndentLevel="2"/> <!-- Startup -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%011_R-%TT%%CC%01101" IndentLevel="1"/> <!-- DimCurve -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%015_R-%TT%%CC%01501" IndentLevel="1"/> <!-- Startup -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Treppenlicht" UIHint="Headline" />
-					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%012_R-%TT%%CC%01201" IndentLevel="2"/> <!-- Stairway -->
-					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%013_R-%TT%%CC%01301" IndentLevel="2"/> <!-- StairwayTime -->
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%014_R-%TT%%CC%01401" IndentLevel="2"/> <!-- StairwayTrigger -->
+					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%012_R-%TT%%CC%01201" IndentLevel="1"/> <!-- Stairway -->
+					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%013_R-%TT%%CC%01301" IndentLevel="1"/> <!-- StairwayTime -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%014_R-%TT%%CC%01401" IndentLevel="1"/> <!-- StairwayTrigger -->
 					          <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Scenen" UIHint="Headline" />
-					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%031_R-%TT%%CC%03101" IndentLevel="2"/> <!-- Scene -->
+					              <ParameterRefRef RefId="%AID%_P-%TT%%CC%031_R-%TT%%CC%03101" IndentLevel="1"/> <!-- Scene -->
 					          
                     
                     <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
