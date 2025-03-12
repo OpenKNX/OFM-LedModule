@@ -91,7 +91,7 @@
 
           <Dynamic>
             <ChannelIndependentBlock>
-              <ParameterBlock Text="RGB" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
+              <ParameterBlock Text="RGB - Rot/Grün/Blau" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Instanzen erscheinen automatisch, wenn sie konfiguriert sind." />
                 <op:include href="RGB.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_RGB" IsInner="true" />
               </ParameterBlock>

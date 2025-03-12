@@ -52,7 +52,7 @@
 
           <Dynamic>
             <ChannelIndependentBlock>
-              <ParameterBlock Text="EK" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="lightbulb-outline">
+              <ParameterBlock Text="EK - Einzelkanal" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="lightbulb-outline">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Instanzen erscheinen automatisch, wenn sie konfiguriert sind." />
                 <op:include href="Single.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_SC" IsInner="true" />
               </ParameterBlock>

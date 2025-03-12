@@ -43,9 +43,9 @@
               <ParameterType Id="%AID%_PT-Lighttype" Name="Lighttype">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
-                  <Enumeration Text="Einfacher Kanal" Value="1" Id="%ENID%" />
-                  <Enumeration Text="TW" Value="2" Id="%ENID%" />
-                  <Enumeration Text="RGB" Value="3" Id="%ENID%" />
+                  <Enumeration Text="EK - Einzelkanal" Value="1" Id="%ENID%" />
+                  <Enumeration Text="TW - Tunable White" Value="2" Id="%ENID%" />
+                  <Enumeration Text="RGB - Rot/Grün/Blau" Value="3" Id="%ENID%" />
                   <!-- <Enumeration Text="RGBW" Value="4" Id="%ENID%" />
                   <Enumeration Text="RGBTW" Value="5" Id="%ENID%" /> -->
                 </TypeRestriction>
@@ -176,10 +176,12 @@
           </Static>
 
           <Dynamic>
-            <Channel Name="MainChannel" Text="Lichter" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
+            <Channel Name="MainChannel" Text="Dimmer" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
               <ParameterBlock Id="%AID%_PB-nnn" Name="Settings" Text="Allgemein" Icon="cog-outline" ShowInComObjectTree="true">
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="LED-Dimmer Version %ModuleVersion%" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="LED-Dimmer" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline" />
                 <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" /> <!-- Modul Type -->
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
