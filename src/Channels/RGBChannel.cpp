@@ -150,6 +150,9 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_RGB_KoBrightnessStatus_:
+            break;
+            
+            case LED_RGB_KoDimRel_:
                 int16_t tmpu16;
                 tmpu16 = *KoLED_RGB_DimRel_.valueRef();
 
