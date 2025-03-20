@@ -32,7 +32,7 @@
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="7" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%007" Name="LightDimmTimeNightOFF_%C%" ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht Off" Value="3000" SuffixText="ms">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="9" BitOffset="4" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="9" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%008" Name="BrighnessMin_%C%"          ParameterType="%AID%_PT-MinDim" Text="Helligkeit min" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="11" BitOffset="0" />
