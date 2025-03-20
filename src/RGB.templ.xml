@@ -76,7 +76,7 @@
               <Parameter Id="%AID%_P-%TT%%CC%021" Name="ColorNightPicker_%C%"      ParameterType="%AID%_PT-ValueColor" Text="Farbe Nacht 3-Byte-RGB" Value="#FFFFFF">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="22" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%022" Name="ColorGreenNight_%C%"       ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur Nacht" Value="4000">
+              <Parameter Id="%AID%_P-%TT%%CC%022" Name="ColorTempNight_%C%"       ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur Nacht" Value="4000">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="20" BitOffset="0" />
               </Parameter>
               <!--<Parameter Id="%AID%_P-%TT%%CC%023" Name="ColorBlueNight_%C%"    ParameterType="%AID%_PT-ValueDpt5" Text="Blau Nacht" Value="0">
