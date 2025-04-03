@@ -1,5 +1,5 @@
-#include <knx.h>
 #include "LightChannel.h"
+#include <knx.h>
 
 /**
  * @brief Construct a new Light Channel:: Light Channel object

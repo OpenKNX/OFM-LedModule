@@ -182,11 +182,15 @@ void SingleChannel::handleScene(uint8_t sceneNr)
 
 uint16_t SingleChannel::dimmingTimeON()
 {
+    logDebugP("dimmingTimeDON: %5X", ParamLED_SC_LightDimmTimeDayON_);
+    logDebugP("dimmingTimeNON: %5X", ParamLED_SC_LightDimmTimeNightON_);
     return SC_night() ? ParamLED_SC_LightDimmTimeNightON_ : ParamLED_SC_LightDimmTimeDayON_;
 }
 
 uint16_t SingleChannel::dimmingTimeOFF()
 {
+    logDebugP("dimmingTimeDOFF: %5X", ParamLED_SC_LightDimmTimeDayOFF_);
+    logDebugP("dimmingTimeNOFF: %5X", ParamLED_SC_LightDimmTimeNightOFF_);
     return SC_night() ? ParamLED_SC_LightDimmTimeNightOFF_ : ParamLED_SC_LightDimmTimeDayOFF_;
 }
 
@@ -240,6 +244,7 @@ void SingleChannel::setSwitch(bool _switch)
         }
         else
         {
+            setLastOnValue(_brightness.value());
             _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
         }
     }
@@ -258,7 +263,7 @@ void SingleChannel::setNight(bool _night)
     _sc_night = _night;
     _brightness.setRange(ParamLED_SC_BrighnessMin_, maxDimVal());
 
-    if (_night)
+    if (!_night)
     {
         logDebugP("Tag");
 

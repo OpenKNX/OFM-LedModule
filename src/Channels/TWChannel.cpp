@@ -276,6 +276,7 @@ void TWChannel::setSwitch(bool _switch)
         }
         else
         {
+            setLastOnValue(_brightness.value());
             _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
         }
     }
@@ -294,7 +295,7 @@ void TWChannel::setNight(bool _night)
     _tw_night = _night;
     _brightness.setRange(ParamLED_TW_BrighnessMin_, maxDimVal());
 
-    if (_night)
+    if (!_night)
     {
         logDebugP("Tag");
 

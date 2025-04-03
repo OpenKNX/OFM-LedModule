@@ -23,13 +23,14 @@ class RGBChannel : public LightChannel
     uint8_t maxDimVal();
     uint8_t upperTargetValue();
     uint8_t dimmingTarget(bool _switch);
+    uint8_t colorPicker();
     uint16_t checkMinMaxColorTemp(uint16_t colorTemp);
 
     void setSwitch(bool _switch);
     void setHue(uint16_t _hue);
     void setSaturation(uint16_t saturation);
     void setBrightness(uint8_t _bright);
-    void setNight(bool _night);
+    void switchNight(bool _night);
     void relDimUp();
     void relDimDown();
     void relDimStop();

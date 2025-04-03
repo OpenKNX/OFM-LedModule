@@ -14,9 +14,6 @@ class SingleChannel : public LightChannel
     void loop();
     bool _sc_night = 0;
     bool SC_night();
-    uint16_t _SC_logix[10];
-    // 0 = ON/OFF // 1 = BRIGHTNESS // 2 = REL_DIMM // 3 = DAY/NIGHT
-    void SC_logix();
 
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
@@ -25,6 +22,7 @@ class SingleChannel : public LightChannel
     uint8_t maxDimVal();
     uint8_t upperTargetValue();
     uint8_t dimmingTarget(bool _switch);
+    
 
     void setSwitch(bool _switch);
     void setBrightness(uint8_t _bright);

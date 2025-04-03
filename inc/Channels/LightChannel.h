@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Arduino.h>
-#include "OpenKNX.h"
-#include "HWDimmer.h"
 #include "Colors.h"
+#include "HWDimmer.h"
+#include "OpenKNX.h"
+#include <Arduino.h>
 
-#define DIMLOOP_DELAY       20 // ms
-#define UPDATE_DELAY        500 // ms
-#define N_SCENES            8
-#define BRIGHTNESS_MAX      UINT8_MAX
+#define DIMLOOP_DELAY 20 // ms
+#define UPDATE_DELAY 500 // ms
+#define N_SCENES 8
+#define BRIGHTNESS_MAX UINT8_MAX
 
 class LightChannel : public OpenKNX::Channel
 {
@@ -27,7 +27,7 @@ class LightChannel : public OpenKNX::Channel
     bool getNight();
     void setNight(bool night);
 
-    template<typename T> class DimmableValue
+    template <typename T> class DimmableValue
     {
       public:
         DimmableValue() {}
@@ -49,7 +49,6 @@ class LightChannel : public OpenKNX::Channel
 
         T getMin() { return minValue; }
         T getMax() { return maxValue; }
-
 
         void setTargetValue(T target, uint32_t timestamp, uint16_t dimTime)
         {
@@ -99,6 +98,7 @@ class LightChannel : public OpenKNX::Channel
         int32_t deltaValue = 0;
         uint32_t startTimestamp = 0;
         uint16_t dimDurationAbs = 100;
+        uint8_t lastDimmValue = BRIGHTNESS_MAX;
     };
 
     struct SceneConfig
@@ -133,7 +133,7 @@ class LightChannel : public OpenKNX::Channel
     uint32_t _lastDimTimestamp = 0;
     uint16_t _lastBrightnessLevel = 0;
     bool _isLocked = false;
-    
+
     int32_t _lastOnValue = 255;
     unsigned long _stairTime = 0;
     bool _stairTrigger = 0;
