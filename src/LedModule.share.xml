@@ -7,19 +7,19 @@
       <ApplicationPrograms>
         <ApplicationProgram>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_SC" instances="16">
+          <op:part href="ChannelActivation.part.xml" name="LED_SC" instances="6">
             <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
             <op:param name="%TT%" value="21" increment="0" digits="2" /> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
           </op:part>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_TW" instances="8">
+          <op:part href="ChannelActivation.part.xml" name="LED_TW" instances="3">
             <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
             <op:param name="%TT%" value="22" increment="0" digits="2" /> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
           </op:part>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_RGB" instances="4">
+          <op:part href="ChannelActivation.part.xml" name="LED_RGB" instances="2">
             <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
             <op:param name="%TT%" value="23" increment="0" digits="2" /> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
