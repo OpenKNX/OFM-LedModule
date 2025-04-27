@@ -46,6 +46,7 @@ class LedModule : public OpenKNX::Module
     void setupCustomFlash();
     void setupChannels();
     void setupTemperatureSensor();
+    void setupVoltageMeasurement();
 
   public:
     void loop(bool configured) override;

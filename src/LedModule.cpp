@@ -47,6 +47,7 @@ void LedModule::setup(bool configured)
     logIndentUp();
     setupCustomFlash();
     setupTemperatureSensor();
+    setupVoltageMeasurement();
     setupChannels();
     logIndentDown();
 }
@@ -124,6 +125,14 @@ void LedModule::setupTemperatureSensor()
 #endif
 }
 
+void LedModule::setupVoltageMeasurement()
+{
+#ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
+    pinMode(LEDMODULE_VOLTAGE_MEASURE_PIN, INPUT);
+    analogReadResolution(12);
+#endif
+}
+
 void LedModule::setupCustomFlash()
 {
     logDebugP("initialize ledModule flash");
@@ -155,13 +164,18 @@ void LedModule::loop(bool configured)
     if (delayCheck(_timer1, 5100))
     {
         logDebugP("Loop0");
+        logIndentUp();
 
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
-        logIndentUp();
         logDebugP("Temperature: %.2f°C", _temperature.readTemperatureC());
-        logIndentDown();
 #endif
 
+#ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
+        int analgogValue = analogRead(LEDMODULE_VOLTAGE_MEASURE_PIN);
+        logDebugP("Voltage: %.2f V (%u)", (float)analgogValue / 4095 * (float)3.3 * (float)LEDMODULE_VOLTAGE_MEASURE_FACTOR, analgogValue);
+#endif
+
+        logIndentDown();
         _timer1 = millis();
     }
 
