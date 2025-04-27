@@ -59,20 +59,22 @@
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="16" BitOffset="0" />
               </Parameter>
 
-              <Union SizeInBit="16">
+              <Union SizeInBit="32">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="17" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%017" Name="ManualMode_%C%"         ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Manueller Modus aktivieren" Value="0" />
                 <!-- 5 bits free -->
                 <Parameter Id="%AID%_UP-%TT%%CC%018" Name="ManualModeChangeToAuto_%C%" ParameterType="%AID%_PT-ManualModeChangeToAuto" Offset="0" BitOffset="6" Text="Umschaltung auf Automatik" Value="2" />
-                <Parameter Id="%AID%_UP-%TT%%CC%019" Name="ManualModeDimmingValue_%C%" ParameterType="%AID%_PT-Percent" Offset="2" BitOffset="0" Text="Dimmwert bei An" Value="100" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%019" Name="ManualModeDimmingValue_%C%" ParameterType="%AID%_PT-Percent" Offset="1" BitOffset="0" Text="Dimmwert bei An" Value="100" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%020" Name="ManualModeChangeToAutoBase_%C%" ParameterType="%AID%_PT-DelayBase" Offset="2" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%021" Name="ManualModeChangeToAutoTime_%C%" ParameterType="%AID%_PT-DelayTime" Offset="2" BitOffset="2" Text="Zeit" Value="0" />
               </Union>
 
               <Parameter Id="%AID%_P-%TT%%CC%016" Name="ScenesActive_%C%"          ParameterType="%AID%_PT-OnOffYesNo" Text="Szenen" Value="0">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="19" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="21" BitOffset="0" />
               </Parameter>
               <Union SizeInBit="320">
                 <!-- 8 Scenes * 5 bytes: total 40 bytes -->
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="20" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="22" BitOffset="0" />
                 <!-- Scenes -->
                 <op:usePart name="LED_SC_SC" xpath="//Static/Parameters/Block[@Name='ScenesSC']/*" />
               </Union>
@@ -99,6 +101,8 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" RefId="%AID%_UP-%TT%%CC%017" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" RefId="%AID%_UP-%TT%%CC%018" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%019_R-%TT%%CC%01901" RefId="%AID%_UP-%TT%%CC%019" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%020_R-%TT%%CC%02001" RefId="%AID%_UP-%TT%%CC%020" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%021_R-%TT%%CC%02101" RefId="%AID%_UP-%TT%%CC%021" />
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_SC_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSC']/*" />
@@ -165,7 +169,27 @@
                     <choose ParamRefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701">
                       <when test="1">
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="1" />
+
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" IndentLevel="1" />
+                        <choose ParamRefId="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801">
+                          <when test="1 3">
+                            <!-- Status Cyclic pattern -->
+                            <ParameterBlock Id="%AID%_PB-nnn" Name="ManualModeChangeToAuto" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                                <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                                <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                                <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                              </Columns>
+                              <ParameterSeparator Id="%AID%_PS-nnn" Text=" Zeit&#10; (0 = nicht umschalten)" Cell="1,2" />
+                              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%021_R-%TT%%CC%02101" Cell="1,3" />
+                              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%020_R-%TT%%CC%02001" Cell="1,4" />
+                            </ParameterBlock>
+                          </when>
+                        </choose>
                       </when>
                     </choose>
 
