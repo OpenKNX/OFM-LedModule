@@ -92,6 +92,14 @@
               <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
               </Parameter>-->
 
+              <Union SizeInBit="16">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%032" Name="ManualMode_%C%"         ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Manueller Modus aktivieren" Value="0" />
+                <!-- 5 bits free -->
+                <Parameter Id="%AID%_UP-%TT%%CC%033" Name="ManualModeChangeToAuto_%C%" ParameterType="%AID%_PT-ManualModeChangeToAuto" Offset="0" BitOffset="6" Text="Umschaltung auf Automatik" Value="2" />
+                <Parameter Id="%AID%_UP-%TT%%CC%034" Name="ManualModeDimmingValue_%C%" ParameterType="%AID%_PT-Percent" Offset="2" BitOffset="0" Text="Dimmwert bei An" Value="100" SuffixText="%" />
+              </Union>
+
               <Parameter Id="%AID%_P-%TT%%CC%027" Name="SceneType01_%C%"           ParameterType="%AID%_PT-SceneType" Text="Typ" Value="0" />
               <Parameter Id="%AID%_P-%TT%%CC%028" Name="SceneType2_%C%"            ParameterType="%AID%_PT-SceneType" Text="Typ" Value="0" />
               <Parameter Id="%AID%_P-%TT%%CC%029" Name="SceneType3_%C%"            ParameterType="%AID%_PT-SceneType" Text="Typ" Value="0" />
@@ -140,6 +148,9 @@
               <ParameterRef Id="%AID%_P-%TT%%CC%029_R-%TT%%CC%02901" RefId="%AID%_P-%TT%%CC%029" />
               <ParameterRef Id="%AID%_P-%TT%%CC%030_R-%TT%%CC%03001" RefId="%AID%_P-%TT%%CC%030" />
               <ParameterRef Id="%AID%_P-%TT%%CC%031_R-%TT%%CC%03101" RefId="%AID%_P-%TT%%CC%031" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201" RefId="%AID%_UP-%TT%%CC%032" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301" RefId="%AID%_UP-%TT%%CC%033" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401" RefId="%AID%_UP-%TT%%CC%034" />
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_RGB_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefRGB']/*" />
@@ -246,6 +257,18 @@
                       </when>
                     </choose>
                     <!-- <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" /> <a!a-a- Color RGB -->
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                                        
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Manueller Modus" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201">
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401" IndentLevel="1" />
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301" IndentLevel="1" />
+                      </when>
+                    </choose>
+
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Sonstige Konfiguration" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%011_R-%TT%%CC%01101" IndentLevel="1" /> <!-- DimCurve -->

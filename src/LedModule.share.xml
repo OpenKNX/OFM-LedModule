@@ -7,19 +7,19 @@
       <ApplicationPrograms>
         <ApplicationProgram>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_SC" instances="16">
+          <op:part href="ChannelActivation.part.xml" name="LED_SC" instances="6">
             <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
             <op:param name="%TT%" value="21" increment="0" digits="2" /> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
           </op:part>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_TW" instances="8">
+          <op:part href="ChannelActivation.part.xml" name="LED_TW" instances="3">
             <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
             <op:param name="%TT%" value="22" increment="0" digits="2" /> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
           </op:part>
 
-          <op:part href="ChannelActivation.part.xml" name="LED_RGB" instances="4">
+          <op:part href="ChannelActivation.part.xml" name="LED_RGB" instances="2">
             <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
             <op:param name="%TT%" value="23" increment="0" digits="2" /> <!-- Module Type -->
             <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
@@ -128,6 +128,15 @@
 
               <ParameterType Id="%AID%_PT-MinVoltage" Name="MinVoltage">
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="48" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ManualModeChangeToAuto" Name="ManualModeChangeToAuto">
+                <TypeRestriction Base="Value" SizeInBit="2" UIHint="DropDown">
+                  <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Nach Zeit" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Bei langem Tastendruck (> 3 Sek.)" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Bei langem Tastendruck (> 3 Sek.) oder nach Zeit" Value="3" Id="%ENID%" />
+                </TypeRestriction>
               </ParameterType>
 
             </ParameterTypes>
