@@ -46,7 +46,7 @@ void LedModule::setup(bool configured)
     logInfoP("Setup0");
     logIndentUp();
     setupCustomFlash();
-    setupTemperatureSensor();
+    setupFrontPlate();
     setupVoltageMeasurement();
     setupChannels();
     logIndentDown();
@@ -116,12 +116,24 @@ void LedModule::setupChannels()
     }
 }
 
-void LedModule::setupTemperatureSensor()
+void LedModule::setupFrontPlate()
 {
-#ifdef OPENKNX_LED_TEMPSENS_ADDR    
-    OPENKNX_LED_TEMPSENS_WIRE.setSCL(OPENKNX_LED_TEMPSENS_PIN_SCL);
-    OPENKNX_LED_TEMPSENS_WIRE.setSDA(OPENKNX_LED_TEMPSENS_PIN_SDA);
-    OPENKNX_LED_TEMPSENS_WIRE.begin();
+#ifdef LEDMODULE_FRONT_PLATE_USED
+    for (uint8_t i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
+    {
+        openknxGPIOModule.pinMode(0x0100 + i, OUTPUT);
+        openknxGPIOModule.digitalWrite(0x0100 + i, LOW);
+
+        openknxGPIOModule.pinMode(0x0200 + i, INPUT);
+    }
+#endif
+
+#ifndef OPENKNX_GPIO_NUM
+    // Wire is initialized by GPIO module, when used
+    OPENKNX_GPIO_WIRE.setSDA(OPENKNX_GPIO_SDA);
+    OPENKNX_GPIO_WIRE.setSCL(OPENKNX_GPIO_SCL);
+    OPENKNX_GPIO_WIRE.begin();
+    OPENKNX_GPIO_WIRE.setClock(OPENKNX_GPIO_CLOCK);
 #endif
 }
 

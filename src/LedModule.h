@@ -17,6 +17,9 @@
 #ifdef LEDMODULE_DIMMMER_WS
   #include "HWDimmerWS.h"
 #endif
+#ifdef OPENKNX_GPIO_NUM
+  #include "GPIOModule.h"
+#endif
 #include "LedModuleConfig.h"
 #include "SingleChannel.h"
 #include "TWChannel.h"
@@ -40,12 +43,12 @@ class LedModule : public OpenKNX::Module
     RGBChannel *_rgbChannels[LED_RGB_ChannelCount];
 
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
-    Generic_LM75_9_to_12Bit_OneShot _temperature = Generic_LM75_9_to_12Bit_OneShot(OPENKNX_LED_TEMPSENS_ADDR);
+    Generic_LM75_9_to_12Bit_OneShot _temperature = Generic_LM75_9_to_12Bit_OneShot(&OPENKNX_GPIO_WIRE, OPENKNX_LED_TEMPSENS_ADDR);
 #endif
 
     void setupCustomFlash();
     void setupChannels();
-    void setupTemperatureSensor();
+    void setupFrontPlate();
     void setupVoltageMeasurement();
 
   public:
