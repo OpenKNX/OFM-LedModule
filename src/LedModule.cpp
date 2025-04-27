@@ -46,6 +46,7 @@ void LedModule::setup(bool configured)
     logInfoP("Setup0");
     logIndentUp();
     setupCustomFlash();
+    setupTemperatureSensor();
     setupChannels();
     logIndentDown();
 }
@@ -114,6 +115,15 @@ void LedModule::setupChannels()
     }
 }
 
+void LedModule::setupTemperatureSensor()
+{
+#ifdef OPENKNX_LED_TEMPSENS_ADDR    
+    OPENKNX_LED_TEMPSENS_WIRE.setSCL(OPENKNX_LED_TEMPSENS_PIN_SCL);
+    OPENKNX_LED_TEMPSENS_WIRE.setSDA(OPENKNX_LED_TEMPSENS_PIN_SDA);
+    OPENKNX_LED_TEMPSENS_WIRE.begin();
+#endif
+}
+
 void LedModule::setupCustomFlash()
 {
     logDebugP("initialize ledModule flash");
@@ -145,6 +155,13 @@ void LedModule::loop(bool configured)
     if (delayCheck(_timer1, 5100))
     {
         logDebugP("Loop0");
+
+#ifdef OPENKNX_LED_TEMPSENS_ADDR
+        logIndentUp();
+        logDebugP("Temperature: %.2f°C", _temperature.readTemperatureC());
+        logIndentDown();
+#endif
+
         _timer1 = millis();
     }
 

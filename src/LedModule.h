@@ -4,6 +4,9 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 #include <Adafruit_NeoPixel.h>
+#ifdef OPENKNX_LED_TEMPSENS_ADDR
+  #include <Temperature_LM75_Derived.h>
+#endif
 #include "HWDimmer.h"
 #if defined(LEDMODULE_DIMMER_PCA9685)
   #include "HWDimmerPCA.h"
@@ -36,8 +39,13 @@ class LedModule : public OpenKNX::Module
     TWChannel *_twChannels[LED_TW_ChannelCount];
     RGBChannel *_rgbChannels[LED_RGB_ChannelCount];
 
+#ifdef OPENKNX_LED_TEMPSENS_ADDR
+    Generic_LM75_9_to_12Bit_OneShot _temperature = Generic_LM75_9_to_12Bit_OneShot(OPENKNX_LED_TEMPSENS_ADDR);
+#endif
+
     void setupCustomFlash();
     void setupChannels();
+    void setupTemperatureSensor();
 
   public:
     void loop(bool configured) override;
