@@ -147,21 +147,19 @@
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaldefinition" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" IndentLevel="1" /> <!-- ChannelName -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Zeitverhalten" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%003_R-%TT%%CC%00301" IndentLevel="1" /> <!-- DimTimeDay -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%006_R-%TT%%CC%00601" IndentLevel="1" /> <!-- DimTimeFactorDay -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%004_R-%TT%%CC%00401" IndentLevel="1" /> <!-- DimTimeNight -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%007_R-%TT%%CC%00701" IndentLevel="1" /> <!-- DimTimeFactorNight -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%005_R-%TT%%CC%00501" IndentLevel="1" /> <!-- DimTimeRel -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Maximalwerte" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%008_R-%TT%%CC%00801" IndentLevel="1" /> <!-- DimMin -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901" IndentLevel="1" /> <!-- DimMaxDay -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%010_R-%TT%%CC%01001" IndentLevel="1" /> <!-- DimMaxNight -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Manueller Modus" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="1" />
                     <choose ParamRefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701">
@@ -171,11 +169,10 @@
                       </when>
                     </choose>
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Sonstige Konfiguration" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%011_R-%TT%%CC%01101" IndentLevel="1" /> <!-- DimCurve -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%015_R-%TT%%CC%01501" IndentLevel="1" /> <!-- Startup -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Treppenlicht" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%012_R-%TT%%CC%01201" IndentLevel="1" /> <!-- Stairway -->
                     <choose ParamRefId="%AID%_P-%TT%%CC%012_R-%TT%%CC%01201">
@@ -184,7 +181,7 @@
                         <ParameterRefRef RefId="%AID%_P-%TT%%CC%014_R-%TT%%CC%01401" IndentLevel="1" /> <!-- StairwayTrigger -->
                       </when>
                     </choose>
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Scenen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" IndentLevel="1" /> <!-- Scene -->
                     <choose ParamRefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601">
