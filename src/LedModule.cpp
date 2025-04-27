@@ -144,7 +144,7 @@ void LedModule::loop(bool configured)
 {
     if (delayCheck(_timer1, 5100))
     {
-        logInfoP("Loop0");
+        logDebugP("Loop0");
         _timer1 = millis();
     }
 
@@ -167,18 +167,29 @@ void LedModule::loop(bool configured)
 
     if (knx.configured())
     {
-        for (int i = 0; i < LED_SC_ChannelCount; i++)
+        uint8_t currentChannel = 0;
+        uint8_t processed = 0;
+        do
         {
-            _singleChannels[i]->loop();
+            _singleChannels[currentChannel]->loop();
         }
-        for (int i = 0; i < LED_TW_ChannelCount; i++)
+        while (openknx.freeLoopIterate(LED_SC_ChannelCount, currentChannel, processed));
+
+        currentChannel = 0;
+        processed = 0;
+        do
         {
-            _twChannels[i]->loop();
+            _twChannels[currentChannel]->loop();
         }
-        for (int i = 0; i < LED_RGB_ChannelCount; i++)
+        while (openknx.freeLoopIterate(LED_TW_ChannelCount, currentChannel, processed));
+
+        currentChannel = 0;
+        processed = 0;
+        do
         {
-            _rgbChannels[i]->loop();
+            _rgbChannels[currentChannel]->loop();
         }
+        while (openknx.freeLoopIterate(LED_RGB_ChannelCount, currentChannel, processed));
     }
 }
 
