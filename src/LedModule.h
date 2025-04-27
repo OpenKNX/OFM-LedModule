@@ -8,13 +8,13 @@
   #include <Temperature_LM75_Derived.h>
 #endif
 #include "HWDimmer.h"
-#if defined(LEDMODULE_DIMMER_PCA9685)
+#ifdef LEDMODULE_DIMMER_PCA9685
   #include "HWDimmerPCA.h"
 #endif
-#if defined(LEDMODULE_DIMMMER_RP2040)
+#ifdef LEDMODULE_DIMMMER_RP2040
   #include "HWDimmerRP2040.h"
 #endif
-#if defined(LEDMODULE_DIMMMER_WS)
+#ifdef LEDMODULE_DIMMMER_WS
   #include "HWDimmerWS.h"
 #endif
 #include "LedModuleConfig.h"
@@ -28,7 +28,7 @@ class LedModule : public OpenKNX::Module
     uint32_t _timer1 = 0;
     uint32_t _timer2 = 0;
     uint32_t _timerCheckConnection = 0;
-    bool doResetPwm = false;
+    bool _doResetPwm = false;
 
     OpenKNX::Flash::Driver *_ledStorage = nullptr;
     HWDimmer *_pDimmer;

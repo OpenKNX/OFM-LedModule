@@ -184,14 +184,14 @@ void LedModule::loop(bool configured)
         // If PWM side of the Adum1251 has no power and power returns, the PWM lib is not initialized
         if (!_pDimmer->checkConnection())
         {
-            if (doResetPwm)
+            if (_doResetPwm)
             {
                 _pDimmer->reconnect();
             }
         }
         else
         {
-            doResetPwm = true;
+            _doResetPwm = true;
         }
         _timerCheckConnection = millis();
     }
