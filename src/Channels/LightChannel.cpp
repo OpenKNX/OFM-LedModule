@@ -58,20 +58,12 @@ void LightChannel::processFrontInput(bool frontControlEnabled)
         buttonPressed |= openknxGPIOModule.digitalRead(OPENKNX_LED_GPIO_INPUT_OFFSET + channelIndex) == OPENKNX_LED_GPIO_INPUT_ACTIVE_ON;
     }
 
-    if (buttonPressed)
+    if (buttonPressed &&
+        delayCheck(_currentManualModeLastChange, LED_OUTPUT_DEBOUNCE))
     {
-        if (_currentManualMode)
-        {
-            _currentManualModeOn = !_currentManualModeOn;
-            //logDebugP("processInput: manual mode button toggle (_currentManualMode: %u, buttonPressed: %u, _currentButtonPressed: %u)", _currentManualMode, buttonPressed, _currentButtonPressed);
-        }
-        else
-        {
-            _currentManualMode = true;
-            _currentManualModeOn = true;
-            _currentManualModeStarted = delayTimerInit();
-            //logDebugP("processInput: manual mode button on (_currentManualMode: %u, buttonPressed: %u, _currentButtonPressed: %u)", _currentManualMode, buttonPressed, _currentButtonPressed);
-        }
+        _currentManualMode = !_currentManualMode;
+        _currentManualModeLastChange = delayTimerInit();
+        logDebugP("processInput: manual mode button toggle (_currentManualMode: %u)", _currentManualMode);
     }
 #endif
 }
@@ -86,11 +78,8 @@ void LightChannel::processFrontOutput()
 
         if (_currentManualMode)
         {
-            if (_currentManualModeOn)
-            {
-                ledOnPercent = 1;
-                ledOnTime = LED_OUTPUT_LED_PHASE;
-            }
+            ledOnPercent = 1;
+            ledOnTime = LED_OUTPUT_LED_PHASE;
         }
         else
         {
@@ -123,7 +112,7 @@ void LightChannel::processFrontOutput()
         if (_currentLedOnTime[i] != ledOnTime)
         {
             _currentLedOnTime[i] = ledOnTime;
-            logDebugP("processOutput (ledOnPercent: %.2f, ledOnTime: %u)", ledOnPercent, ledOnTime);
+            logDebugP("processOutput (channel: %u, ledOnPercent: %.2f, ledOnTime: %u)", i, ledOnPercent, ledOnTime);
         }
     }
 #endif

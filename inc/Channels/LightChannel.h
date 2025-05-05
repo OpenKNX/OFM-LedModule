@@ -15,12 +15,7 @@
 #define BRIGHTNESS_MAX UINT8_MAX
 
 #define LED_OUTPUT_LED_PHASE 3000
-
-#define LED_MANUAL_MODE_CHANGE_TO_AUTO_DISABLED 0
-#define LED_MANUAL_MODE_CHANGE_TO_AUTO_TIME 1
-#define LED_MANUAL_MODE_CHANGE_TO_AUTO_BUTTON 2
-#define LED_MANUAL_MODE_CHANGE_TO_AUTO_BUTTON_TIME 3
-#define LED_MANUAL_MODE_CHANGE_TO_AUTO_TIME_DELAY 3000
+#define LED_OUTPUT_DEBOUNCE 250
 
 class LightChannel : public OpenKNX::Channel
 {
@@ -167,8 +162,7 @@ class LightChannel : public OpenKNX::Channel
     const std::string name() override;
 
     bool _currentManualMode = false;
-    bool _currentManualModeOn = false;
-    uint32_t _currentManualModeStarted = 0;
+    uint32_t _currentManualModeLastChange = 0;
 
     bool _currentLedOn[LEDMODULE_MAX_LIGHT_CHANNELS] = {false};
     uint32_t _currentLedOnTime[LEDMODULE_MAX_LIGHT_CHANNELS] = {0};
