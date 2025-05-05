@@ -39,9 +39,10 @@ class RGBChannel : public LightChannel
     void setRGB(uint32_t RGBvalue);
     void setHSV(uint32_t HSVvalue);
     uint32_t conv_Temp2RGB(int _temp);
-
+  
   private:
     const std::string name() override;
+    void processFrontInput();
 
     uint16_t _lastHueValue = 0;
     uint16_t _lastSatValue = 0;

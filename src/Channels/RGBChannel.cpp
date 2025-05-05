@@ -102,11 +102,18 @@ void RGBChannel::loop()
             _saturation.setTargetValue(1024, millis(), ParamLED_RGB_ColorTimeNight_);
             logInfoP("hue_val:%5X%", _hue.value());
         }*/
+
+    processFrontInput();
 }
 
 bool RGBChannel::RGB_night()
 {
     return _rgb_night;
+}
+
+void RGBChannel::processFrontInput()
+{
+    LightChannel::processFrontInput(ParamLED_RGB_FrontControl_);
 }
 
 void RGBChannel::processInputKo(GroupObject& ko)

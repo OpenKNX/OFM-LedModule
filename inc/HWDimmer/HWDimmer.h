@@ -15,6 +15,10 @@ class HWDimmer
         Log1_5 = 1
     };
 
+    void loop();
+    void processFrontInput();
+    void processFrontOutput();
+
     virtual bool setLevel(uint16_t level, uint8_t channel);
     virtual uint16_t getLevel(uint8_t channel);
     virtual uint16_t scale(uint8_t level, HWDimmer::DimLUTType lutType) = 0;

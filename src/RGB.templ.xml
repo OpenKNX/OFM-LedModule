@@ -94,12 +94,9 @@
 
               <Union SizeInBit="32">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%032" Name="ManualMode_%C%"         ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Manueller Modus aktivieren" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%032" Name="FrontControl_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung aktivieren" Value="0" />
                 <!-- 5 bits free -->
-                <Parameter Id="%AID%_UP-%TT%%CC%033" Name="ManualModeChangeToAuto_%C%" ParameterType="%AID%_PT-ManualModeChangeToAuto" Offset="0" BitOffset="6" Text="Umschaltung auf Automatik" Value="2" />
-                <Parameter Id="%AID%_UP-%TT%%CC%034" Name="ManualModeDimmingValue_%C%" ParameterType="%AID%_PT-Percent" Offset="2" BitOffset="0" Text="Dimmwert bei An" Value="100" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%%CC%035" Name="ManualModeChangeToAutoBase_%C%" ParameterType="%AID%_PT-DelayBase" Offset="2" BitOffset="0" Text="Zeitbasis" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%036" Name="ManualModeChangeToAutoTime_%C%" ParameterType="%AID%_PT-DelayTime" Offset="2" BitOffset="2" Text="Zeit" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%033" Name="FrontControlColor_%C%"  ParameterType="%AID%_PT-ColorPicker" Offset="0" BitOffset="3" Text="Frontbedienung Farbe" Value="13" />
               </Union>
 
               <Parameter Id="%AID%_P-%TT%%CC%027" Name="SceneType01_%C%"           ParameterType="%AID%_PT-SceneType" Text="Typ" Value="0" />
@@ -152,9 +149,9 @@
               <ParameterRef Id="%AID%_P-%TT%%CC%031_R-%TT%%CC%03101" RefId="%AID%_P-%TT%%CC%031" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201" RefId="%AID%_UP-%TT%%CC%032" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301" RefId="%AID%_UP-%TT%%CC%033" />
-              <ParameterRef Id="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401" RefId="%AID%_UP-%TT%%CC%034" />
+              <!-- <ParameterRef Id="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401" RefId="%AID%_UP-%TT%%CC%034" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%035_R-%TT%%CC%03501" RefId="%AID%_UP-%TT%%CC%035" />
-              <ParameterRef Id="%AID%_UP-%TT%%CC%036_R-%TT%%CC%03601" RefId="%AID%_UP-%TT%%CC%036" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%036_R-%TT%%CC%03601" RefId="%AID%_UP-%TT%%CC%036" /> -->
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_RGB_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefRGB']/*" />
@@ -262,32 +259,11 @@
                     </choose>
                     <!-- <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" /> <a!a-a- Color RGB -->
                                         
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Manueller Modus" UIHint="Headline" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201" IndentLevel="1" />
                     <choose ParamRefId="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201">
                       <when test="1">
-                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401" IndentLevel="1" />
-
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301" IndentLevel="1" />
-                        <choose ParamRefId="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301">
-                          <when test="1 3">
-                            <!-- Status Cyclic pattern -->
-                            <ParameterBlock Id="%AID%_PB-nnn" Name="ManualModeChangeToAuto" Inline="true" Layout="Grid">
-                              <Rows>
-                                <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
-                              </Rows>
-                              <Columns>
-                                <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
-                                <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
-                                <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
-                                <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
-                              </Columns>
-                              <ParameterSeparator Id="%AID%_PS-nnn" Text=" Zeit&#10; (0 = nicht umschalten)" Cell="1,2" />
-                              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%036_R-%TT%%CC%03601" Cell="1,3" />
-                              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%035_R-%TT%%CC%03501" Cell="1,4" />
-                            </ParameterBlock>
-                          </when>
-                        </choose>
                       </when>
                     </choose>
 

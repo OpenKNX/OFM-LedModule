@@ -41,6 +41,102 @@ void LightChannel::loop()
         _lastTimestamp = millis();
         update();
     }
+
+    processFrontOutput();
+}
+
+void LightChannel::processFrontInput(bool frontControlEnabled)
+{
+#ifdef LEDMODULE_FRONT_PLATE_USED
+    if (!frontControlEnabled)
+        return;
+
+    bool buttonPressed = false;
+    for (int i = 0; i < _numChannels; i++)
+    {
+        uint8_t channelIndex = _pHWChannels[i];
+        buttonPressed |= openknxGPIOModule.digitalRead(OPENKNX_LED_GPIO_INPUT_OFFSET + channelIndex) == OPENKNX_LED_GPIO_INPUT_ACTIVE_ON;
+    }
+
+    if (buttonPressed)
+    {
+        if (_currentManualMode)
+        {
+            _currentManualModeOn = !_currentManualModeOn;
+            //logDebugP("processInput: manual mode button toggle (_currentManualMode: %u, buttonPressed: %u, _currentButtonPressed: %u)", _currentManualMode, buttonPressed, _currentButtonPressed);
+        }
+        else
+        {
+            _currentManualMode = true;
+            _currentManualModeOn = true;
+            _currentManualModeStarted = delayTimerInit();
+            //logDebugP("processInput: manual mode button on (_currentManualMode: %u, buttonPressed: %u, _currentButtonPressed: %u)", _currentManualMode, buttonPressed, _currentButtonPressed);
+        }
+    }
+#endif
+}
+
+void LightChannel::processFrontOutput()
+{
+#ifdef LEDMODULE_FRONT_PLATE_USED
+    for (int i = 0; i < _numChannels; i++)
+    {
+        float ledOnPercent = 0;
+        uint32_t ledOnTime = 0;
+
+        if (_currentManualMode)
+        {
+            if (_currentManualModeOn)
+            {
+                ledOnPercent = 1;
+                ledOnTime = LED_OUTPUT_LED_PHASE;
+            }
+        }
+        else
+        {
+            ledOnPercent = _brightness.value() / _brightness.getMax();
+
+            // minimum of 1 % and maximum of 99 % LED on to signal automatic mode
+            if (ledOnPercent < 0.01)
+                ledOnPercent = 0.01;
+            else if (ledOnPercent > 0.99)
+                ledOnPercent = 0.99;
+
+            ledOnTime = round(LED_OUTPUT_LED_PHASE * ledOnPercent);
+        }
+
+        if (ledOnTime == LED_OUTPUT_LED_PHASE)
+        {
+            if (!_currentLedOn)
+                setOutputLed(i, true);
+        }
+        else if (ledOnTime == 0)
+        {
+            if (_currentLedOn)
+                setOutputLed(i, false);
+        }
+        else if (_currentLedOn && delayCheck(_currentLedChangeStarted[i], ledOnTime))
+            setOutputLed(i, false);
+        else if (!_currentLedOn && delayCheck(_currentLedChangeStarted[i], LED_OUTPUT_LED_PHASE - ledOnTime))
+            setOutputLed(i, true);
+
+        if (_currentLedOnTime[i] != ledOnTime)
+        {
+            _currentLedOnTime[i] = ledOnTime;
+            logDebugP("processOutput (ledOnPercent: %.2f, ledOnTime: %u)", ledOnPercent, ledOnTime);
+        }
+    }
+#endif
+}
+
+void LightChannel::setOutputLed(uint8_t hwChannelIndex, bool on)
+{
+#ifdef LEDMODULE_FRONT_PLATE_USED
+    uint8_t channelIndex = _pHWChannels[hwChannelIndex];
+    openknxGPIOModule.digitalWrite(OPENKNX_LED_GPIO_OUTPUT_OFFSET + channelIndex, on ? OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON : !OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON);
+    _currentLedChangeStarted[hwChannelIndex] = delayTimerInit();
+    _currentLedOn[hwChannelIndex] = on;
+#endif
 }
 
 bool LightChannel::getNight()

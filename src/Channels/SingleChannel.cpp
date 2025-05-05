@@ -66,11 +66,18 @@ void SingleChannel::loop()
                         }*/
         }
     }
+
+    processFrontInput();
 }
 
 bool SingleChannel::SC_night()
 {
     return _sc_night;
+}
+
+void SingleChannel::processFrontInput()
+{
+    LightChannel::processFrontInput(ParamLED_SC_FrontControl_);
 }
 
 void SingleChannel::processInputKo(GroupObject& ko)

@@ -5,10 +5,22 @@
 #include "OpenKNX.h"
 #include <Arduino.h>
 
+#ifdef OPENKNX_GPIO_NUM
+#include "GPIOModule.h"
+#endif
+
 #define DIMLOOP_DELAY 20 // ms
 #define UPDATE_DELAY 500 // ms
 #define N_SCENES 8
 #define BRIGHTNESS_MAX UINT8_MAX
+
+#define LED_OUTPUT_LED_PHASE 3000
+
+#define LED_MANUAL_MODE_CHANGE_TO_AUTO_DISABLED 0
+#define LED_MANUAL_MODE_CHANGE_TO_AUTO_TIME 1
+#define LED_MANUAL_MODE_CHANGE_TO_AUTO_BUTTON 2
+#define LED_MANUAL_MODE_CHANGE_TO_AUTO_BUTTON_TIME 3
+#define LED_MANUAL_MODE_CHANGE_TO_AUTO_TIME_DELAY 3000
 
 class LightChannel : public OpenKNX::Channel
 {
@@ -144,9 +156,21 @@ class LightChannel : public OpenKNX::Channel
     DimmableValue<uint8_t> _brightness;
 
     virtual void update() = 0;
+    void processFrontInput(bool frontControlEnabled);
 
     virtual void handleScene(uint8_t sceneNr) = 0;
 
   private:
+    void processFrontOutput();
+    void setOutputLed(uint8_t hwChannelIndex, bool on);
+
     const std::string name() override;
+
+    bool _currentManualMode = false;
+    bool _currentManualModeOn = false;
+    uint32_t _currentManualModeStarted = 0;
+
+    bool _currentLedOn[LEDMODULE_MAX_LIGHT_CHANNELS] = {false};
+    uint32_t _currentLedOnTime[LEDMODULE_MAX_LIGHT_CHANNELS] = {0};
+    uint32_t _currentLedChangeStarted[LEDMODULE_MAX_LIGHT_CHANNELS] = {0};
 };

@@ -76,11 +76,18 @@ void TWChannel::loop()
         }
         _brightness.setTargetValue(0, millis(), dimmingTimeOFF());
     }
+
+    processFrontInput();
 }
 
 bool TWChannel::TW_night()
 {
     return _tw_night;
+}
+
+void TWChannel::processFrontInput()
+{
+    LightChannel::processFrontInput(ParamLED_TW_FrontControl_);
 }
 
 void TWChannel::processInputKo(GroupObject& ko)

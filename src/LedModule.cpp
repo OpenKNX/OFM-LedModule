@@ -233,6 +233,8 @@ void LedModule::loop(bool configured)
             _rgbChannels[currentChannel]->loop();
         }
         while (openknx.freeLoopIterate(LED_RGB_ChannelCount, currentChannel, processed));
+
+        _pDimmer->loop();
     }
 }
 
