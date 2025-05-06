@@ -1,7 +1,7 @@
 #pragma once
 
-#include "HWDimmer.h"
-#include "LightChannel.h"
+#include "HWDimmer\HWDimmer.h"
+#include "Channels\LightChannel.h"
 #include "OpenKNX.h"
 #include <Arduino.h>
 

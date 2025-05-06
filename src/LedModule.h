@@ -7,23 +7,23 @@
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
   #include <Temperature_LM75_Derived.h>
 #endif
-#include "HWDimmer.h"
+#include "HWDimmer\HWDimmer.h"
 #ifdef LEDMODULE_DIMMER_PCA9685
-  #include "HWDimmerPCA.h"
+  #include "HWDimmer\HWDimmerPCA.h"
 #endif
 #ifdef LEDMODULE_DIMMMER_RP2040
-  #include "HWDimmerRP2040.h"
+  #include "HWDimmer\HWDimmerRP2040.h"
 #endif
 #ifdef LEDMODULE_DIMMMER_WS
-  #include "HWDimmerWS.h"
+  #include "HWDimmer\HWDimmerWS.h"
 #endif
 #ifdef OPENKNX_GPIO_NUM
   #include "GPIOModule.h"
 #endif
 #include "LedModuleConfig.h"
-#include "SingleChannel.h"
-#include "TWChannel.h"
-#include "RGBChannel.h"
+#include "Channels\SingleChannel.h"
+#include "Channels\TWChannel.h"
+#include "Channels\RGBChannel.h"
 
 class LedModule : public OpenKNX::Module
 {
