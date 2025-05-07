@@ -34,13 +34,13 @@
               <Parameter Id="%AID%_P-%TT%%CC%007" Name="LightDimmTimeNightOFF_%C%" ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht Off" Value="3000" SuffixText=" ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="9" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%008" Name="BrighnessMin_%C%"          ParameterType="%AID%_PT-MinDim" Text="Helligkeit min" Value="0">
+              <Parameter Id="%AID%_P-%TT%%CC%008" Name="BrighnessMin_%C%"          ParameterType="%AID%_PT-MinDim" Text="Helligkeit min." Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="11" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%009" Name="BrighnessMaxDay_%C%"       ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max (Tag)" Value="255">
+              <Parameter Id="%AID%_P-%TT%%CC%009" Name="BrighnessMaxDay_%C%"       ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Tag)" Value="255">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="12" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%010" Name="BrighnessMaxNight_%C%"     ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max (Nacht)" Value="192">
+              <Parameter Id="%AID%_P-%TT%%CC%010" Name="BrighnessMaxNight_%C%"     ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Nacht)" Value="192">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="13" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%011" Name="DimCurve_%C%"              ParameterType="%AID%_PT-DimCurve" Text="Dimmkurve" Value="0">
@@ -92,12 +92,22 @@
               <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
               </Parameter>-->
 
-              <Union SizeInBit="32">
+              <Parameter Id="%AID%_P-%TT%%CC%032" Name="FrontControl_%C%"              ParameterType="%AID%_PT-OnOffYesNo" Text="Frontbedienung aktivieren" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%032" Name="FrontControl_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung aktivieren" Value="0" />
-                <!-- 5 bits free -->
-                <Parameter Id="%AID%_UP-%TT%%CC%033" Name="FrontControlColor_%C%"  ParameterType="%AID%_PT-ColorPicker" Offset="0" BitOffset="3" Text="Frontbedienung Farbe" Value="13" />
-              </Union>
+              </Parameter>
+              <!-- 2 bits free -->
+              <Parameter Id="%AID%_P-%TT%%CC%033" Name="FrontControlColor_%C%"              ParameterType="%AID%_PT-ColorPicker" Text="Farbe" Value="13">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="3" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%TT%%CC%034" Name="FrontControlColorPicker_%C%"        ParameterType="%AID%_PT-ValueColor" Text="Farbe 3-Byte-RGB" Value="#FFFFFF">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="27" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%TT%%CC%035" Name="FrontControlColorTime_%C%"          ParameterType="%AID%_PT-DimTime" Text="Zeit Farbänderung" Value="10000" SuffixText=" ms">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="30" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%TT%%CC%036" Name="FrontControlColorTemp_%C%"          ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur" Value="4000">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="32" BitOffset="0" />
+              </Parameter>
 
               <Parameter Id="%AID%_P-%TT%%CC%027" Name="SceneType01_%C%"           ParameterType="%AID%_PT-SceneType" Text="Typ" Value="0" />
               <Parameter Id="%AID%_P-%TT%%CC%028" Name="SceneType2_%C%"            ParameterType="%AID%_PT-SceneType" Text="Typ" Value="0" />
@@ -147,11 +157,11 @@
               <ParameterRef Id="%AID%_P-%TT%%CC%029_R-%TT%%CC%02901" RefId="%AID%_P-%TT%%CC%029" />
               <ParameterRef Id="%AID%_P-%TT%%CC%030_R-%TT%%CC%03001" RefId="%AID%_P-%TT%%CC%030" />
               <ParameterRef Id="%AID%_P-%TT%%CC%031_R-%TT%%CC%03101" RefId="%AID%_P-%TT%%CC%031" />
-              <ParameterRef Id="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201" RefId="%AID%_UP-%TT%%CC%032" />
-              <ParameterRef Id="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301" RefId="%AID%_UP-%TT%%CC%033" />
-              <!-- <ParameterRef Id="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401" RefId="%AID%_UP-%TT%%CC%034" />
-              <ParameterRef Id="%AID%_UP-%TT%%CC%035_R-%TT%%CC%03501" RefId="%AID%_UP-%TT%%CC%035" />
-              <ParameterRef Id="%AID%_UP-%TT%%CC%036_R-%TT%%CC%03601" RefId="%AID%_UP-%TT%%CC%036" /> -->
+              <ParameterRef Id="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201" RefId="%AID%_P-%TT%%CC%032" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301" RefId="%AID%_P-%TT%%CC%033" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%034_R-%TT%%CC%03401" RefId="%AID%_P-%TT%%CC%034" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%035_R-%TT%%CC%03501" RefId="%AID%_P-%TT%%CC%035" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%036_R-%TT%%CC%03601" RefId="%AID%_P-%TT%%CC%036" />
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_RGB_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefRGB']/*" />
@@ -236,7 +246,7 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" IndentLevel="1" /> <!-- Color Day -->
                     <choose ParamRefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601">
                       <when test="16">
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%018_R-%TT%%CC%01801" IndentLevel="2" /> <!-- Red Day -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%018_R-%TT%%CC%01801" IndentLevel="2" /> <!-- RGB Day -->
                       </when>
                       <when test="15">
                         <ParameterRefRef RefId="%AID%_P-%TT%%CC%024_R-%TT%%CC%02401" IndentLevel="2" /> <!-- Color Change Time Day -->
@@ -248,7 +258,7 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="1" /> <!-- Color Night -->
                     <choose ParamRefId="%AID%_P-%TT%%CC%017_R-%TT%%CC%01701">
                       <when test="16">
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%021_R-%TT%%CC%02101" IndentLevel="2" /> <!-- Red Night -->
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%021_R-%TT%%CC%02101" IndentLevel="2" /> <!-- RGB Night -->
                       </when>
                       <when test="15">
                         <ParameterRefRef RefId="%AID%_P-%TT%%CC%025_R-%TT%%CC%02501" IndentLevel="2" /> <!-- Color Change Time Night -->
@@ -260,10 +270,21 @@
                     <!-- <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" /> <a!a-a- Color RGB -->
                                         
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201" IndentLevel="1" />
-                    <choose ParamRefId="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201">
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201">
                       <when test="1">
-                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301" IndentLevel="1" />
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301" IndentLevel="1" /> <!-- Color Front -->
+                        <choose ParamRefId="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301">
+                          <when test="16">
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%034_R-%TT%%CC%03401" IndentLevel="2" /> <!-- RGB Front -->
+                          </when>
+                          <when test="15">
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%035_R-%TT%%CC%03501" IndentLevel="2" /> <!-- Color Change Time Front -->
+                          </when>
+                          <when test="17">
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%036_R-%TT%%CC%03601" IndentLevel="2" /> <!-- Color Temperature Front-->
+                          </when>
+                        </choose>
                       </when>
                     </choose>
 

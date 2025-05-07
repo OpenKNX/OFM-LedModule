@@ -225,24 +225,34 @@ uint16_t TWChannel::dimmingTime(bool _switch)
     return _switch ? dimmingTimeON() : dimmingTimeOFF();
 }
 
-uint8_t TWChannel::dimmingValMaxBehavior()
+uint8_t TWChannel::dimmingValStartup()
 {
-    return ParamLED_TW_StartupBehavior_ ? getLastOnValue() : maxDimVal();
+    return ParamLED_TW_StartupBehavior_ ? getLastOnValue() : dimmingValMax();
 }
 
-uint8_t TWChannel::maxDimVal()
+uint8_t TWChannel::dimmingValMax()
 {
     return TW_night() ? ParamLED_TW_BrighnessMaxNight_ : ParamLED_TW_BrighnessMaxDay_;
 }
 
-uint8_t TWChannel::upperTargetValue()
+uint8_t TWChannel::dimmingValTarget(bool _switch)
 {
-    return ParamLED_TW_StartupBehavior_ ? getLastOnValue() : maxDimVal();
+    return _switch ? dimmingValStartup() : 0;
 }
 
-uint8_t TWChannel::dimmingTarget(bool _switch)
+int32_t TWChannel::dimmingTempStartup()
 {
-    return _switch ? dimmingValMaxBehavior() : 0;
+    return ParamLED_TW_StartupBehavior_ ? getLastOnValueTemp() : dimmingTempMax();
+}
+
+int32_t TWChannel::dimmingTempMax()
+{
+    return TW_night() ? ParamLED_TW_ColorTempNight_ : ParamLED_TW_ColorTempDay_;
+}
+
+int32_t TWChannel::dimmingTempTarget(bool _switch)
+{
+    return _switch ? dimmingTempStartup() : 0;
 }
 
 uint16_t TWChannel::checkMinMaxColorTemp(uint16_t colorTemp)
@@ -270,7 +280,8 @@ void TWChannel::setSwitch(bool _switch)
             setStairTime(millis());
             setStairTrigger(1);
         }
-        _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
+        _brightness.setTargetValue(dimmingValTarget(_switch), millis(), dimmingTime(_switch));
+        _colorTemperature.setTargetValue(dimmingTempTarget(_switch), millis(), dimmingTime(_switch));
     }
     else
     {
@@ -284,10 +295,13 @@ void TWChannel::setSwitch(bool _switch)
         else
         {
             setLastOnValue(_brightness.value());
-            _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
+            setLastOnValueTemp(_colorTemperature.value());
+
+            _brightness.setTargetValue(dimmingValTarget(_switch), millis(), dimmingTime(_switch));
         }
     }
-    logDebugP("dimmingTarget: %3X", dimmingTarget(_switch));
+    logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
+    logDebugP("dimmingTempTarget: %3X", dimmingTempTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
 }
 
@@ -300,7 +314,7 @@ void TWChannel::setBrightness(uint8_t _bright)
 void TWChannel::setNight(bool _night)
 {
     _tw_night = _night;
-    _brightness.setRange(ParamLED_TW_BrighnessMin_, maxDimVal());
+    _brightness.setRange(ParamLED_TW_BrighnessMin_, dimmingValMax());
 
     if (!_night)
     {
@@ -325,7 +339,7 @@ void TWChannel::setNight(bool _night)
 void TWChannel::relDimUp()
 {
     logDebugP("relDim_UP");
-    _brightness.setTargetValue(maxDimVal(), millis(), ParamLED_TW_LightDimmTimeRel_);
+    _brightness.setTargetValue(dimmingValMax(), millis(), ParamLED_TW_LightDimmTimeRel_);
 }
 
 void TWChannel::relDimDown()

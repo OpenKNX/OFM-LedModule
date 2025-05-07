@@ -19,12 +19,16 @@ class RGBChannel : public LightChannel
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
     uint16_t dimmingTime(bool _switch);
-    uint8_t dimmingValMaxBehavior();
-    uint8_t maxDimVal();
-    uint8_t upperTargetValue();
-    uint8_t dimmingTarget(bool _switch);
-    uint8_t colorPicker();
+    uint8_t dimmingValStartup();
+    uint8_t dimmingValMax();
+    uint8_t dimmingValTarget(bool _switch);
+    void setStartupColor();
+    uint8_t getDefaultColor();
     uint16_t checkMinMaxColorTemp(uint16_t colorTemp);
+    uint16_t getLastOnValueHue() { return _lastOnValueHue; }
+    void setLastOnValueHue(uint16_t lastOnValueHue) { _lastOnValueHue = lastOnValueHue; }
+    uint16_t getLastOnValueSat() { return _lastOnValueSat; }
+    void setLastOnValueSat(uint16_t lastOnValueSat) { _lastOnValueSat = lastOnValueSat; }
 
     void setSwitch(bool _switch);
     void setHue(uint16_t _hue);
@@ -46,6 +50,9 @@ class RGBChannel : public LightChannel
 
     uint16_t _lastHueValue = 0;
     uint16_t _lastSatValue = 0;
+
+    uint16_t _lastOnValueHue = 0;
+    uint16_t _lastOnValueSat = 0;
 
     DimmableValue<uint16_t> _hue;
     DimmableValue<uint16_t> _saturation;

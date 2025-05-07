@@ -206,24 +206,19 @@ uint16_t SingleChannel::dimmingTime(bool _switch)
     return _switch ? dimmingTimeON() : dimmingTimeOFF();
 }
 
-uint8_t SingleChannel::dimmingValMaxBehavior()
+uint8_t SingleChannel::dimmingValStartup()
 {
-    return ParamLED_SC_StartupBehavior_ ? getLastOnValue() : maxDimVal();
+    return ParamLED_SC_StartupBehavior_ ? getLastOnValue() : dimmingValMax();
 }
 
-uint8_t SingleChannel::maxDimVal()
+uint8_t SingleChannel::dimmingValMax()
 {
     return SC_night() ? ParamLED_SC_BrighnessMaxNight_ : ParamLED_SC_BrighnessMaxDay_;
 }
 
-uint8_t SingleChannel::upperTargetValue()
+uint8_t SingleChannel::dimmingValTarget(bool _switch)
 {
-    return ParamLED_SC_StartupBehavior_ ? getLastOnValue() : maxDimVal();
-}
-
-uint8_t SingleChannel::dimmingTarget(bool _switch)
-{
-    return _switch ? dimmingValMaxBehavior() : 0;
+    return _switch ? dimmingValStartup() : 0;
 }
 
 void SingleChannel::setSwitch(bool _switch)
@@ -238,7 +233,7 @@ void SingleChannel::setSwitch(bool _switch)
             setStairTime(millis());
             setStairTrigger(1);
         }
-        _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
+        _brightness.setTargetValue(dimmingValTarget(_switch), millis(), dimmingTime(_switch));
     }
     else
     {
@@ -252,10 +247,10 @@ void SingleChannel::setSwitch(bool _switch)
         else
         {
             setLastOnValue(_brightness.value());
-            _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
+            _brightness.setTargetValue(dimmingValTarget(_switch), millis(), dimmingTime(_switch));
         }
     }
-    logDebugP("dimmingTarget: %3X", dimmingTarget(_switch));
+    logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
 }
 
@@ -268,7 +263,7 @@ void SingleChannel::setBrightness(uint8_t _bright)
 void SingleChannel::setNight(bool _night)
 {
     _sc_night = _night;
-    _brightness.setRange(ParamLED_SC_BrighnessMin_, maxDimVal());
+    _brightness.setRange(ParamLED_SC_BrighnessMin_, dimmingValMax());
 
     if (!_night)
     {
@@ -293,7 +288,7 @@ void SingleChannel::setNight(bool _night)
 void SingleChannel::relDimUp()
 {
     logDebugP("relDim_UP");
-    _brightness.setTargetValue(maxDimVal(), millis(), ParamLED_SC_LightDimmTimeRel_);
+    _brightness.setTargetValue(dimmingValMax(), millis(), ParamLED_SC_LightDimmTimeRel_);
 }
 
 void SingleChannel::relDimDown()

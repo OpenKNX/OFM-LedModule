@@ -282,27 +282,33 @@ uint16_t RGBChannel::dimmingTime(bool _switch)
     return _switch ? dimmingTimeON() : dimmingTimeOFF();
 }
 
-uint8_t RGBChannel::dimmingValMaxBehavior()
+uint8_t RGBChannel::dimmingValStartup()
 {
-    return ParamLED_RGB_StartupBehavior_ ? getLastOnValue() : maxDimVal();
+    return ParamLED_RGB_StartupBehavior_ ? getLastOnValue() : dimmingValMax();
 }
 
-uint8_t RGBChannel::maxDimVal()
+uint8_t RGBChannel::dimmingValMax()
 {
     return getNight() ? ParamLED_RGB_BrighnessMaxNight_ : ParamLED_RGB_BrighnessMaxDay_;
 }
 
-uint8_t RGBChannel::upperTargetValue()
+uint8_t RGBChannel::dimmingValTarget(bool _switch)
 {
-    return ParamLED_RGB_StartupBehavior_ ? getLastOnValue() : maxDimVal();
+    return _switch ? dimmingValStartup() : 0;
 }
 
-uint8_t RGBChannel::dimmingTarget(bool _switch)
+void RGBChannel::setStartupColor()
 {
-    return _switch ? dimmingValMaxBehavior() : 0;
+    if (ParamLED_RGB_StartupBehavior_)
+    {
+        setHue(getLastOnValueHue());
+        setSaturation(getLastOnValueSat());
+    }
+    else
+        RGBpicker(getDefaultColor());
 }
 
-uint8_t RGBChannel::colorPicker()
+uint8_t RGBChannel::getDefaultColor()
 {
     return getNight() ? ParamLED_RGB_ColorNight_ : ParamLED_RGB_ColorDay_;
 }
@@ -333,8 +339,9 @@ void RGBChannel::setSwitch(bool _switch)
             setStairTime(millis());
             setStairTrigger(1);
         }
-        RGBpicker(colorPicker());
-        _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
+        setStartupColor();
+
+        _brightness.setTargetValue(dimmingValTarget(_switch), millis(), dimmingTime(_switch));
     }
     else
     {
@@ -348,10 +355,13 @@ void RGBChannel::setSwitch(bool _switch)
         else
         {
             setLastOnValue(_brightness.value());
-            _brightness.setTargetValue(dimmingTarget(_switch), millis(), dimmingTime(_switch));
+            setLastOnValueHue(_hue.value());
+            setLastOnValueSat(_saturation.value());
+
+            _brightness.setTargetValue(dimmingValTarget(_switch), millis(), dimmingTime(_switch));
         }
     }
-    logDebugP("dimmingTarget: %3X", dimmingTarget(_switch));
+    logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
 }
 
@@ -380,12 +390,12 @@ void RGBChannel::switchNight(bool _night)
 {
     //_rgb_night = _night;
     setNight(_night);
-    _brightness.setRange(ParamLED_RGB_BrighnessMin_, maxDimVal());
+    _brightness.setRange(ParamLED_RGB_BrighnessMin_, dimmingValMax());
 
     if (!getNight())
     {
         logDebugP("Tag");
-        RGBpicker(colorPicker());
+        RGBpicker(getDefaultColor());
         if (_brightness.value() == ParamLED_RGB_BrighnessMaxNight_)
         {
             _brightness.setTargetValue(ParamLED_RGB_BrighnessMaxDay_, millis(), 2 * ParamLED_RGB_LightDimmTimeDayON_);
@@ -394,7 +404,7 @@ void RGBChannel::switchNight(bool _night)
     else
     {
         logDebugP("Nacht");
-        RGBpicker(colorPicker());
+        RGBpicker(getDefaultColor());
         if (_brightness.value() > ParamLED_RGB_BrighnessMaxNight_)
         {
             _brightness.setTargetValue(ParamLED_RGB_BrighnessMaxNight_, millis(), 2 * ParamLED_RGB_LightDimmTimeNightON_);
@@ -404,7 +414,7 @@ void RGBChannel::switchNight(bool _night)
 
 void RGBChannel::relDimUp()
 {
-    _brightness.setTargetValue(maxDimVal(), millis(), ParamLED_RGB_LightDimmTimeRel_);
+    _brightness.setTargetValue(dimmingValMax(), millis(), ParamLED_RGB_LightDimmTimeRel_);
 }
 
 void RGBChannel::relDimDown()
@@ -447,7 +457,6 @@ void RGBChannel::setRGB(uint32_t RGBvalue)
     logDebugP("HUE:%05X%", _hue.value());
     logDebugP("SAT:%05X%", _saturation.value());
     logDebugP("BRE:%05X%", _brightness.value());
-    ;
 }
 
 void RGBChannel::RGBpicker(uint8_t _selection)

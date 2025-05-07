@@ -18,10 +18,9 @@ class SingleChannel : public LightChannel
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
     uint16_t dimmingTime(bool _switch);
-    uint8_t dimmingValMaxBehavior();
-    uint8_t maxDimVal();
-    uint8_t upperTargetValue();
-    uint8_t dimmingTarget(bool _switch);
+    uint8_t dimmingValStartup();
+    uint8_t dimmingValMax();
+    uint8_t dimmingValTarget(bool _switch);
     
 
     void setSwitch(bool _switch);
