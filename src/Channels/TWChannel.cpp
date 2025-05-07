@@ -50,7 +50,7 @@ void TWChannel::loop()
     if (delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
     {
         _lastDimTimestamp = millis();
-        uint16_t brightValue = _pDimmer->scale(_brightness.step(_lastDimTimestamp), HWDimmer::DimLUTType::Log1_5);
+        uint16_t brightValue = _pDimmer->scale(_brightness.step(_lastDimTimestamp), (HWDimmer::DimLUTType)ParamLED_TW_DimCurve_);
         uint16_t colorTempValue = _colorTemperature.step(_lastDimTimestamp);
 
         uint16_t ww = ((uint32_t)brightValue * (colorTempValue - ParamLED_TW_ColorTempWW_)) / (ParamLED_TW_ColorTempCW_ - ParamLED_TW_ColorTempWW_);

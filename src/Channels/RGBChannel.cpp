@@ -62,15 +62,15 @@ void RGBChannel::loop()
 
         if (_pHWChannels[0] < LED_ChannelCount)
         {
-            _pDimmer->setLevel(_pDimmer->scale(rgb.Red(), HWDimmer::DimLUTType::Log1_5), _pHWChannels[0]);
+            _pDimmer->setLevel(_pDimmer->scale(rgb.Red(), (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_), _pHWChannels[0]);
         }
         if (_pHWChannels[1] < LED_ChannelCount)
         {
-            _pDimmer->setLevel(_pDimmer->scale(rgb.Green(), HWDimmer::DimLUTType::Log1_5), _pHWChannels[1]);
+            _pDimmer->setLevel(_pDimmer->scale(rgb.Green(), (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_), _pHWChannels[1]);
         }
         if (_pHWChannels[2] < LED_ChannelCount)
         {
-            _pDimmer->setLevel(_pDimmer->scale(rgb.Blue(), HWDimmer::DimLUTType::Log1_5), _pHWChannels[2]);
+            _pDimmer->setLevel(_pDimmer->scale(rgb.Blue(), (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_), _pHWChannels[2]);
         }
     }
     // Stairway Timeout

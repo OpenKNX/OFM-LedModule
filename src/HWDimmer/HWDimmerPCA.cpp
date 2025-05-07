@@ -137,6 +137,6 @@ void HWDimmerPCA::reconnect()
 
 /**
  * @brief Linear lookup tables to map 255% level to PCA driver levels
- *  0: Linear, 1: logarithmic x^1.5
+ *  0: Linear, 1: logarithmic x^1.5, 2: logarithmic x^2
  */
-HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.5)};
+HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.5), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 2)};

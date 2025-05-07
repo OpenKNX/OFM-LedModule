@@ -43,7 +43,7 @@
               <Parameter Id="%AID%_P-%TT%%CC%010" Name="BrighnessMaxNight_%C%"     ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Nacht)" Value="192">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="12" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%011" Name="DimCurve_%C%"              ParameterType="%AID%_PT-DimCurve" Text="Dimmkurve" Value="0">
+              <Parameter Id="%AID%_P-%TT%%CC%011" Name="DimCurve_%C%"              ParameterType="%AID%_PT-DimCurve" Text="Dimmkurve" Value="1">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="13" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%012" Name="StairCaseActive_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Text="Treppenlichtfunktion" Value="0">

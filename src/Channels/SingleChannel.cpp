@@ -44,7 +44,7 @@ void SingleChannel::loop()
         if (delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
         {
             _lastDimTimestamp = millis();
-            _pDimmer->setLevel(_pDimmer->scale(_brightness.step(_lastDimTimestamp), HWDimmer::DimLUTType::Log1_5), _pHWChannels[0]);
+            _pDimmer->setLevel(_pDimmer->scale(_brightness.step(_lastDimTimestamp), (HWDimmer::DimLUTType)ParamLED_SC_DimCurve_), _pHWChannels[0]);
         }
         // Stairway Timeout
         if (((getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())

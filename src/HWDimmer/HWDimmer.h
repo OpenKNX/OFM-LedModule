@@ -65,5 +65,5 @@ class HWDimmer
         uint16_t len;
     };
 
-    static LUT<VALUE_KNX_COUNT> dimLUT[2];
+    static LUT<VALUE_KNX_COUNT> dimLUT[3];
 };
