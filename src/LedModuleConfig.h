@@ -12,11 +12,6 @@
     #warning LEDMODULE_MAX_LIGHT_CHANNELS not defined, using default value (1)
 #endif
 
-#ifndef LEDMODULE_PWM_FREQ
-    #define LEDMODULE_PWM_FREQ 1000
-    #warning LEDMODULE_PWM_FREQ not defined, using default value (1000)
-#endif
-
 #ifndef LEDMODULE_WIRE
     #define LEDMODULE_WIRE Wire1
     #ifdef LEDMODULE_DIMMER_PCA9685 // only show warning when using PCA dimmer

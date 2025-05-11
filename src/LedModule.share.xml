@@ -31,6 +31,36 @@
 
           <Static>
             <ParameterTypes>
+              <ParameterType Id="%AID%_PT-HardwareVariantAB" Name="HardwareVariantAB">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Constant Voltage, Unterputz, 6-fach" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Constant Voltage, REG, 12-fach" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Constant Current, Unterputz, 8-fach" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Constant Current, Unterputz, 16-fach" Value="3" Id="%ENID%" />
+                  <Enumeration Text="Constant Current, REG, 12-fach" Value="4" Id="%ENID%" />
+                  <!-- 1 bits left -->
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-DimmerCcType" Name="DimmerCcType">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Text="Hybrides dimmen (analog/PWM)" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Reines PWM dimmen" Value="1" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-PwmFrequency" Name="PwmFrequency">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="200 Hz" Value="0" Id="%ENID%" />
+                  <Enumeration Text="400 Hz" Value="1" Id="%ENID%" />
+                  <Enumeration Text="600 Hz" Value="2" Id="%ENID%" />
+                  <Enumeration Text="800 Hz" Value="3" Id="%ENID%" />
+                  <Enumeration Text="1000 Hz" Value="4" Id="%ENID%" />
+                  <Enumeration Text="1200 Hz" Value="5" Id="%ENID%" />
+                  <!-- 1 bit left -->
+                </TypeRestriction>
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-Lighttype" Name="Lighttype">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
@@ -133,10 +163,21 @@
             </ParameterTypes>
 
             <Parameters>
-              <Union SizeInBit="32">
+              <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%00001" Name="FrontControlAvailable"        ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung verfügbar (REG-Geräte)" Value="0" />
-                <!-- 6 bits free -->
+                <Parameter Id="%AID%_UP-%TT%00001" Name="HardwareVariantAB"            ParameterType="%AID%_PT-HardwareVariantAB" Offset="0" BitOffset="0" Text="Hardware-Variante" Value="0" />
+                <!-- 2 bits free -->
+                <Parameter Id="%AID%_UP-%TT%00006" Name="DimmerCcType"                 ParameterType="%AID%_PT-DimmerCcType" Offset="0" BitOffset="6" Text="Dimmart Constant Current" Value="0" />
+                <!-- 1 bit free -->
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00007" Name="PwmFrequency"                 ParameterType="%AID%_PT-PwmFrequency" Offset="0" BitOffset="0" Text="PWM-Frequenz" Value="4" />
+                <!-- 4 bits free -->
+              </Union>
+              <Union SizeInBit="32">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="2" BitOffset="0" />
+                <!-- 7 bits free -->
                 <Parameter Id="%AID%_UP-%TT%00002" Name="PowerSupplyRelay"             ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="7" Text="Externes Netzteil-Relais" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%00003" Name="PowerSupplyRelayMinVoltage"   ParameterType="%AID%_PT-MinVoltage" Offset="1" BitOffset="0" Text="Dimmstart bei" Value="46" SuffixText="V" />
                 <Parameter Id="%AID%_UP-%TT%00004" Name="PowerSupplyRelayOffDelayBase" ParameterType="%AID%_PT-DelayBase" Offset="2" BitOffset="0" Text="Zeitbasis" Value="0" />
@@ -150,6 +191,8 @@
               <ParameterRef Id="%AID%_UP-%TT%00003_R-%TT%0000301" RefId="%AID%_UP-%TT%00003" />
               <ParameterRef Id="%AID%_UP-%TT%00004_R-%TT%0000401" RefId="%AID%_UP-%TT%00004" />
               <ParameterRef Id="%AID%_UP-%TT%00005_R-%TT%0000501" RefId="%AID%_UP-%TT%00005" />
+              <ParameterRef Id="%AID%_UP-%TT%00006_R-%TT%0000601" RefId="%AID%_UP-%TT%00006" />
+              <ParameterRef Id="%AID%_UP-%TT%00007_R-%TT%0000701" RefId="%AID%_UP-%TT%00007" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -178,6 +221,14 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
 
+                <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
+                  <when test="!=%HardwareAB%">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" /> <!-- AB-SmartHouse: Hardware Variant -->
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                  </when>
+                </choose>
+
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline" />
                 <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table">
                   <Rows>
@@ -191,11 +242,18 @@
                   <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTable']/*" prefix="LED" type="template" IsInner="true" />
                 </ParameterBlock>
 
-                <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101"> <!-- Modul Type -->
-                  <when test="3"> <!-- AB-SmartHouse -->
+                <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
+                  <when test="!=%HardwareAB%">
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Weitere Einstellungen" UIHint="Headline"/>
-                    <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" /> <!-- Front Control Available -->
+                    <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
+                      <when test="0 1"> <!-- AB-SmartHouse: CV variant -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00007_R-%TT%0000701" IndentLevel="1" /> <!-- PWM Frequency -->
+                      </when>
+                      <when test="2 3 4"> <!-- AB-SmartHouse: CC variant -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00006_R-%TT%0000601" IndentLevel="1" /> <!-- Dimmer CC Type -->
+                      </when>
+                    </choose>
 
                     <ParameterRefRef RefId="%AID%_UP-%TT%00002_R-%TT%0000201" IndentLevel="1" /> <!-- Power Supply Relay -->
                     <choose ParamRefId="%AID%_UP-%TT%00002_R-%TT%0000201">

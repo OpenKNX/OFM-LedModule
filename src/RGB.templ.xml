@@ -270,7 +270,7 @@
                     <!-- <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" /> <a!a-a- Color RGB -->
                                         
                     <choose ParamRefId="%AID%_UP-2000001_R-200000101">
-                      <when test="1">
+                      <when test="1 4"> <!-- AB-SmartHouse REG: Front Control Available -->
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
                         <ParameterRefRef RefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201" IndentLevel="1" />
                         <choose ParamRefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201">

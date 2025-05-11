@@ -19,7 +19,7 @@ class HWDimmerPCA : public HWDimmer
             PCA9685,
         };
 
-        HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr);
+        HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFreq);
 
         std::string logPrefix();
         bool setLevel(uint16_t level, uint8_t channel);

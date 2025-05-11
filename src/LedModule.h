@@ -64,7 +64,6 @@ class LedModule : public OpenKNX::Module
     bool processCommand(const std::string cmd, bool diagnoseKo);
     void savePower() override;
     void showHelp() override;
-    void init();
 
     enum LightType
     {

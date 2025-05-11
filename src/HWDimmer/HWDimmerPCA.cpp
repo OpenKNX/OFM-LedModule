@@ -5,7 +5,7 @@
  *
  * @param type PCA dimmer type
  */
-HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr) : HWDimmer(LEDMODULE_MAX_LIGHT_CHANNELS), _addr(addr)
+HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFreq) : HWDimmer(LEDMODULE_MAX_LIGHT_CHANNELS), _addr(addr)
 {
     #ifdef LEDMODULE_WIRE_SDA
         LEDMODULE_WIRE.setSDA(LEDMODULE_WIRE_SDA);
@@ -19,7 +19,7 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr) : HWDimmer(LED
     #endif
     _pwm = Adafruit_PWMServoDriver(_addr, LEDMODULE_WIRE);
     _pwm.begin();
-    _pwm.setPWMFreq(LEDMODULE_PWM_FREQ);
+    _pwm.setPWMFreq(pwmFreq);
     for (uint8_t ch = 0; ch < numChannels; ch++)
     {
         setLevel(0, ch);

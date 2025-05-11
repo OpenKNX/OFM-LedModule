@@ -159,7 +159,7 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%010_R-%TT%%CC%01001" IndentLevel="1" /> <!-- DimMaxNight -->
                     
                     <choose ParamRefId="%AID%_UP-2000001_R-200000101">
-                      <when test="1">
+                      <when test="1 4"> <!-- AB-SmartHouse REG: Front Control Available -->
                         <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="1" />
                         <choose ParamRefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701">

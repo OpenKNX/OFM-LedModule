@@ -15,18 +15,24 @@ const std::string LedModule::version()
     return "";
 }
 
-void LedModule::init()
+void LedModule::setup(bool configured)
 {
-    logDebugP("INIT");
+    if (!configured)
+    {
+        logInfoP("Setup: not configured");
+        return;
+    }
+
+    logInfoP("Init:");
+    logIndentUp();
 
 #if defined(LEDMODULE_DIMMER_PCA9685)
     logInfoP("LEDMODULE_DIMMER_PCA9685");
     _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685, LEDMODULE_PCA_ADDR);
     logInfoP("LEDMODULE_DIMMER_PCA9685 SET");
-
 #else
 #if defined(LEDMODULE_DIMMMER_RP2040)
-    _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, LEDMODULE_PWM_FREQ);
+    _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, ParamLED_PwmFrequency);
     logInfoP("LEDMODULE_DIMMER_RP2040");
 #else
 #if defined(LEDMODULE_DIMMMER_WS)
@@ -38,12 +44,9 @@ void LedModule::init()
 #endif
 #endif
 #endif
-}
+    logIndentDown();
 
-void LedModule::setup(bool configured)
-{
-    delay(1000);
-    logInfoP("Setup0");
+    logInfoP("Setup0:");
     logIndentUp();
     setupCustomFlash();
     setupFrontPlate();
@@ -191,25 +194,25 @@ void LedModule::loop(bool configured)
         _timer1 = millis();
     }
 
-    if (delayCheck(_timerCheckConnection, 500))
-    {
-        // If PWM side of the Adum1251 has no power and power returns, the PWM lib is not initialized
-        if (!_pDimmer->checkConnection())
-        {
-            if (_doResetPwm)
-            {
-                _pDimmer->reconnect();
-            }
-        }
-        else
-        {
-            _doResetPwm = true;
-        }
-        _timerCheckConnection = millis();
-    }
-
     if (knx.configured())
     {
+        if (delayCheck(_timerCheckConnection, 500))
+        {
+            // If PWM side of the Adum1251 has no power and power returns, the PWM lib is not initialized
+            if (!_pDimmer->checkConnection())
+            {
+                if (_doResetPwm)
+                {
+                    _pDimmer->reconnect();
+                }
+            }
+            else
+            {
+                _doResetPwm = true;
+            }
+            _timerCheckConnection = millis();
+        }
+        
         uint8_t currentChannel = 0;
         uint8_t processed = 0;
         do
