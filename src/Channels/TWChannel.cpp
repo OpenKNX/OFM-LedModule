@@ -212,12 +212,12 @@ void TWChannel::handleScene(uint8_t sceneNr)
 
 uint16_t TWChannel::dimmingTimeON()
 {
-    return TW_night() ? ParamLED_TW_LightDimmTimeNightON_ : ParamLED_SC_LightDimmTimeDayON_;
+    return TW_night() ? ParamLED_TW_LightDimmTimeNightON_ : ParamLED_TW_LightDimmTimeDayON_;
 }
 
 uint16_t TWChannel::dimmingTimeOFF()
 {
-    return TW_night() ? ParamLED_TW_LightDimmTimeNightOFF_ : ParamLED_SC_LightDimmTimeDayOFF_;
+    return TW_night() ? ParamLED_TW_LightDimmTimeNightOFF_ : ParamLED_TW_LightDimmTimeDayOFF_;
 }
 
 uint16_t TWChannel::dimmingTime(bool _switch)
@@ -356,6 +356,7 @@ void TWChannel::relDimStop()
 
 void TWChannel::setColorTemperature(uint16_t colorTemp)
 {
+    logDebugP("setColorTemperature (colorTemp=%u)", colorTemp);
     colorTemp = checkMinMaxColorTemp(colorTemp);
     _colorTemperature.setTargetValue(colorTemp, millis(), dimmingTimeON());
 }
