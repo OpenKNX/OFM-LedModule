@@ -95,9 +95,10 @@
                 <TypeRestriction Base="Value" SizeInBit="3">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
                   <Enumeration Text="Wert" Value="1" Id="%ENID%" />
+                  <!-- hidden for now till actually implemented in firmware
                   <Enumeration Text="Funktion" Value="2" Id="%ENID%" />
                   <Enumeration Text="Ablauf" Value="3" Id="%ENID%" />
-                  <Enumeration Text="Sperrobjekt" Value="4" Id="%ENID%" />
+                  <Enumeration Text="Sperrobjekt" Value="4" Id="%ENID%" /> -->
                 </TypeRestriction>
               </ParameterType>
 
