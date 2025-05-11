@@ -9,6 +9,8 @@ TWChannel::TWChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[2])
     _scenes = new SceneConfig[N_SCENES];
     memcpy(_scenes, knx.paramData(LED_TW_ParamCalcIndex(LED_TW_SceneA_Type_)), N_SCENES * sizeof(SceneConfig));
 
+    _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL && hwChannels[1] != LED_INVALID_HW_CHANNEL;
+
 #ifdef EXT_DEBUG_LOG
     logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
     for (int i = 0; i < N_SCENES; i++)
@@ -45,6 +47,9 @@ void TWChannel::update()
 
 void TWChannel::loop()
 {
+    if (!_channelActive)
+        return;
+
     LightChannel::loop();
 
     if (delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))

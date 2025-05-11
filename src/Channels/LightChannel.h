@@ -14,6 +14,8 @@
 #define N_SCENES 8
 #define BRIGHTNESS_MAX UINT8_MAX
 
+#define LED_INVALID_HW_CHANNEL 0xFF
+
 #define LED_OUTPUT_LED_PHASE 3000
 #define LED_OUTPUT_DEBOUNCE 250
 
@@ -137,6 +139,7 @@ class LightChannel : public OpenKNX::Channel
     };
 
   protected:
+    bool _channelActive = false;
     uint8_t _numChannels;
     HWDimmer *_pDimmer;
     uint8_t *_pHWChannels;

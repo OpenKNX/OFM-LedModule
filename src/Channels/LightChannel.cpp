@@ -126,6 +126,7 @@ void LightChannel::setOutputLed(uint8_t hwChannelIndex, bool on)
     openknxGPIOModule.digitalWrite(OPENKNX_LED_GPIO_OUTPUT_OFFSET + channelIndex, on ? OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON : !OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON);
     _currentLedChangeStarted[hwChannelIndex] = delayTimerInit();
     _currentLedOn[hwChannelIndex] = on;
+    //logDebugP("setOutputLed (channel: %u, on: %u)", channelIndex, on);
 #endif
 }
 

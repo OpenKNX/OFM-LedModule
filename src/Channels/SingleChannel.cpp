@@ -9,6 +9,8 @@ SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannel
     _scenes = new SceneConfig[N_SCENES];
     memcpy(_scenes, knx.paramData(LED_SC_ParamCalcIndex(LED_SC_SceneA_Type_)), N_SCENES * sizeof(SceneConfig));
 
+    _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL;
+
 #ifdef EXT_DEBUG_LOG
     logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
     for (int i = 0; i < N_SCENES; i++)
@@ -37,6 +39,9 @@ void SingleChannel::update()
 
 void SingleChannel::loop()
 {
+    if (!_channelActive)
+        return;
+
     LightChannel::loop();
 
     if (_pHWChannels[0] < LED_ChannelCount)
