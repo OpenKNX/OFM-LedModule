@@ -58,16 +58,16 @@
               <Parameter Id="%AID%_P-%TT%%CC%015" Name="StartupBehavior_%C%"       ParameterType="%AID%_PT-StartupBehavior" Text="Einschaltverhalten" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="15" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%016" Name="ColorTempCW_%C%"           ParameterType="%AID%_PT-ColorTemperatureCW" Text="Farbtemperatur Kaltweiss" Value="5000">
+              <Parameter Id="%AID%_P-%TT%%CC%016" Name="ColorTempCW_%C%"           ParameterType="%AID%_PT-ColorTemperatureCW" Text="Farbtemperatur Kaltweiss" Value="5000" SuffixText="K">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="16" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%017" Name="ColorTempWW_%C%"           ParameterType="%AID%_PT-ColorTemperatureWW" Text="Farbtemperatur Warmweiss" Value="3000">
+              <Parameter Id="%AID%_P-%TT%%CC%017" Name="ColorTempWW_%C%"           ParameterType="%AID%_PT-ColorTemperatureWW" Text="Farbtemperatur Warmweiss" Value="3000" SuffixText="K">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="18" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%018" Name="ColorTempDay_%C%"          ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur Tag" Value="4000">
+              <Parameter Id="%AID%_P-%TT%%CC%018" Name="ColorTempDay_%C%"          ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur Tag" Value="4000" SuffixText="K">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="20" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%019" Name="ColorTempNight_%C%"        ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur Nacht" Value="4000">
+              <Parameter Id="%AID%_P-%TT%%CC%019" Name="ColorTempNight_%C%"        ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur Nacht" Value="4000" SuffixText="K">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="22" BitOffset="0" />
               </Parameter>
 
@@ -76,7 +76,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%021" Name="FrontControl_%C%"         ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung aktivieren" Value="0" />
                 <!-- 5 bits free -->
                 <Parameter Id="%AID%_UP-%TT%%CC%022" Name="FrontControlBrightness_%C%" ParameterType="%AID%_PT-ValueDpt5" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="255" />
-                <Parameter Id="%AID%_UP-%TT%%CC%023" Name="FrontControlColorTemp_%C%" ParameterType="%AID%_PT-ColorTemperature" Offset="2" BitOffset="0" Text="Farbtemperatur bei An" Value="4000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%023" Name="FrontControlColorTemp_%C%" ParameterType="%AID%_PT-ColorTemperature" Offset="2" BitOffset="0" Text="Farbtemperatur bei An" Value="4000" SuffixText="K" />
               </Union>
 
               <Parameter Id="%AID%_P-%TT%%CC%020" Name="ScenesActive_%C%"          ParameterType="%AID%_PT-OnOffYesNo" Text="Szenen" Value="0">
