@@ -79,7 +79,11 @@ class LightChannel : public OpenKNX::Channel
         {
             if (isDimming == 1)
             {
-                currentValue = ((int32_t)(timestamp - startTimestamp) * (deltaValue)) / dimDurationAbs + lastValue;
+                if (dimDurationAbs == 0)
+                    currentValue = targetValue;
+                else
+                    currentValue = ((int32_t)(timestamp - startTimestamp) * (deltaValue)) / dimDurationAbs + lastValue;
+                
                 if (deltaValue >= 0 && currentValue >= targetValue || deltaValue < 0 && currentValue <= targetValue)
                 {
                     isDimming = 0;
