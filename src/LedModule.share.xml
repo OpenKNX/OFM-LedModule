@@ -31,15 +31,6 @@
 
           <Static>
             <ParameterTypes>
-              <ParameterType Id="%AID%_PT-DimModule" Name="DimmerModule">
-                <TypeRestriction Base="Value" SizeInBit="2">
-                  <Enumeration Text="LED-UP1-Module" Value="0" Id="%ENID%" />
-                  <Enumeration Text="LED-REG5-Module" Value="1" Id="%ENID%" />
-                  <Enumeration Text="LED-PICO-Module" Value="2" Id="%ENID%" />
-                  <Enumeration Text="AB-SmartHouse CV/CC Dimmer" Value="3" Id="%ENID%" />
-                </TypeRestriction>
-              </ParameterType>
-
               <ParameterType Id="%AID%_PT-Lighttype" Name="Lighttype">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
@@ -142,15 +133,11 @@
             </ParameterTypes>
 
             <Parameters>
-              <Union SizeInBit="8">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%00001" Name="DimmerModule"                 ParameterType="%AID%_PT-DimModule" Offset="0" BitOffset="0" Text="Dimmer-Modul" Value="0" /> <!-- Modul Type -->
-                <!-- 6 bits free -->
-              </Union>
               <Union SizeInBit="32">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%00002" Name="PowerSupplyRelay"             ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Externes Netzteil-Relais" Value="0" />
-                <!-- 7 bits free -->
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00001" Name="FrontControlAvailable"        ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung verfügbar (REG-Geräte)" Value="0" />
+                <!-- 6 bits free -->
+                <Parameter Id="%AID%_UP-%TT%00002" Name="PowerSupplyRelay"             ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="7" Text="Externes Netzteil-Relais" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%00003" Name="PowerSupplyRelayMinVoltage"   ParameterType="%AID%_PT-MinVoltage" Offset="1" BitOffset="0" Text="Dimmstart bei" Value="46" SuffixText="V" />
                 <Parameter Id="%AID%_UP-%TT%00004" Name="PowerSupplyRelayOffDelayBase" ParameterType="%AID%_PT-DelayBase" Offset="2" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%00005" Name="PowerSupplyRelayOffDelayTime" ParameterType="%AID%_PT-DelayTime" Offset="2" BitOffset="2" Text="Zeit" Value="0" />
@@ -191,9 +178,6 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
 
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline" />
-                <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" /> <!-- Modul Type -->
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline" />
                 <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table">
                   <Rows>
@@ -211,6 +195,7 @@
                   <when test="3"> <!-- AB-SmartHouse -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Weitere Einstellungen" UIHint="Headline"/>
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" /> <!-- Front Control Available -->
 
                     <ParameterRefRef RefId="%AID%_UP-%TT%00002_R-%TT%0000201" IndentLevel="1" /> <!-- Power Supply Relay -->
                     <choose ParamRefId="%AID%_UP-%TT%00002_R-%TT%0000201">

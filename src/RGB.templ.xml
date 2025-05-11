@@ -269,20 +269,24 @@
                     </choose>
                     <!-- <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" /> <a!a-a- Color RGB -->
                                         
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201" IndentLevel="1" />
-                    <choose ParamRefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201">
+                    <choose ParamRefId="%AID%_UP-2000001_R-200000101">
                       <when test="1">
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301" IndentLevel="1" /> <!-- Color Front -->
-                        <choose ParamRefId="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301">
-                          <when test="16">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%034_R-%TT%%CC%03401" IndentLevel="2" /> <!-- RGB Front -->
-                          </when>
-                          <when test="15">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%035_R-%TT%%CC%03501" IndentLevel="2" /> <!-- Color Change Time Front -->
-                          </when>
-                          <when test="17">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%036_R-%TT%%CC%03601" IndentLevel="2" /> <!-- Color Temperature Front-->
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
+                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201" IndentLevel="1" />
+                        <choose ParamRefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201">
+                          <when test="1">
+                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301" IndentLevel="1" /> <!-- Color Front -->
+                            <choose ParamRefId="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301">
+                              <when test="16">
+                                <ParameterRefRef RefId="%AID%_P-%TT%%CC%034_R-%TT%%CC%03401" IndentLevel="2" /> <!-- RGB Front -->
+                              </when>
+                              <when test="15">
+                                <ParameterRefRef RefId="%AID%_P-%TT%%CC%035_R-%TT%%CC%03501" IndentLevel="2" /> <!-- Color Change Time Front -->
+                              </when>
+                              <when test="17">
+                                <ParameterRefRef RefId="%AID%_P-%TT%%CC%036_R-%TT%%CC%03601" IndentLevel="2" /> <!-- Color Temperature Front-->
+                              </when>
+                            </choose>
                           </when>
                         </choose>
                       </when>

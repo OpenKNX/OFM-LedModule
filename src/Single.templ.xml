@@ -158,11 +158,15 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901" IndentLevel="1" /> <!-- DimMaxDay -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%010_R-%TT%%CC%01001" IndentLevel="1" /> <!-- DimMaxNight -->
                     
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="1" />
-                    <choose ParamRefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701">
+                    <choose ParamRefId="%AID%_UP-2000001_R-200000101">
                       <when test="1">
-                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" IndentLevel="1" />
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="1" />
+                        <choose ParamRefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701">
+                          <when test="1">
+                            <ParameterRefRef RefId="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" IndentLevel="1" />
+                          </when>
+                        </choose>
                       </when>
                     </choose>
 
