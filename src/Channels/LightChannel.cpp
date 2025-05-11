@@ -97,17 +97,17 @@ void LightChannel::processFrontOutput()
 
         if (ledOnTime == LED_OUTPUT_LED_PHASE)
         {
-            if (!_currentLedOn)
+            if (!_currentLedOn[i])
                 setOutputLed(i, true);
         }
         else if (ledOnTime == 0)
         {
-            if (_currentLedOn)
+            if (_currentLedOn[i])
                 setOutputLed(i, false);
         }
-        else if (_currentLedOn && delayCheck(_currentLedChangeStarted[i], ledOnTime))
+        else if (_currentLedOn[i] && delayCheck(_currentLedChangeStarted[i], ledOnTime))
             setOutputLed(i, false);
-        else if (!_currentLedOn && delayCheck(_currentLedChangeStarted[i], LED_OUTPUT_LED_PHASE - ledOnTime))
+        else if (!_currentLedOn[i] && delayCheck(_currentLedChangeStarted[i], LED_OUTPUT_LED_PHASE - ledOnTime))
             setOutputLed(i, true);
 
         if (_currentLedOnTime[i] != ledOnTime)
