@@ -51,6 +51,7 @@ void LedModule::setup(bool configured)
     setupCustomFlash();
     setupFrontPlate();
     setupVoltageMeasurement();
+    setupConstantCurrentMode();
     setupChannels();
     logIndentDown();
 }
@@ -145,6 +146,14 @@ void LedModule::setupVoltageMeasurement()
 #ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
     pinMode(LEDMODULE_VOLTAGE_MEASURE_PIN, INPUT);
     analogReadResolution(12);
+#endif
+}
+
+void LedModule::setupConstantCurrentMode()
+{
+#ifdef LEDMODULE_DIM_TYPE_PIN
+    pinMode(LEDMODULE_DIM_TYPE_PIN, OUTPUT);
+    digitalWrite(LEDMODULE_DIM_TYPE_PIN, ParamLED_DimmerCcType); // HIGH = PWM-only, LOW = hybrid
 #endif
 }
 

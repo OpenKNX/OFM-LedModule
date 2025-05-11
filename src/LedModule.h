@@ -50,6 +50,7 @@ class LedModule : public OpenKNX::Module
     void setupChannels();
     void setupFrontPlate();
     void setupVoltageMeasurement();
+    void setupConstantCurrentMode();
 
   public:
     void loop(bool configured) override;
