@@ -43,7 +43,7 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-DimmerCcType" Name="DimmerCcType">
-                <TypeRestriction Base="Value" SizeInBit="1">
+                <TypeRestriction Base="Value" SizeInBit="1" UIHint="DropDown">
                   <Enumeration Text="Hybrides dimmen (analog/PWM)" Value="0" Id="%ENID%" />
                   <Enumeration Text="Reines PWM dimmen" Value="1" Id="%ENID%" />
                 </TypeRestriction>
