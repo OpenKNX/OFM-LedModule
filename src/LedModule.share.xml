@@ -166,8 +166,8 @@
             </ParameterRefs>
 
             <ComObjectTable>
-              <ComObject Id="%AID%_O-%TT%00001" Name="PowerSupplyRelay" Number="0" ObjectSize="1 Bit" Text="Externes Netzteil-Relais" FunctionText="Schalten" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
-              <ComObject Id="%AID%_O-%TT%00002" Name="PowerSupplyRelayStatus" Number="1" ObjectSize="1 Bit" Text="Externes Netzteil-Relais" FunctionText="Status" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="%AID%_O-%TT%00001" Name="PowerSupplyRelay" Number="0" ObjectSize="1 Bit" Text="Externes Netzteil-Relais" FunctionText="Anforderung" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="%AID%_O-%TT%00002" Name="PowerSupplyRelayStatus" Number="1" ObjectSize="1 Bit" Text="Externes Netzteil-Relais" FunctionText="Rückmeldung" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
             </ComObjectTable>
 
             <ComObjectRefs>
