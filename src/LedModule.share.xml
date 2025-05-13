@@ -216,7 +216,7 @@
           </Static>
 
           <Dynamic>
-            <Channel Name="MainChannel" Text="Dimmer" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
+            <Channel Name="MainChannel" Text="LED-Dimmer" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
               <ParameterBlock Id="%AID%_PB-nnn" Name="Settings" Text="Allgemein" Icon="cog-outline" ShowInComObjectTree="true">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="LED-Dimmer" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
@@ -225,13 +225,13 @@
                 <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
                   <when test="!=%HardwareAB%">
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" /> <!-- AB-SmartHouse: Hardware Variant -->
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" HelpContext="%DOC%" /> <!-- AB-SmartHouse: Hardware Variant -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                   </when>
                 </choose>
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline" />
-                <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table">
+                <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table" HelpContext="LED-Kanalzuordnung">
                   <Rows>
                     <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='HWChannels']/Rows/*" prefix="LED" type="template" IsInner="true" />
                   </Rows>
@@ -243,25 +243,37 @@
                   <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTable']/*" prefix="LED" type="template" IsInner="true" />
                 </ParameterBlock>
 
+                <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
+                  <when test="0"> <!-- AB-SmartHouse: 6 channels -->
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 6 Kanäle (A-F) verwendet werden." UIHint="Information" />
+                  </when>
+                  <when test="2"> <!-- AB-SmartHouse: 8 channels -->
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 8 Kanäle (A-H) verwendet werden." UIHint="Information" />
+                  </when>
+                  <when test="1 4"> <!-- AB-SmartHouse: 12 channels -->
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 12 Kanäle (A-L) verwendet werden." UIHint="Information" />
+                  </when>
+                </choose>
+
                 <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
                   <when test="!=%HardwareAB%">
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Weitere Einstellungen" UIHint="Headline"/>
                     <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
                       <when test="0 1"> <!-- AB-SmartHouse: CV variant -->
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00007_R-%TT%0000701" IndentLevel="1" /> <!-- PWM Frequency -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00007_R-%TT%0000701" IndentLevel="1" HelpContext="%DOC%" /> <!-- PWM Frequency -->
                       </when>
                       <when test="2 3 4"> <!-- AB-SmartHouse: CC variant -->
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00006_R-%TT%0000601" IndentLevel="1" /> <!-- Dimmer CC Type -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00006_R-%TT%0000601" IndentLevel="1" HelpContext="%DOC%" /> <!-- Dimmer CC Type -->
                       </when>
                     </choose>
 
-                    <ParameterRefRef RefId="%AID%_UP-%TT%00002_R-%TT%0000201" IndentLevel="1" /> <!-- Power Supply Relay -->
+                    <!-- <ParameterRefRef RefId="%AID%_UP-%TT%00002_R-%TT%0000201" IndentLevel="1" /> <!- - Power Supply Relay - ->
                     <choose ParamRefId="%AID%_UP-%TT%00002_R-%TT%0000201">
                       <when test="1">
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00003_R-%TT%0000301" IndentLevel="2" /> <!-- Power Supply Relay Min Voltage -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00003_R-%TT%0000301" IndentLevel="2" /> <!- - Power Supply Relay Min Voltage - ->
                         
-                        <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid"> <!-- Power Supply Relay Off Delay -->
+                        <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid"> <!- - Power Supply Relay Off Delay - ->
                           <Rows>
                             <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
                           </Rows>
@@ -279,7 +291,7 @@
                         <ComObjectRefRef RefId="%AID%_O-%TT%00001_R-%TT%0000101" />
                         <ComObjectRefRef RefId="%AID%_O-%TT%00002_R-%TT%0000201" />
                       </when>
-                    </choose>
+                    </choose> -->
                   </when>
                 </choose>
 
@@ -296,6 +308,9 @@
         </ApplicationProgram>
       </ApplicationPrograms>
       <Baggages>
+        <Baggage TargetPath="" Name="Help_de.zip" Id="%FILE-HELP-de%">
+          <FileInfo TimeInfo="%DATETIME%" />
+        </Baggage>
         <Baggage TargetPath="" Name="Icons.zip" Id="%FILE-ICONS%">
           <FileInfo TimeInfo="%DATETIME%" />
         </Baggage>
