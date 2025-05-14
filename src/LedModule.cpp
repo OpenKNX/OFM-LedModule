@@ -133,11 +133,13 @@ void LedModule::setupFrontPlate()
 #endif
 
 #ifndef OPENKNX_GPIO_NUM
+#ifdef OPENKNX_GPIO_WIRE
     // Wire is initialized by GPIO module, when used
     OPENKNX_GPIO_WIRE.setSDA(OPENKNX_GPIO_SDA);
     OPENKNX_GPIO_WIRE.setSCL(OPENKNX_GPIO_SCL);
     OPENKNX_GPIO_WIRE.begin();
     OPENKNX_GPIO_WIRE.setClock(OPENKNX_GPIO_CLOCK);
+#endif
 #endif
 }
 

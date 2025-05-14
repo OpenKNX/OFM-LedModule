@@ -31,17 +31,6 @@
 
           <Static>
             <ParameterTypes>
-              <ParameterType Id="%AID%_PT-HardwareVariantAB" Name="HardwareVariantAB">
-                <TypeRestriction Base="Value" SizeInBit="4">
-                  <Enumeration Text="Constant Voltage, Unterputz, 6-fach" Value="0" Id="%ENID%" />
-                  <Enumeration Text="Constant Voltage, REG, 12-fach" Value="1" Id="%ENID%" />
-                  <Enumeration Text="Constant Current, Unterputz, 8-fach" Value="2" Id="%ENID%" />
-                  <Enumeration Text="Constant Current, Unterputz, 16-fach" Value="3" Id="%ENID%" />
-                  <Enumeration Text="Constant Current, REG, 12-fach" Value="4" Id="%ENID%" />
-                  <!-- 1 bits left -->
-                </TypeRestriction>
-              </ParameterType>
-
               <ParameterType Id="%AID%_PT-DimmerCcType" Name="DimmerCcType">
                 <TypeRestriction Base="Value" SizeInBit="1" UIHint="DropDown">
                   <Enumeration Text="Hybrides dimmen (analog/PWM)" Value="0" Id="%ENID%" />
@@ -166,7 +155,7 @@
             <Parameters>
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%00001" Name="HardwareVariantAB"            ParameterType="%AID%_PT-HardwareVariantAB" Offset="0" BitOffset="0" Text="Hardware-Variante" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00001" Name="HardwareVariant"              ParameterType="%AID%_PT-HardwareVariant" Offset="0" BitOffset="0" Text="Hardware-Variante" Value="0" />
                 <!-- 2 bits free -->
                 <Parameter Id="%AID%_UP-%TT%00006" Name="DimmerCcType"                 ParameterType="%AID%_PT-DimmerCcType" Offset="0" BitOffset="6" Text="Dimmart Constant Current" Value="0" />
                 <!-- 1 bit free -->
