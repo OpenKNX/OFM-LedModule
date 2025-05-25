@@ -22,6 +22,7 @@ class RGBChannel : public LightChannel
     uint8_t dimmingValStartup();
     uint8_t dimmingValMax();
     uint8_t dimmingValTarget(bool _switch);
+    uint8_t checkMinMaxBrightness(uint8_t _bright);
     void setStartupColor();
     uint8_t getDefaultColor();
     uint16_t checkMinMaxColorTemp(uint16_t colorTemp);

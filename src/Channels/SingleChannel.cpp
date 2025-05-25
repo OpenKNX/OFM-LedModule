@@ -226,6 +226,19 @@ uint8_t SingleChannel::dimmingValTarget(bool _switch)
     return _switch ? dimmingValStartup() : 0;
 }
 
+uint8_t SingleChannel::checkMinMaxBrightness(uint8_t _bright)
+{
+    if (_bright < ParamLED_SC_BrighnessMin_)
+    {
+        _bright = ParamLED_SC_BrighnessMin_;
+    }
+    if (_bright > dimmingValMax())
+    {
+        _bright = dimmingValMax();
+    }
+    return _bright;
+}
+
 void SingleChannel::setSwitch(bool _switch)
 {
     if (_switch)
@@ -262,6 +275,7 @@ void SingleChannel::setSwitch(bool _switch)
 void SingleChannel::setBrightness(uint8_t _bright)
 {
     logDebugP("setBrightness: %3X", _bright);
+    _bright = checkMinMaxBrightness(_bright);
     _brightness.setTargetValue(_bright, millis(), dimmingTimeON());
 }
 

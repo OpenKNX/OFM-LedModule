@@ -245,6 +245,19 @@ uint8_t TWChannel::dimmingValTarget(bool _switch)
     return _switch ? dimmingValStartup() : 0;
 }
 
+uint8_t TWChannel::checkMinMaxBrightness(uint8_t _bright)
+{
+    if (_bright < ParamLED_TW_BrighnessMin_)
+    {
+        _bright = ParamLED_TW_BrighnessMin_;
+    }
+    if (_bright > dimmingValMax())
+    {
+        _bright = dimmingValMax();
+    }
+    return _bright;
+}
+
 int32_t TWChannel::dimmingTempStartup()
 {
     return ParamLED_TW_StartupBehavior_ ? getLastOnValueTemp() : dimmingTempMax();
@@ -313,6 +326,7 @@ void TWChannel::setSwitch(bool _switch)
 void TWChannel::setBrightness(uint8_t _bright)
 {
     logDebugP("setBrightness: %3X", _bright);
+    _bright = checkMinMaxBrightness(_bright);
     _brightness.setTargetValue(_bright, millis(), dimmingTimeON());
 }
 

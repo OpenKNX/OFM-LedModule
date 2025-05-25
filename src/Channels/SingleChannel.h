@@ -21,7 +21,7 @@ class SingleChannel : public LightChannel
     uint8_t dimmingValStartup();
     uint8_t dimmingValMax();
     uint8_t dimmingValTarget(bool _switch);
-    
+    uint8_t checkMinMaxBrightness(uint8_t _bright);
 
     void setSwitch(bool _switch);
     void setBrightness(uint8_t _bright);

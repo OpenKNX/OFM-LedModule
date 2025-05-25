@@ -1,7 +1,7 @@
 #pragma once
 
-#include "HWDimmer\HWDimmer.h"
 #include "Channels\LightChannel.h"
+#include "HWDimmer\HWDimmer.h"
 #include "OpenKNX.h"
 #include <Arduino.h>
 
@@ -22,6 +22,7 @@ class TWChannel : public LightChannel
     uint8_t dimmingValStartup();
     uint8_t dimmingValMax();
     uint8_t dimmingValTarget(bool _switch);
+    uint8_t checkMinMaxBrightness(uint8_t _bright);
     int32_t dimmingTempStartup();
     int32_t dimmingTempMax();
     int32_t dimmingTempTarget(bool _switch);

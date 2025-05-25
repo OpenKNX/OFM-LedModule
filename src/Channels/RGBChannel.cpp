@@ -297,6 +297,19 @@ uint8_t RGBChannel::dimmingValMax()
     return getNight() ? ParamLED_RGB_BrighnessMaxNight_ : ParamLED_RGB_BrighnessMaxDay_;
 }
 
+uint8_t RGBChannel::checkMinMaxBrightness(uint8_t _bright)
+{
+    if (_bright < ParamLED_RGB_BrighnessMin_)
+    {
+        _bright = ParamLED_RGB_BrighnessMin_;
+    }
+    if (_bright > dimmingValMax())
+    {
+        _bright = dimmingValMax();
+    }
+    return _bright;
+}
+
 uint8_t RGBChannel::dimmingValTarget(bool _switch)
 {
     return _switch ? dimmingValStartup() : 0;
@@ -374,21 +387,21 @@ void RGBChannel::setHue(uint16_t hue)
 {
     logDebugP("setHue: %3X", _hue);
     // hue max 16384
-    _hue.setTargetValue(hue, millis(), dimmingTime(getNight()));
+    _hue.setTargetValue(hue, millis(), dimmingTimeON() );
 }
 
 void RGBChannel::setSaturation(uint16_t saturation)
 {
     logDebugP("setHue: %3X", saturation);
     // saturation max 1024
-    _saturation.setTargetValue(saturation, millis(), dimmingTime(getNight()));
+    _saturation.setTargetValue(saturation, millis(), dimmingTimeON() );
 }
 
 void RGBChannel::setBrightness(uint8_t _bright)
 {
     logDebugP("setBrightness: %3X", _bright);
-    // brightness max 255
-    _brightness.setTargetValue(_bright, millis(), dimmingTime(getNight()));
+    _bright = checkMinMaxBrightness(_bright);
+    _brightness.setTargetValue(_bright, millis(), dimmingTimeON() );
 }
 
 void RGBChannel::switchNight(bool _night)
