@@ -28,7 +28,7 @@ void LedModule::setup(bool configured)
 
 #if defined(LEDMODULE_DIMMER_PCA9685)
     logInfoP("LEDMODULE_DIMMER_PCA9685");
-    _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685, LEDMODULE_PCA_ADDR);
+    _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685, LEDMODULE_PCA_ADDR, LEDMODULE_PCA_PWMFREQUENCY);
     logInfoP("LEDMODULE_DIMMER_PCA9685 SET");
 #else
 #if defined(LEDMODULE_DIMMMER_RP2040)
