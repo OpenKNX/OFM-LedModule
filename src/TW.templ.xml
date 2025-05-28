@@ -211,7 +211,7 @@
                       </when>
                     </choose>
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Scenen" UIHint="Headline" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" IndentLevel="1" /> <!-- Scene -->
                     <choose ParamRefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001">
                       <when test="1">

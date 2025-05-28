@@ -226,7 +226,7 @@
                   </Rows>
                   <Columns>
                     <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Typ" Width="33%" />
-                    <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Dimmkanal" Width="33%" />
+                    <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Dimmkanal (0=inaktiv)" Width="33%" />
                     <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="Funktion" Width="33%" />
                   </Columns>
                   <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTable']/*" prefix="LED" type="template" IsInner="true" />

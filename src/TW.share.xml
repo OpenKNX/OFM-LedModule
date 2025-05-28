@@ -76,7 +76,7 @@
           <Dynamic>
             <ChannelIndependentBlock>
               <ParameterBlock Text="TW - Tunable White" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="theme-light-dark">
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Instanzen erscheinen automatisch, wenn sie konfiguriert sind." />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Dimmkanäle erscheinen automatisch, wenn sie konfiguriert sind." />
                 <op:include href="TW.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_TW" IsInner="true" />
               </ParameterBlock>
             </ChannelIndependentBlock>
