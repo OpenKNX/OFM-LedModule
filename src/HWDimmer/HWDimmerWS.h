@@ -22,6 +22,7 @@ class HWDimmerWS : public HWDimmer
 
         HWDimmerWS(HWDimmerWS::WSType type, uint8_t pin, uint16_t numLeds);
 
+        void loop();
         std::string logPrefix();
         bool setLevel(uint16_t level, uint8_t channel);
         uint16_t scale(uint8_t level, HWDimmer::DimLUTType lutType);

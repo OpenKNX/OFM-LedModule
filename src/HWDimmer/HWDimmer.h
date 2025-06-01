@@ -15,22 +15,25 @@ class HWDimmer
         Log1_5 = 1
     };
 
-    void loop();
+    virtual void loop();
     void processFrontInput();
     void processFrontOutput();
-
     virtual bool setLevel(uint16_t level, uint8_t channel);
     virtual uint16_t getLevel(uint8_t channel);
     virtual uint16_t scale(uint8_t level, HWDimmer::DimLUTType lutType) = 0;
     virtual uint16_t getScaleMax(HWDimmer::DimLUTType lutType) = 0;
     virtual std::string logPrefix();
+    virtual void selectMultiplexerChannel(uint8_t channel);
+    virtual void readMultiplexerChannel(uint8_t channel);
 
     virtual bool checkConnection() { return true; } // TODO: try to remove this functionality from base class
     virtual void reconnect() {}
 
   protected:
     uint8_t numChannels;
+    uint32_t pwmFreq;
     uint16_t *levels;
+    inline static uint64_t *sampleTriggerDelays = nullptr;
 
     template<int N> class LUT
     {
@@ -66,4 +69,6 @@ class HWDimmer
     };
 
     static LUT<VALUE_KNX_COUNT> dimLUT[3];
+
+    uint32_t testTimer = 0;
 };

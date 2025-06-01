@@ -21,6 +21,7 @@ class HWDimmerPCA : public HWDimmer
 
         HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFreq);
 
+        void loop();
         std::string logPrefix();
         bool setLevel(uint16_t level, uint8_t channel);
         uint16_t scale(uint8_t level, HWDimmer::DimLUTType lutType);

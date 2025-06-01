@@ -26,6 +26,11 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFr
     }
 }
 
+void HWDimmerPCA::loop()
+{
+    HWDimmer::loop();
+}
+
 /**
  * @brief Set level of selected channel to value
  *

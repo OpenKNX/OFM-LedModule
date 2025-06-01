@@ -15,6 +15,11 @@ HWDimmerWS::HWDimmerWS(HWDimmerWS::WSType type, uint8_t pin, uint16_t numLeds) :
     }
 }
 
+void HWDimmerWS::loop()
+{
+    HWDimmer::loop();
+}
+
 /**
  * @brief Set level of selected channel to value
  *

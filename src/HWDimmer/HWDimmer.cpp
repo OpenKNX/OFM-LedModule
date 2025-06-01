@@ -9,6 +9,31 @@ HWDimmer::HWDimmer(uint8_t numChannels)
 {
     this->numChannels = numChannels;
     levels = new uint16_t[numChannels]{0};
+    sampleTriggerDelays = new uint64_t[numChannels]{0};
+
+#ifdef LED_MPX_OUT_PIN
+    pinMode(LED_MPX_OUT_PIN, INPUT);
+    analogReadResolution(12);
+#endif
+    
+    // Initialize multiplexer control pins as outputs
+#ifdef LED_MPX_PIN_0
+    pinMode(LED_MPX_PIN_0, OUTPUT);
+    digitalWrite(LED_MPX_PIN_0, LOW);
+#endif
+
+#ifdef LED_MPX_PIN_1
+    pinMode(LED_MPX_PIN_1, OUTPUT);
+    digitalWrite(LED_MPX_PIN_1, LOW);
+#endif
+
+#ifdef LED_MPX_PIN_2
+    pinMode(LED_MPX_PIN_2, OUTPUT);
+    digitalWrite(LED_MPX_PIN_2, LOW);
+#endif
+
+    // Start with multiplexer channel 0 selected
+    selectMultiplexerChannel(0);
 }
 
 /**
@@ -101,7 +126,13 @@ bool HWDimmer::setLevel(uint16_t level, uint8_t channel)
     bool isValidChannel = false;
     if (channel < numChannels)
     {
-        levels[channel] = level;
+        if (levels[channel] != level)
+        {
+            levels[channel] = level;
+            sampleTriggerDelays[channel] = (uint64_t)((double)1 / (double)pwmFreq * (double)1000000 * ((double)level / (double)8191) * 0.3) - 10; // - 50
+
+            logDebugP("setLevel, channel=%u, pwmFreq=%u, level=%u, trigger delay: %ju", channel, pwmFreq, level, sampleTriggerDelays[channel]);
+        }
         isValidChannel = true;
     }
     else
@@ -136,4 +167,78 @@ uint16_t HWDimmer::getLevel(uint8_t channel)
 std::string HWDimmer::logPrefix()
 {
     return "HWDimmer";
+}
+
+/**
+ * @brief Set the multiplexer channel based on the multiplexer input pins
+ *
+ * @param channel The channel number (0-7) to select on the multiplexer
+ */
+void HWDimmer::selectMultiplexerChannel(uint8_t channel)
+{
+#if defined(LED_MPX_PIN_0) && defined(LED_MPX_PIN_1) && defined(LED_MPX_PIN_2)
+
+    // Ensure channel is within valid range (0-7 for a 3-bit multiplexer)
+    if (channel > 7)
+    {
+        logErrorP("Invalid multiplexer channel: %d (valid range 0-7)", channel);
+        return;
+    }
+
+    switch (channel)
+    {
+        case 0:
+            digitalWrite(LED_MPX_PIN_0, HIGH);
+            digitalWrite(LED_MPX_PIN_1, HIGH);
+            digitalWrite(LED_MPX_PIN_2, HIGH);
+            break;
+        case 1:
+            digitalWrite(LED_MPX_PIN_0, LOW);
+            digitalWrite(LED_MPX_PIN_1, HIGH);
+            digitalWrite(LED_MPX_PIN_2, HIGH);
+            break;
+        case 2:
+            digitalWrite(LED_MPX_PIN_0, HIGH);
+            digitalWrite(LED_MPX_PIN_1, LOW);
+            digitalWrite(LED_MPX_PIN_2, HIGH);
+            break;
+        case 3:
+            digitalWrite(LED_MPX_PIN_0, LOW);
+            digitalWrite(LED_MPX_PIN_1, LOW);
+            digitalWrite(LED_MPX_PIN_2, HIGH);
+            break;
+        case 4:
+            digitalWrite(LED_MPX_PIN_0, HIGH);
+            digitalWrite(LED_MPX_PIN_1, HIGH);
+            digitalWrite(LED_MPX_PIN_2, LOW);
+            break;
+        case 5:
+            digitalWrite(LED_MPX_PIN_0, LOW);
+            digitalWrite(LED_MPX_PIN_1, HIGH);
+            digitalWrite(LED_MPX_PIN_2, LOW);
+            break;
+        default:
+            digitalWrite(LED_MPX_PIN_0, LOW);
+            digitalWrite(LED_MPX_PIN_1, LOW);
+            digitalWrite(LED_MPX_PIN_2, LOW);
+            break;
+    }
+    
+    //logDebugP("Selected multiplexer channel: %d", channel);
+
+#endif
+}
+
+void HWDimmer::readMultiplexerChannel(uint8_t channel)
+{
+    //selectMultiplexerChannel(channel);
+
+#ifdef LED_MPX_OUT_PIN
+    int analgogValue = 0;
+    for (size_t i = 0; i < 10; i++)
+    {
+        analgogValue += analogRead(LED_MPX_OUT_PIN);
+    }
+      logInfoP("ADC: %.4f V (%u)", ((float)analgogValue / 10) / 4095 * (float)3.3, analgogValue);
+#endif
 }
