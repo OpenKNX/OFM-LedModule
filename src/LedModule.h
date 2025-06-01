@@ -25,6 +25,8 @@
 #include "Channels\TWChannel.h"
 #include "Channels\RGBChannel.h"
 
+#define PWM_FREQUENCY_FACTOR 200 // based on ETS drop down
+
 class LedModule : public OpenKNX::Module
 {
   private:

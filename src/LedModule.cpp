@@ -32,7 +32,7 @@ void LedModule::setup(bool configured)
     logInfoP("LEDMODULE_DIMMER_PCA9685 SET");
 #else
 #if defined(LEDMODULE_DIMMMER_RP2040)
-    _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, ParamLED_PwmFrequency);
+    _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, (ParamLED_PwmFrequency + 1) * PWM_FREQUENCY_FACTOR);
     logInfoP("LEDMODULE_DIMMER_RP2040");
 #else
 #if defined(LEDMODULE_DIMMMER_WS)
