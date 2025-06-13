@@ -158,8 +158,6 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" /> <!-- Brightness -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" /> <!-- Brightness Status -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" /> <!-- Dim Rel -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" /> <!-- Scene -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- Scene Status -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" /> <!-- Nacht -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" /> <!-- Color Temperature -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" /> <!-- Color Temperature Status -->
@@ -215,6 +213,9 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" IndentLevel="1" /> <!-- Scene -->
                     <choose ParamRefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001">
                       <when test="1">
+                        <ComObjectRefRef RefId="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" /> <!-- Scene -->
+                        <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- Scene Status -->
+                        
                         <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />
                           <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
