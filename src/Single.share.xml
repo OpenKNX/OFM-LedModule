@@ -31,7 +31,6 @@
                 <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="Ein" Value="0" Id="%ENID%" />
                   <Enumeration Text="Aus" Value="1" Id="%ENID%" />
-                  <Enumeration Text="Funktion 3" Value="2" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
 
