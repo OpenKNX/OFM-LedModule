@@ -85,11 +85,6 @@ void TWChannel::loop()
     processFrontInput();
 }
 
-bool TWChannel::TW_night()
-{
-    return _tw_night;
-}
-
 bool TWChannel::TW_Lock()
 {
     return _TW_LockState;
@@ -244,12 +239,12 @@ void TWChannel::handleScene(uint8_t sceneNr)
 
 uint16_t TWChannel::dimmingTimeON()
 {
-    return TW_night() ? ParamLED_TW_LightDimmTimeNightON_ : ParamLED_TW_LightDimmTimeDayON_;
+    return getNight() ? ParamLED_TW_LightDimmTimeNightON_ : ParamLED_TW_LightDimmTimeDayON_;
 }
 
 uint16_t TWChannel::dimmingTimeOFF()
 {
-    return TW_night() ? ParamLED_TW_LightDimmTimeNightOFF_ : ParamLED_TW_LightDimmTimeDayOFF_;
+    return getNight() ? ParamLED_TW_LightDimmTimeNightOFF_ : ParamLED_TW_LightDimmTimeDayOFF_;
 }
 
 uint16_t TWChannel::dimmingTime(bool _switch)
@@ -264,7 +259,7 @@ uint8_t TWChannel::dimmingValStartup()
 
 uint8_t TWChannel::dimmingValMax()
 {
-    return TW_night() ? ParamLED_TW_BrighnessMaxNight_ : ParamLED_TW_BrighnessMaxDay_;
+    return getNight() ? ParamLED_TW_BrighnessMaxNight_ : ParamLED_TW_BrighnessMaxDay_;
 }
 
 uint8_t TWChannel::dimmingValTarget(bool _switch)
@@ -292,7 +287,7 @@ int32_t TWChannel::dimmingTempStartup()
 
 int32_t TWChannel::dimmingTempMax()
 {
-    return TW_night() ? ParamLED_TW_ColorTempNight_ : ParamLED_TW_ColorTempDay_;
+    return getNight() ? ParamLED_TW_ColorTempNight_ : ParamLED_TW_ColorTempDay_;
 }
 
 int32_t TWChannel::dimmingTempTarget(bool _switch)
@@ -364,7 +359,7 @@ void TWChannel::setBrightness(uint8_t _bright)
 
 void TWChannel::setNight(bool _night)
 {
-    _tw_night = _night;
+    _isNight = _night;
     _brightness.setRange(ParamLED_TW_BrighnessMin_, dimmingValMax());
 
     if (!_night)

@@ -13,8 +13,6 @@ class RGBChannel : public LightChannel
     void processInputKo(GroupObject& ko);
     void update();
     void loop();
-    bool _rgb_night = 0;
-    bool RGB_night();
     bool _RGB_LockState = 0;
     bool RGB_Lock();
 
@@ -38,7 +36,7 @@ class RGBChannel : public LightChannel
     void setHue(uint16_t _hue);
     void setSaturation(uint16_t saturation);
     void setBrightness(uint8_t _bright);
-    void switchNight(bool _night);
+    void setNight(bool _night) override;
     void relDimUp();
     void relDimDown();
     void relDimStop();

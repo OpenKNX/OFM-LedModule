@@ -34,7 +34,7 @@ class LightChannel : public OpenKNX::Channel
     void setLastOnValue(int32_t lastOnVal) { _lastOnValue = lastOnVal; }
     int32_t getLastOnValue() { return _lastOnValue; }
     bool getNight();
-    void setNight(bool night);
+    virtual void setNight(bool night) = 0;
 
     template <typename T> class DimmableValue
     {

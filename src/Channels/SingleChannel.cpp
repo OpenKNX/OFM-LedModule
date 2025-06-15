@@ -75,11 +75,6 @@ void SingleChannel::loop()
     processFrontInput();
 }
 
-bool SingleChannel::SC_night()
-{
-    return _sc_night;
-}
-
 bool SingleChannel::SC_Lock()
 {
     return _SC_LockState;
@@ -224,14 +219,14 @@ uint16_t SingleChannel::dimmingTimeON()
 {
     logDebugP("dimmingTimeDON: %5X", ParamLED_SC_LightDimmTimeDayON_);
     logDebugP("dimmingTimeNON: %5X", ParamLED_SC_LightDimmTimeNightON_);
-    return SC_night() ? ParamLED_SC_LightDimmTimeNightON_ : ParamLED_SC_LightDimmTimeDayON_;
+    return getNight() ? ParamLED_SC_LightDimmTimeNightON_ : ParamLED_SC_LightDimmTimeDayON_;
 }
 
 uint16_t SingleChannel::dimmingTimeOFF()
 {
     logDebugP("dimmingTimeDOFF: %5X", ParamLED_SC_LightDimmTimeDayOFF_);
     logDebugP("dimmingTimeNOFF: %5X", ParamLED_SC_LightDimmTimeNightOFF_);
-    return SC_night() ? ParamLED_SC_LightDimmTimeNightOFF_ : ParamLED_SC_LightDimmTimeDayOFF_;
+    return getNight() ? ParamLED_SC_LightDimmTimeNightOFF_ : ParamLED_SC_LightDimmTimeDayOFF_;
 }
 
 uint16_t SingleChannel::dimmingTime(bool _switch)
@@ -246,7 +241,7 @@ uint8_t SingleChannel::dimmingValStartup()
 
 uint8_t SingleChannel::dimmingValMax()
 {
-    return SC_night() ? ParamLED_SC_BrighnessMaxNight_ : ParamLED_SC_BrighnessMaxDay_;
+    return getNight() ? ParamLED_SC_BrighnessMaxNight_ : ParamLED_SC_BrighnessMaxDay_;
 }
 
 uint8_t SingleChannel::dimmingValTarget(bool _switch)
@@ -314,7 +309,7 @@ void SingleChannel::setBrightness(uint8_t _bright)
 
 void SingleChannel::setNight(bool _night)
 {
-    _sc_night = _night;
+    _isNight = _night;
     _brightness.setRange(ParamLED_SC_BrighnessMin_, dimmingValMax());
 
     if (!_night)

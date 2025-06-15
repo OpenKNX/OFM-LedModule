@@ -111,11 +111,6 @@ void RGBChannel::loop()
     processFrontInput();
 }
 
-bool RGBChannel::RGB_night()
-{
-    return _rgb_night;
-}
-
 bool RGBChannel::RGB_Lock()
 {
     return _RGB_LockState;
@@ -244,7 +239,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
             case LED_RGB_KoNight_:
                 if (!RGB_Lock())
                 {
-                    switchNight(ko.value(DPT_Switch));
+                    setNight(ko.value(DPT_Switch));
                 }
                 break;
 
@@ -441,10 +436,9 @@ void RGBChannel::setBrightness(uint8_t _bright)
     _brightness.setTargetValue(_bright, millis(), dimmingTimeON());
 }
 
-void RGBChannel::switchNight(bool _night)
+void RGBChannel::setNight(bool _night)
 {
-    //_rgb_night = _night;
-    setNight(_night);
+    _isNight = _night;
     _brightness.setRange(ParamLED_RGB_BrighnessMin_, dimmingValMax());
 
     if (!getNight())

@@ -13,8 +13,6 @@ class TWChannel : public LightChannel
     void dimLoop();
     void update();
     void loop();
-    bool _tw_night = 0;
-    bool TW_night();
     bool _TW_LockState = 0;
     bool TW_Lock();
 
@@ -35,7 +33,7 @@ class TWChannel : public LightChannel
     void setSwitch(bool _switch);
     void setLock(bool _state);
     void setBrightness(uint8_t _bright);
-    void setNight(bool _night);
+    void setNight(bool _night) override;
     void relDimUp();
     void relDimDown();
     void relDimStop();
