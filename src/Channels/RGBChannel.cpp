@@ -155,6 +155,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
 
             case LED_RGB_KoLocking_:
                 setLock(ko.value(DPT_Switch));
+                KoLED_RGB_StateLocking_.value(getLock(), DPT_Switch);
                 break;
 
             case LED_RGB_KoStateLocking_:
