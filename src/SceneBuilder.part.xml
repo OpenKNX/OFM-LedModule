@@ -32,7 +32,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+2%" Name="Scene%SN%_Lockobject_%C%" Offset="%MO%" BitOffset="6" ParameterType="%AID%_PT-LockObject" Text="Sperrobjekt" Value="0" /> <!-- 1 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+3%" Name="Scene%SN%_LockobjectFunc_%C%" Offset="%MO%" BitOffset="7" ParameterType="%AID%_PT-LockUnlock" Text="Sperren" Value="0" /> <!-- 1 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+4%" Name="Scene%SN%_AllowSave%C%" Offset="%MO+1%" BitOffset="0" ParameterType="%AID%_PT-CheckBox" Text="Speichern" Value="0" /> <!-- 1 bit -->
-                <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="1" /> <!-- 7 bit -->
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="%SZ%" /> <!-- 7 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+6%" Name="Scene%SN%_Function_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-SCFunction" Text="Funktion" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+7%" Name="Scene%SN%_Sequence_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-SCSequence" Text="Ablauf" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="255" SuffixText="%" />
@@ -44,7 +44,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+2%" Name="Scene%SN%_Lockobject_%C%" Offset="%MO%" BitOffset="6" ParameterType="%AID%_PT-LockObject" Text="Sperrobjekt" Value="0" /> <!-- 1 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+3%" Name="Scene%SN%_LockobjectFunc_%C%" Offset="%MO%" BitOffset="7" ParameterType="%AID%_PT-LockUnlock" Text="Sperren" Value="0" /> <!-- 1 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+4%" Name="Scene%SN%_AllowSave%C%" Offset="%MO+1%" BitOffset="0" ParameterType="%AID%_PT-CheckBox" Text="Speichern" Value="0" /> <!-- 1 bit -->
-                <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="1" /> <!-- 7 bit -->
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="%SZ%" /> <!-- 7 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+6%" Name="Scene%SN%_Function_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-RGBFunction" Text="Funktion" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+7%" Name="Scene%SN%_Sequence_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-RGBSequence" Text="Ablauf" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="255" SuffixText="%" />
@@ -60,7 +60,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+2%" Name="Scene%SN%_Lockobject_%C%" Offset="%MO%" BitOffset="6" ParameterType="%AID%_PT-LockObject" Text="Sperrobjekt" Value="0" /> <!-- 1 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+3%" Name="Scene%SN%_LockobjectFunc_%C%" Offset="%MO%" BitOffset="7" ParameterType="%AID%_PT-LockUnlock" Text="Sperren" Value="0" /> <!-- 1 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+4%" Name="Scene%SN%_AllowSave%C%" Offset="%MO+1%" BitOffset="0" ParameterType="%AID%_PT-CheckBox" Text="Speichern" Value="0" /> <!-- 1 bit -->
-                <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="1" /> <!-- 7 bit -->
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="%SZ%" /> <!-- 7 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+6%" Name="Scene%SN%_Function%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-TWFunction" Text="Funktion" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+7%" Name="Scene%SN%_Sequence%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-TWSequence" Text="Ablauf" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="255" SuffixText="%" />
