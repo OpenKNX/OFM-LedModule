@@ -162,9 +162,6 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_SC_KoSceneStatus_:
-                break;
-
             // Day or Night
             case LED_SC_KoNight_:
                 if (!getLock())

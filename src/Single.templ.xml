@@ -111,8 +111,7 @@
               <ComObject Id="%AID%_O-%TT%%CC%005" Name="BrightnessStatus_%C%"   Text="Helligkeit Status"  Number="%K5%" FunctionText="EK %C% - Helligkeit Status"  ObjectSize="1 Byte" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
               <ComObject Id="%AID%_O-%TT%%CC%006" Name="DimRel_%C%"             Text="Dimmen Relativ"     Number="%K6%" FunctionText="EK %C% - Dimmen"             ObjectSize="4 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"  />
               <ComObject Id="%AID%_O-%TT%%CC%007" Name="Scene_%C%"              Text="Szene"              Number="%K7%" FunctionText="EK %C% - Szene"              ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
-              <ComObject Id="%AID%_O-%TT%%CC%008" Name="SceneStatus_%C%"        Text="Szene Status"       Number="%K8%" FunctionText="EK %C% - Szene Status"       ObjectSize="1 Byte" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
-              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Night_%C%"              Text="Nacht"              Number="%K9%" FunctionText="EK %C% - Nacht"              ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%008" Name="Night_%C%"              Text="Nacht"              Number="%K8%" FunctionText="EK %C% - Nacht"              ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
             </ComObjectTable>
 
             <ComObjectRefs>
@@ -125,7 +124,6 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" />
             </ComObjectRefs>
 
           </Static>
@@ -142,7 +140,7 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" /> <!-- Brightness -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" /> <!-- Brightness Status -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" /> <!-- Dim Rel -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" /> <!-- Nacht -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" /> <!-- Nacht -->
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaldefinition" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" IndentLevel="1" /> <!-- ChannelName -->
@@ -189,7 +187,6 @@
                     <choose ParamRefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601">
                       <when test="1">
                         <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- Scene -->
-                        <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" /> <!-- Scene Status -->
                         
                         <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />

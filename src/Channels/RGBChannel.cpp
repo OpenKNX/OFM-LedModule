@@ -198,8 +198,6 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     handleScene(ko.value(DPT_SceneNumber));
                 }
                 break;
-            case LED_RGB_KoSceneStatus_:
-                break;
 
             case LED_RGB_KoColorTemperature_:
                 if (!getLock())

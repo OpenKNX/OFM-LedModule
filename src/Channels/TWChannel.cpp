@@ -85,6 +85,11 @@ void TWChannel::loop()
     processFrontInput();
 }
 
+bool TWChannel::TW_night()
+{
+    return _tw_night;
+}
+
 void TWChannel::processFrontInput()
 {
     LightChannel::processFrontInput(ParamLED_TW_FrontControl_);
@@ -116,67 +121,45 @@ void TWChannel::processInputKo(GroupObject& ko)
         switch (relKO)
         {
             case LED_TW_KoSwitch_:
-                if (!getLock())
-                {
-                    setSwitch(ko.value(DPT_Switch));
-                }
+                setSwitch(ko.value(DPT_Switch));
                 break;
 
             case LED_TW_KoStateOnOff_:
                 break;
-
             case LED_TW_KoLocking_:
-                setLock(ko.value(DPT_Switch));
-                break;
-
-            case LED_TW_KoStateLocking_:
                 break;
 
             case LED_TW_KoBrightness_:
-                if (!getLock())
-                {
-                    setBrightness(ko.value(DPT_Percent_U8));
-                }
+                setBrightness(ko.value(DPT_Percent_U8));
                 break;
 
             case LED_TW_KoBrightnessStatus_:
                 break;
             case LED_TW_KoDimRel_:
-                if (!getLock())
-                {
-                    int16_t tmpu16;
-                    tmpu16 = *KoLED_TW_DimRel_.valueRef();
+                int16_t tmpu16;
+                tmpu16 = *KoLED_TW_DimRel_.valueRef();
 
-                    if (tmpu16 >= 0x09)
-                    {
-                        relDimUp();
-                    }
-                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                    {
-                        relDimDown();
-                    }
-                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
-                    {
-                        relDimStop();
-                    }
+                if (tmpu16 >= 0x09)
+                {
+                    relDimUp();
+                }
+                if (tmpu16 > 0x00 && tmpu16 < 0x08)
+                {
+                    relDimDown();
+                }
+                if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                {
+                    relDimStop();
                 }
                 break;
 
             case LED_TW_KoScene_:
-                if (!getLock())
-                {
-                    handleScene(ko.value(DPT_SceneNumber));
-                }
-                break;
-
-            case LED_TW_KoSceneStatus_:
+                handleScene(ko.value(DPT_SceneNumber));
                 break;
 
             case LED_TW_KoColorTemperature_:
-                if (!getLock())
-                {
-                    setColorTemperature(ko.value(Dpt(7, 600)));
-                }
+                setColorTemperature(ko.value(Dpt(7, 600)));
+
                 break;
 
             case LED_TW_KoColorTemperatureStatus_:
@@ -184,10 +167,7 @@ void TWChannel::processInputKo(GroupObject& ko)
 
             // Day or Night
             case LED_TW_KoNight_:
-                if (!getLock())
-                {
-                    setNight(ko.value(DPT_Switch));
-                }
+                setNight(ko.value(DPT_Switch));
                 break;
 
             default:
@@ -201,7 +181,7 @@ void TWChannel::handleScene(uint8_t sceneNr)
 {
     for (int i = 0; i < N_SCENES; i++)
     {
-        if (sceneNr == _scenes[i].sceneNr - 1)
+        if (sceneNr + 1 == _scenes[i].sceneNr - 1)
         {
             switch (_scenes[i].funcType)
             {
@@ -234,12 +214,12 @@ void TWChannel::handleScene(uint8_t sceneNr)
 
 uint16_t TWChannel::dimmingTimeON()
 {
-    return getNight() ? ParamLED_TW_LightDimmTimeNightON_ : ParamLED_TW_LightDimmTimeDayON_;
+    return TW_night() ? ParamLED_TW_LightDimmTimeNightON_ : ParamLED_TW_LightDimmTimeDayON_;
 }
 
 uint16_t TWChannel::dimmingTimeOFF()
 {
-    return getNight() ? ParamLED_TW_LightDimmTimeNightOFF_ : ParamLED_TW_LightDimmTimeDayOFF_;
+    return TW_night() ? ParamLED_TW_LightDimmTimeNightOFF_ : ParamLED_TW_LightDimmTimeDayOFF_;
 }
 
 uint16_t TWChannel::dimmingTime(bool _switch)
@@ -254,7 +234,7 @@ uint8_t TWChannel::dimmingValStartup()
 
 uint8_t TWChannel::dimmingValMax()
 {
-    return getNight() ? ParamLED_TW_BrighnessMaxNight_ : ParamLED_TW_BrighnessMaxDay_;
+    return TW_night() ? ParamLED_TW_BrighnessMaxNight_ : ParamLED_TW_BrighnessMaxDay_;
 }
 
 uint8_t TWChannel::dimmingValTarget(bool _switch)
@@ -282,7 +262,7 @@ int32_t TWChannel::dimmingTempStartup()
 
 int32_t TWChannel::dimmingTempMax()
 {
-    return getNight() ? ParamLED_TW_ColorTempNight_ : ParamLED_TW_ColorTempDay_;
+    return TW_night() ? ParamLED_TW_ColorTempNight_ : ParamLED_TW_ColorTempDay_;
 }
 
 int32_t TWChannel::dimmingTempTarget(bool _switch)
@@ -349,7 +329,7 @@ void TWChannel::setBrightness(uint8_t _bright)
 
 void TWChannel::setNight(bool _night)
 {
-    _isNight = _night;
+    _tw_night = _night;
     _brightness.setRange(ParamLED_TW_BrighnessMin_, dimmingValMax());
 
     if (!_night)
