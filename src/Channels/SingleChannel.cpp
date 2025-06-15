@@ -75,11 +75,6 @@ void SingleChannel::loop()
     processFrontInput();
 }
 
-bool SingleChannel::SC_Lock()
-{
-    return _SC_LockState;
-}
-
 void SingleChannel::processFrontInput()
 {
     LightChannel::processFrontInput(ParamLED_SC_FrontControl_);
@@ -112,7 +107,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
         switch (relKO)
         {
             case LED_SC_KoSwitch_:
-                if (!SC_Lock())
+                if (!getLock())
                 {
                     setSwitch(ko.value(DPT_Switch));
                 }
@@ -129,7 +124,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_SC_KoBrightness_:
-                if (!SC_Lock())
+                if (!getLock())
                 {
                     setBrightness(ko.value(DPT_Percent_U8));
                     // setBrightness(ko.value(DPT_Scaling));
@@ -140,7 +135,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_SC_KoDimRel_:
-                if (!SC_Lock())
+                if (!getLock())
                 {
                     int16_t tmpu16;
                     tmpu16 = *KoLED_SC_DimRel_.valueRef();
@@ -161,7 +156,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_SC_KoScene_:
-                if (!SC_Lock())
+                if (!getLock())
                 {
                     handleScene(ko.value(DPT_SceneNumber));
                 }
@@ -172,7 +167,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
 
             // Day or Night
             case LED_SC_KoNight_:
-                if (!SC_Lock())
+                if (!getLock())
                 {
                     setNight(ko.value(DPT_Switch));
                 }
@@ -293,11 +288,6 @@ void SingleChannel::setSwitch(bool _switch)
     }
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
-}
-
-void SingleChannel::setLock(bool _state)
-{
-    _SC_LockState = _state;
 }
 
 void SingleChannel::setBrightness(uint8_t _bright)

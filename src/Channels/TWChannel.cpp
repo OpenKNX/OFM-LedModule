@@ -85,11 +85,6 @@ void TWChannel::loop()
     processFrontInput();
 }
 
-bool TWChannel::TW_Lock()
-{
-    return _TW_LockState;
-}
-
 void TWChannel::processFrontInput()
 {
     LightChannel::processFrontInput(ParamLED_TW_FrontControl_);
@@ -121,7 +116,7 @@ void TWChannel::processInputKo(GroupObject& ko)
         switch (relKO)
         {
             case LED_TW_KoSwitch_:
-                if (!TW_Lock())
+                if (!getLock())
                 {
                     setSwitch(ko.value(DPT_Switch));
                 }
@@ -138,7 +133,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_TW_KoBrightness_:
-                if (!TW_Lock())
+                if (!getLock())
                 {
                     setBrightness(ko.value(DPT_Percent_U8));
                 }
@@ -147,7 +142,7 @@ void TWChannel::processInputKo(GroupObject& ko)
             case LED_TW_KoBrightnessStatus_:
                 break;
             case LED_TW_KoDimRel_:
-                if (!TW_Lock())
+                if (!getLock())
                 {
                     int16_t tmpu16;
                     tmpu16 = *KoLED_TW_DimRel_.valueRef();
@@ -168,7 +163,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_TW_KoScene_:
-                if (!TW_Lock())
+                if (!getLock())
                 {
                     handleScene(ko.value(DPT_SceneNumber));
                 }
@@ -178,7 +173,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_TW_KoColorTemperature_:
-                if (!TW_Lock())
+                if (!getLock())
                 {
                     setColorTemperature(ko.value(Dpt(7, 600)));
                 }
@@ -189,7 +184,7 @@ void TWChannel::processInputKo(GroupObject& ko)
 
             // Day or Night
             case LED_TW_KoNight_:
-                if (!TW_Lock())
+                if (!getLock())
                 {
                     setNight(ko.value(DPT_Switch));
                 }
@@ -343,11 +338,6 @@ void TWChannel::setSwitch(bool _switch)
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTempTarget: %3X", dimmingTempTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
-}
-
-void TWChannel::setLock(bool _state)
-{
-    _TW_LockState = _state;
 }
 
 void TWChannel::setBrightness(uint8_t _bright)

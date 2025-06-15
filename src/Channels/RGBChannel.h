@@ -13,8 +13,6 @@ class RGBChannel : public LightChannel
     void processInputKo(GroupObject& ko);
     void update();
     void loop();
-    bool _RGB_LockState = 0;
-    bool RGB_Lock();
 
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
@@ -32,7 +30,6 @@ class RGBChannel : public LightChannel
     void setLastOnValueSat(uint16_t lastOnValueSat) { _lastOnValueSat = lastOnValueSat; }
 
     void setSwitch(bool _switch);
-    void setLock(bool _state);
     void setHue(uint16_t _hue);
     void setSaturation(uint16_t saturation);
     void setBrightness(uint8_t _bright);

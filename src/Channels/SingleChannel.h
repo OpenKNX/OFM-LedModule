@@ -12,8 +12,6 @@ class SingleChannel : public LightChannel
     void processInputKo(GroupObject& ko);
     void update();
     void loop();
-    bool _SC_LockState = 0;
-    bool SC_Lock();
 
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
@@ -24,8 +22,7 @@ class SingleChannel : public LightChannel
     uint8_t checkMinMaxBrightness(uint8_t _bright);
 
     void setSwitch(bool _switch);
-    void setLock(bool _state);
-    void setBrightness(uint8_t _bright);
+     void setBrightness(uint8_t _bright);
     void setNight(bool _night) override;
     void relDimUp();
     void relDimDown();

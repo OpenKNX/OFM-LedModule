@@ -111,11 +111,6 @@ void RGBChannel::loop()
     processFrontInput();
 }
 
-bool RGBChannel::RGB_Lock()
-{
-    return _RGB_LockState;
-}
-
 void RGBChannel::processFrontInput()
 {
     LightChannel::processFrontInput(ParamLED_RGB_FrontControl_);
@@ -149,7 +144,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
         switch (relKO)
         {
             case LED_RGB_KoSwitch_:
-                if (!RGB_Lock())
+                if (!getLock())
                 {
                     setSwitch(ko.value(DPT_Switch));
                 }
@@ -166,7 +161,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_RGB_KoBrightness_:
-                if (!RGB_Lock())
+                if (!getLock())
                 {
                     setBrightness(ko.value(DPT_Percent_U8));
                 }
@@ -176,7 +171,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_RGB_KoDimRel_:
-                if (!RGB_Lock())
+                if (!getLock())
                 {
                     int16_t tmpu16;
                     tmpu16 = *KoLED_RGB_DimRel_.valueRef();
@@ -197,7 +192,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_RGB_KoScene_:
-                if (!RGB_Lock())
+                if (!getLock())
                 {
                     handleScene(ko.value(DPT_SceneNumber));
                 }
@@ -206,7 +201,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_RGB_KoColorTemperature_:
-                if (!RGB_Lock())
+                if (!getLock())
                 {
                     setColorTemperature(ko.value(Dpt(7, 600)));
                 }
@@ -216,7 +211,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_RGB_KoRGB_:
-                if (!RGB_Lock())
+                if (!getLock())
                 {
                     setRGB(ko.value(DPT_Colour_RGB));
                 }
@@ -226,7 +221,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_RGB_KoHSV_:
-                if (!RGB_Lock())
+                if (!getLock())
                 {
                     setHSV(ko.value(DPT_Colour_RGB));
                 }
@@ -237,7 +232,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
 
             // Day or Night
             case LED_RGB_KoNight_:
-                if (!RGB_Lock())
+                if (!getLock())
                 {
                     setNight(ko.value(DPT_Switch));
                 }
@@ -408,11 +403,6 @@ void RGBChannel::setSwitch(bool _switch)
     }
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
-}
-
-void RGBChannel::setLock(bool _state)
-{
-    _RGB_LockState = _state;
 }
 
 void RGBChannel::setHue(uint16_t hue)

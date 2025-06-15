@@ -135,3 +135,12 @@ bool LightChannel::getNight()
     return _isNight;
 }
 
+bool LightChannel::getLock()
+{
+    return _isLocked;
+}
+
+void LightChannel::setLock(bool lock)
+{
+    _isLocked = lock;
+}
