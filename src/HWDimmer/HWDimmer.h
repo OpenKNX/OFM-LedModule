@@ -1,7 +1,8 @@
 #pragma once
 #include <OpenKNX.h>
 
-#define VALUE_KNX_COUNT 256
+//#define VALUE_KNX_COUNT 256
+#define VALUE_KNX_COUNT 100
 
 class HWDimmer
 {
