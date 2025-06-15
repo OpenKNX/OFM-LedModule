@@ -15,6 +15,8 @@ class TWChannel : public LightChannel
     void loop();
     bool _tw_night = 0;
     bool TW_night();
+    bool _TW_LockState = 0;
+    bool TW_Lock();
 
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
@@ -31,6 +33,7 @@ class TWChannel : public LightChannel
     void setLastOnValueTemp(int32_t lastOnValueTemp) { _lastOnValueTemp = lastOnValueTemp; }
 
     void setSwitch(bool _switch);
+    void setLock(bool _state);
     void setBrightness(uint8_t _bright);
     void setNight(bool _night);
     void relDimUp();

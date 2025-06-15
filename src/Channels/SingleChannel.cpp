@@ -80,6 +80,11 @@ bool SingleChannel::SC_night()
     return _sc_night;
 }
 
+bool SingleChannel::SC_Lock()
+{
+    return _SC_LockState;
+}
+
 void SingleChannel::processFrontInput()
 {
     LightChannel::processFrontInput(ParamLED_SC_FrontControl_);
@@ -112,39 +117,59 @@ void SingleChannel::processInputKo(GroupObject& ko)
         switch (relKO)
         {
             case LED_SC_KoSwitch_:
-                setSwitch(ko.value(DPT_Switch));
+                if (!SC_Lock())
+                {
+                    setSwitch(ko.value(DPT_Switch));
+                }
                 break;
 
             case LED_SC_KoStateOnOff_:
                 break;
 
+            case LED_SC_KoLocking_:
+                setLock(ko.value(DPT_Switch));
+                break;
+
+            case LED_SC_KoStateLocking_:
+                break;
+
             case LED_SC_KoBrightness_:
-                setBrightness(ko.value(DPT_Percent_U8));
+                if (!SC_Lock())
+                {
+                    setBrightness(ko.value(DPT_Percent_U8));
+                    // setBrightness(ko.value(DPT_Scaling));
+                }
                 break;
 
             case LED_SC_KoBrightnessStatus_:
                 break;
 
             case LED_SC_KoDimRel_:
-                int16_t tmpu16;
-                tmpu16 = *KoLED_SC_DimRel_.valueRef();
+                if (!SC_Lock())
+                {
+                    int16_t tmpu16;
+                    tmpu16 = *KoLED_SC_DimRel_.valueRef();
 
-                if (tmpu16 >= 0x09)
-                {
-                    relDimUp();
-                }
-                if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                {
-                    relDimDown();
-                }
-                if (tmpu16 == 0x00 || tmpu16 == 0x08)
-                {
-                    relDimStop();
+                    if (tmpu16 >= 0x09)
+                    {
+                        relDimUp();
+                    }
+                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
+                    {
+                        relDimDown();
+                    }
+                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                    {
+                        relDimStop();
+                    }
                 }
                 break;
 
             case LED_SC_KoScene_:
-                handleScene(ko.value(DPT_SceneNumber));
+                if (!SC_Lock())
+                {
+                    handleScene(ko.value(DPT_SceneNumber));
+                }
                 break;
 
             case LED_SC_KoSceneStatus_:
@@ -152,7 +177,10 @@ void SingleChannel::processInputKo(GroupObject& ko)
 
             // Day or Night
             case LED_SC_KoNight_:
-                setNight(ko.value(DPT_Switch));
+                if (!SC_Lock())
+                {
+                    setNight(ko.value(DPT_Switch));
+                }
                 break;
 
             default:
@@ -166,7 +194,7 @@ void SingleChannel::handleScene(uint8_t sceneNr)
 {
     for (int i = 0; i < N_SCENES; i++)
     {
-        if (sceneNr == _scenes[i].sceneNr)
+        if (sceneNr == _scenes[i].sceneNr - 1)
         {
             switch (_scenes[i].funcType)
             {
@@ -270,6 +298,11 @@ void SingleChannel::setSwitch(bool _switch)
     }
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+}
+
+void SingleChannel::setLock(bool _state)
+{
+    _SC_LockState = _state;
 }
 
 void SingleChannel::setBrightness(uint8_t _bright)

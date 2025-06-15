@@ -116,6 +116,11 @@ bool RGBChannel::RGB_night()
     return _rgb_night;
 }
 
+bool RGBChannel::RGB_Lock()
+{
+    return _RGB_LockState;
+}
+
 void RGBChannel::processFrontInput()
 {
     LightChannel::processFrontInput(ParamLED_RGB_FrontControl_);
@@ -149,63 +154,87 @@ void RGBChannel::processInputKo(GroupObject& ko)
         switch (relKO)
         {
             case LED_RGB_KoSwitch_:
-                setSwitch(ko.value(DPT_Switch));
+                if (!RGB_Lock())
+                {
+                    setSwitch(ko.value(DPT_Switch));
+                }
                 break;
 
             case LED_RGB_KoStateOnOff_:
                 break;
 
             case LED_RGB_KoLocking_:
+                setLock(ko.value(DPT_Switch));
+                break;
+
+            case LED_RGB_KoStateLocking_:
                 break;
 
             case LED_RGB_KoBrightness_:
-                setBrightness(ko.value(DPT_Percent_U8));
+                if (!RGB_Lock())
+                {
+                    setBrightness(ko.value(DPT_Percent_U8));
+                }
                 break;
 
             case LED_RGB_KoBrightnessStatus_:
                 break;
 
             case LED_RGB_KoDimRel_:
-                int16_t tmpu16;
-                tmpu16 = *KoLED_RGB_DimRel_.valueRef();
+                if (!RGB_Lock())
+                {
+                    int16_t tmpu16;
+                    tmpu16 = *KoLED_RGB_DimRel_.valueRef();
 
-                if (tmpu16 >= 0x09)
-                {
-                    relDimUp();
-                }
-                if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                {
-                    relDimDown();
-                }
-                if (tmpu16 == 0x00 || tmpu16 == 0x08)
-                {
-                    relDimStop();
+                    if (tmpu16 >= 0x09)
+                    {
+                        relDimUp();
+                    }
+                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
+                    {
+                        relDimDown();
+                    }
+                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                    {
+                        relDimStop();
+                    }
                 }
                 break;
 
             case LED_RGB_KoScene_:
-                handleScene(ko.value(DPT_SceneNumber));
+                if (!RGB_Lock())
+                {
+                    handleScene(ko.value(DPT_SceneNumber));
+                }
                 break;
             case LED_RGB_KoSceneStatus_:
                 break;
 
             case LED_RGB_KoColorTemperature_:
-                setColorTemperature(ko.value(Dpt(7, 600)));
-
+                if (!RGB_Lock())
+                {
+                    setColorTemperature(ko.value(Dpt(7, 600)));
+                }
                 break;
 
             case LED_RGB_KoColorTemperatureStatus_:
                 break;
 
             case LED_RGB_KoRGB_:
-                setRGB(ko.value(DPT_Colour_RGB));
+                if (!RGB_Lock())
+                {
+                    setRGB(ko.value(DPT_Colour_RGB));
+                }
                 break;
 
             case LED_RGB_KoRGBStatus_:
                 break;
 
             case LED_RGB_KoHSV_:
-                setHSV(ko.value(DPT_Colour_RGB));
+                if (!RGB_Lock())
+                {
+                    setHSV(ko.value(DPT_Colour_RGB));
+                }
                 break;
 
             case LED_RGB_KoHSVStatus_:
@@ -213,7 +242,10 @@ void RGBChannel::processInputKo(GroupObject& ko)
 
             // Day or Night
             case LED_RGB_KoNight_:
-                switchNight(ko.value(DPT_Switch));
+                if (!RGB_Lock())
+                {
+                    switchNight(ko.value(DPT_Switch));
+                }
                 break;
 
             default:
@@ -228,7 +260,7 @@ void RGBChannel::handleScene(uint8_t sceneNr)
     logDebugP("Scene: %d", sceneNr);
     for (int i = 0; i < N_SCENES; i++)
     {
-        if (sceneNr + 1 == _scenes[i].sceneNr)
+        if (sceneNr == _scenes[i].sceneNr - 1)
         {
             logDebugP("Typ: %d,%d", _scenes[i].funcType, _scenes[i].valueType);
             switch (_scenes[i].funcType)
@@ -383,25 +415,30 @@ void RGBChannel::setSwitch(bool _switch)
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
 }
 
+void RGBChannel::setLock(bool _state)
+{
+    _RGB_LockState = _state;
+}
+
 void RGBChannel::setHue(uint16_t hue)
 {
     logDebugP("setHue: %3X", _hue);
     // hue max 16384
-    _hue.setTargetValue(hue, millis(), dimmingTimeON() );
+    _hue.setTargetValue(hue, millis(), dimmingTimeON());
 }
 
 void RGBChannel::setSaturation(uint16_t saturation)
 {
     logDebugP("setHue: %3X", saturation);
     // saturation max 1024
-    _saturation.setTargetValue(saturation, millis(), dimmingTimeON() );
+    _saturation.setTargetValue(saturation, millis(), dimmingTimeON());
 }
 
 void RGBChannel::setBrightness(uint8_t _bright)
 {
     logDebugP("setBrightness: %3X", _bright);
     _bright = checkMinMaxBrightness(_bright);
-    _brightness.setTargetValue(_bright, millis(), dimmingTimeON() );
+    _brightness.setTargetValue(_bright, millis(), dimmingTimeON());
 }
 
 void RGBChannel::switchNight(bool _night)
