@@ -228,7 +228,7 @@ void RGBChannel::handleScene(uint8_t sceneNr)
     logDebugP("Scene: %d", sceneNr);
     for (int i = 0; i < N_SCENES; i++)
     {
-        if (sceneNr + 1 == _scenes[i].sceneNr)
+        if (sceneNr == _scenes[i].sceneNr - 1)
         {
             logDebugP("Typ: %d,%d", _scenes[i].funcType, _scenes[i].valueType);
             switch (_scenes[i].funcType)

@@ -166,7 +166,7 @@ void SingleChannel::handleScene(uint8_t sceneNr)
 {
     for (int i = 0; i < N_SCENES; i++)
     {
-        if (sceneNr == _scenes[i].sceneNr)
+        if (sceneNr == _scenes[i].sceneNr - 1)
         {
             switch (_scenes[i].funcType)
             {
