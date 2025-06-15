@@ -81,7 +81,7 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-SceneType" Name="SceneType">
-                <TypeRestriction Base="Value" SizeInBit="3">
+                <TypeRestriction Base="Value" SizeInBit="3" UIHint="DropDown">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
                   <Enumeration Text="Wert" Value="1" Id="%ENID%" />
                   <!-- hidden for now till actually implemented in firmware
