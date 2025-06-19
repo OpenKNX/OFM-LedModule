@@ -73,11 +73,11 @@ void LedModule::setupChannels()
             case LightType::TunableWhite:
                 if (ParamLED_CH_TW_Function == 1)
                 {
-                    _TW_HWChannels[ParamLED_CH_TW_Light - 1][0] = _channelIndex;
+                    _TW_HWChannels[ParamLED_CH_TW_Light - 1][1] = _channelIndex;
                 }
                 else if (ParamLED_CH_TW_Function == 2)
                 {
-                    _TW_HWChannels[ParamLED_CH_TW_Light - 1][1] = _channelIndex;
+                    _TW_HWChannels[ParamLED_CH_TW_Light - 1][0] = _channelIndex;
                 }
                 break;
 
