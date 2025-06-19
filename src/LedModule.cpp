@@ -148,6 +148,7 @@ void LedModule::setupVoltageMeasurement()
 #ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
     pinMode(LEDMODULE_VOLTAGE_MEASURE_PIN, INPUT);
     analogReadResolution(12);
+    logDebugP("Voltage Measurement: PIN: %u, resolution: %u bits", LEDMODULE_VOLTAGE_MEASURE_PIN, 12);
 #endif
 }
 
@@ -156,6 +157,7 @@ void LedModule::setupConstantCurrentMode()
 #ifdef LEDMODULE_DIM_TYPE_PIN
     pinMode(LEDMODULE_DIM_TYPE_PIN, OUTPUT);
     digitalWrite(LEDMODULE_DIM_TYPE_PIN, ParamLED_DimmerCcType); // HIGH = PWM-only, LOW = hybrid
+    logDebugP("Constant Current: PIN: %u, mode: %u", LEDMODULE_DIM_TYPE_PIN, ParamLED_DimmerCcType);
 #endif
 }
 
