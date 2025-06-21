@@ -225,11 +225,11 @@
 
                             <Columns>
                               <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Szene" Width="15%" />
-                              <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Typ" Width="20%" />
+                              <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Typ" Width="25%" />
                               <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="Funktion" Width="25%" />
                               <Column Id="%AID%_PB-12_C-4" Name="Col4" Text="Wert 1" Width="20%" />
                               <Column Id="%AID%_PB-12_C-5" Name="Col5" Text="Wert 2" Width="20%" />
-                              <Column Id="%AID%_PB-12_C-6" Name="Col6" Text="Fix" Width="15%" />
+                              <Column Id="%AID%_PB-12_C-6" Name="Col6" Text="Fix" Width="10%" />
                               <!-- <Column Id="%AID%_PB-12_C-7" Name="Col7" Text="Lock1" Width="15%" /> -->
                               <!-- <Column Id="%AID%_PB-12_C-8" Name="Col8" Text="Lock2" Width="15%" /> -->
                             </Columns>
