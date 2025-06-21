@@ -19,19 +19,19 @@
 
               <Parameter Id="%AID%_P-%TT%%CC%001" Name="LightActive_%C%"           ParameterType="%AID%_PT-OnOffYesNo" Text="Licht Aktiv" Value="0" />
               <Parameter Id="%AID%_P-%TT%%CC%002" Name="LightText_%C%"             ParameterType="%AID%_PT-Text40Byte" Text="Licht Bezeichnung" Value="" />
-              <Parameter Id="%AID%_P-%TT%%CC%003" Name="LightDimmTimeDayON_%C%"    ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Tag On" Value="1000" SuffixText=" ms">
+              <Parameter Id="%AID%_P-%TT%%CC%003" Name="LightDimmTimeDayON_%C%"    ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Tag On" Value="1000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%004" Name="LightDimmTimeNightON_%C%"  ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht On" Value="3000" SuffixText=" ms">
+              <Parameter Id="%AID%_P-%TT%%CC%004" Name="LightDimmTimeNightON_%C%"  ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht On" Value="3000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="3" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%005" Name="LightDimmTimeRel_%C%"      ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Relativ" Value="10000" SuffixText=" ms">
+              <Parameter Id="%AID%_P-%TT%%CC%005" Name="LightDimmTimeRel_%C%"      ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Relativ" Value="10000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="5" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%006" Name="LightDimmTimeDayOFF_%C%"   ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Tag Off" Value="1000" SuffixText=" ms">
+              <Parameter Id="%AID%_P-%TT%%CC%006" Name="LightDimmTimeDayOFF_%C%"   ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Tag Off" Value="1000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="7" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%007" Name="LightDimmTimeNightOFF_%C%" ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht Off" Value="3000" SuffixText=" ms">
+              <Parameter Id="%AID%_P-%TT%%CC%007" Name="LightDimmTimeNightOFF_%C%" ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht Off" Value="3000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="9" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%008" Name="BrighnessMin_%C%"          ParameterType="%AID%_PT-MinDim" Text="Helligkeit min." Value="0">
@@ -49,7 +49,7 @@
               <Parameter Id="%AID%_P-%TT%%CC%012" Name="StairCaseActive_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Text="Treppenlichtfunktion" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="3" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%013" Name="StairCaseTimer_%C%"        ParameterType="%AID%_PT-ValueDpt5" Text="Nachlaufzeit" Value="60" SuffixText=" s">
+              <Parameter Id="%AID%_P-%TT%%CC%013" Name="StairCaseTimer_%C%"        ParameterType="%AID%_PT-ValueDpt5" Text="Nachlaufzeit" Value="60" SuffixText="s">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="15" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%014" Name="StaicCaseTrigger_%C%"      ParameterType="%AID%_PT-SCFunction" Text="Treppenlicht Trigger" Value="0">
@@ -82,7 +82,7 @@
               <!--<Parameter Id="%AID%_P-%TT%%CC%023" Name="ColorBlueNight_%C%"    ParameterType="%AID%_PT-ValueDpt5" Text="Blau Nacht" Value="0">
               <Memory CodeSegment="%AID%_RS-04-00000" Offset="21" BitOffset="0" />
               </Parameter>-->
-              <Parameter Id="%AID%_P-%TT%%CC%024" Name="ColorTimeDay_%C%"          ParameterType="%AID%_PT-DimTime" Text="Zeit Farbänderung Tag" Value="10000" SuffixText=" ms">
+              <Parameter Id="%AID%_P-%TT%%CC%024" Name="ColorTimeDay_%C%"          ParameterType="%AID%_PT-DimTime" Text="Zeit Farbänderung Tag" Value="10000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="22" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%025" Name="ColorTimeNight_%C%"        ParameterType="%AID%_PT-DimTime" Text="Zeit Farbänderung Nacht" Value="10000" SuffixText="ms">
@@ -102,7 +102,7 @@
               <Parameter Id="%AID%_P-%TT%%CC%034" Name="FrontControlColorPicker_%C%"        ParameterType="%AID%_PT-ValueColor" Text="Farbe 3-Byte-RGB" Value="#FFFFFF">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="27" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%035" Name="FrontControlColorTime_%C%"          ParameterType="%AID%_PT-DimTime" Text="Zeit Farbänderung" Value="10000" SuffixText=" ms">
+              <Parameter Id="%AID%_P-%TT%%CC%035" Name="FrontControlColorTime_%C%"          ParameterType="%AID%_PT-DimTime" Text="Zeit Farbänderung" Value="10000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="30" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%036" Name="FrontControlColorTemp_%C%"          ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur" Value="4000">

@@ -49,7 +49,7 @@
               <Parameter Id="%AID%_P-%TT%%CC%012" Name="StairCaseActive_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Text="Treppenlichtfunktion" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="13" BitOffset="3" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%013" Name="StairCaseTimer_%C%"        ParameterType="%AID%_PT-ValueDpt5" Text="Nachlaufzeit [15s]" Value="60">
+              <Parameter Id="%AID%_P-%TT%%CC%013" Name="StairCaseTimer_%C%"        ParameterType="%AID%_PT-ValueDpt5" Text="Nachlaufzeit" Value="60" SuffixText="s">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%014" Name="StaicCaseTrigger_%C%"      ParameterType="%AID%_PT-SCFunction" Text="Treppenlicht Trigger" Value="0">
