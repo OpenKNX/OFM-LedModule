@@ -126,11 +126,11 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-MinDim" Name="MinDimValue">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="127" />
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="99" />
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-MaxDim" Name="MaxDimValue">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="128" maxInclusive="255" />
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="100" />
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-DimTime" Name="DimTime">
