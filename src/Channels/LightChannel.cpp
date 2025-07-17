@@ -37,12 +37,7 @@ const std::string LightChannel::name()
  */
 void LightChannel::loop()
 {
-    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
-    {
-        _lastTimestamp = millis();
-        update();
-    }
-
+    update();
     processFrontOutput();
 }
 

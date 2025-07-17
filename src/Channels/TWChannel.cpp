@@ -31,17 +31,29 @@ void TWChannel::update()
     uint16_t tmpColor = _colorTemperature.value();
     if (_lastBrightnessLevel != tmpbright)
     {
-        logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpbright);
         _lastBrightnessLevel = tmpbright;
         _lastColorTemp = tmpColor;
-        KoLED_TW_BrightnessStatus_.value(tmpbright, DPT_Percent_U8);
-        KoLED_TW_StateOnOff_.value(tmpbright > 0, DPT_State);
+
+        if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+        {
+            _lastTimestamp = millis();
+
+            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpbright);
+            KoLED_TW_BrightnessStatus_.value(tmpbright, DPT_Percent_U8);
+            KoLED_TW_StateOnOff_.value(tmpbright > 0, DPT_State);
+        }
     }
     if (_lastColorTemp != tmpColor)
     {
-        logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
         _lastColorTemp = tmpColor;
-        KoLED_TW_ColorTemperatureStatus_.value(tmpColor, Dpt(7, 600));
+
+        if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+        {
+            _lastTimestamp = millis();
+            
+            logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
+            KoLED_TW_ColorTemperatureStatus_.value(tmpColor, Dpt(7, 600));
+        }
     }
 }
 

@@ -30,10 +30,16 @@ void SingleChannel::update()
     uint8_t tmpBrightness = _brightness.value();
     if (_lastBrightnessLevel != tmpBrightness)
     {
-        logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
         _lastBrightnessLevel = tmpBrightness;
-        KoLED_SC_BrightnessStatus_.value(tmpBrightness, DPT_Percent_U8);
-        KoLED_SC_StateOnOff_.value(tmpBrightness > 0, DPT_State);
+
+        if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+        {
+            _lastTimestamp = millis();
+
+            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
+            KoLED_SC_BrightnessStatus_.value(tmpBrightness, DPT_Percent_U8);
+            KoLED_SC_StateOnOff_.value(tmpBrightness > 0, DPT_State);
+        }
     }
 }
 

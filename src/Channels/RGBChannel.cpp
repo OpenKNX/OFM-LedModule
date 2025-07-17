@@ -35,20 +35,32 @@ void RGBChannel::update()
 
     if (_lastBrightnessLevel != tmpBright)
     {
-        logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBright);
         _lastBrightnessLevel = tmpBright;
-        KoLED_RGB_BrightnessStatus_.value(tmpBright, DPT_Percent_U8);
-        KoLED_RGB_StateOnOff_.value(tmpBright > 0, DPT_State);
-        KoLED_RGB_HSVStatus_.value(hsv.toUint32(), DPT_Colour_RGB);
-        KoLED_RGB_RGBStatus_.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+
+        if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+        {
+            _lastTimestamp = millis();
+
+            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBright);
+            KoLED_RGB_BrightnessStatus_.value(tmpBright, DPT_Percent_U8);
+            KoLED_RGB_StateOnOff_.value(tmpBright > 0, DPT_State);
+            KoLED_RGB_HSVStatus_.value(hsv.toUint32(), DPT_Colour_RGB);
+            KoLED_RGB_RGBStatus_.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+        }
     }
     else if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
     {
-        logDebugP("update: Hue: %d -> %d Sat: %d -> %d", _lastHueValue, tmpHue, _lastSatValue, tmpSat);
         _lastHueValue = tmpHue;
         _lastSatValue = tmpSat;
-        KoLED_RGB_HSVStatus_.value(hsv.toUint32(), DPT_Colour_RGB);
-        KoLED_RGB_RGBStatus_.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+
+        if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+        {
+            _lastTimestamp = millis();
+
+            logDebugP("update: Hue: %d -> %d Sat: %d -> %d", _lastHueValue, tmpHue, _lastSatValue, tmpSat);
+            KoLED_RGB_HSVStatus_.value(hsv.toUint32(), DPT_Colour_RGB);
+            KoLED_RGB_RGBStatus_.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+        }
     }
 }
 
