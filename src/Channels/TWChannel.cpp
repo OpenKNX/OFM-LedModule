@@ -27,30 +27,32 @@ const std::string TWChannel::name()
 
 void TWChannel::update()
 {
-    uint8_t tmpbright = _brightness.value();
-    uint16_t tmpColor = _colorTemperature.value();
-    if (_lastBrightnessLevel != tmpbright)
+    uint8_t tmpBrightness = _brightness.value();
+    if (_lastBrightnessLevel != tmpBrightness)
     {
-        _lastBrightnessLevel = tmpbright;
-        _lastColorTemp = tmpColor;
+        _lastBrightnessLevel = tmpBrightness;
 
-        if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
-        {
-            _lastTimestamp = millis();
-
-            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpbright);
-            KoLED_TW_BrightnessStatus_.value(tmpbright, DPT_Percent_U8);
-            KoLED_TW_StateOnOff_.value(tmpbright > 0, DPT_State);
-        }
+        bool stateOn = tmpBrightness > 0;
+        if ((bool)KoLED_TW_StateOnOff_.value(DPT_State) != stateOn)
+            KoLED_TW_StateOnOff_.value(tmpBrightness > 0, DPT_State);
     }
+
+    uint16_t tmpColor = _colorTemperature.value();
     if (_lastColorTemp != tmpColor)
-    {
         _lastColorTemp = tmpColor;
 
-        if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+    {
+        _lastTimestamp = millis();
+
+        if ((uint8_t)KoLED_TW_BrightnessStatus_.value(DPT_Percent_U8) != tmpBrightness)
         {
-            _lastTimestamp = millis();
-            
+            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
+            KoLED_TW_BrightnessStatus_.value(tmpBrightness, DPT_Percent_U8);
+        }
+
+        if ((uint16_t)KoLED_TW_ColorTemperatureStatus_.value(Dpt(7, 600)) != tmpColor)
+        {
             logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
             KoLED_TW_ColorTemperatureStatus_.value(tmpColor, Dpt(7, 600));
         }
