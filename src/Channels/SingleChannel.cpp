@@ -138,8 +138,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
             case LED_SC_KoBrightness_:
                 if (!getLock())
                 {
-                    setBrightness(ko.value(DPT_Percent_U8));
-                    // setBrightness(ko.value(DPT_Scaling));
+                    setBrightness(ko.value(DPT_Scaling));
                 }
                 break;
 

@@ -179,9 +179,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
             case LED_RGB_KoBrightness_:
                 if (!getLock())
                 {
-                    //setBrightness(ko.value(DPT_Percent_U8));
                     setBrightness(ko.value(DPT_Scaling));
-                    
                 }
                 break;
 

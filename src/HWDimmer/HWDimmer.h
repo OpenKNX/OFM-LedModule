@@ -42,11 +42,9 @@ class HWDimmer
             for (auto i = 0; i < N; ++i)
             {
                 values[i] = round(range * pow((float)i / float(N - 1), power));
-                //HWDimmer::table(i,values[i]);
             }
             values[0] = 0;
             values[N - 1] = range;
-            
         }
 
         uint16_t Val(uint16_t id)

@@ -139,7 +139,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_TW_KoBrightness_:
-                setBrightness(ko.value(DPT_Percent_U8));
+                setBrightness(ko.value(DPT_Scaling));
                 break;
 
             case LED_TW_KoBrightnessStatus_:
