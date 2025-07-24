@@ -45,10 +45,10 @@ void TWChannel::update()
     {
         _lastTimestamp = millis();
 
-        if ((uint8_t)KoLED_TW_BrightnessStatus_.value(DPT_Percent_U8) != tmpBrightness)
+        if ((uint8_t)KoLED_TW_BrightnessStatus_.value(DPT_Scaling) != tmpBrightness)
         {
             logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
-            KoLED_TW_BrightnessStatus_.value(tmpBrightness, DPT_Percent_U8);
+            KoLED_TW_BrightnessStatus_.value(tmpBrightness, DPT_Scaling);
         }
 
         if ((uint16_t)KoLED_TW_ColorTemperatureStatus_.value(Dpt(7, 600)) != tmpColor)

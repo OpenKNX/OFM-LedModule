@@ -40,7 +40,7 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
     bool isValidChannel = false;
     if (HWDimmer::setLevel(level, channel))
     {
-        // logInfoP("setLevel_2");
+        //logInfoP("setLevel: %3X",level);
         isValidChannel = true;
         _pwm.setPWM(channel, 0, min(level, DIM_RANGE));
         // logInfoP("setLevel_3");
@@ -57,6 +57,7 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
  */
 uint16_t HWDimmerPCA::scale(uint8_t level, HWDimmer::DimLUTType lutType)
 {
+    //logDebugP("#: %3X, Wert: %3X", level, dimLUT[lutType].Val(level));
     return dimLUT[lutType].Val(level);
 }
 

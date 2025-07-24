@@ -2,7 +2,7 @@
 #include <OpenKNX.h>
 
 //#define VALUE_KNX_COUNT 256
-#define VALUE_KNX_COUNT 100
+#define VALUE_KNX_COUNT 101
 
 class HWDimmer
 {
@@ -13,7 +13,8 @@ class HWDimmer
     enum DimLUTType
     {
         Linear = 0,
-        Log1_5 = 1
+        Log1_5 = 1,
+        Log2_0 = 2
     };
 
     void loop();
@@ -41,9 +42,11 @@ class HWDimmer
             for (auto i = 0; i < N; ++i)
             {
                 values[i] = round(range * pow((float)i / float(N - 1), power));
+                //HWDimmer::table(i,values[i]);
             }
             values[0] = 0;
             values[N - 1] = range;
+            
         }
 
         uint16_t Val(uint16_t id)

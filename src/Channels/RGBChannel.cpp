@@ -52,10 +52,10 @@ void RGBChannel::update()
     {
         _lastTimestamp = millis();
 
-        if ((uint8_t)KoLED_RGB_BrightnessStatus_.value(DPT_Percent_U8) != tmpBrightness)
+        if ((uint8_t)KoLED_RGB_BrightnessStatus_.value(DPT_Scaling) != tmpBrightness)
         {
             logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
-            KoLED_RGB_BrightnessStatus_.value(tmpBrightness, DPT_Percent_U8);
+            KoLED_RGB_BrightnessStatus_.value(tmpBrightness, DPT_Scaling);
         }
 
         if ((uint32_t)KoLED_RGB_HSVStatus_.value(DPT_Colour_RGB) != hsv.toUint32())
@@ -179,7 +179,9 @@ void RGBChannel::processInputKo(GroupObject& ko)
             case LED_RGB_KoBrightness_:
                 if (!getLock())
                 {
-                    setBrightness(ko.value(DPT_Percent_U8));
+                    //setBrightness(ko.value(DPT_Percent_U8));
+                    setBrightness(ko.value(DPT_Scaling));
+                    
                 }
                 break;
 
@@ -417,6 +419,7 @@ void RGBChannel::setSwitch(bool _switch)
     }
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+    logDebugP("parammaxday: %5X",ParamLED_RGB_BrighnessMaxDay_);
 }
 
 void RGBChannel::setHue(uint16_t hue)
