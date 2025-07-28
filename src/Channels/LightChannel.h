@@ -149,7 +149,7 @@ class LightChannel : public OpenKNX::Channel
     uint32_t _lastDimTimestamp = 0;
     uint16_t _lastBrightnessLevel = 0;
     
-    int32_t _lastOnValue = 255;
+    int32_t _lastOnValue = 100;
     unsigned long _stairTime = 0;
     bool _stairTrigger = 0;
     bool _isNight = false;
