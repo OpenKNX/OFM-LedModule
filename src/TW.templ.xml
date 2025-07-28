@@ -75,7 +75,7 @@
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="24" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%021" Name="FrontControl_%C%"         ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung aktivieren" Value="0" />
                 <!-- 5 bits free -->
-                <Parameter Id="%AID%_UP-%TT%%CC%022" Name="FrontControlBrightness_%C%" ParameterType="%AID%_PT-ValueDpt5" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="100" />
+                <Parameter Id="%AID%_UP-%TT%%CC%022" Name="FrontControlBrightness_%C%" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="100" />
                 <Parameter Id="%AID%_UP-%TT%%CC%023" Name="FrontControlColorTemp_%C%" ParameterType="%AID%_PT-ColorTemperature" Offset="2" BitOffset="0" Text="Farbtemperatur bei An" Value="4000" SuffixText="K" />
               </Union>
 
