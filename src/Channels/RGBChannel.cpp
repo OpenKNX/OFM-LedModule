@@ -14,6 +14,7 @@ RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
  
     Colors::HSV hsv(_hue.value(), _saturation.value(), _UFP16(_brightness.value(), 2));
     
+    KoLED_RGB_StateOnOff_.value(false, DPT_State);
     KoLED_RGB_BrightnessStatus_.value(_brightness.value(), DPT_Scaling);
     KoLED_RGB_ColorTemperatureStatus_.valueNoSend((uint16_t)0, Dpt(7, 600));
     KoLED_RGB_HSVStatus_.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);

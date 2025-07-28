@@ -11,6 +11,7 @@ TWChannel::TWChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[2])
 
     _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL && hwChannels[1] != LED_INVALID_HW_CHANNEL;
     
+    KoLED_TW_StateOnOff_.value(false, DPT_State);
     KoLED_TW_BrightnessStatus_.value(_brightness.value(), DPT_Scaling);
     KoLED_TW_ColorTemperatureStatus_.valueNoSend(_colorTemperature.value(), Dpt(7, 600));
 

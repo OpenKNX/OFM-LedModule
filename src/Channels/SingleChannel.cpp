@@ -11,6 +11,7 @@ SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannel
 
     _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL;
 
+    KoLED_SC_StateOnOff_.value(false, DPT_State);
     KoLED_SC_BrightnessStatus_.value(_brightness.value(), DPT_Scaling);
 
 #ifdef EXT_DEBUG_LOG
