@@ -35,7 +35,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="%SZ%" /> <!-- 7 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+6%" Name="Scene%SN%_Function_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-SCFunction" Text="Funktion" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+7%" Name="Scene%SN%_Sequence_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-SCSequence" Text="Ablauf" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="255" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="100" SuffixText="%" />
               </Block>
 
               <Block Name="ScenesRGB"> <!-- Size: 2x 8bit Header, 3x 1 byte Data: 5 bytes per Scene -->
@@ -47,7 +47,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="%SZ%" /> <!-- 7 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+6%" Name="Scene%SN%_Function_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-RGBFunction" Text="Funktion" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+7%" Name="Scene%SN%_Sequence_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-RGBSequence" Text="Ablauf" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="255" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="100" SuffixText="%" />
 
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+9%" Name="Scene%SN%_RGB_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-LightColorRGB" Text="Lichtfarbe RGB" Value="#000000" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+10%" Name="Scene%SN%_Hue_%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Hue" Value="0" SuffixText="Hue" />
@@ -63,7 +63,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Scene%SN%_Number_%C%" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="%SZ%" /> <!-- 7 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+6%" Name="Scene%SN%_Function%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-TWFunction" Text="Funktion" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+7%" Name="Scene%SN%_Sequence%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-TWSequence" Text="Ablauf" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="255" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Scene%SN%_Brightness%C%" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5" Text="Helligkeit" Value="100" SuffixText="%" />
 
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+9%" Name="Scene%SN%_TW_%C%" Offset="%MO+3%" BitOffset="0" ParameterType="%AID%_PT-ColorTemperature" Text="Lichtfarbe" Value="4000" SuffixText="K" />
 
