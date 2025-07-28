@@ -11,6 +11,8 @@ SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannel
 
     _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL;
 
+    KoLED_SC_BrightnessStatus_.value(_brightness.value(), DPT_Scaling);
+
 #ifdef EXT_DEBUG_LOG
     logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
     for (int i = 0; i < N_SCENES; i++)

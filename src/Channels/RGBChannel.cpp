@@ -11,6 +11,13 @@ RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
     memcpy(_scenes, knx.paramData(LED_RGB_ParamCalcIndex(LED_RGB_SceneA_Type_)), N_SCENES * sizeof(SceneConfig));
 
     _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL && hwChannels[1] != LED_INVALID_HW_CHANNEL && hwChannels[2] != LED_INVALID_HW_CHANNEL;
+ 
+    Colors::HSV hsv(_hue.value(), _saturation.value(), _UFP16(_brightness.value(), 2));
+    
+    KoLED_RGB_BrightnessStatus_.value(_brightness.value(), DPT_Scaling);
+    KoLED_RGB_ColorTemperatureStatus_.valueNoSend((uint16_t)0, Dpt(7, 600));
+    KoLED_RGB_HSVStatus_.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
+    KoLED_RGB_RGBStatus_.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
 
 #ifdef EXT_DEBUG_LOG
     logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
