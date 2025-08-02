@@ -11,9 +11,9 @@ RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
     memcpy(_scenes, knx.paramData(LED_RGB_ParamCalcIndex(LED_RGB_SceneA_Type_)), N_SCENES * sizeof(SceneConfig));
 
     _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL && hwChannels[1] != LED_INVALID_HW_CHANNEL && hwChannels[2] != LED_INVALID_HW_CHANNEL;
- 
+
     Colors::HSV hsv(_hue.value(), _saturation.value(), _UFP16(_brightness.value(), 2));
-    
+
     KoLED_RGB_StateOnOff_.value(false, DPT_State);
     KoLED_RGB_BrightnessStatus_.value(_brightness.value(), DPT_Scaling);
     KoLED_RGB_ColorTemperatureStatus_.valueNoSend((uint16_t)0, Dpt(7, 600));
@@ -49,7 +49,7 @@ void RGBChannel::update()
         if ((bool)KoLED_RGB_StateOnOff_.value(DPT_State) != stateOn)
             KoLED_RGB_StateOnOff_.value(tmpBrightness > 0, DPT_State);
     }
-    
+
     if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
     {
         _lastHueValue = tmpHue;
@@ -102,19 +102,16 @@ void RGBChannel::loop()
         }
     }
     // Stairway Timeout
-    /*
     if (((getStairTime() + (ParamLED_RGB_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
     {
         setStairTrigger(0);
-        if (!RGB_night())
+        if (ParamLED_RGB_StartupBehavior_)
         {
-            _brightness.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayOFF_);
+            setLastOnValue(_brightness.value());
         }
-        else if (RGB_night())
-        {
-            _brightness.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeNightOFF_);
-        }
-    }*/
+        _brightness.setTargetValue(0, millis(), dimmingTimeOFF());
+    }
+
     // Trigger RGB Change
     /*    if (_brightness.getRGBChangingTrigger() && !RGB_night() && (_brightness.getRGBChangingTime() + ParamLED_RGB_ColorTimeDay_) <= millis())
         {
@@ -530,123 +527,123 @@ void RGBChannel::RGBpicker(uint8_t _selection)
     {
         case 1:
             /* color rot */
-            logDebugP("color rot");
-            _hue.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 2:
-            /* color  orange*/
-            logDebugP("color orange");
-            _hue.setTargetValue(1365, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 3:
-            /* color  gelb*/
-            logDebugP("color gelb");
-            _hue.setTargetValue(2730, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 4:
-            /* color  gelbgrün*/
-            logDebugP("color gelbgrün");
-            _hue.setTargetValue(4095, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 5:
-            /* color  grün*/
-            logDebugP("color grün");
-            _hue.setTargetValue(5460, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 6:
-            /* color  aquamarin*/
-            logDebugP("color aquamarin");
-            _hue.setTargetValue(6825, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 7:
-            /* color  türkis*/
-            logDebugP("color türkis");
-            _hue.setTargetValue(8190, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 8:
-            /* color  mint*/
-            logDebugP("color mint");
-            _hue.setTargetValue(9555, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 9:
-            /* color  blau*/
-            logDebugP("color blau");
-            _hue.setTargetValue(10920, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 10:
-            /* color  lila*/
-            logDebugP("color lila");
-            _hue.setTargetValue(12285, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 11:
-            /* color  rosa*/
-            logDebugP("color rosa");
-            _hue.setTargetValue(13650, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 12:
-            /* color  violett*/
-            logDebugP("color violett");
-            _hue.setTargetValue(15015, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 13:
-            /* color  weiß*/
-            logDebugP("color weiß");
-            _hue.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 14:
-            /* color  random steady*/
-            logDebugP("color random steady");
-            _hue.setTargetValue(random(0x3FFF), millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 15:
-            /* color  random changing*/
-            logDebugP("color random changing");
-            _hue.setTargetValue(random(0x3FFF), millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 16:
-            /* color  custom*/
-            logDebugP("color custom");
-            _hue.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-            break;
-        case 17:
-            /* color temperature */
-            logDebugP("color temperature");
-            /*
-                  Colors::HSV hsv;
-                  if ( !RGB_night() )
-                        {
-                        hsv = Colors::rgb2hsv( conv_Temp2RGB(ParamLED_RGB_ColorDay_) );
-                        _hue.setTargetValue( hsv._hue , millis() , ParamLED_RGB_LightDimmTimeDayON_);
-                        _saturation.setTargetValue( hsv._sat , millis() , ParamLED_RGB_LightDimmTimeDayON_);
-                        }
-                  if (  RGB_night() )
-                        {
-                        hsv = Colors::rgb2hsv( conv_Temp2RGB(ParamLED_RGB_ColorNight_) );
-                        _hue.setTargetValue( hsv._hue , millis() , ParamLED_RGB_LightDimmTimeNightON_);
-                        _saturation.setTargetValue( hsv._sat , millis() , ParamLED_RGB_LightDimmTimeNightON_);
-                        }
-            */
-            break;
+    logDebugP("color rot");
+    _hue.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+    _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+    break;
+    case 2:
+        /* color  orange*/
+        logDebugP("color orange");
+        _hue.setTargetValue(1365, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 3:
+        /* color  gelb*/
+        logDebugP("color gelb");
+        _hue.setTargetValue(2730, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 4:
+        /* color  gelbgrün*/
+        logDebugP("color gelbgrün");
+        _hue.setTargetValue(4095, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 5:
+        /* color  grün*/
+        logDebugP("color grün");
+        _hue.setTargetValue(5460, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 6:
+        /* color  aquamarin*/
+        logDebugP("color aquamarin");
+        _hue.setTargetValue(6825, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 7:
+        /* color  türkis*/
+        logDebugP("color türkis");
+        _hue.setTargetValue(8190, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 8:
+        /* color  mint*/
+        logDebugP("color mint");
+        _hue.setTargetValue(9555, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 9:
+        /* color  blau*/
+        logDebugP("color blau");
+        _hue.setTargetValue(10920, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 10:
+        /* color  lila*/
+        logDebugP("color lila");
+        _hue.setTargetValue(12285, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 11:
+        /* color  rosa*/
+        logDebugP("color rosa");
+        _hue.setTargetValue(13650, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 12:
+        /* color  violett*/
+        logDebugP("color violett");
+        _hue.setTargetValue(15015, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 13:
+        /* color  weiß*/
+        logDebugP("color weiß");
+        _hue.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 14:
+        /* color  random steady*/
+        logDebugP("color random steady");
+        _hue.setTargetValue(random(0x3FFF), millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 15:
+        /* color  random changing*/
+        logDebugP("color random changing");
+        _hue.setTargetValue(random(0x3FFF), millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 16:
+        /* color  custom*/
+        logDebugP("color custom");
+        _hue.setTargetValue(0, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        _saturation.setTargetValue(1024, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+        break;
+    case 17:
+        /* color temperature */
+        logDebugP("color temperature");
+        /*
+              Colors::HSV hsv;
+              if ( !RGB_night() )
+                    {
+                    hsv = Colors::rgb2hsv( conv_Temp2RGB(ParamLED_RGB_ColorDay_) );
+                    _hue.setTargetValue( hsv._hue , millis() , ParamLED_RGB_LightDimmTimeDayON_);
+                    _saturation.setTargetValue( hsv._sat , millis() , ParamLED_RGB_LightDimmTimeDayON_);
+                    }
+              if (  RGB_night() )
+                    {
+                    hsv = Colors::rgb2hsv( conv_Temp2RGB(ParamLED_RGB_ColorNight_) );
+                    _hue.setTargetValue( hsv._hue , millis() , ParamLED_RGB_LightDimmTimeNightON_);
+                    _saturation.setTargetValue( hsv._sat , millis() , ParamLED_RGB_LightDimmTimeNightON_);
+                    }
+        */
+        break;
 
-        default:
-            break;
-    }
+    default:
+        break;
+}
 }
 
 void RGBChannel::setHSV(uint32_t HSVvalue)

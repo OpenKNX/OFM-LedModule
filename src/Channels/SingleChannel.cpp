@@ -75,15 +75,6 @@ void SingleChannel::loop()
                 setLastOnValue(_brightness.value());
             }
             _brightness.setTargetValue(0, millis(), dimmingTimeOFF());
-            /*
-                        if (!SC_night())
-                        {
-                            _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeDayOFF_);
-                        }
-                        else if (SC_night())
-                        {
-                            _brightness.setTargetValue(0, millis(), ParamLED_SC_LightDimmTimeNightOFF_);
-                        }*/
         }
     }
 

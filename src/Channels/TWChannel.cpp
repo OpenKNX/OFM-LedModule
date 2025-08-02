@@ -90,7 +90,7 @@ void TWChannel::loop()
         }
     }
     // Stairway Timeout
-    if (((getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
+    if (((getStairTime() + (ParamLED_TW_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
     {
         setStairTrigger(0);
         if (ParamLED_TW_StartupBehavior_)
