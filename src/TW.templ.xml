@@ -32,47 +32,47 @@
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="7" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%007" Name="LightDimmTimeNightOFF_%C%" ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht Off" Value="3000" SuffixText="ms">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="7" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="9" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%008" Name="BrighnessMin_%C%"          ParameterType="%AID%_PT-MinDim" Text="Helligkeit min." Value="0">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="10" BitOffset="0" />
-              </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%009" Name="BrighnessMaxDay_%C%"       ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Tag)" Value="100">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="11" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%010" Name="BrighnessMaxNight_%C%"     ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Nacht)" Value="75">
+              <Parameter Id="%AID%_P-%TT%%CC%009" Name="BrighnessMaxDay_%C%"       ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Tag)" Value="100">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="12" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%011" Name="DimCurve_%C%"              ParameterType="%AID%_PT-DimCurve" Text="Dimmkurve" Value="1">
+              <Parameter Id="%AID%_P-%TT%%CC%010" Name="BrighnessMaxNight_%C%"     ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Nacht)" Value="75">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="13" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%012" Name="StairCaseActive_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Text="Treppenlichtfunktion" Value="0">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="13" BitOffset="3" />
-              </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%013" Name="StairCaseTimer_%C%"        ParameterType="%AID%_PT-ValueDpt5" Text="Nachlaufzeit" Value="60" SuffixText="s">
+              <Parameter Id="%AID%_P-%TT%%CC%011" Name="DimCurve_%C%"              ParameterType="%AID%_PT-DimCurve" Text="Dimmkurve" Value="1">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%014" Name="StaicCaseTrigger_%C%"      ParameterType="%AID%_PT-SCFunction" Text="Treppenlicht Trigger" Value="0">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="13" BitOffset="4" />
+              <Parameter Id="%AID%_P-%TT%%CC%012" Name="StairCaseActive_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Text="Treppenlichtfunktion" Value="0">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="3" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%015" Name="StartupBehavior_%C%"       ParameterType="%AID%_PT-StartupBehavior" Text="Einschaltverhalten" Value="0">
+              <Parameter Id="%AID%_P-%TT%%CC%013" Name="StairCaseTimer_%C%"        ParameterType="%AID%_PT-ValueDpt5" Text="Nachlaufzeit" Value="60" SuffixText="s">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="15" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%016" Name="ColorTempCW_%C%"           ParameterType="%AID%_PT-ColorTemperatureCW" Text="Farbtemperatur Kaltweiss" Value="5000" SuffixText="K">
+              <Parameter Id="%AID%_P-%TT%%CC%014" Name="StaicCaseTrigger_%C%"      ParameterType="%AID%_PT-SCFunction" Text="Treppenlicht Trigger" Value="0">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="4" />
+              </Parameter>
+              <Parameter Id="%AID%_P-%TT%%CC%015" Name="StartupBehavior_%C%"       ParameterType="%AID%_PT-StartupBehavior" Text="Einschaltverhalten" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="16" BitOffset="0" />
               </Parameter>
+              <Parameter Id="%AID%_P-%TT%%CC%016" Name="ColorTempCW_%C%"           ParameterType="%AID%_PT-ColorTemperatureCW" Text="Farbtemperatur Kaltweiss" Value="5000" SuffixText="K">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="17" BitOffset="0" />
+              </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%017" Name="ColorTempWW_%C%"           ParameterType="%AID%_PT-ColorTemperatureWW" Text="Farbtemperatur Warmweiss" Value="3000" SuffixText="K">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="18" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="19" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%018" Name="ColorTempDay_%C%"          ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur Tag" Value="4000" SuffixText="K">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="20" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="21" BitOffset="0" />
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%019" Name="ColorTempNight_%C%"        ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur Nacht" Value="4000" SuffixText="K">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="22" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="23" BitOffset="0" />
               </Parameter>
 
               <Union SizeInBit="32">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="24" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="25" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%021" Name="FrontControl_%C%"         ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung aktivieren" Value="0" />
                 <!-- 5 bits free -->
                 <Parameter Id="%AID%_UP-%TT%%CC%022" Name="FrontControlBrightness_%C%" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="100" />

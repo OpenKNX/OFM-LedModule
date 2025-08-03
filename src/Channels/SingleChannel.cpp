@@ -214,15 +214,15 @@ void SingleChannel::handleScene(uint8_t sceneNr)
 
 uint16_t SingleChannel::dimmingTimeON()
 {
-    logDebugP("dimmingTimeDON: %5X", ParamLED_SC_LightDimmTimeDayON_);
-    logDebugP("dimmingTimeNON: %5X", ParamLED_SC_LightDimmTimeNightON_);
+    //logDebugP("dimmingTimeDON: %5X", ParamLED_SC_LightDimmTimeDayON_);
+    //logDebugP("dimmingTimeNON: %5X", ParamLED_SC_LightDimmTimeNightON_);
     return getNight() ? ParamLED_SC_LightDimmTimeNightON_ : ParamLED_SC_LightDimmTimeDayON_;
 }
 
 uint16_t SingleChannel::dimmingTimeOFF()
 {
-    logDebugP("dimmingTimeDOFF: %5X", ParamLED_SC_LightDimmTimeDayOFF_);
-    logDebugP("dimmingTimeNOFF: %5X", ParamLED_SC_LightDimmTimeNightOFF_);
+    //logDebugP("dimmingTimeDOFF: %5X", ParamLED_SC_LightDimmTimeDayOFF_);
+    //logDebugP("dimmingTimeNOFF: %5X", ParamLED_SC_LightDimmTimeNightOFF_);
     return getNight() ? ParamLED_SC_LightDimmTimeNightOFF_ : ParamLED_SC_LightDimmTimeDayOFF_;
 }
 
