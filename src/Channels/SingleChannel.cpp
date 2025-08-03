@@ -197,7 +197,8 @@ void SingleChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
                     {
-                        _brightness.setTargetValue(_scenes[i].Brightness(), millis(), ParamLED_SC_LightDimmTimeDayON_);
+                        //_brightness.setTargetValue(_scenes[i].Brightness(), millis(), dimmingTime(1));
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()), millis(), dimmingTime(1));
                     }
                     break;
 

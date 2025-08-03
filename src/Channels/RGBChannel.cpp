@@ -281,24 +281,24 @@ void RGBChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
                     {
-                        _brightness.setTargetValue(_scenes[i].Brightness(), millis(), ParamLED_RGB_LightDimmTimeDayON_);
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()), millis(), dimmingTime(1));
                     }
                     if (_scenes[i].valueType == ValueType::COLOR)
                     {
                         Colors::HSV tmpHSV = _scenes[i].HSV();
                         Colors::RGB tmpRGB = Colors::hsv2rgb(tmpHSV);
                         logDebugP("IN: %d, %d, %d COLOR: %d, %d, %d RGB: %d, %d, %d", _scenes[i].value[0], _scenes[i].value[1], _scenes[i].value[2], tmpHSV.Hue(), tmpHSV.Sat(), tmpHSV.Val(), tmpRGB._red, tmpRGB._green, tmpRGB._blue);
-                        _hue.setTargetValue(tmpHSV._hue, millis(), ParamLED_RGB_LightDimmTimeDayON_);
-                        _brightness.setTargetValue(tmpHSV.Val(), millis(), ParamLED_RGB_LightDimmTimeDayON_);
-                        _saturation.setTargetValue(tmpHSV._sat, millis(), ParamLED_RGB_LightDimmTimeDayON_);
+                        _hue.setTargetValue(tmpHSV._hue, millis(), dimmingTime(1) );
+                        _brightness.setTargetValue(checkMinMaxBrightness(tmpHSV.Val()), millis(), dimmingTime(1) );
+                        _saturation.setTargetValue(tmpHSV._sat, millis(), dimmingTime(1) );
                     }
                     if (_scenes[i].valueType == ValueType::HUE)
                     {
-                        _hue.setTargetValue(_scenes[i].value[0], millis(), ParamLED_RGB_LightDimmTimeDayON_);
+                        _hue.setTargetValue(_scenes[i].value[0], millis(), dimmingTime(1));
                     }
                     if (_scenes[i].valueType == ValueType::SATURATION)
                     {
-                        _saturation.setTargetValue(_scenes[i].value[2], millis(), ParamLED_RGB_LightDimmTimeDayON_);
+                        _saturation.setTargetValue(_scenes[i].value[2], millis(), dimmingTime(1));
                     }
                     break;
 

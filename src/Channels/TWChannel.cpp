@@ -205,11 +205,11 @@ void TWChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS || _scenes[i].valueType == ValueType::COMBINED)
                     {
-                        _brightness.setTargetValue(_scenes[i].Brightness(), millis(), ParamLED_TW_LightDimmTimeDayON_);
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()), millis(), dimmingTime(1) );
                     }
                     if (_scenes[i].valueType == ValueType::TEMTPERATURE || _scenes[i].valueType == ValueType::COMBINED)
                     {
-                        _colorTemperature.setTargetValue(_scenes[i].ColorTemperature(), millis(), ParamLED_TW_LightDimmTimeDayON_);
+                        _colorTemperature.setTargetValue(_scenes[i].ColorTemperature(), millis(), dimmingTime(1) );
                     }
                     logDebugP("Scene: %d, BR: %d, CT: %d", sceneNr, _scenes[i].Brightness(), _scenes[i].ColorTemperature());
                     break;
