@@ -32,11 +32,12 @@ const std::string TWChannel::name()
 void TWChannel::update()
 {
     uint8_t tmpBrightness = _brightness.value();
+    bool stateOn = tmpBrightness > 0;
+
     if (_lastBrightnessLevel != tmpBrightness)
     {
         _lastBrightnessLevel = tmpBrightness;
 
-        bool stateOn = tmpBrightness > 0;
         if ((bool)KoLED_TW_StateOnOff_.value(DPT_State) != stateOn)
             KoLED_TW_StateOnOff_.value(tmpBrightness > 0, DPT_State);
     }
@@ -58,7 +59,11 @@ void TWChannel::update()
         if ((uint16_t)KoLED_TW_ColorTemperatureStatus_.value(Dpt(7, 600)) != tmpColor)
         {
             logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
-            KoLED_TW_ColorTemperatureStatus_.value(tmpColor, Dpt(7, 600));
+
+            if (stateOn)
+                KoLED_TW_ColorTemperatureStatus_.value(tmpColor, Dpt(7, 600));
+            else
+                KoLED_TW_ColorTemperatureStatus_.valueNoSend(tmpColor, Dpt(7, 600));
         }
     }
 }

@@ -41,11 +41,12 @@ void RGBChannel::update()
     uint8_t tmpBrightness = _brightness.value();
     Colors::HSV hsv(tmpHue, tmpSat, _UFP16(tmpBrightness, 2));
 
+    bool stateOn = tmpBrightness > 0;
+
     if (_lastBrightnessLevel != tmpBrightness)
     {
         _lastBrightnessLevel = tmpBrightness;
 
-        bool stateOn = tmpBrightness > 0;
         if ((bool)KoLED_RGB_StateOnOff_.value(DPT_State) != stateOn)
             KoLED_RGB_StateOnOff_.value(tmpBrightness > 0, DPT_State);
     }
@@ -69,8 +70,17 @@ void RGBChannel::update()
         if ((uint32_t)KoLED_RGB_HSVStatus_.value(DPT_Colour_RGB) != hsv.toUint32())
         {
             logDebugP("update: Hue: %d -> %d Sat: %d -> %d", _lastHueValue, tmpHue, _lastSatValue, tmpSat);
-            KoLED_RGB_HSVStatus_.value(hsv.toUint32(), DPT_Colour_RGB);
-            KoLED_RGB_RGBStatus_.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+
+            if (stateOn)
+            {
+                KoLED_RGB_HSVStatus_.value(hsv.toUint32(), DPT_Colour_RGB);
+                KoLED_RGB_RGBStatus_.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+            }
+            else
+            {
+                KoLED_RGB_HSVStatus_.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
+                KoLED_RGB_RGBStatus_.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+            }
         }
     }
 }
