@@ -136,6 +136,14 @@ void HWDimmerPCA::reconnect()
     logInfoP("Dim back to last known values");
 }
 
+void HWDimmerPCA::outputLUT()
+{
+    for (int i = 0; i < VALUE_KNX_COUNT; i++)
+    {
+        logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
+    }
+}
+
 /**
  * @brief Linear lookup tables to map 255% level to PCA driver levels
  *  0: Linear, 1: logarithmic x^1.5, 2: logarithmic x^2

@@ -16,6 +16,7 @@ class HWDimmerRP2040 : public HWDimmer
         bool setLevel(uint16_t level, uint8_t channel);
         uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType);
         uint16_t getScaleMax(HWDimmer::DimLUTType lutType);
+        void outputLUT();
         std::string logPrefix();
 
     private:

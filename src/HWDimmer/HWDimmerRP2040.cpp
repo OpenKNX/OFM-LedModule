@@ -80,6 +80,14 @@ std::string HWDimmerRP2040::logPrefix()
     return "PicoHWDimmer";
 }
 
+void HWDimmerRP2040::outputLUT()
+{
+    for (int i = 0; i < VALUE_KNX_COUNT; i++)
+    {
+        logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
+    }
+}
+
 /**
  * @brief Linear lookup tables to map 255% level to RP2040 PWM range
  *  0: Linear, 1: logarithmic x^1.5

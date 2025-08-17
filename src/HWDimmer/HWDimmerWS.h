@@ -24,8 +24,9 @@ class HWDimmerWS : public HWDimmer
 
         std::string logPrefix();
         bool setLevel(uint16_t level, uint8_t channel);
-        uint16_t scale(uint8_t level, HWDimmer::DimLUTType lutType);
+        uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType);
         uint16_t getScaleMax(HWDimmer::DimLUTType lutType);
+        void outputLUT();
 
     private:
     

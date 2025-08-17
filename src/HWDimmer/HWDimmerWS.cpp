@@ -42,13 +42,13 @@ bool HWDimmerWS::setLevel(uint16_t level, uint8_t channel)
 }
 
 /**
- * @brief Scale uint8 value to range of this HWDimmer (uint16)
+ * @brief Scale uint16 value to range of this HWDimmer (uint16)
  *
- * @param level level as uint8
+ * @param level level as uint16
  * @param lutType lookup table selection
  * @return uint16_t level in new scale
  */
-uint16_t HWDimmerWS::scale(uint8_t level, HWDimmer::DimLUTType lutType)
+uint16_t HWDimmerWS::scale(uint16_t level, HWDimmer::DimLUTType lutType)
 {
     return dimLUT[lutType].Val(level);
 }
@@ -72,6 +72,14 @@ uint16_t HWDimmerWS::getScaleMax(HWDimmer::DimLUTType lutType)
 std::string HWDimmerWS::logPrefix()
 {
     return "WSHWDimmer";
+}
+
+void HWDimmerWS::outputLUT()
+{
+    for (int i = 0; i < VALUE_KNX_COUNT; i++)
+    {
+        logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
+    }
 }
 
 /**
