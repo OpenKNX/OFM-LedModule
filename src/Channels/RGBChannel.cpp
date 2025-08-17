@@ -517,7 +517,7 @@ void RGBChannel::setRGB(uint32_t RGBvalue)
 
     setHue(hsv._hue);
     setSaturation(hsv._sat);
-    setBrightness(hsv.Val());
+    //setBrightness(hsv.Val());
 
     //_hue.setTargetValue(hsv._hue, millis(), ParamLED_RGB_LightDimmTimeDayON_);
     //_saturation.setTargetValue(hsv._sat, millis(), ParamLED_RGB_LightDimmTimeDayON_);
@@ -667,7 +667,7 @@ void RGBChannel::setHSV(uint32_t HSVvalue)
 
     setHue(hsv._hue);
     setSaturation(hsv._sat);
-    setBrightness(hsv.Val());
+    //setBrightness(hsv.Val());
 
     //_hue.setTargetValue(hsv._hue, millis(), ParamLED_RGB_LightDimmTimeDayON_);
     //_saturation.setTargetValue(hsv._sat, millis(), ParamLED_RGB_LightDimmTimeDayON_);

@@ -137,3 +137,11 @@ std::string HWDimmer::logPrefix()
 {
     return "HWDimmer";
 }
+
+void HWDimmer::outputLUT()
+{
+    for (int i = 0; i < VALUE_KNX_COUNT; i++)
+    {
+        logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
+    }
+}

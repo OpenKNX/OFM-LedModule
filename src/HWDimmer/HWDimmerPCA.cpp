@@ -55,7 +55,7 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
  * @param lutType lookup table selection
  * @return uint16_t level in new scale
  */
-uint16_t HWDimmerPCA::scale(uint8_t level, HWDimmer::DimLUTType lutType)
+uint16_t HWDimmerPCA::scale(uint16_t level, HWDimmer::DimLUTType lutType)
 {
     //logDebugP("#: %3X, Wert: %3X", level, dimLUT[lutType].Val(level));
     return dimLUT[lutType].Val(level);

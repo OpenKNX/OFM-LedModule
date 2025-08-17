@@ -50,11 +50,11 @@ bool HWDimmerRP2040::setLevel(uint16_t level, uint8_t channel)
 /**
  * @brief Scale uint8 value to range of this HWDimmer (uint16)
  *
- * @param level level as uint8
+ * @param level level as uint16
  * @param lutType lookup table selection
  * @return uint16_t level in new scale
  */
-uint16_t HWDimmerRP2040::scale(uint8_t level, HWDimmer::DimLUTType lutType)
+uint16_t HWDimmerRP2040::scale(uint16_t level, HWDimmer::DimLUTType lutType)
 {
     return dimLUT[lutType].Val(level);
 }

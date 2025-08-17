@@ -360,6 +360,16 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         }
         logInfoP("--------------------------------------------------------------------------------");
     }
+
+    if (cmd.substr(0, 8) == "ledLUT")
+    {
+        logInfoP("======================== Information ===========================================");
+        logInfoP("LED MODULE LUT INFORMATION");
+        
+            _pDimmer->outputLUT();
+        
+        logInfoP("--------------------------------------------------------------------------------");
+    }
     return false;
 }
 

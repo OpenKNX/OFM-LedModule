@@ -42,8 +42,8 @@ class LightChannel : public OpenKNX::Channel
     {
       public:
         DimmableValue() {}
-        DimmableValue(T val) { currentValue = minValue = maxValue = val; }
-        DimmableValue(T val, T min, T max)
+        DimmableValue(uint16_t val) { currentValue = minValue = maxValue = val; }
+        DimmableValue(uint16_t val, uint16_t min, uint16_t max)
         {
             currentValue = val;
             minValue = min;
@@ -52,16 +52,16 @@ class LightChannel : public OpenKNX::Channel
 
         const std::string logPrefix() { return "DimValues:"; }
 
-        void setRange(T min, T max)
+        void setRange(uint16_t min, uint16_t max)
         {
             minValue = min;
             maxValue = max;
         }
 
-        T getMin() { return minValue; }
-        T getMax() { return maxValue; }
+        uint16_t getMin() { return minValue; }
+        uint16_t getMax() { return maxValue; }
 
-        void setTargetValue(T target, uint32_t timestamp, uint16_t dimTime)
+        void setTargetValue(uint16_t target, uint32_t timestamp, uint16_t dimTime)
         {
             lastValue = currentValue;
             /*if (target > maxValue)
@@ -79,7 +79,7 @@ class LightChannel : public OpenKNX::Channel
             isDimming = 1;
         }
 
-        T step(uint32_t timestamp)
+        uint16_t step(uint32_t timestamp)
         {
             if (isDimming == 1)
             {
@@ -94,21 +94,21 @@ class LightChannel : public OpenKNX::Channel
                     currentValue = targetValue;
                 }
             }
-            return (T)currentValue;
+            return (uint16_t)currentValue;
         }
 
         T value()
         {
-            return (T)currentValue;
+            return (uint16_t)currentValue;
         }
 
       private:
         uint8_t isDimming = 0;
 
-        T lastValue = 0;
-        T targetValue = 0;
-        T minValue = 0;
-        T maxValue = 0;
+        uint16_t lastValue = 0;
+        uint16_t targetValue = 0;
+        uint16_t minValue = 0;
+        uint16_t maxValue = 0;
         int32_t currentValue = 0;
         int32_t deltaValue = 0;
         uint32_t startTimestamp = 0;
@@ -157,7 +157,7 @@ class LightChannel : public OpenKNX::Channel
 
     SceneConfig *_scenes;
 
-    DimmableValue<uint8_t> _brightness;
+    DimmableValue<uint16_t> _brightness;
 
     virtual void update() = 0;
     void processFrontInput(bool frontControlEnabled);

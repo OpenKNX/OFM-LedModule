@@ -30,7 +30,7 @@ const std::string SingleChannel::name()
 
 void SingleChannel::update()
 {
-    uint8_t tmpBrightness = _brightness.value();
+    uint16_t tmpBrightness = _brightness.value();
     if (_lastBrightnessLevel != tmpBrightness)
     {
         _lastBrightnessLevel = tmpBrightness;
@@ -44,10 +44,10 @@ void SingleChannel::update()
     {
         _lastTimestamp = millis();
 
-        if ((uint8_t)KoLED_SC_BrightnessStatus_.value(DPT_Scaling) != tmpBrightness)
+        if (((uint16_t)KoLED_SC_BrightnessStatus_.value(DPT_Scaling)*VALUE_KNX_MULTIPLY) != tmpBrightness)
         {
             logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
-            KoLED_SC_BrightnessStatus_.value(tmpBrightness, DPT_Scaling);
+            KoLED_SC_BrightnessStatus_.value((uint8_t)(tmpBrightness / VALUE_KNX_MULTIPLY  ), DPT_Scaling);
         }
     }
 }
@@ -232,26 +232,26 @@ uint16_t SingleChannel::dimmingTime(bool _switch)
     return _switch ? dimmingTimeON() : dimmingTimeOFF();
 }
 
-uint8_t SingleChannel::dimmingValStartup()
+uint16_t SingleChannel::dimmingValStartup()
 {
     return ParamLED_SC_StartupBehavior_ ? getLastOnValue() : dimmingValMax();
 }
 
-uint8_t SingleChannel::dimmingValMax()
+uint16_t SingleChannel::dimmingValMax()
 {
-    return getNight() ? ParamLED_SC_BrighnessMaxNight_ : ParamLED_SC_BrighnessMaxDay_;
+    return getNight() ? ParamLED_SC_BrighnessMaxNight_ * VALUE_KNX_MULTIPLY : ParamLED_SC_BrighnessMaxDay_* VALUE_KNX_MULTIPLY;
 }
 
-uint8_t SingleChannel::dimmingValTarget(bool _switch)
+uint16_t SingleChannel::dimmingValTarget(bool _switch)
 {
     return _switch ? dimmingValStartup() : 0;
 }
 
-uint8_t SingleChannel::checkMinMaxBrightness(uint8_t _bright)
+uint16_t SingleChannel::checkMinMaxBrightness(uint16_t _bright)
 {
-    if (_bright < ParamLED_SC_BrighnessMin_)
+    if (_bright < ParamLED_SC_BrighnessMin_ * VALUE_KNX_MULTIPLY)
     {
-        _bright = ParamLED_SC_BrighnessMin_;
+        _bright = ParamLED_SC_BrighnessMin_* VALUE_KNX_MULTIPLY;
     }
     if (_bright > dimmingValMax())
     {
@@ -265,7 +265,7 @@ void SingleChannel::setSwitch(bool _switch)
     if (_switch)
     {
         logDebugP("switch_ON");
-        _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), 1);
+        _brightness.setTargetValue(ParamLED_SC_BrighnessMin_* VALUE_KNX_MULTIPLY, millis(), 1);
         // in case of stairway light
         if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 0)
         {
@@ -293,11 +293,11 @@ void SingleChannel::setSwitch(bool _switch)
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
 }
 
-void SingleChannel::setBrightness(uint8_t _bright)
+void SingleChannel::setBrightness(uint16_t _bright)
 {
     logDebugP("setBrightness: %3X", _bright);
     _bright = checkMinMaxBrightness(_bright);
-    _brightness.setTargetValue(_bright, millis(), dimmingTimeON());
+    _brightness.setTargetValue(_bright * VALUE_KNX_MULTIPLY, millis(), dimmingTimeON());
 }
 
 void SingleChannel::setNight(bool _night)
