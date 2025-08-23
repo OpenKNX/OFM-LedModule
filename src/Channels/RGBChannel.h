@@ -17,10 +17,11 @@ class RGBChannel : public LightChannel
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
     uint16_t dimmingTime(bool _switch);
-    uint8_t dimmingValStartup();
-    uint8_t dimmingValMax();
-    uint8_t dimmingValTarget(bool _switch);
-    uint8_t checkMinMaxBrightness(uint8_t _bright);
+    uint16_t dimmingValStartup();
+    uint16_t dimmingValMin();
+    uint16_t dimmingValMax();
+    uint16_t dimmingValTarget(bool _switch);
+    uint16_t checkMinMaxBrightness(uint16_t _bright);
     void setStartupColor();
     uint8_t getDefaultColor();
     uint16_t checkMinMaxColorTemp(uint16_t colorTemp);
@@ -32,7 +33,7 @@ class RGBChannel : public LightChannel
     void setSwitch(bool _switch);
     void setHue(uint16_t _hue);
     void setSaturation(uint16_t saturation);
-    void setBrightness(uint8_t _bright);
+    void setBrightness(uint16_t _bright);
     void setNight(bool _night) override;
     void relDimUp();
     void relDimDown();

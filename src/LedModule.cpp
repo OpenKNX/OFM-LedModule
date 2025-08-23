@@ -304,6 +304,7 @@ void LedModule::showHelp()
 {
     openknx.console.printHelpLine("ledModule", "Print ledModule configuration");
     openknx.console.printHelpLine("ledState", "Print ledModule status");
+    openknx.console.printHelpLine("ledLUT", "Print LED LUT");
 }
 
 bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
@@ -356,19 +357,23 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("LED MODULE STATE INFORMATION");
         for (int i = 0; i < LED_ChannelCount; i++)
         {
-            logDebugP("CH%d: %d", i, _pDimmer->getLevel(i));
+            logInfoP("CH%d: %d", i, _pDimmer->getLevel(i)  );
         }
         logInfoP("--------------------------------------------------------------------------------");
+        return true;
     }
 
-    if (cmd.substr(0, 8) == "ledLUT")
+    if (cmd.substr(0, 6) == "ledLUT")
     {
         logInfoP("======================== Information ===========================================");
         logInfoP("LED MODULE LUT INFORMATION");
         
-            _pDimmer->outputLUT();
+            //_pDimmer->outputLUT();
+            //HWDimmer::outputLUT();
+
         
         logInfoP("--------------------------------------------------------------------------------");
+        return true;
     }
     return false;
 }

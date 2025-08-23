@@ -26,6 +26,7 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
             logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d",lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++));
         }
     #endif
+    outputLUT();
 }
 
 /**
@@ -48,7 +49,7 @@ bool HWDimmerRP2040::setLevel(uint16_t level, uint8_t channel)
 }
 
 /**
- * @brief Scale uint8 value to range of this HWDimmer (uint16)
+ * @brief Scale uint16 value to range of this HWDimmer (uint16)
  *
  * @param level level as uint16
  * @param lutType lookup table selection
@@ -82,10 +83,15 @@ std::string HWDimmerRP2040::logPrefix()
 
 void HWDimmerRP2040::outputLUT()
 {
-    for (int i = 0; i < VALUE_KNX_COUNT; i++)
+    logDebugP("RP2040 Dimmer LUT:");
+    for (int i = 0; i < VALUE_KNX_COUNT; i=i+10)
     {
         logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
     }
+    logDebugP("Count %d LAST: %d",VALUE_KNX_COUNT- 2 , dimLUT[0].Val(VALUE_KNX_COUNT-2) );
+    logDebugP("Count %d LAST: %d",VALUE_KNX_COUNT- 1 , dimLUT[0].Val(VALUE_KNX_COUNT-1) );
+    logDebugP("Count %d  MAX: %d",VALUE_KNX_COUNT    , dimLUT[0].Val(VALUE_KNX_COUNT )  );
+    logDebugP("Count %d  XAM: %d",VALUE_KNX_COUNT    , dimLUT[0].Max()                  );
 }
 
 /**
@@ -93,3 +99,4 @@ void HWDimmerRP2040::outputLUT()
  *  0: Linear, 1: logarithmic x^1.5
  */
 HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.5), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 2)};
+

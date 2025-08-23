@@ -4,7 +4,7 @@
 //#define VALUE_KNX_COUNT 256
 //#define VALUE_KNX_COUNT 101
 #define VALUE_KNX_COUNT 4096
-#define VALUE_KNX_MULTIPLY 40.96
+#define VALUE_KNX_MULTIPLY 40.94
 
 class HWDimmer
 {
@@ -28,7 +28,7 @@ class HWDimmer
     virtual uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType) = 0;
     virtual uint16_t getScaleMax(HWDimmer::DimLUTType lutType) = 0;
     virtual std::string logPrefix();
-    virtual void outputLUT();
+    virtual void outputLUT() = 0;
 
     virtual bool checkConnection() { return true; } // TODO: try to remove this functionality from base class
     virtual void reconnect() {}

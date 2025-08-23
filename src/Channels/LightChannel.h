@@ -42,8 +42,8 @@ class LightChannel : public OpenKNX::Channel
     {
       public:
         DimmableValue() {}
-        DimmableValue(uint16_t val) { currentValue = minValue = maxValue = val; }
-        DimmableValue(uint16_t val, uint16_t min, uint16_t max)
+        DimmableValue(T val) { currentValue = minValue = maxValue = val; }
+        DimmableValue(T val, uint16_t min, uint16_t max)
         {
             currentValue = val;
             minValue = min;

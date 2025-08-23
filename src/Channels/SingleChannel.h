@@ -17,6 +17,7 @@ class SingleChannel : public LightChannel
     uint16_t dimmingTimeOFF();
     uint16_t dimmingTime(bool _switch);
     uint16_t dimmingValStartup();
+    uint16_t dimmingValMin();
     uint16_t dimmingValMax();
     uint16_t dimmingValTarget(bool _switch);
     uint16_t checkMinMaxBrightness(uint16_t _bright);

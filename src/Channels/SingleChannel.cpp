@@ -12,7 +12,7 @@ SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannel
     _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL;
 
     KoLED_SC_StateOnOff_.value(false, DPT_State);
-    KoLED_SC_BrightnessStatus_.value(_brightness.value(), DPT_Scaling);
+    KoLED_SC_BrightnessStatus_.value((uint16_t)(_brightness.value() / VALUE_KNX_MULTIPLY), DPT_Scaling);
 
 #ifdef EXT_DEBUG_LOG
     logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
@@ -44,10 +44,10 @@ void SingleChannel::update()
     {
         _lastTimestamp = millis();
 
-        if (((uint16_t)KoLED_SC_BrightnessStatus_.value(DPT_Scaling)*VALUE_KNX_MULTIPLY) != tmpBrightness)
+        if (((uint16_t)KoLED_SC_BrightnessStatus_.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) != tmpBrightness)
         {
-            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
-            KoLED_SC_BrightnessStatus_.value((uint8_t)(tmpBrightness / VALUE_KNX_MULTIPLY  ), DPT_Scaling);
+            logDebugP("update: lastBrLevel: %d -> tmpBrLevel %d -> BR.value %d -> BR.step %d", _lastBrightnessLevel, tmpBrightness, _brightness.value() ,0 );
+            KoLED_SC_BrightnessStatus_.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
         }
     }
 }
@@ -132,7 +132,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
             case LED_SC_KoBrightness_:
                 if (!getLock())
                 {
-                    setBrightness(ko.value(DPT_Scaling));
+                    setBrightness((uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
                 }
                 break;
 
@@ -215,15 +215,11 @@ void SingleChannel::handleScene(uint8_t sceneNr)
 
 uint16_t SingleChannel::dimmingTimeON()
 {
-    //logDebugP("dimmingTimeDON: %5X", ParamLED_SC_LightDimmTimeDayON_);
-    //logDebugP("dimmingTimeNON: %5X", ParamLED_SC_LightDimmTimeNightON_);
     return getNight() ? ParamLED_SC_LightDimmTimeNightON_ : ParamLED_SC_LightDimmTimeDayON_;
 }
 
 uint16_t SingleChannel::dimmingTimeOFF()
 {
-    //logDebugP("dimmingTimeDOFF: %5X", ParamLED_SC_LightDimmTimeDayOFF_);
-    //logDebugP("dimmingTimeNOFF: %5X", ParamLED_SC_LightDimmTimeNightOFF_);
     return getNight() ? ParamLED_SC_LightDimmTimeNightOFF_ : ParamLED_SC_LightDimmTimeDayOFF_;
 }
 
@@ -237,9 +233,14 @@ uint16_t SingleChannel::dimmingValStartup()
     return ParamLED_SC_StartupBehavior_ ? getLastOnValue() : dimmingValMax();
 }
 
+uint16_t SingleChannel::dimmingValMin()
+{
+    return ParamLED_SC_BrighnessMin_ * VALUE_KNX_MULTIPLY;
+}
+
 uint16_t SingleChannel::dimmingValMax()
 {
-    return getNight() ? ParamLED_SC_BrighnessMaxNight_ * VALUE_KNX_MULTIPLY : ParamLED_SC_BrighnessMaxDay_* VALUE_KNX_MULTIPLY;
+    return getNight() ? (ParamLED_SC_BrighnessMaxNight_ * VALUE_KNX_MULTIPLY) : (ParamLED_SC_BrighnessMaxDay_ * VALUE_KNX_MULTIPLY);
 }
 
 uint16_t SingleChannel::dimmingValTarget(bool _switch)
@@ -249,9 +250,9 @@ uint16_t SingleChannel::dimmingValTarget(bool _switch)
 
 uint16_t SingleChannel::checkMinMaxBrightness(uint16_t _bright)
 {
-    if (_bright < ParamLED_SC_BrighnessMin_ * VALUE_KNX_MULTIPLY)
+    if (_bright < (ParamLED_SC_BrighnessMin_ * VALUE_KNX_MULTIPLY))
     {
-        _bright = ParamLED_SC_BrighnessMin_* VALUE_KNX_MULTIPLY;
+        _bright = (ParamLED_SC_BrighnessMin_ * VALUE_KNX_MULTIPLY);
     }
     if (_bright > dimmingValMax())
     {
@@ -265,7 +266,7 @@ void SingleChannel::setSwitch(bool _switch)
     if (_switch)
     {
         logDebugP("switch_ON");
-        _brightness.setTargetValue(ParamLED_SC_BrighnessMin_* VALUE_KNX_MULTIPLY, millis(), 1);
+        _brightness.setTargetValue(ParamLED_SC_BrighnessMin_ * VALUE_KNX_MULTIPLY, millis(), 1);
         // in case of stairway light
         if (ParamLED_SC_StairCaseActive_ && ParamLED_SC_StaicCaseTrigger_ == 0)
         {
@@ -289,38 +290,38 @@ void SingleChannel::setSwitch(bool _switch)
             _brightness.setTargetValue(dimmingValTarget(_switch), millis(), dimmingTime(_switch));
         }
     }
-    logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
+    logDebugP("dimmingValTarget: %6X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
 }
 
 void SingleChannel::setBrightness(uint16_t _bright)
 {
-    logDebugP("setBrightness: %3X", _bright);
+    logDebugP("setBrightness(): %9X", _bright);
     _bright = checkMinMaxBrightness(_bright);
-    _brightness.setTargetValue(_bright * VALUE_KNX_MULTIPLY, millis(), dimmingTimeON());
+    _brightness.setTargetValue(_bright, millis(), dimmingTimeON());
 }
 
 void SingleChannel::setNight(bool _night)
 {
     _isNight = _night;
-    _brightness.setRange(ParamLED_SC_BrighnessMin_, dimmingValMax());
+    _brightness.setRange(ParamLED_SC_BrighnessMin_ * VALUE_KNX_MULTIPLY, dimmingValMax());
 
     if (!_night)
     {
         logDebugP("Tag");
 
-        if (_brightness.value() == ParamLED_SC_BrighnessMaxNight_)
+        if (_brightness.value() == ParamLED_SC_BrighnessMaxNight_ * VALUE_KNX_MULTIPLY)
         {
-            _brightness.setTargetValue(ParamLED_SC_BrighnessMaxDay_, millis(), 2 * ParamLED_SC_LightDimmTimeDayON_);
+            _brightness.setTargetValue(ParamLED_SC_BrighnessMaxDay_ * VALUE_KNX_MULTIPLY, millis(), 2 * ParamLED_SC_LightDimmTimeDayON_);
         }
     }
     else
     {
         logDebugP("Nacht");
 
-        if (_brightness.value() > ParamLED_SC_BrighnessMaxNight_)
+        if (_brightness.value() > ParamLED_SC_BrighnessMaxNight_ * VALUE_KNX_MULTIPLY)
         {
-            _brightness.setTargetValue(ParamLED_SC_BrighnessMaxNight_, millis(), 2 * ParamLED_SC_LightDimmTimeNightON_);
+            _brightness.setTargetValue(ParamLED_SC_BrighnessMaxNight_ * VALUE_KNX_MULTIPLY, millis(), 2 * ParamLED_SC_LightDimmTimeNightON_);
         }
     }
 }
@@ -334,7 +335,7 @@ void SingleChannel::relDimUp()
 void SingleChannel::relDimDown()
 {
     logDebugP("relDim_DOWN");
-    _brightness.setTargetValue(ParamLED_SC_BrighnessMin_, millis(), ParamLED_SC_LightDimmTimeRel_);
+    _brightness.setTargetValue(dimmingValMin(), millis(), ParamLED_SC_LightDimmTimeRel_);
 }
 
 void SingleChannel::relDimStop()

@@ -137,10 +137,3 @@ std::string HWDimmer::logPrefix()
 {
     return "HWDimmer";
 }
-
-/**
- * @brief Output LUT (implementation in sub classes)
- */
-void HWDimmer::outputLUT()
-{
-}
