@@ -31,9 +31,9 @@ class Colors
 
         RGB(uint32_t rgbval)
         {
-            _red   = _UFP16((rgbval >> 16) & 0xFF, 2);
-            _green = _UFP16((rgbval >> 8)  & 0xFF, 2);
-            _blue  = _UFP16( rgbval        & 0xFF, 2);
+            _red   = _UFP16((rgbval >> 16) & 0xFF, 4);
+            _green = _UFP16((rgbval >> 8)  & 0xFF, 4);
+            _blue  = _UFP16( rgbval        & 0xFF, 4);
         }
 
         uint32_t toUint32()
@@ -41,9 +41,14 @@ class Colors
             return (uint32_t) Red() << 16 | Green() << 8 | Blue();
         }
 
-        uint8_t Red() { return _UFP16_TO_U8(_red, 2); }
-        uint8_t Green() { return _UFP16_TO_U8(_green, 2); }
-        uint8_t Blue() { return _UFP16_TO_U8(_blue, 2); }
+        //uint16_t Red() { return _UFP16_TO_U8(_red, 2); }
+        uint16_t Red() { return _red;}
+        
+        //uint16_t Green() { return _UFP16_TO_U8(_red, 2); }
+        uint16_t Green() { return _green;}
+        
+        //uint16_t Blue() { return _UFP16_TO_U8(_blue, 2); }
+        uint16_t Blue() { return _blue;}
 
         uint16_t _red;
         uint16_t _green;
@@ -76,9 +81,10 @@ class Colors
             return (uint32_t) Hue() << 16 | Sat() << 8 | Val();
         }
 
-        uint8_t Hue() { return _UFP16_TO_U8(_hue, 6); }
-        uint8_t Sat() { return _UFP16_TO_U8(_sat, 2); }
-        uint8_t Val() { return _UFP16_TO_U8(_val, 2); }
+        uint16_t Hue() { return _UFP16_TO_U8(_hue, 6); }
+        uint16_t Sat() { return _UFP16_TO_U8(_sat, 2); }
+        //uint16_t Val() { return _UFP16_TO_U8(_val, 2); }
+        uint16_t Val() { return _UFP16_TO_U8(_val, 4); }
 
         uint16_t _hue;
         uint16_t _sat;

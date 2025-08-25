@@ -44,7 +44,11 @@ Colors::RGB Colors::hsv2rgb(HSV hsv)
 
     int32_t s2 = (VAL_RANGE - (int32_t)hsv._sat) * VAL_RANGE;
 
-    return RGB((((r * hsv._sat) + s2) * hsv._val + (VAL_RANGE * VAL_RANGE / 2)) / (VAL_RANGE * VAL_RANGE), (((g * hsv._sat)  + s2) * hsv._val+ (VAL_RANGE * VAL_RANGE / 2)) / (VAL_RANGE * VAL_RANGE), (((b * hsv._sat) + s2) * hsv._val+ (VAL_RANGE * VAL_RANGE / 2)) / (VAL_RANGE * VAL_RANGE));
+    return RGB(
+        (((r * hsv._sat) + s2) * hsv._val + (VAL_RANGE * VAL_RANGE / 2)) / (VAL_RANGE * VAL_RANGE), 
+        (((g * hsv._sat) + s2) * hsv._val + (VAL_RANGE * VAL_RANGE / 2)) / (VAL_RANGE * VAL_RANGE), 
+        (((b * hsv._sat) + s2) * hsv._val + (VAL_RANGE * VAL_RANGE / 2)) / (VAL_RANGE * VAL_RANGE)
+);
 }
 
 

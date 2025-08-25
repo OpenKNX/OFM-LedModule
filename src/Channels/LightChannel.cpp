@@ -10,7 +10,7 @@
  * @param hwChannels array of HW channels for this light
  * @param numChannels number of HW channels this light has
  */
-LightChannel::LightChannel(uint8_t channelIndex, HWDimmer* pDimmer, uint8_t hwChannels[], uint8_t numChannels) : _brightness(0, 0, 0xFFF )
+LightChannel::LightChannel(uint8_t channelIndex, HWDimmer* pDimmer, uint8_t hwChannels[], uint8_t numChannels) : _brightness(0, 0, VALUE_KNX_COUNT)
 {
     _channelIndex = channelIndex;
     this->_numChannels = numChannels;

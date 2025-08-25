@@ -57,7 +57,7 @@ void RGBChannel::update()
         _lastSatValue = tmpSat;
     }
 
-    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY*4))
     {
         _lastTimestamp = millis();
 
@@ -81,7 +81,14 @@ void RGBChannel::update()
                 KoLED_RGB_HSVStatus_.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
                 KoLED_RGB_RGBStatus_.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
             }
-        }
+        } 
+        
+        Colors::RGB farbe = Colors::hsv2rgb(Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), ((uint16_t)_brightness.step(_lastDimTimestamp)) << 2));
+        logDebugP("R: %d G: %d B: %d", farbe.Red() , farbe.Green() , farbe.Blue() );
+        logDebugP("Scale: R%d G%d B%d", _pDimmer->scale(farbe.Red(),(HWDimmer::DimLUTType)0) , _pDimmer->scale(farbe.Green(),(HWDimmer::DimLUTType)0) , _pDimmer->scale(farbe.Blue(),(HWDimmer::DimLUTType)0) );
+        logDebugP("H: %d S: %d V: %d", _hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp) );
+        logDebugP("HSV: %d", Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp) ) );
+    
     }
 }
 
@@ -96,8 +103,9 @@ void RGBChannel::loop()
     {
         _lastDimTimestamp = millis();
 
-        Colors::RGB rgb = Colors::hsv2rgb(Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), ((uint16_t)_brightness.step(_lastDimTimestamp)) << 2));
-
+        //Colors::RGB rgb = Colors::hsv2rgb(Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), ((uint16_t)_brightness.step(_lastDimTimestamp)) << 2));
+        Colors::RGB rgb = Colors::hsv2rgb(  Colors::HSV(  _hue.step(_lastDimTimestamp),  _saturation.step(_lastDimTimestamp),  ((uint16_t)_brightness.step(_lastDimTimestamp))   )    );
+        
         if (_pHWChannels[0] < LED_ChannelCount)
         {
             _pDimmer->setLevel(_pDimmer->scale(rgb.Red(), (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_), _pHWChannels[0]);
@@ -437,7 +445,7 @@ void RGBChannel::setSwitch(bool _switch)
     }
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
-    logDebugP("parammaxday: %5X",ParamLED_RGB_BrighnessMaxDay_);
+    logDebugP("parammaxday: %5X",(ParamLED_RGB_BrighnessMaxDay_*VALUE_KNX_MULTIPLY)  );
 }
 
 void RGBChannel::setHue(uint16_t hue)
@@ -493,7 +501,7 @@ void RGBChannel::relDimUp()
 
 void RGBChannel::relDimDown()
 {
-    _brightness.setTargetValue(ParamLED_RGB_BrighnessMin_* VALUE_KNX_MULTIPLY, millis(), ParamLED_RGB_LightDimmTimeRel_);
+    _brightness.setTargetValue(dimmingValMin(), millis(), ParamLED_RGB_LightDimmTimeRel_);
 }
 
 void RGBChannel::relDimStop()
