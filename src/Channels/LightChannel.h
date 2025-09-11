@@ -128,7 +128,7 @@ class LightChannel : public OpenKNX::Channel
 
       public:
         uint16_t ColorTemperature() { return value[2] + (value[1] << 8); }
-        uint8_t Brightness() { return value[0]; }
+        uint16_t Brightness() { return value[0]; }
         Colors::HSV HSV() { return Colors::rgb2hsv(Colors::RGB(value[0], value[1], value[2])); }
         enum FuncType
         {

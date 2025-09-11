@@ -39,7 +39,8 @@ void RGBChannel::update()
     uint16_t tmpHue = _hue.value();
     uint16_t tmpSat = _saturation.value();
     uint16_t tmpBrightness = _brightness.value();
-    Colors::HSV hsv(tmpHue, tmpSat, _UFP16(tmpBrightness, 2));
+    //Colors::HSV hsv(tmpHue, tmpSat, _UFP16(tmpBrightness, 2));
+    Colors::HSV hsv(tmpHue, tmpSat, tmpBrightness);
 
     bool stateOn = tmpBrightness > 0;
 
@@ -57,14 +58,16 @@ void RGBChannel::update()
         _lastSatValue = tmpSat;
     }
 
-    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY*4))
+    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY*5))
     {
         _lastTimestamp = millis();
 
         if (((uint16_t)KoLED_RGB_BrightnessStatus_.value(DPT_Scaling)* VALUE_KNX_MULTIPLY) != tmpBrightness)
         {
             logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
-            KoLED_RGB_BrightnessStatus_.value(  (uint16_t)(tmpBrightness/ VALUE_KNX_MULTIPLY), DPT_Scaling);
+            logDebugP("Brightness KO: %d, TMP: %d", (uint16_t)KoLED_RGB_BrightnessStatus_.value(DPT_Scaling) ,tmpBrightness);
+            //KoLED_RGB_BrightnessStatus_.value(  (uint16_t)(tmpBrightness/ VALUE_KNX_MULTIPLY), DPT_Scaling);
+            KoLED_RGB_BrightnessStatus_.value(  map( tmpBrightness , -1, VALUE_KNX_COUNT-2 , 0, 100), DPT_Scaling);
         }
 
         if ((uint32_t)KoLED_RGB_HSVStatus_.value(DPT_Colour_RGB) != hsv.toUint32())
@@ -88,6 +91,10 @@ void RGBChannel::update()
         logDebugP("Scale: R%d G%d B%d", _pDimmer->scale(farbe.Red(),(HWDimmer::DimLUTType)0) , _pDimmer->scale(farbe.Green(),(HWDimmer::DimLUTType)0) , _pDimmer->scale(farbe.Blue(),(HWDimmer::DimLUTType)0) );
         logDebugP("H: %d S: %d V: %d", _hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp) );
         logDebugP("HSV: %d", Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp) ) );
+        logDebugP("Bright: %d > LUTval: %d", _brightness.value(), _pDimmer->scale(_brightness.value(),(HWDimmer::DimLUTType)0) );
+        logDebugP("HUE: %d > LUTval: %d", _hue.value(), _pDimmer->scale(_hue.value(),(HWDimmer::DimLUTType)0) );
+
+        
     
     }
 }
@@ -457,7 +464,7 @@ void RGBChannel::setHue(uint16_t hue)
 
 void RGBChannel::setSaturation(uint16_t saturation)
 {
-    logDebugP("setHue: %3X", saturation);
+    logDebugP("setSaturation: %3X", saturation);
     // saturation max 1024
     _saturation.setTargetValue(saturation, millis(), dimmingTimeON());
 }
@@ -526,11 +533,13 @@ void RGBChannel::setRGB(uint32_t RGBvalue)
     rgb = Colors::RGB(RGBvalue);
     logDebugP("R: %05X, G: %05X B: %05X", rgb._red, rgb._green, rgb._blue);
     hsv = Colors::rgb2hsv(rgb);
+    logDebugP("h: %d, s: %d v: %d", hsv._hue, hsv._sat, hsv._val);
     logDebugP("H: %d, S: %d V: %d", hsv.Hue(), hsv.Sat(), hsv.Val());
 
     setHue(hsv._hue);
     setSaturation(hsv._sat);
     //setBrightness(hsv.Val());
+    setBrightness(hsv._val);
 
     //_hue.setTargetValue(hsv._hue, millis(), ParamLED_RGB_LightDimmTimeDayON_);
     //_saturation.setTargetValue(hsv._sat, millis(), ParamLED_RGB_LightDimmTimeDayON_);
@@ -681,6 +690,7 @@ void RGBChannel::setHSV(uint32_t HSVvalue)
     setHue(hsv._hue);
     setSaturation(hsv._sat);
     //setBrightness(hsv.Val());
+    setBrightness(hsv._val);
 
     //_hue.setTargetValue(hsv._hue, millis(), ParamLED_RGB_LightDimmTimeDayON_);
     //_saturation.setTargetValue(hsv._sat, millis(), ParamLED_RGB_LightDimmTimeDayON_);

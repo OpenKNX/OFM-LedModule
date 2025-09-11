@@ -4,7 +4,7 @@
 //#define VALUE_KNX_COUNT 256
 //#define VALUE_KNX_COUNT 101
 #define VALUE_KNX_COUNT 4096
-#define VALUE_KNX_MULTIPLY 40.94
+#define VALUE_KNX_MULTIPLY 40.95
 
 class HWDimmer
 {
