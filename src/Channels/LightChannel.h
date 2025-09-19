@@ -8,7 +8,6 @@
 #define DIMLOOP_DELAY 20 // ms
 #define UPDATE_DELAY 500 // ms
 #define N_SCENES 8
-#define BRIGHTNESS_MAX UINT8_MAX
 
 #define LED_INVALID_HW_CHANNEL 0xFF
 
@@ -109,7 +108,7 @@ class LightChannel : public OpenKNX::Channel
         int32_t deltaValue = 0;
         uint32_t startTimestamp = 0;
         uint16_t dimDurationAbs = 100;
-        uint8_t lastDimmValue = BRIGHTNESS_MAX;
+        uint8_t lastDimmValue = VALUE_KNX_COUNT;
     };
 
     struct SceneConfig

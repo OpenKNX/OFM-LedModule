@@ -79,7 +79,7 @@ void LightChannel::processFrontOutput()
         }
         else
         {
-            ledOnPercent = _brightness.value() / (float)BRIGHTNESS_MAX;
+            ledOnPercent = _brightness.value() / (float)VALUE_KNX_COUNT;
 
             // minimum of 1 % and maximum of 99 % LED on to signal automatic mode
             if (ledOnPercent < 0.01)
