@@ -5,10 +5,6 @@
 #include "OpenKNX.h"
 #include <Arduino.h>
 
-#ifdef OPENKNX_GPIO_NUM
-#include "GPIOModule.h"
-#endif
-
 #define DIMLOOP_DELAY 20 // ms
 #define UPDATE_DELAY 500 // ms
 #define N_SCENES 8

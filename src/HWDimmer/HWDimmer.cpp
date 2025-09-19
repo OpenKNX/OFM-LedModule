@@ -36,7 +36,7 @@ void HWDimmer::processFrontInput()
     // if (!ParamHTA_ChManualMode)
     //     return;
 
-    // bool buttonPressed = openknxGPIOModule.digitalRead(OPENKNX_HTA_GPIO_INPUT_OFFSET + _channelIndex) == GPIO_INPUT_ON;
+    // bool buttonPressed = openknx.gpio.digitalRead(OPENKNX_HTA_GPIO_INPUT_OFFSET + _channelIndex) == GPIO_INPUT_ON;
     // if (buttonPressed)
     // {
     //     if (_currentButtonPressed)

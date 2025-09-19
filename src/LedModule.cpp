@@ -125,10 +125,10 @@ void LedModule::setupFrontPlate()
 #ifdef LEDMODULE_FRONT_PLATE_USED
     for (uint8_t i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
     {
-        openknxGPIOModule.pinMode(0x0100 + i, OUTPUT);
-        openknxGPIOModule.digitalWrite(0x0100 + i, LOW);
+        openknx.gpio.pinMode(0x0100 + i, OUTPUT);
+        openknx.gpio.digitalWrite(0x0100 + i, LOW);
 
-        openknxGPIOModule.pinMode(0x0200 + i, INPUT);
+        openknx.gpio.pinMode(0x0200 + i, INPUT);
     }
 #endif
 

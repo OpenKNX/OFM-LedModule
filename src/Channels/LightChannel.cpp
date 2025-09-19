@@ -51,7 +51,7 @@ void LightChannel::processFrontInput(bool frontControlEnabled)
     for (int i = 0; i < _numChannels; i++)
     {
         uint8_t channelIndex = _pHWChannels[i];
-        buttonPressed |= openknxGPIOModule.digitalRead(OPENKNX_LED_GPIO_INPUT_OFFSET + channelIndex) == OPENKNX_LED_GPIO_INPUT_ACTIVE_ON;
+        buttonPressed |= openknx.gpio.digitalRead(OPENKNX_LED_GPIO_INPUT_OFFSET + channelIndex) == OPENKNX_LED_GPIO_INPUT_ACTIVE_ON;
     }
 
     if (buttonPressed &&
@@ -118,7 +118,7 @@ void LightChannel::setOutputLed(uint8_t hwChannelIndex, bool on)
 {
 #ifdef LEDMODULE_FRONT_PLATE_USED
     uint8_t channelIndex = _pHWChannels[hwChannelIndex];
-    openknxGPIOModule.digitalWrite(OPENKNX_LED_GPIO_OUTPUT_OFFSET + channelIndex, on ? OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON : !OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON);
+    openknx.gpio.digitalWrite(OPENKNX_LED_GPIO_OUTPUT_OFFSET + channelIndex, on ? OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON : !OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON);
     _currentLedChangeStarted[hwChannelIndex] = delayTimerInit();
     _currentLedOn[hwChannelIndex] = on;
     //logDebugP("setOutputLed (channel: %u, on: %u)", channelIndex, on);

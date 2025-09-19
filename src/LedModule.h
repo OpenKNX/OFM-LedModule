@@ -17,9 +17,6 @@
 #ifdef LEDMODULE_DIMMMER_WS
   #include "HWDimmer\HWDimmerWS.h"
 #endif
-#ifdef OPENKNX_GPIO_NUM
-  #include "GPIOModule.h"
-#endif
 #include "LedModuleConfig.h"
 #include "Channels\SingleChannel.h"
 #include "Channels\TWChannel.h"
