@@ -123,23 +123,12 @@ void LedModule::setupChannels()
 void LedModule::setupFrontPlate()
 {
 #ifdef LEDMODULE_FRONT_PLATE_USED
+    logDebugP("Front plate used");
     for (uint8_t i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
     {
-        openknx.gpio.pinMode(0x0100 + i, OUTPUT);
-        openknx.gpio.digitalWrite(0x0100 + i, LOW);
-
+        openknx.gpio.pinMode(0x0100 + i, OUTPUT, true, !OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON);
         openknx.gpio.pinMode(0x0200 + i, INPUT);
     }
-#endif
-
-#ifndef OPENKNX_GPIO_NUM
-#ifdef OPENKNX_GPIO_WIRE
-    // Wire is initialized by GPIO module, when used
-    OPENKNX_GPIO_WIRE.setSDA(OPENKNX_GPIO_SDA);
-    OPENKNX_GPIO_WIRE.setSCL(OPENKNX_GPIO_SCL);
-    OPENKNX_GPIO_WIRE.begin();
-    OPENKNX_GPIO_WIRE.setClock(OPENKNX_GPIO_CLOCK);
-#endif
 #endif
 }
 
