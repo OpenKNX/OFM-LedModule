@@ -107,8 +107,10 @@ void LightChannel::processFrontOutput()
 
         if (_currentLedOnTime[i] != ledOnTime)
         {
+            if (abs((long)(_currentLedOnTime[i] - ledOnTime)) > 50)
+                logDebugP("processOutput (channel: %u, ledOnPercent: %.2f, ledOnTime: %u)", i, ledOnPercent, ledOnTime);
+            
             _currentLedOnTime[i] = ledOnTime;
-            logDebugP("processOutput (channel: %u, ledOnPercent: %.2f, ledOnTime: %u)", i, ledOnPercent, ledOnTime);
         }
     }
 #endif
