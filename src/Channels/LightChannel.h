@@ -108,7 +108,7 @@ class LightChannel : public OpenKNX::Channel
         int32_t deltaValue = 0;
         uint32_t startTimestamp = 0;
         uint16_t dimDurationAbs = 100;
-        uint8_t lastDimmValue = VALUE_KNX_COUNT;
+        uint8_t lastDimmValue = 100;
     };
 
     struct SceneConfig

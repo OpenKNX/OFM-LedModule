@@ -113,7 +113,7 @@ void TWChannel::loop()
             setLastOnValue(_brightness.value());
             setLastOnValueTemp(_colorTemperature.value());
 
-            _brightness.setTargetValue(ParamLED_TW_FrontControlBrightness_, millis(), dimmingTime(1));
+            _brightness.setTargetValue(ParamLED_TW_FrontControlBrightness_ * VALUE_KNX_MULTIPLY, millis(), dimmingTime(1));
             _colorTemperature.setTargetValue(ParamLED_TW_FrontControlColorTemp_, millis(), dimmingTime(1));
         }
         else

@@ -85,7 +85,7 @@ void SingleChannel::loop()
         {
             setLastOnValue(_brightness.value());
 
-            _brightness.setTargetValue(ParamLED_SC_FrontControlBrightness_, millis(), dimmingTime(1));
+            _brightness.setTargetValue(ParamLED_SC_FrontControlBrightness_ * VALUE_KNX_MULTIPLY, millis(), dimmingTime(1));
         }
         else
         {
