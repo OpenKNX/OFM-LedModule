@@ -83,11 +83,11 @@ std::string HWDimmerRP2040::logPrefix()
 
 void HWDimmerRP2040::outputLUT()
 {
-    logDebugP("RP2040 Dimmer LUT:");
-    for (int i = 0; i < VALUE_KNX_COUNT; i=i+10)
-    {
-        logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
-    }
+    // logDebugP("RP2040 Dimmer LUT:");
+    // for (int i = 0; i < VALUE_KNX_COUNT; i=i+10)
+    // {
+    //     logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
+    // }
     logDebugP("Count %d LAST: %d",VALUE_KNX_COUNT- 2 , dimLUT[0].Val(VALUE_KNX_COUNT-2) );
     logDebugP("Count %d LAST: %d",VALUE_KNX_COUNT- 1 , dimLUT[0].Val(VALUE_KNX_COUNT-1) );
     logDebugP("Count %d  MAX: %d",VALUE_KNX_COUNT    , dimLUT[0].Val(VALUE_KNX_COUNT )  );
