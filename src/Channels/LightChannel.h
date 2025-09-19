@@ -154,6 +154,9 @@ class LightChannel : public OpenKNX::Channel
 
     DimmableValue<uint16_t> _brightness;
 
+    bool _currentManualMode = false;
+    bool _currentManualModeActive = false;
+
     virtual void update() = 0;
     void processFrontInput(bool frontControlEnabled);
 
@@ -165,7 +168,6 @@ class LightChannel : public OpenKNX::Channel
 
     const std::string name() override;
 
-    bool _currentManualMode = false;
     uint32_t _currentManualModeLastChange = 0;
 
     bool _currentLedOn[LEDMODULE_MAX_LIGHT_CHANNELS] = {false};

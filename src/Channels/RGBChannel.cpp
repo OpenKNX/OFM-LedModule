@@ -93,9 +93,6 @@ void RGBChannel::update()
         logDebugP("HSV: %d", Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp) ) );
         logDebugP("Bright: %d > LUTval: %d", _brightness.value(), _pDimmer->scale(_brightness.value(),(HWDimmer::DimLUTType)0) );
         logDebugP("HUE: %d > LUTval: %d", _hue.value(), _pDimmer->scale(_hue.value(),(HWDimmer::DimLUTType)0) );
-
-        
-    
     }
 }
 
@@ -152,6 +149,25 @@ void RGBChannel::loop()
             _saturation.setTargetValue(1024, millis(), ParamLED_RGB_ColorTimeNight_);
             logInfoP("hue_val:%5X%", _hue.value());
         }*/
+
+    if (_currentManualMode != _currentManualModeActive)
+    {
+        _currentManualModeActive = _currentManualMode;
+        if (_currentManualModeActive)
+        {
+            setLastOnValue(_brightness.value());
+            setLastOnValueHue(_hue.value());
+            setLastOnValueSat(_saturation.value());
+
+            RGBpicker(ParamLED_RGB_FrontControlColorPicker_);
+        }
+        else
+        {
+            _brightness.setTargetValue(getLastOnValue(), millis(), dimmingTime(1));
+            _hue.setTargetValue(getLastOnValueHue(), millis(), dimmingTime(1));
+            _saturation.setTargetValue(getLastOnValueSat(), millis(), dimmingTime(1));
+        }
+    }
 
     processFrontInput();
 }

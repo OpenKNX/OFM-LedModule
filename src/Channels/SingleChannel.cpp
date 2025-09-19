@@ -78,6 +78,21 @@ void SingleChannel::loop()
         }
     }
 
+    if (_currentManualMode != _currentManualModeActive)
+    {
+        _currentManualModeActive = _currentManualMode;
+        if (_currentManualModeActive)
+        {
+            setLastOnValue(_brightness.value());
+
+            _brightness.setTargetValue(ParamLED_SC_FrontControlBrightness_, millis(), dimmingTime(1));
+        }
+        else
+        {
+            _brightness.setTargetValue(getLastOnValue(), millis(), dimmingTime(1));
+        }
+    }
+
     processFrontInput();
 }
 
