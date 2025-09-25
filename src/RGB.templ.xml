@@ -92,10 +92,10 @@
               <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
               </Parameter>-->
 
+              <!-- UNUSED, remove during clean-up of final release
               <Parameter Id="%AID%_P-%TT%%CC%032" Name="FrontControl_%C%"              ParameterType="%AID%_PT-OnOffYesNo" Text="Frontbedienung aktivieren" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
               </Parameter>
-              <!-- 2 bits free -->
               <Parameter Id="%AID%_P-%TT%%CC%033" Name="FrontControlColor_%C%"              ParameterType="%AID%_PT-ColorPicker" Text="Farbe" Value="13">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="3" />
               </Parameter>
@@ -107,7 +107,7 @@
               </Parameter>
               <Parameter Id="%AID%_P-%TT%%CC%036" Name="FrontControlColorTemp_%C%"          ParameterType="%AID%_PT-ColorTemperature" Text="Farbtemperatur" Value="4000">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="32" BitOffset="0" />
-              </Parameter>
+              </Parameter> -->
 
               <Parameter Id="%AID%_P-%TT%%CC%027" Name="SceneType01_%C%"           ParameterType="%AID%_PT-SceneType" Text="Typ" Value="0" />
               <Parameter Id="%AID%_P-%TT%%CC%028" Name="SceneType2_%C%"            ParameterType="%AID%_PT-SceneType" Text="Typ" Value="0" />
@@ -157,11 +157,13 @@
               <ParameterRef Id="%AID%_P-%TT%%CC%029_R-%TT%%CC%02901" RefId="%AID%_P-%TT%%CC%029" />
               <ParameterRef Id="%AID%_P-%TT%%CC%030_R-%TT%%CC%03001" RefId="%AID%_P-%TT%%CC%030" />
               <ParameterRef Id="%AID%_P-%TT%%CC%031_R-%TT%%CC%03101" RefId="%AID%_P-%TT%%CC%031" />
+
+              <!-- UNUSED, remove during clean-up of final release
               <ParameterRef Id="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201" RefId="%AID%_P-%TT%%CC%032" />
               <ParameterRef Id="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301" RefId="%AID%_P-%TT%%CC%033" />
               <ParameterRef Id="%AID%_P-%TT%%CC%034_R-%TT%%CC%03401" RefId="%AID%_P-%TT%%CC%034" />
               <ParameterRef Id="%AID%_P-%TT%%CC%035_R-%TT%%CC%03501" RefId="%AID%_P-%TT%%CC%035" />
-              <ParameterRef Id="%AID%_P-%TT%%CC%036_R-%TT%%CC%03601" RefId="%AID%_P-%TT%%CC%036" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%036_R-%TT%%CC%03601" RefId="%AID%_P-%TT%%CC%036" /> -->
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_RGB_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefRGB']/*" />
@@ -267,29 +269,6 @@
                       </when>
                     </choose>
                     <!-- <ParameterRefRef RefId="%AID%_P-%TT%%CC%020_R-%TT%%CC%02001" /> <a!a-a- Color RGB -->
-                                        
-                    <choose ParamRefId="%AID%_UP-2000001_R-200000101">
-                      <when test="1 4"> <!-- AB-SmartHouse REG: Front Control Available -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
-                        <ParameterRefRef RefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201" IndentLevel="1" />
-                        <choose ParamRefId="%AID%_P-%TT%%CC%032_R-%TT%%CC%03201">
-                          <when test="1">
-                            <ParameterRefRef RefId="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301" IndentLevel="1" /> <!-- Color Front -->
-                            <choose ParamRefId="%AID%_P-%TT%%CC%033_R-%TT%%CC%03301">
-                              <when test="16">
-                                <ParameterRefRef RefId="%AID%_P-%TT%%CC%034_R-%TT%%CC%03401" IndentLevel="2" /> <!-- RGB Front -->
-                              </when>
-                              <when test="15">
-                                <ParameterRefRef RefId="%AID%_P-%TT%%CC%035_R-%TT%%CC%03501" IndentLevel="2" /> <!-- Color Change Time Front -->
-                              </when>
-                              <when test="17">
-                                <ParameterRefRef RefId="%AID%_P-%TT%%CC%036_R-%TT%%CC%03601" IndentLevel="2" /> <!-- Color Temperature Front-->
-                              </when>
-                            </choose>
-                          </when>
-                        </choose>
-                      </when>
-                    </choose>
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Sonstige Konfiguration" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%011_R-%TT%%CC%01101" IndentLevel="1" /> <!-- DimCurve -->

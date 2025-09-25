@@ -39,7 +39,6 @@ class TWChannel : public LightChannel
 
   private:
     const std::string name() override;
-    void processFrontInput();
 
     uint16_t _lastColorTemp = 0;
     DimmableValue<uint16_t> _colorTemperature;

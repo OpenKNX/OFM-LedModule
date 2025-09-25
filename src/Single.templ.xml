@@ -59,12 +59,12 @@
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="16" BitOffset="0" />
               </Parameter>
 
+              <!-- UNUSED, remove during clean-up of final release
               <Union SizeInBit="16">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="17" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%017" Name="FrontControl_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung aktivieren" Value="0" />
-                <!-- 5 bits free -->
                 <Parameter Id="%AID%_UP-%TT%%CC%018" Name="FrontControlBrightness_%C%" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="100" />
-              </Union>
+              </Union> -->
 
               <Parameter Id="%AID%_P-%TT%%CC%016" Name="ScenesActive_%C%"          ParameterType="%AID%_PT-OnOffYesNo" Text="Szenen" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="19" BitOffset="0" />
@@ -95,8 +95,10 @@
               <ParameterRef Id="%AID%_P-%TT%%CC%014_R-%TT%%CC%01401" RefId="%AID%_P-%TT%%CC%014" />
               <ParameterRef Id="%AID%_P-%TT%%CC%015_R-%TT%%CC%01501" RefId="%AID%_P-%TT%%CC%015" />
               <ParameterRef Id="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" RefId="%AID%_P-%TT%%CC%016" />
+
+              <!-- UNUSED, remove during clean-up of final release
               <ParameterRef Id="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" RefId="%AID%_UP-%TT%%CC%017" />
-              <ParameterRef Id="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" RefId="%AID%_UP-%TT%%CC%018" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" RefId="%AID%_UP-%TT%%CC%018" /> -->
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_SC_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSC']/*" />
@@ -156,18 +158,6 @@
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%008_R-%TT%%CC%00801" IndentLevel="1" /> <!-- DimMin -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%009_R-%TT%%CC%00901" IndentLevel="1" /> <!-- DimMaxDay -->
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%010_R-%TT%%CC%01001" IndentLevel="1" /> <!-- DimMaxNight -->
-                    
-                    <choose ParamRefId="%AID%_UP-2000001_R-200000101">
-                      <when test="1 4"> <!-- AB-SmartHouse REG: Front Control Available -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
-                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="1" />
-                        <choose ParamRefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701">
-                          <when test="1">
-                            <ParameterRefRef RefId="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" IndentLevel="1" />
-                          </when>
-                        </choose>
-                      </when>
-                    </choose>
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Sonstige Konfiguration" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%011_R-%TT%%CC%01101" IndentLevel="1" /> <!-- DimCurve -->

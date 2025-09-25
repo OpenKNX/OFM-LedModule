@@ -38,11 +38,11 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
 {
     // logInfoP("setLevel_1");
     bool isValidChannel = false;
-    if (HWDimmer::setLevel(level, channel))
+    if (setLevelInternal(level, channel))
     {
         //logInfoP("setLevel: %3X",level);
         isValidChannel = true;
-        _pwm.setPWM(channel, 0, min(level, DIM_RANGE));
+        _pwm.setPWM(channel, 0, min(getLevel(channel), DIM_RANGE));
         // logInfoP("setLevel_3");
     }
     return isValidChannel;

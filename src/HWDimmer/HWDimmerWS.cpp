@@ -27,13 +27,14 @@ bool HWDimmerWS::setLevel(uint16_t level, uint8_t channel)
 {
     // logInfoP("setLevel_1");
     bool isValidChannel = false;
-    if (HWDimmer::setLevel(level, channel))
+    if (setLevelInternal(level, channel))
     {
         isValidChannel = true;
         _pixels.clear();
         for (int i = 0; i < 100; i++)
         {
-            _pixels.setPixelColor(i, _pixels.Color(level, level, level));
+            uint16_t tmpLevel = getLevel(channel);
+            _pixels.setPixelColor(i, _pixels.Color(tmpLevel, tmpLevel, tmpLevel));
             _pixels.show();
         }
         // logInfoP("setLevel_3");

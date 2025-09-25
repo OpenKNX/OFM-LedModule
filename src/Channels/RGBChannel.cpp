@@ -103,7 +103,12 @@ void RGBChannel::loop()
 
     LightChannel::loop();
 
-    if (delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
+    bool needsPowerUp =
+        _hue.value() == 0 && _hue.target() > 0 ||
+        _saturation.value() == 0 && _saturation.target() > 0 ||
+        _brightness.value() == 0 && _brightness.target() > 0;
+    bool canDim = !needsPowerUp || _pDimmer->powerSupplyAvailableOrRequest();
+    if (canDim && delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
     {
         _lastDimTimestamp = millis();
 
@@ -123,6 +128,7 @@ void RGBChannel::loop()
             _pDimmer->setLevel(_pDimmer->scale(rgb.Blue(), (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_), _pHWChannels[2]);
         }
     }
+
     // Stairway Timeout
     if (((getStairTime() + (ParamLED_RGB_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
     {
@@ -149,32 +155,6 @@ void RGBChannel::loop()
             _saturation.setTargetValue(1024, millis(), ParamLED_RGB_ColorTimeNight_);
             logInfoP("hue_val:%5X%", _hue.value());
         }*/
-
-    if (_currentManualMode != _currentManualModeActive)
-    {
-        _currentManualModeActive = _currentManualMode;
-        if (_currentManualModeActive)
-        {
-            setLastOnValue(_brightness.value());
-            setLastOnValueHue(_hue.value());
-            setLastOnValueSat(_saturation.value());
-
-            RGBpicker(ParamLED_RGB_FrontControlColorPicker_);
-        }
-        else
-        {
-            _brightness.setTargetValue(getLastOnValue(), millis(), dimmingTime(1));
-            _hue.setTargetValue(getLastOnValueHue(), millis(), dimmingTime(1));
-            _saturation.setTargetValue(getLastOnValueSat(), millis(), dimmingTime(1));
-        }
-    }
-
-    processFrontInput();
-}
-
-void RGBChannel::processFrontInput()
-{
-    LightChannel::processFrontInput(ParamLED_RGB_FrontControl_);
 }
 
 void RGBChannel::processInputKo(GroupObject& ko)

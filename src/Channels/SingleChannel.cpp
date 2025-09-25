@@ -61,11 +61,14 @@ void SingleChannel::loop()
 
     if (_pHWChannels[0] < LED_ChannelCount)
     {
-        if (delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
+        bool needsPowerUp = _brightness.value() == 0 && _brightness.target() > 0;
+        bool canDim = !needsPowerUp || _pDimmer->powerSupplyAvailableOrRequest();
+        if (canDim && delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
         {
             _lastDimTimestamp = millis();
             _pDimmer->setLevel(_pDimmer->scale(_brightness.step(_lastDimTimestamp), (HWDimmer::DimLUTType)ParamLED_SC_DimCurve_), _pHWChannels[0]);
         }
+
         // Stairway Timeout
         if (((getStairTime() + (ParamLED_SC_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
         {
@@ -77,28 +80,6 @@ void SingleChannel::loop()
             _brightness.setTargetValue(0, millis(), dimmingTimeOFF());
         }
     }
-
-    if (_currentManualMode != _currentManualModeActive)
-    {
-        _currentManualModeActive = _currentManualMode;
-        if (_currentManualModeActive)
-        {
-            setLastOnValue(_brightness.value());
-
-            _brightness.setTargetValue(ParamLED_SC_FrontControlBrightness_ * VALUE_KNX_MULTIPLY, millis(), dimmingTime(1));
-        }
-        else
-        {
-            _brightness.setTargetValue(getLastOnValue(), millis(), dimmingTime(1));
-        }
-    }
-
-    processFrontInput();
-}
-
-void SingleChannel::processFrontInput()
-{
-    LightChannel::processFrontInput(ParamLED_SC_FrontControl_);
 }
 
 void SingleChannel::processInputKo(GroupObject& ko)

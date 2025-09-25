@@ -155,23 +155,40 @@
             <Parameters>
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%00001" Name="HardwareVariant"              ParameterType="%AID%_PT-HardwareVariant" Offset="0" BitOffset="0" Text="Hardware-Variante" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00001" Name="HardwareVariant"                  ParameterType="%AID%_PT-HardwareVariant" Offset="0" BitOffset="0" Text="Hardware-Variante" Value="0" />
                 <!-- 2 bits free -->
-                <Parameter Id="%AID%_UP-%TT%00006" Name="DimmerCcType"                 ParameterType="%AID%_PT-DimmerCcType" Offset="0" BitOffset="6" Text="Dimmart Constant Current" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00006" Name="DimmerCcType"                     ParameterType="%AID%_PT-DimmerCcType" Offset="0" BitOffset="6" Text="Dimmart Constant Current" Value="0" />
                 <!-- 1 bit free -->
               </Union>
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%00007" Name="PwmFrequency"                 ParameterType="%AID%_PT-PwmFrequency" Offset="0" BitOffset="0" Text="PWM-Frequenz" Value="4" />
+                <Parameter Id="%AID%_UP-%TT%00007" Name="PwmFrequency"                     ParameterType="%AID%_PT-PwmFrequency" Offset="0" BitOffset="0" Text="PWM-Frequenz" Value="4" />
                 <!-- 4 bits free -->
               </Union>
               <Union SizeInBit="32">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="2" BitOffset="0" />
                 <!-- 7 bits free -->
-                <Parameter Id="%AID%_UP-%TT%00002" Name="PowerSupplyRelay"             ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="7" Text="Externes Netzteil-Relais" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%00003" Name="PowerSupplyRelayMinVoltage"   ParameterType="%AID%_PT-MinVoltage" Offset="1" BitOffset="0" Text="Dimmstart bei" Value="46" SuffixText="V" />
-                <Parameter Id="%AID%_UP-%TT%00004" Name="PowerSupplyRelayOffDelayBase" ParameterType="%AID%_PT-DelayBase" Offset="2" BitOffset="0" Text="Zeitbasis" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%00005" Name="PowerSupplyRelayOffDelayTime" ParameterType="%AID%_PT-DelayTime" Offset="2" BitOffset="2" Text="Zeit" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00002" Name="PowerSupplyRelay"                 ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="7" Text="Externes Netzteil-Relais" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00003" Name="PowerSupplyRelayMinVoltage"       ParameterType="%AID%_PT-MinVoltage" Offset="1" BitOffset="0" Text="Dimmstart bei" Value="20" SuffixText="V" />
+                <Parameter Id="%AID%_UP-%TT%00004" Name="PowerSupplyRelayOffDelayBase"     ParameterType="%AID%_PT-DelayBase" Offset="2" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00005" Name="PowerSupplyRelayOffDelayTime"     ParameterType="%AID%_PT-DelayTime" Offset="2" BitOffset="2" Text="Zeit" Value="0" />
+              </Union>
+              <Union SizeInBit="40">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="6" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00008" Name="PowerSupplyVoltageChangeSend"     ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Netzteilspannung senden" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00014" Name="TemperatureChangeSend"            ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Temperatur senden" Value="0" />
+                <!-- 6 bits free -->
+                <Parameter Id="%AID%_UP-%TT%00009" Name="PowerSupplyVoltageCyclicBase"     ParameterType="%AID%_PT-DelayBase" Offset="1" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00010" Name="PowerSupplyVoltageCyclicTime"     ParameterType="%AID%_PT-DelayTime" Offset="1" BitOffset="2" Text="Zeit" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00015" Name="TemperatureCyclicBase"            ParameterType="%AID%_PT-DelayBase" Offset="3" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00016" Name="TemperatureCyclicTime"            ParameterType="%AID%_PT-DelayTime" Offset="3" BitOffset="2" Text="Zeit" Value="0" />
+              </Union>
+              <Union SizeInBit="16">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="11" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00011" Name="FrontControlOutput"               ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="LED-Ausgabe aktivieren" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%00012" Name="FrontControlInput"                ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Frontbedienung aktivieren" Value="0" />
+                <!-- 6 bits free -->
+                <Parameter Id="%AID%_UP-%TT%00013" Name="FrontControlManualBrightness_%C%" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="50" SuffixText="%" />
               </Union>
             </Parameters>
 
@@ -183,16 +200,29 @@
               <ParameterRef Id="%AID%_UP-%TT%00005_R-%TT%0000501" RefId="%AID%_UP-%TT%00005" />
               <ParameterRef Id="%AID%_UP-%TT%00006_R-%TT%0000601" RefId="%AID%_UP-%TT%00006" />
               <ParameterRef Id="%AID%_UP-%TT%00007_R-%TT%0000701" RefId="%AID%_UP-%TT%00007" />
+              <ParameterRef Id="%AID%_UP-%TT%00008_R-%TT%0000801" RefId="%AID%_UP-%TT%00008" />
+              <ParameterRef Id="%AID%_UP-%TT%00009_R-%TT%0000901" RefId="%AID%_UP-%TT%00009" />
+              <ParameterRef Id="%AID%_UP-%TT%00010_R-%TT%0001001" RefId="%AID%_UP-%TT%00010" />
+              <ParameterRef Id="%AID%_UP-%TT%00011_R-%TT%0001101" RefId="%AID%_UP-%TT%00011" />
+              <ParameterRef Id="%AID%_UP-%TT%00012_R-%TT%0001201" RefId="%AID%_UP-%TT%00012" />
+              <ParameterRef Id="%AID%_UP-%TT%00013_R-%TT%0001301" RefId="%AID%_UP-%TT%00013" />
+              <ParameterRef Id="%AID%_UP-%TT%00014_R-%TT%0001401" RefId="%AID%_UP-%TT%00014" />
+              <ParameterRef Id="%AID%_UP-%TT%00015_R-%TT%0001501" RefId="%AID%_UP-%TT%00015" />
+              <ParameterRef Id="%AID%_UP-%TT%00016_R-%TT%0001601" RefId="%AID%_UP-%TT%00016" />
             </ParameterRefs>
 
             <ComObjectTable>
               <ComObject Id="%AID%_O-%TT%00001" Name="PowerSupplyRelay" Number="0" ObjectSize="1 Bit" Text="Externes Netzteil-Relais" FunctionText="Anforderung" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
               <ComObject Id="%AID%_O-%TT%00002" Name="PowerSupplyRelayStatus" Number="1" ObjectSize="1 Bit" Text="Externes Netzteil-Relais" FunctionText="Rückmeldung" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="%AID%_O-%TT%00003" Name="PowerSupplyVoltage" Number="2" ObjectSize="2 Bytes" Text="Netzteilspannung" FunctionText="Status" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-9-20" />
+              <ComObject Id="%AID%_O-%TT%00004" Name="Temperature" Number="3" ObjectSize="2 Bytes" Text="Temperatur" FunctionText="Status" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-9-1" />
             </ComObjectTable>
 
             <ComObjectRefs>
               <ComObjectRef Id="%AID%_O-%TT%00001_R-%TT%0000101" RefId="%AID%_O-%TT%00001" />
               <ComObjectRef Id="%AID%_O-%TT%00002_R-%TT%0000201" RefId="%AID%_O-%TT%00002" />
+              <ComObjectRef Id="%AID%_O-%TT%00003_R-%TT%0000301" RefId="%AID%_O-%TT%00003" />
+              <ComObjectRef Id="%AID%_O-%TT%00004_R-%TT%0000401" RefId="%AID%_O-%TT%00004" />
             </ComObjectRefs>
 
             <Extension>
@@ -257,12 +287,12 @@
                       </when>
                     </choose>
 
-                    <!-- <ParameterRefRef RefId="%AID%_UP-%TT%00002_R-%TT%0000201" IndentLevel="1" /> <!- - Power Supply Relay - ->
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00002_R-%TT%0000201" IndentLevel="1" /> <!-- Power Supply Relay -->
                     <choose ParamRefId="%AID%_UP-%TT%00002_R-%TT%0000201">
                       <when test="1">
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00003_R-%TT%0000301" IndentLevel="2" /> <!- - Power Supply Relay Min Voltage - ->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00003_R-%TT%0000301" IndentLevel="2" /> <!-- Power Supply Relay Min Voltage -->
                         
-                        <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid"> <!- - Power Supply Relay Off Delay - ->
+                        <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid"> <!-- Power Supply Relay Off Delay -->
                           <Rows>
                             <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
                           </Rows>
@@ -280,7 +310,67 @@
                         <ComObjectRefRef RefId="%AID%_O-%TT%00001_R-%TT%0000101" />
                         <ComObjectRefRef RefId="%AID%_O-%TT%00002_R-%TT%0000201" />
                       </when>
-                    </choose> -->
+                    </choose>
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Ausgaben" UIHint="Headline"/>
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00008_R-%TT%0000801" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_UP-%TT%00008_R-%TT%0000801">
+                      <when test="1">
+                        <!-- Status Cyclic pattern -->
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="PowerSupplyCyclic" Inline="true" Layout="Grid">
+                          <Rows>
+                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                          </Rows>
+                          <Columns>
+                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                            <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                            <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                          </Columns>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text=" Netzteilspannung zyklisch senden&#10; (0 = nicht senden)" Cell="1,2" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00010_R-%TT%0001001" Cell="1,3" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00009_R-%TT%0000901" Cell="1,4" />
+                        </ParameterBlock>
+
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00014_R-%TT%0001401" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_UP-%TT%00014_R-%TT%0001401">
+                      <when test="1">
+                        <!-- Status Cyclic pattern -->
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="TemperatureCyclic" Inline="true" Layout="Grid">
+                          <Rows>
+                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                          </Rows>
+                          <Columns>
+                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                            <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                            <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                          </Columns>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text=" Temperatur zyklisch senden&#10; (0 = nicht senden)" Cell="1,2" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00016_R-%TT%0001601" Cell="1,3" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00015_R-%TT%0001501" Cell="1,4" />
+                        </ParameterBlock>
+
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
+                      </when>
+                    </choose>
+
+                    <choose ParamRefId="%AID%_UP-2000001_R-200000101">
+                      <when test="1 4"> <!-- AB-SmartHouse REG: Front Control Available -->
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00012_R-%TT%0001201" IndentLevel="1" />
+                        <choose ParamRefId="%AID%_UP-%TT%00012_R-%TT%0001201">
+                          <when test="1">
+                            <ParameterRefRef RefId="%AID%_UP-%TT%00013_R-%TT%0001301" IndentLevel="2" />
+                          </when>
+                        </choose>
+
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00011_R-%TT%0001101" IndentLevel="1" />
+                      </when>
+                    </choose>
                   </when>
                 </choose>
 

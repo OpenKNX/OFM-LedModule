@@ -75,7 +75,9 @@ void TWChannel::loop()
 
     LightChannel::loop();
 
-    if (delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
+    bool needsPowerUp = _brightness.value() == 0 && _brightness.target() > 0;
+    bool canDim = !needsPowerUp || _pDimmer->powerSupplyAvailableOrRequest();
+    if (canDim && delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
     {
         _lastDimTimestamp = millis();
         uint16_t brightValue = _pDimmer->scale(_brightness.step(_lastDimTimestamp), (HWDimmer::DimLUTType)ParamLED_TW_DimCurve_);
@@ -94,6 +96,7 @@ void TWChannel::loop()
             _pDimmer->setLevel(cw, _pHWChannels[1]);
         }
     }
+
     // Stairway Timeout
     if (((getStairTime() + (ParamLED_TW_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
     {
@@ -104,31 +107,6 @@ void TWChannel::loop()
         }
         _brightness.setTargetValue(0, millis(), dimmingTimeOFF());
     }
-
-    if (_currentManualMode != _currentManualModeActive)
-    {
-        _currentManualModeActive = _currentManualMode;
-        if (_currentManualModeActive)
-        {
-            setLastOnValue(_brightness.value());
-            setLastOnValueTemp(_colorTemperature.value());
-
-            _brightness.setTargetValue(ParamLED_TW_FrontControlBrightness_ * VALUE_KNX_MULTIPLY, millis(), dimmingTime(1));
-            _colorTemperature.setTargetValue(ParamLED_TW_FrontControlColorTemp_, millis(), dimmingTime(1));
-        }
-        else
-        {
-            _brightness.setTargetValue(getLastOnValue(), millis(), dimmingTime(1));
-            _colorTemperature.setTargetValue(getLastOnValueTemp(), millis(), dimmingTime(1));
-        }
-    }
-
-    processFrontInput();
-}
-
-void TWChannel::processFrontInput()
-{
-    LightChannel::processFrontInput(ParamLED_TW_FrontControl_);
 }
 
 void TWChannel::processInputKo(GroupObject& ko)

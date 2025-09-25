@@ -40,10 +40,10 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
 bool HWDimmerRP2040::setLevel(uint16_t level, uint8_t channel)
 {
     bool isValidChannel = false;
-    if (HWDimmer::setLevel(level, channel))
+    if (setLevelInternal(level, channel))
     {
         isValidChannel = true;
-        analogWrite(pins[channel], min(level, DIM_RANGE));
+        analogWrite(pins[channel], min(getLevel(channel), DIM_RANGE));
     }
     return isValidChannel;
 }

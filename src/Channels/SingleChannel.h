@@ -31,7 +31,6 @@ class SingleChannel : public LightChannel
 
   private:
     const std::string name() override;
-    void processFrontInput();
 
     void handleScene(uint8_t sceneNr);
     enum ValueType

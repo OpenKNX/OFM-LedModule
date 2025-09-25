@@ -58,6 +58,9 @@ void LedModule::setup(bool configured)
 
 void LedModule::setupChannels()
 {
+    logDebugP("Setting up channels");
+    logIndentUp();
+
     memset(_SC_HWChannels, 0xFF, LED_SC_ChannelCount);
     memset(_TW_HWChannels, 0xFF, LED_TW_ChannelCount * 2);
     memset(_RGB_HWChannels, 0xFF, LED_RGB_ChannelCount * 3);
@@ -118,6 +121,9 @@ void LedModule::setupChannels()
             _rgbChannels[ch] = new RGBChannel(ch, _pDimmer, _RGB_HWChannels[ch]);
         }
     }
+
+    logDebugP("Channel setup finished.");
+    logIndentDown();
 }
 
 void LedModule::setupFrontPlate()
@@ -181,20 +187,22 @@ void LedModule::loop(bool configured)
     if (delayCheck(_timer1, 5100))
     {
         logDebugP("Loop0");
-        logIndentUp();
-
-#ifdef OPENKNX_LED_TEMPSENS_ADDR
-        logDebugP("Temperature: %.2f°C", _temperature.readTemperatureC());
-#endif
-
-#ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
-        int analgogValue = analogRead(LEDMODULE_VOLTAGE_MEASURE_PIN);
-        logDebugP("Voltage: %.2f V (%u)", (float)analgogValue / 4095 * (float)3.3 * (float)LEDMODULE_VOLTAGE_MEASURE_FACTOR, analgogValue);
-#endif
-
-        logIndentDown();
         _timer1 = millis();
     }
+
+#ifdef OPENKNX_LED_TEMPSENS_ADDR
+    if (ParamLED_TemperatureChangeSend)
+    {
+        float temperature = _temperature.readTemperatureC();
+        if (abs(_lastTemperatureSent - temperature) > TEMPERATURE_MIN_DIFFERENCE ||
+            ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSentTimer, ParamLED_TemperatureCyclicTimeMS))
+        {
+            KoLED_Temperature.value(temperature, DPT_Value_Temp);
+            _lastTemperatureSent = temperature;
+            _temperaturSentTimer = delayTimerInit();
+        }
+    }
+#endif
 
     if (knx.configured())
     {

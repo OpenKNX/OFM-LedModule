@@ -11,9 +11,6 @@
 
 #define LED_INVALID_HW_CHANNEL 0xFF
 
-#define LED_OUTPUT_LED_PHASE 3000
-#define LED_OUTPUT_DEBOUNCE 250
-
 class LightChannel : public OpenKNX::Channel
 {
   public:
@@ -97,6 +94,11 @@ class LightChannel : public OpenKNX::Channel
             return (uint16_t)currentValue;
         }
 
+        T target()
+        {
+            return (uint16_t)targetValue;
+        }
+
       private:
         uint8_t isDimming = 0;
 
@@ -154,23 +156,10 @@ class LightChannel : public OpenKNX::Channel
 
     DimmableValue<uint16_t> _brightness;
 
-    bool _currentManualMode = false;
-    bool _currentManualModeActive = false;
-
     virtual void update() = 0;
-    void processFrontInput(bool frontControlEnabled);
 
     virtual void handleScene(uint8_t sceneNr) = 0;
 
   private:
-    void processFrontOutput();
-    void setOutputLed(uint8_t hwChannelIndex, bool on);
-
     const std::string name() override;
-
-    uint32_t _currentManualModeLastChange = 0;
-
-    bool _currentLedOn[LEDMODULE_MAX_LIGHT_CHANNELS] = {false};
-    uint32_t _currentLedOnTime[LEDMODULE_MAX_LIGHT_CHANNELS] = {0};
-    uint32_t _currentLedChangeStarted[LEDMODULE_MAX_LIGHT_CHANNELS] = {0};
 };

@@ -24,12 +24,16 @@
 
 #define PWM_FREQUENCY_FACTOR 200 // based on ETS drop down
 
+#define TEMPERATURE_MIN_DIFFERENCE 0.5
+
 class LedModule : public OpenKNX::Module
 {
   private:
     uint32_t _timer1 = 0;
     uint32_t _timer2 = 0;
     uint32_t _timerCheckConnection = 0;
+    float _lastTemperatureSent = 0;
+    uint32_t _temperaturSentTimer = 0;
     bool _doResetPwm = false;
 
     OpenKNX::Flash::Driver *_ledStorage = nullptr;

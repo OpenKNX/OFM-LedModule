@@ -26,65 +26,118 @@ HWDimmer::~HWDimmer()
  */
 void HWDimmer::loop()
 {
+    checkPowerSupply();
+
     processFrontInput();
     processFrontOutput();
+}
+
+void HWDimmer::checkPowerSupply()
+{
+#ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
+    int voltageAnalog = analogRead(LEDMODULE_VOLTAGE_MEASURE_PIN);
+    _powerSupplyVoltage = (float)voltageAnalog / 4095 * (float)3.3 * (float)LEDMODULE_VOLTAGE_MEASURE_FACTOR, voltageAnalog;
+
+    if (ParamLED_PowerSupplyVoltageChangeSend)
+    {
+        if (abs(_lastVoltageSent - _powerSupplyVoltage) > VOLTAGE_MIN_DIFFERENCE ||
+            ParamLED_PowerSupplyVoltageCyclicTimeMS > 0 && delayCheck(_voltageSentTimer, ParamLED_PowerSupplyVoltageCyclicTimeMS))
+        {
+            KoLED_PowerSupplyVoltage.value(_powerSupplyVoltage * 1000, DPT_Value_Volt);
+            _lastVoltageSent = _powerSupplyVoltage;
+            _voltageSentTimer = delayTimerInit();
+        }
+    }
+
+    if (KoLED_PowerSupplyRelayStatus.value(DPT_Switch))
+    {
+        bool powerNeeded = false;
+        for (int i = 0; i < numChannels; i++)
+        {
+            if (getLevel(i) > 0)
+            {
+                powerNeeded = true;
+                break;
+            }
+        }
+
+        if (powerNeeded)
+            _powerShutdownTimer = 0;
+        else
+        {
+            if (_powerShutdownTimer == 0)
+                _powerShutdownTimer = delayTimerInit();
+            else if (delayCheck(_powerShutdownTimer, ParamLED_PowerSupplyRelayOffDelayTimeMS))
+            {
+                if (delayCheck(_powerSupplyLastRequest, POWER_SUPPLY_REQUEST_DELAY))
+                {
+                    KoLED_PowerSupplyRelay.value(false, DPT_Switch);
+                    _powerSupplyLastRequest = delayTimerInit();
+                    _powerShutdownTimer = 0;
+                }
+            }
+        }
+    }
+#endif
+}
+
+bool HWDimmer::powerSupplyAvailableOrRequest()
+{
+    if (!ParamLED_PowerSupplyRelay)
+        return true;
+
+    if (!KoLED_PowerSupplyRelayStatus.value(DPT_Switch))
+    {
+        if (delayCheck(_powerSupplyLastRequest, POWER_SUPPLY_REQUEST_DELAY))
+        {
+            KoLED_PowerSupplyRelay.value(true, DPT_Switch);
+            _powerSupplyLastRequest = delayTimerInit();
+        }
+    }
+
+    _powerShutdownTimer = 0;
+
+    bool available = _powerSupplyVoltage >= ParamLED_PowerSupplyRelayMinVoltage;
+    return available && KoLED_PowerSupplyRelayStatus.value(DPT_Switch);
 }
 
 void HWDimmer::processFrontInput()
 {
 #ifdef LEDMODULE_FRONT_PLATE_USED
-    // if (!ParamHTA_ChManualMode)
-    //     return;
+    if (!ParamLED_FrontControlInput)
+        return;
 
-    // bool buttonPressed = openknx.gpio.digitalRead(OPENKNX_HTA_GPIO_INPUT_OFFSET + _channelIndex) == GPIO_INPUT_ON;
-    // if (buttonPressed)
-    // {
-    //     if (_currentButtonPressed)
-    //     {
-    //         if (_currentManualMode &&
-    //             delayCheck(_currentButtonPressedStarted, HTA_MANUAL_MODE_CHANGE_TO_AUTO_TIME_DELAY) &&
-    //             (ParamHTA_ChManualModeChangeToAuto == HTA_MANUAL_MODE_CHANGE_TO_AUTO_BUTTON || ParamHTA_ChManualModeChangeToAuto == HTA_MANUAL_MODE_CHANGE_TO_AUTO_BUTTON_TIME))
-    //         {
-    //             _currentManualMode = false;
-    //             logDebugP("processInput: manual mode button off (_currentManualMode: %u, buttonPressed: %u, _currentButtonPressed: %u, _currentButtonPressedStarted: %u)", _currentManualMode, buttonPressed, _currentButtonPressed, _currentButtonPressedStarted);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         if (_currentManualMode)
-    //         {
-    //             _currentManualModeOn = !_currentManualModeOn;
-    //             logDebugP("processInput: manual mode button toggle (_currentManualMode: %u, buttonPressed: %u, _currentButtonPressed: %u)", _currentManualMode, buttonPressed, _currentButtonPressed);
-    //         }
-    //         else
-    //         {
-    //             _currentManualMode = true;
-    //             _currentManualModeOn = true;
-    //             _currentManualModeStarted = delayTimerInit();
-    //             logDebugP("processInput: manual mode button on (_currentManualMode: %u, buttonPressed: %u, _currentButtonPressed: %u)", _currentManualMode, buttonPressed, _currentButtonPressed);
-    //         }
+    for (int i = 0; i < numChannels; i++)
+    {
+        bool buttonPressed = openknx.gpio.digitalRead(OPENKNX_LED_GPIO_INPUT_OFFSET + i) == OPENKNX_LED_GPIO_INPUT_ACTIVE_ON;
 
-    //         _currentButtonPressed = true;
-    //         _currentButtonPressedStarted = delayTimerInit();
-    //     }
-    // }
-    // else
-    //     _currentButtonPressed = false;
+        if (buttonPressed &&
+            delayCheck(_currentManualModeLastChange[i], FRONT_INPUT_DEBOUNCE))
+        {
+            _currentManualMode[i] = !_currentManualMode[i];
+            _currentManualModeLastChange[i] = delayTimerInit();
+            logDebugP("processFrontInput: manual mode button toggle (_currentManualMode[%u]: %u)", i, _currentManualMode[i]);
 
-    // if (_currentManualMode &&
-    //     delayCheck(_currentManualModeStarted, ParamHTA_ChManualModeChangeToAutoTimeMS) &&
-    //     (ParamHTA_ChManualModeChangeToAuto == HTA_MANUAL_MODE_CHANGE_TO_AUTO_TIME || ParamHTA_ChManualModeChangeToAuto == HTA_MANUAL_MODE_CHANGE_TO_AUTO_BUTTON_TIME))
-    // {
-    //     _currentManualMode = false;
-    //     logDebugP("processInput: manual mode time off (_currentManualMode: %u, _currentManualModeStarted: %u)", _currentManualMode, _currentManualModeStarted);
-    // }
+            if (_currentManualMode[i])
+                powerSupplyAvailableOrRequest();
+
+            setLevel(levels[i], i);
+        }
+    }
 #endif
 }
 
 void HWDimmer::processFrontOutput()
 {
 #ifdef LEDMODULE_FRONT_PLATE_USED
+    if (!ParamLED_FrontControlOutput)
+        return;
 
+    for (int i = 0; i < numChannels; i++)
+    {
+        bool ledOn = getLevel(i) > 0 ? true : false;
+        openknx.gpio.digitalWrite(OPENKNX_LED_GPIO_OUTPUT_OFFSET + i, ledOn ? OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON : !OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON);
+    }
 #endif
 }
 
@@ -96,7 +149,7 @@ void HWDimmer::processFrontOutput()
  * @return true when channel is available
  * @return false when channel is invalid
  */
-bool HWDimmer::setLevel(uint16_t level, uint8_t channel)
+bool HWDimmer::setLevelInternal(uint16_t level, uint8_t channel)
 {
     bool isValidChannel = false;
     if (channel < numChannels)
@@ -120,11 +173,14 @@ bool HWDimmer::setLevel(uint16_t level, uint8_t channel)
 uint16_t HWDimmer::getLevel(uint8_t channel)
 {
     uint16_t tmpLevel = 0;
-
     if (channel < numChannels)
     {
-        tmpLevel = levels[channel];
+        if (_currentManualMode[channel])
+            tmpLevel = ParamLED_FrontControlManualBrightness_ * VALUE_KNX_MULTIPLY;
+        else
+            tmpLevel = levels[channel];
     }
+
     return tmpLevel;
 }
 
