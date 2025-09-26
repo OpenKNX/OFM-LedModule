@@ -223,29 +223,20 @@ void LedModule::loop(bool configured)
             _timerCheckConnection = millis();
         }
         
-        uint8_t currentChannel = 0;
-        uint8_t processed = 0;
-        do
+        for (size_t i = 0; i < LED_SC_ChannelCount; i++)
         {
-            _singleChannels[currentChannel]->loop();
+            _singleChannels[i]->loop();
         }
-        while (openknx.freeLoopIterate(LED_SC_ChannelCount, currentChannel, processed));
 
-        currentChannel = 0;
-        processed = 0;
-        do
+        for (size_t i = 0; i < LED_TW_ChannelCount; i++)
         {
-            _twChannels[currentChannel]->loop();
+            _twChannels[i]->loop();
         }
-        while (openknx.freeLoopIterate(LED_TW_ChannelCount, currentChannel, processed));
 
-        currentChannel = 0;
-        processed = 0;
-        do
+        for (size_t i = 0; i < LED_RGB_ChannelCount; i++)
         {
-            _rgbChannels[currentChannel]->loop();
+            _rgbChannels[i]->loop();
         }
-        while (openknx.freeLoopIterate(LED_RGB_ChannelCount, currentChannel, processed));
 
         _pDimmer->loop();
     }
