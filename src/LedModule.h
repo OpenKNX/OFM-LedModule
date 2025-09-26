@@ -7,20 +7,20 @@
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
   #include <Temperature_LM75_Derived.h>
 #endif
-#include "HWDimmer\HWDimmer.h"
+#include "HWDimmer/HWDimmer.h"
 #ifdef LEDMODULE_DIMMER_PCA9685
-  #include "HWDimmer\HWDimmerPCA.h"
+  #include "HWDimmer/HWDimmerPCA.h"
 #endif
 #ifdef LEDMODULE_DIMMMER_RP2040
-  #include "HWDimmer\HWDimmerRP2040.h"
+  #include "HWDimmer/HWDimmerRP2040.h"
 #endif
 #ifdef LEDMODULE_DIMMMER_WS
-  #include "HWDimmer\HWDimmerWS.h"
+  #include "HWDimmer/HWDimmerWS.h"
 #endif
 #include "LedModuleConfig.h"
-#include "Channels\SingleChannel.h"
-#include "Channels\TWChannel.h"
-#include "Channels\RGBChannel.h"
+#include "Channels/SingleChannel.h"
+#include "Channels/TWChannel.h"
+#include "Channels/RGBChannel.h"
 
 #define PWM_FREQUENCY_FACTOR 200 // based on ETS drop down
 
