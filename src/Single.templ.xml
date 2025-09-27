@@ -17,56 +17,56 @@
           <Static>
             <Parameters>
 
-              <Parameter Id="%AID%_P-%TT%%CC%001" Name="LightActive_%C%"           ParameterType="%AID%_PT-OnOffYesNo" Text="Licht Aktiv" Value="0" />
-              <Parameter Id="%AID%_P-%TT%%CC%002" Name="LightText_%C%"             ParameterType="%AID%_PT-Text40Byte" Text="Licht Bezeichnung" Value="" />
-              <Parameter Id="%AID%_P-%TT%%CC%003" Name="LightDimmTimeDayON_%C%"    ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Tag On" Value="1000" SuffixText="ms">
+              <Parameter Id="%AID%_P-%TT%%CC%001" Name="Ch%C%LightActive"           ParameterType="%AID%_PT-OnOffYesNo" Text="Licht Aktiv" Value="0" />
+              <Parameter Id="%AID%_P-%TT%%CC%002" Name="Ch%C%LightText"             ParameterType="%AID%_PT-Text40Byte" Text="Licht Bezeichnung" Value="" />
+              <Parameter Id="%AID%_P-%TT%%CC%003" Name="Ch%C%LightDimmTimeDayON"    ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Tag On" Value="1000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="1" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%004" Name="LightDimmTimeNightON_%C%"  ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht On" Value="3000" SuffixText="ms">
+              <Parameter Id="%AID%_P-%TT%%CC%004" Name="Ch%C%LightDimmTimeNightON"  ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht On" Value="3000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="3" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%005" Name="LightDimmTimeRel_%C%"      ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Relativ" Value="10000" SuffixText="ms">
+              <Parameter Id="%AID%_P-%TT%%CC%005" Name="Ch%C%LightDimmTimeRel"      ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Relativ" Value="10000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="5" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%006" Name="LightDimmTimeDayOFF_%C%"   ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Tag Off" Value="1000" SuffixText="ms">
+              <Parameter Id="%AID%_P-%TT%%CC%006" Name="Ch%C%LightDimmTimeDayOFF"   ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Tag Off" Value="1000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="7" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%007" Name="LightDimmTimeNightOFF_%C%" ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht Off" Value="3000" SuffixText="ms">
+              <Parameter Id="%AID%_P-%TT%%CC%007" Name="Ch%C%LightDimmTimeNightOFF" ParameterType="%AID%_PT-DimTime" Text="Dimmzeit Nacht Off" Value="3000" SuffixText="ms">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="9" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%008" Name="BrighnessMin_%C%"          ParameterType="%AID%_PT-MinDim" Text="Helligkeit min." Value="0">
+              <Parameter Id="%AID%_P-%TT%%CC%008" Name="Ch%C%BrighnessMin"          ParameterType="%AID%_PT-MinDim" Text="Helligkeit min." Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="11" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%009" Name="BrighnessMaxDay_%C%"       ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Tag)" Value="100">
+              <Parameter Id="%AID%_P-%TT%%CC%009" Name="Ch%C%BrighnessMaxDay"       ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Tag)" Value="100">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="12" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%010" Name="BrighnessMaxNight_%C%"     ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Nacht)" Value="75">
+              <Parameter Id="%AID%_P-%TT%%CC%010" Name="Ch%C%BrighnessMaxNight"     ParameterType="%AID%_PT-MaxDim" Text="Helligkeit max. (Nacht)" Value="75">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="13" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%011" Name="DimCurve_%C%"              ParameterType="%AID%_PT-DimCurve" Text="Dimmkurve" Value="1">
+              <Parameter Id="%AID%_P-%TT%%CC%011" Name="Ch%C%DimCurve"              ParameterType="%AID%_PT-DimCurve" Text="Dimmkurve" Value="1">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%012" Name="StairCaseActive_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Text="Treppenlichtfunktion" Value="0">
+              <Parameter Id="%AID%_P-%TT%%CC%012" Name="Ch%C%StairCaseActive"       ParameterType="%AID%_PT-OnOffYesNo" Text="Treppenlichtfunktion" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="3" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%013" Name="StairCaseTimer_%C%"        ParameterType="%AID%_PT-ValueDpt5" Text="Nachlaufzeit" Value="60" SuffixText="s">
+              <Parameter Id="%AID%_P-%TT%%CC%013" Name="Ch%C%StairCaseTimer"        ParameterType="%AID%_PT-ValueDpt5" Text="Nachlaufzeit" Value="60" SuffixText="s">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="15" BitOffset="0" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%014" Name="StaicCaseTrigger_%C%"      ParameterType="%AID%_PT-SCFunction" Text="Treppenlicht Trigger" Value="0">
+              <Parameter Id="%AID%_P-%TT%%CC%014" Name="Ch%C%StaicCaseTrigger"      ParameterType="%AID%_PT-SCFunction" Text="Treppenlicht Trigger" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="4" />
               </Parameter>
-              <Parameter Id="%AID%_P-%TT%%CC%015" Name="StartupBehavior_%C%"       ParameterType="%AID%_PT-StartupBehavior" Text="Einschaltverhalten" Value="0">
+              <Parameter Id="%AID%_P-%TT%%CC%015" Name="Ch%C%StartupBehavior"       ParameterType="%AID%_PT-StartupBehavior" Text="Einschaltverhalten" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="16" BitOffset="0" />
               </Parameter>
 
               <!-- UNUSED, remove during clean-up of final release
               <Union SizeInBit="16">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="17" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%017" Name="FrontControl_%C%"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung aktivieren" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%018" Name="FrontControlBrightness_%C%" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="100" />
+                <Parameter Id="%AID%_UP-%TT%%CC%017" Name="Ch%C%FrontControl"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Frontbedienung aktivieren" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%018" Name="Ch%C%FrontControlBrightness" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="100" />
               </Union> -->
 
-              <Parameter Id="%AID%_P-%TT%%CC%016" Name="ScenesActive_%C%"          ParameterType="%AID%_PT-OnOffYesNo" Text="Szenen" Value="0">
+              <Parameter Id="%AID%_P-%TT%%CC%016" Name="Ch%C%ScenesActive"          ParameterType="%AID%_PT-OnOffYesNo" Text="Szenen" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="19" BitOffset="0" />
               </Parameter>
               <Union SizeInBit="320">
@@ -105,15 +105,15 @@
             </ParameterRefs>
 
             <ComObjectTable>
-              <ComObject Id="%AID%_O-%TT%%CC%000" Name="Switch_%C%"             Text="Schalten"           Number="%K0%" FunctionText="EK %C% - Ein/Aus"            ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
-              <ComObject Id="%AID%_O-%TT%%CC%001" Name="StateOnOff_%C%"         Text="Status Ein/Aus"     Number="%K1%" FunctionText="EK %C% - Status"             ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%002" Name="Locking_%C%"            Text="Sperren"            Number="%K2%" FunctionText="EK %C% - Sperre"             ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%003" Name="StateLocking_%C%"       Text="Sperren Status"     Number="%K3%" FunctionText="EK %C% - SperreStatus"       ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%004" Name="Brightness_%C%"         Text="Helligkeit"         Number="%K4%" FunctionText="EK %C% - Helligkeit"         ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
-              <ComObject Id="%AID%_O-%TT%%CC%005" Name="BrightnessStatus_%C%"   Text="Helligkeit Status"  Number="%K5%" FunctionText="EK %C% - Helligkeit Status"  ObjectSize="1 Byte" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
-              <ComObject Id="%AID%_O-%TT%%CC%006" Name="DimRel_%C%"             Text="Dimmen Relativ"     Number="%K6%" FunctionText="EK %C% - Dimmen"             ObjectSize="4 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"  />
-              <ComObject Id="%AID%_O-%TT%%CC%007" Name="Scene_%C%"              Text="Szene"              Number="%K7%" FunctionText="EK %C% - Szene"              ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
-              <ComObject Id="%AID%_O-%TT%%CC%008" Name="Night_%C%"              Text="Nacht"              Number="%K8%" FunctionText="EK %C% - Nacht"              ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%000" Name="Ch%C%Switch"             Text="Schalten"           Number="%K0%" FunctionText="EK %C% - Ein/Aus"            ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%001" Name="Ch%C%StateOnOff"         Text="Status Ein/Aus"     Number="%K1%" FunctionText="EK %C% - Status"             ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%002" Name="Ch%C%Locking"            Text="Sperren"            Number="%K2%" FunctionText="EK %C% - Sperre"             ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%003" Name="Ch%C%StateLocking"       Text="Sperren Status"     Number="%K3%" FunctionText="EK %C% - SperreStatus"       ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%004" Name="Ch%C%Brightness"         Text="Helligkeit"         Number="%K4%" FunctionText="EK %C% - Helligkeit"         ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%005" Name="Ch%C%BrightnessStatus"   Text="Helligkeit Status"  Number="%K5%" FunctionText="EK %C% - Helligkeit Status"  ObjectSize="1 Byte" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%DimRel"             Text="Dimmen Relativ"     Number="%K6%" FunctionText="EK %C% - Dimmen"             ObjectSize="4 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"  />
+              <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%Scene"              Text="Szene"              Number="%K7%" FunctionText="EK %C% - Szene"              ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
+              <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%Night"              Text="Nacht"              Number="%K8%" FunctionText="EK %C% - Nacht"              ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
             </ComObjectTable>
 
             <ComObjectRefs>
