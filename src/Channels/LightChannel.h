@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Colors.h"
-#include "HWDimmer\HWDimmer.h"
+#include "HWDimmer/HWDimmer.h"
 #include "OpenKNX.h"
 #include <Arduino.h>
 
