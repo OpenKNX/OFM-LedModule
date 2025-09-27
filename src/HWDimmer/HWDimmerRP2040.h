@@ -1,25 +1,23 @@
 #pragma once
 
+#include "HWDimmer.h"
 #include "OpenKNX.h"
 #include "hardware.h"
-#include "HWDimmer.h"
 
-#define DIM_RESOLUTION_BIT  13
-#define DIM_RANGE           ((1 << DIM_RESOLUTION_BIT) - 1)
+#define DIM_RESOLUTION_BIT 13
+#define DIM_RANGE ((1 << DIM_RESOLUTION_BIT) - 1)
 
 class HWDimmerRP2040 : public HWDimmer
 {
-    public:
+  public:
+    HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwmFreq);
 
-        HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwmFreq);
+    bool setLevel(uint16_t level, uint8_t channel);
+    uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType);
+    uint16_t getScaleMax(HWDimmer::DimLUTType lutType);
+    void outputLUT();
+    std::string logPrefix();
 
-        bool setLevel(uint16_t level, uint8_t channel);
-        uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType);
-        uint16_t getScaleMax(HWDimmer::DimLUTType lutType);
-        void outputLUT();
-        std::string logPrefix();
-
-    private:
-
-        uint8_t *pins;
+  private:
+    uint8_t *pins;
 };

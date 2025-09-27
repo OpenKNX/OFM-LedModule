@@ -18,14 +18,14 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
     analogWriteFreq(pwmFreq);
     analogWriteRange(DIM_RANGE);
 
-    #if 0
+#if 0
         logDebugP("Lookup table:");
         for(int i=0; i<256; i+=16)
         {
             int idx = i;
             logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d",lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++),lut.Val(idx++));
         }
-    #endif
+#endif
     outputLUT();
 }
 
@@ -88,10 +88,10 @@ void HWDimmerRP2040::outputLUT()
     // {
     //     logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
     // }
-    logDebugP("Count %d LAST: %d",VALUE_KNX_COUNT- 2 , dimLUT[0].Val(VALUE_KNX_COUNT-2) );
-    logDebugP("Count %d LAST: %d",VALUE_KNX_COUNT- 1 , dimLUT[0].Val(VALUE_KNX_COUNT-1) );
-    logDebugP("Count %d  MAX: %d",VALUE_KNX_COUNT    , dimLUT[0].Val(VALUE_KNX_COUNT )  );
-    logDebugP("Count %d  XAM: %d",VALUE_KNX_COUNT    , dimLUT[0].Max()                  );
+    logDebugP("Count %d LAST: %d", VALUE_KNX_COUNT - 2, dimLUT[0].Val(VALUE_KNX_COUNT - 2));
+    logDebugP("Count %d LAST: %d", VALUE_KNX_COUNT - 1, dimLUT[0].Val(VALUE_KNX_COUNT - 1));
+    logDebugP("Count %d  MAX: %d", VALUE_KNX_COUNT, dimLUT[0].Val(VALUE_KNX_COUNT));
+    logDebugP("Count %d  XAM: %d", VALUE_KNX_COUNT, dimLUT[0].Max());
 }
 
 /**
@@ -99,4 +99,3 @@ void HWDimmerRP2040::outputLUT()
  *  0: Linear, 1: logarithmic x^1.5
  */
 HWDimmer::LUT<VALUE_KNX_COUNT> HWDimmer::dimLUT[] = {HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.0), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 1.5), HWDimmer::LUT<VALUE_KNX_COUNT>(DIM_RANGE, 2)};
-

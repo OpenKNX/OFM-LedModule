@@ -10,7 +10,7 @@ TWChannel::TWChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[2])
     memcpy(_scenes, knx.paramData(LED_TW_ParamCalcIndex(LED_TW_ChSceneA_Type)), N_SCENES * sizeof(SceneConfig));
 
     _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL && hwChannels[1] != LED_INVALID_HW_CHANNEL;
-    
+
     KoLED_TW_ChStateOnOff.value(false, DPT_State);
     KoLED_TW_ChBrightnessStatus.value((uint16_t)(_brightness.value() / VALUE_KNX_MULTIPLY), DPT_Scaling);
     KoLED_TW_ChColorTemperatureStatus.valueNoSend(_colorTemperature.value(), Dpt(7, 600));
@@ -50,10 +50,10 @@ void TWChannel::update()
     {
         _lastTimestamp = delayTimerInit();
 
-        if (  ((uint16_t)KoLED_TW_ChBrightnessStatus.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) != tmpBrightness   )
+        if (((uint16_t)KoLED_TW_ChBrightnessStatus.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) != tmpBrightness)
         {
             logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
-            KoLED_TW_ChBrightnessStatus.value(  (u_int16_t)(tmpBrightness/ VALUE_KNX_MULTIPLY), DPT_Scaling  );
+            KoLED_TW_ChBrightnessStatus.value((u_int16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
         }
 
         if ((uint16_t)KoLED_TW_ChColorTemperatureStatus.value(Dpt(7, 600)) != tmpColor)
@@ -144,7 +144,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_TW_KoChBrightness:
-                setBrightness((uint16_t)(  (uint16_t)ko.value(DPT_Scaling)  * VALUE_KNX_MULTIPLY));
+                setBrightness((uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
                 break;
 
             case LED_TW_KoChBrightnessStatus:
@@ -206,7 +206,7 @@ void TWChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS || _scenes[i].valueType == ValueType::COMBINED)
                     {
-                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()), dimmingTime(1) );
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()), dimmingTime(1));
                     }
                     if (_scenes[i].valueType == ValueType::TEMTPERATURE || _scenes[i].valueType == ValueType::COMBINED)
                     {

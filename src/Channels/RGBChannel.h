@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Channels/LightChannel.h"
 #include "Colors.h"
 #include "HWDimmer/HWDimmer.h"
-#include "Channels/LightChannel.h"
 #include "OpenKNX.h"
 #include <Arduino.h>
 
@@ -43,7 +43,7 @@ class RGBChannel : public LightChannel
     void setRGB(uint32_t RGBvalue);
     void setHSV(uint32_t HSVvalue);
     uint32_t conv_Temp2RGB(int _temp);
-  
+
   private:
     const std::string name() override;
 

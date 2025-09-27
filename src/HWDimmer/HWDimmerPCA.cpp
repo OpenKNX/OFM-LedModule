@@ -7,16 +7,16 @@
  */
 HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFreq) : HWDimmer(LEDMODULE_MAX_LIGHT_CHANNELS), _addr(addr)
 {
-    #ifdef LEDMODULE_WIRE_SDA
-        LEDMODULE_WIRE.setSDA(LEDMODULE_WIRE_SDA);
-    #endif
-    #ifdef LEDMODULE_WIRE_SCL
-        LEDMODULE_WIRE.setSCL(LEDMODULE_WIRE_SCL);
-    #endif
+#ifdef LEDMODULE_WIRE_SDA
+    LEDMODULE_WIRE.setSDA(LEDMODULE_WIRE_SDA);
+#endif
+#ifdef LEDMODULE_WIRE_SCL
+    LEDMODULE_WIRE.setSCL(LEDMODULE_WIRE_SCL);
+#endif
     LEDMODULE_WIRE.begin();
-    #ifdef LEDMODULE_WIRE_CLOCK_FREQ
-        LEDMODULE_WIRE.setClock(LEDMODULE_WIRE_CLOCK_FREQ);
-    #endif
+#ifdef LEDMODULE_WIRE_CLOCK_FREQ
+    LEDMODULE_WIRE.setClock(LEDMODULE_WIRE_CLOCK_FREQ);
+#endif
     _pwm = Adafruit_PWMServoDriver(_addr, LEDMODULE_WIRE);
     _pwm.begin();
     _pwm.setPWMFreq(pwmFreq);
@@ -40,7 +40,7 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
     bool isValidChannel = false;
     if (setLevelInternal(level, channel))
     {
-        //logInfoP("setLevel: %3X",level);
+        // logInfoP("setLevel: %3X",level);
         isValidChannel = true;
         _pwm.setPWM(channel, 0, min(getLevel(channel), DIM_RANGE));
         // logInfoP("setLevel_3");
@@ -57,7 +57,7 @@ bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
  */
 uint16_t HWDimmerPCA::scale(uint16_t level, HWDimmer::DimLUTType lutType)
 {
-    //logDebugP("#: %3X, Wert: %3X", level, dimLUT[lutType].Val(level));
+    // logDebugP("#: %3X, Wert: %3X", level, dimLUT[lutType].Val(level));
     return dimLUT[lutType].Val(level);
 }
 
@@ -92,7 +92,7 @@ bool HWDimmerPCA::checkConnection()
 {
     byte error;
     bool isOK = false;
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
     LEDMODULE_WIRE.beginTransmission(_addr);
     error = LEDMODULE_WIRE.endTransmission();
 
@@ -105,7 +105,7 @@ bool HWDimmerPCA::checkConnection()
         logErrorP("PCA9685 PWM not available via I2C %s", error);
     }
 
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
     LEDMODULE_WIRE.requestFrom(_addr, 1);
     if (LEDMODULE_WIRE.read() < 0)
     {
@@ -117,7 +117,7 @@ bool HWDimmerPCA::checkConnection()
         isOK = true;
     }
 
-// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
     return isOK;
 }
 

@@ -47,5 +47,5 @@
     #define LEDMODULE_FLASH_SIZE 128 // TODO: find proper values
     #define LEDMODULE_FLASH_OFFSET 128
 
-    extern uint8_t dimPins[LEDMODULE_MAX_LIGHT_CHANNELS];
+extern uint8_t dimPins[LEDMODULE_MAX_LIGHT_CHANNELS];
 #endif

@@ -31,18 +31,18 @@ void LedModule::setup(bool configured)
     _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685, LEDMODULE_PCA_ADDR, LEDMODULE_PCA_PWMFREQUENCY);
     logInfoP("LEDMODULE_DIMMER_PCA9685 SET");
 #else
-#if defined(LEDMODULE_DIMMMER_RP2040)
+    #if defined(LEDMODULE_DIMMMER_RP2040)
     _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, (ParamLED_PwmFrequency + 1) * PWM_FREQUENCY_FACTOR);
     logInfoP("LEDMODULE_DIMMER_RP2040");
-#else
-#if defined(LEDMODULE_DIMMMER_WS)
+    #else
+        #if defined(LEDMODULE_DIMMMER_WS)
     _pDimmer = new HWDimmerWS(HWDimmerWS::WSType::WS2811, LEDMODULE_WS_PIN, LEDMOPDULE_WS_NUM_LEDS);
     logInfoP("LEDMODULE_DIMMER_WS");
-#else // create dummy driver to have dimmer initialized
+        #else // create dummy driver to have dimmer initialized
     dimmer = new HWDimmer(1);
     logErrorP("Unknown PWM driver %s ('RP2040' and 'PCA9685PW' are supported)", LEDMODULE_PWMDRIVER);
-#endif
-#endif
+        #endif
+    #endif
 #endif
     logIndentDown();
 
@@ -222,7 +222,7 @@ void LedModule::loop(bool configured)
             }
             _timerCheckConnection = millis();
         }
-        
+
         for (size_t i = 0; i < LED_SC_ChannelCount; i++)
         {
             _singleChannels[i]->loop();
@@ -345,7 +345,7 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("LED MODULE STATE INFORMATION");
         for (int i = 0; i < LED_ChannelCount; i++)
         {
-            logInfoP("CH%d: %d", i, _pDimmer->getLevel(i)  );
+            logInfoP("CH%d: %d", i, _pDimmer->getLevel(i));
         }
         logInfoP("--------------------------------------------------------------------------------");
         return true;
@@ -355,11 +355,10 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
     {
         logInfoP("======================== Information ===========================================");
         logInfoP("LED MODULE LUT INFORMATION");
-        
-            //_pDimmer->outputLUT();
-            //HWDimmer::outputLUT();
 
-        
+        //_pDimmer->outputLUT();
+        // HWDimmer::outputLUT();
+
         logInfoP("--------------------------------------------------------------------------------");
         return true;
     }

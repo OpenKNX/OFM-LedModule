@@ -30,7 +30,8 @@ class LightChannel : public OpenKNX::Channel
     bool getLock();
     void setLock(bool lock);
 
-    template <typename T> class DimmableValue
+    template <typename T>
+    class DimmableValue
     {
       public:
         DimmableValue() {}
@@ -79,7 +80,7 @@ class LightChannel : public OpenKNX::Channel
                     currentValue = targetValue;
                 else
                     currentValue = ((int32_t)(timestamp - startTimestamp) * (deltaValue)) / dimDurationAbs + lastValue;
-                
+
                 if (deltaValue >= 0 && currentValue >= targetValue || deltaValue < 0 && currentValue <= targetValue)
                 {
                     isDimming = 0;
@@ -145,7 +146,7 @@ class LightChannel : public OpenKNX::Channel
     uint32_t _lastTimestamp = 0;
     uint32_t _lastDimTimestamp = 0;
     uint16_t _lastBrightnessLevel = 0;
-    
+
     int32_t _lastOnValue = 100;
     unsigned long _stairTime = 0;
     bool _stairTrigger = 0;

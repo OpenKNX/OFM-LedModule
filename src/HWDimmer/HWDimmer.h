@@ -1,8 +1,8 @@
 #pragma once
 #include <OpenKNX.h>
 
-//#define VALUE_KNX_COUNT 256
-//#define VALUE_KNX_COUNT 101
+// #define VALUE_KNX_COUNT 256
+// #define VALUE_KNX_COUNT 101
 #define VALUE_KNX_COUNT 4096
 #define VALUE_KNX_MULTIPLY 40.95
 
@@ -24,7 +24,7 @@ class HWDimmer
     };
 
     void loop();
-    
+
     virtual bool setLevel(uint16_t level, uint8_t channel) = 0;
     uint16_t getLevel(uint8_t channel);
     virtual uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType) = 0;
@@ -45,7 +45,8 @@ class HWDimmer
 
     bool _currentManualMode[LEDMODULE_MAX_LIGHT_CHANNELS] = {false};
 
-    template<uint16_t N> class LUT
+    template <uint16_t N>
+    class LUT
     {
       public:
         constexpr LUT(uint16_t range, float power) : values(), len(N)
