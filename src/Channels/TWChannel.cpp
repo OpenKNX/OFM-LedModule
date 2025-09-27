@@ -48,7 +48,7 @@ void TWChannel::update()
 
     if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
     {
-        _lastTimestamp = millis();
+        _lastTimestamp = delayTimerInit();
 
         if (  ((uint16_t)KoLED_TW_ChBrightnessStatus.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) != tmpBrightness   )
         {
@@ -79,7 +79,7 @@ void TWChannel::loop()
     bool canDim = !needsPowerUp || _pDimmer->powerSupplyAvailableOrRequest();
     if (canDim && delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
     {
-        _lastDimTimestamp = millis();
+        _lastDimTimestamp = delayTimerInit();
         uint16_t brightValue = _pDimmer->scale(_brightness.step(_lastDimTimestamp), (HWDimmer::DimLUTType)ParamLED_TW_ChDimCurve);
         uint16_t colorTempValue = _colorTemperature.step(_lastDimTimestamp);
 

@@ -42,7 +42,7 @@ void SingleChannel::update()
 
     if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
     {
-        _lastTimestamp = millis();
+        _lastTimestamp = delayTimerInit();
 
         if (((uint16_t)KoLED_SC_ChBrightnessStatus.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) != tmpBrightness)
         {
@@ -65,7 +65,7 @@ void SingleChannel::loop()
         bool canDim = !needsPowerUp || _pDimmer->powerSupplyAvailableOrRequest();
         if (canDim && delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
         {
-            _lastDimTimestamp = millis();
+            _lastDimTimestamp = delayTimerInit();
             _pDimmer->setLevel(_pDimmer->scale(_brightness.step(_lastDimTimestamp), (HWDimmer::DimLUTType)ParamLED_SC_ChDimCurve), _pHWChannels[0]);
         }
 

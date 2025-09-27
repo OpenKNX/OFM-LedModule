@@ -60,7 +60,7 @@ void RGBChannel::update()
 
     if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY*5))
     {
-        _lastTimestamp = millis();
+        _lastTimestamp = delayTimerInit();
 
         if (((uint16_t)KoLED_RGB_ChBrightnessStatus.value(DPT_Scaling)* VALUE_KNX_MULTIPLY) != tmpBrightness)
         {
@@ -110,7 +110,7 @@ void RGBChannel::loop()
     bool canDim = !needsPowerUp || _pDimmer->powerSupplyAvailableOrRequest();
     if (canDim && delayCheckMillis(_lastDimTimestamp, DIMLOOP_DELAY))
     {
-        _lastDimTimestamp = millis();
+        _lastDimTimestamp = delayTimerInit();
 
         //Colors::RGB rgb = Colors::hsv2rgb(Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), ((uint16_t)_brightness.step(_lastDimTimestamp)) << 2));
         Colors::RGB rgb = Colors::hsv2rgb(  Colors::HSV(  _hue.step(_lastDimTimestamp),  _saturation.step(_lastDimTimestamp),  ((uint16_t)_brightness.step(_lastDimTimestamp))   )    );
@@ -145,14 +145,14 @@ void RGBChannel::loop()
               delayCheckMillis(_brightness.getRGBChangingTime(), ParamLED_RGB_ChColorTimeDay))
         {
             logInfoP("hu:%5X%", _hue.value());
-            _brightness.setRGBChangingTime(millis());
+            _brightness.setRGBChangingTime(delayTimerInit());
             _hue.setTargetValue(random(0x3FFF), ParamLED_RGB_ChColorTimeDay);
             _saturation.setTargetValue(1024, ParamLED_RGB_ChColorTimeDay);
         }
         if (_brightness.getRGBChangingTrigger() && RGB_night() &&
             delayCheckMillis(_brightness.getRGBChangingTime(), ParamLED_RGB_ChColorTimeNight))
         {
-            _brightness.setRGBChangingTime(millis());
+            _brightness.setRGBChangingTime(delayTimerInit());
             _hue.setTargetValue(random(0x3FFF), ParamLED_RGB_ChColorTimeNight);
             _saturation.setTargetValue(1024, ParamLED_RGB_ChColorTimeNight);
             logInfoP("hue_val:%5X%", _hue.value());
