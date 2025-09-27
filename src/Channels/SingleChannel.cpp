@@ -70,7 +70,7 @@ void SingleChannel::loop()
         }
 
         // Stairway Timeout
-        if (((getStairTime() + (ParamLED_SC_ChStairCaseTimer * 1000)) <= millis()) && getStairTrigger())
+        if (getStairTrigger() && delayCheckMillis(getStairTime(), ParamLED_SC_ChStairCaseTimer * 1000))
         {
             setStairTrigger(0);
             if (ParamLED_SC_ChStartupBehavior)
@@ -265,7 +265,7 @@ void SingleChannel::setSwitch(bool _switch)
         // in case of stairway light
         if (ParamLED_SC_ChStairCaseActive && ParamLED_SC_ChStaicCaseTrigger == 0)
         {
-            setStairTime(millis());
+            setStairTime(delayTimerInit());
             setStairTrigger(1);
         }
         _brightness.setTargetValue(dimmingValTarget(_switch), dimmingTime(_switch));
@@ -276,7 +276,7 @@ void SingleChannel::setSwitch(bool _switch)
         // in case of stairway light
         if (ParamLED_SC_ChStairCaseActive && ParamLED_SC_ChStaicCaseTrigger == 1)
         {
-            setStairTime(millis());
+            setStairTime(delayTimerInit());
             setStairTrigger(1);
         }
         else

@@ -98,7 +98,7 @@ void TWChannel::loop()
     }
 
     // Stairway Timeout
-    if (((getStairTime() + (ParamLED_TW_ChStairCaseTimer * 1000)) <= millis()) && getStairTrigger())
+    if (getStairTrigger() && delayCheckMillis(getStairTime(), ParamLED_TW_ChStairCaseTimer * 1000))
     {
         setStairTrigger(0);
         if (ParamLED_TW_ChStartupBehavior)
@@ -311,7 +311,7 @@ void TWChannel::setSwitch(bool _switch)
         // in case of stairway light
         if (ParamLED_TW_ChStairCaseActive && ParamLED_TW_ChStaicCaseTrigger == 0)
         {
-            setStairTime(millis());
+            setStairTime(delayTimerInit());
             setStairTrigger(1);
         }
         _brightness.setTargetValue(dimmingValTarget(_switch), dimmingTime(_switch));
@@ -323,7 +323,7 @@ void TWChannel::setSwitch(bool _switch)
         // in case of stairway light
         if (ParamLED_TW_ChStairCaseActive && ParamLED_TW_ChStaicCaseTrigger == 1)
         {
-            setStairTime(millis());
+            setStairTime(delayTimerInit());
             setStairTrigger(1);
         }
         else

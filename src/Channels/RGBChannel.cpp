@@ -130,7 +130,7 @@ void RGBChannel::loop()
     }
 
     // Stairway Timeout
-    if (((getStairTime() + (ParamLED_RGB_ChStairCaseTimer * 1000)) <= millis()) && getStairTrigger())
+    if (getStairTrigger() && delayCheckMillis(getStairTime(), ParamLED_RGB_ChStairCaseTimer * 1000))
     {
         setStairTrigger(0);
         if (ParamLED_RGB_ChStartupBehavior)
@@ -141,14 +141,16 @@ void RGBChannel::loop()
     }
 
     // Trigger RGB Change
-    /*    if (_brightness.getRGBChangingTrigger() && !RGB_night() && (_brightness.getRGBChangingTime() + ParamLED_RGB_ChColorTimeDay) <= millis())
+    /*    if (_brightness.getRGBChangingTrigger() && !RGB_night() &&
+              delayCheckMillis(_brightness.getRGBChangingTime(), ParamLED_RGB_ChColorTimeDay))
         {
             logInfoP("hu:%5X%", _hue.value());
             _brightness.setRGBChangingTime(millis());
             _hue.setTargetValue(random(0x3FFF), ParamLED_RGB_ChColorTimeDay);
             _saturation.setTargetValue(1024, ParamLED_RGB_ChColorTimeDay);
         }
-        if (_brightness.getRGBChangingTrigger() && RGB_night() && (_brightness.getRGBChangingTime() + ParamLED_RGB_ChColorTimeNight) <= millis())
+        if (_brightness.getRGBChangingTrigger() && RGB_night() &&
+            delayCheckMillis(_brightness.getRGBChangingTime(), ParamLED_RGB_ChColorTimeNight))
         {
             _brightness.setRGBChangingTime(millis());
             _hue.setTargetValue(random(0x3FFF), ParamLED_RGB_ChColorTimeNight);
@@ -421,7 +423,7 @@ void RGBChannel::setSwitch(bool _switch)
         // in case of stairway light
         if (ParamLED_RGB_ChStairCaseActive && ParamLED_RGB_ChStaicCaseTrigger == 0)
         {
-            setStairTime(millis());
+            setStairTime(delayTimerInit());
             setStairTrigger(1);
         }
         setStartupColor();
@@ -434,7 +436,7 @@ void RGBChannel::setSwitch(bool _switch)
         // in case of stairway light
         if (ParamLED_RGB_ChStairCaseActive && ParamLED_RGB_ChStaicCaseTrigger == 1)
         {
-            setStairTime(millis());
+            setStairTime(delayTimerInit());
             setStairTrigger(1);
         }
         else
