@@ -53,7 +53,7 @@ class LightChannel : public OpenKNX::Channel
         uint16_t getMin() { return minValue; }
         uint16_t getMax() { return maxValue; }
 
-        void setTargetValue(uint16_t target, uint32_t timestamp, uint16_t dimTime)
+        void setTargetValue(uint16_t target, uint16_t dimTime)
         {
             lastValue = currentValue;
             /*if (target > maxValue)
@@ -66,7 +66,7 @@ class LightChannel : public OpenKNX::Channel
             }*/
             targetValue = target;
             deltaValue = (int32_t)targetValue - (int32_t)lastValue;
-            startTimestamp = timestamp;
+            startTimestamp = millis();
             dimDurationAbs = dimTime;
             isDimming = 1;
         }
