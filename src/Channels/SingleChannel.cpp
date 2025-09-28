@@ -164,6 +164,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 if (!getLock())
                 {
                     handleScene(ko.value(DPT_SceneNumber));
+                    _sceneNumberActive = (u8_t)ko.value(DPT_SceneNumber)+1;
                 }
                 break;
 
@@ -289,9 +290,11 @@ void SingleChannel::setSwitch(bool _switch)
             setLastOnValue(_brightness.value());
             _brightness.setTargetValue(dimmingValTarget(_switch), millis(), dimmingTime(_switch));
         }
+        
     }
     logDebugP("dimmingValTarget: %6X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+    _sceneNumberActive = 0;
 }
 
 void SingleChannel::setBrightness(uint16_t _bright)
@@ -299,6 +302,7 @@ void SingleChannel::setBrightness(uint16_t _bright)
     logDebugP("setBrightness(): %9X", _bright);
     _bright = checkMinMaxBrightness(_bright);
     _brightness.setTargetValue(_bright, millis(), dimmingTimeON());
+    _sceneNumberActive = 0;
 }
 
 void SingleChannel::setNight(bool _night)
@@ -306,7 +310,7 @@ void SingleChannel::setNight(bool _night)
     _isNight = _night;
     _brightness.setRange(ParamLED_SC_BrighnessMin_ * VALUE_KNX_MULTIPLY, dimmingValMax());
 
-    if (!_night)
+    if (!_night && !(_sceneNumberActive>0))
     {
         logDebugP("Tag");
 
@@ -315,7 +319,7 @@ void SingleChannel::setNight(bool _night)
             _brightness.setTargetValue(ParamLED_SC_BrighnessMaxDay_ * VALUE_KNX_MULTIPLY, millis(), 2 * ParamLED_SC_LightDimmTimeDayON_);
         }
     }
-    else
+    if (_night && !(_sceneNumberActive>0))
     {
         logDebugP("Nacht");
 
@@ -330,16 +334,19 @@ void SingleChannel::relDimUp()
 {
     logDebugP("relDim_UP");
     _brightness.setTargetValue(dimmingValMax(), millis(), ParamLED_SC_LightDimmTimeRel_);
+    _sceneNumberActive = 0;
 }
 
 void SingleChannel::relDimDown()
 {
     logDebugP("relDim_DOWN");
     _brightness.setTargetValue(dimmingValMin(), millis(), ParamLED_SC_LightDimmTimeRel_);
+    _sceneNumberActive = 0;
 }
 
 void SingleChannel::relDimStop()
 {
     logDebugP("relDim_STOP");
     _brightness.setTargetValue(_brightness.value(), millis(), 1);
+    _sceneNumberActive = 0;
 }

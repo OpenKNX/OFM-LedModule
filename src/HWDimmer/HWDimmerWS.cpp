@@ -11,7 +11,7 @@ HWDimmerWS::HWDimmerWS(HWDimmerWS::WSType type, uint8_t pin, uint16_t numLeds) :
     _pixels = Adafruit_NeoPixel(_numLeds, _pin, NEO_KHZ400);
     for (uint8_t ch = 0; ch < numChannels; ch++)
     {
-        setLevel(0, ch);
+        setLevel(0,0,0, ch);
     }
 }
 
@@ -23,17 +23,17 @@ HWDimmerWS::HWDimmerWS(HWDimmerWS::WSType type, uint8_t pin, uint16_t numLeds) :
  * @return true when channel is available
  * @return false when channel is invalid
  */
-bool HWDimmerWS::setLevel(uint16_t level, uint8_t channel)
+bool HWDimmerWS::setLevel(uint16_t r_level, uint16_t g_level, uint16_t b_level, uint8_t channel)
 {
     // logInfoP("setLevel_1");
     bool isValidChannel = false;
-    if (HWDimmer::setLevel(level, channel))
+    if (HWDimmer::setLevel(r_level, channel) && HWDimmer::setLevel(g_level, channel) && HWDimmer::setLevel(b_level, channel))
     {
         isValidChannel = true;
         _pixels.clear();
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < _numLeds; i++)
         {
-            _pixels.setPixelColor(i, _pixels.Color(level, level, level));
+            _pixels.setPixelColor(i, _pixels.Color(r_level, g_level, b_level));
             _pixels.show();
         }
         // logInfoP("setLevel_3");

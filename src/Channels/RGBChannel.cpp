@@ -125,6 +125,20 @@ void RGBChannel::loop()
         {
             _pDimmer->setLevel(_pDimmer->scale(rgb.Blue(), (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_), _pHWChannels[2]);
         }
+
+    // RGB for WS 2812 HWDimmer
+    //
+    if (_pHWChannels[0] < LED_ChannelCount && _pHWChannels[1] < LED_ChannelCount && _pHWChannels[2] < LED_ChannelCount)
+        {
+            _pDimmer->setLevel(
+                _pDimmer->scale(rgb.Red(),   (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_), 
+                _pDimmer->scale(rgb.Green(), (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_), 
+                _pDimmer->scale(rgb.Blue(),  (HWDimmer::DimLUTType)ParamLED_RGB_DimCurve_),
+                _pHWChannels[0]
+            );
+        }
+    //
+
     }
     // Stairway Timeout
     if (((getStairTime() + (ParamLED_RGB_StairCaseTimer_ * 1000)) <= millis()) && getStairTrigger())
@@ -137,21 +151,7 @@ void RGBChannel::loop()
         _brightness.setTargetValue(0, millis(), dimmingTimeOFF());
     }
 
-    // Trigger RGB Change
-    /*    if (_brightness.getRGBChangingTrigger() && !RGB_night() && (_brightness.getRGBChangingTime() + ParamLED_RGB_ColorTimeDay_) <= millis())
-        {
-            logInfoP("hu:%5X%", _hue.value());
-            _brightness.setRGBChangingTime(millis());
-            _hue.setTargetValue(random(0x3FFF), millis(), ParamLED_RGB_ColorTimeDay_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_ColorTimeDay_);
-        }
-        if (_brightness.getRGBChangingTrigger() && RGB_night() && (_brightness.getRGBChangingTime() + ParamLED_RGB_ColorTimeNight_) <= millis())
-        {
-            _brightness.setRGBChangingTime(millis());
-            _hue.setTargetValue(random(0x3FFF), millis(), ParamLED_RGB_ColorTimeNight_);
-            _saturation.setTargetValue(1024, millis(), ParamLED_RGB_ColorTimeNight_);
-            logInfoP("hue_val:%5X%", _hue.value());
-        }*/
+
 
     processFrontInput();
 }
@@ -519,9 +519,16 @@ void RGBChannel::relDimStop()
 void RGBChannel::setColorTemperature(uint16_t colorTemp)
 {
     colorTemp = checkMinMaxColorTemp(colorTemp);
+    bool _onstate = _brightness.value() > 0;
+    uint16_t _bright = _brightness.value();
     logDebugP("ColorTemp: %5X", colorTemp);
     logDebugP("ColorTemp RGB: %8X", conv_Temp2RGB(colorTemp));
     setRGB(conv_Temp2RGB(colorTemp));
+    if (_onstate)
+    {
+        setBrightness(_bright);
+    }
+    KoLED_RGB_ColorTemperatureStatus_.value(colorTemp, Dpt(7, 600));
 }
 
 void RGBChannel::setRGB(uint32_t RGBvalue)
@@ -711,7 +718,7 @@ uint32_t RGBChannel::conv_Temp2RGB(int _temp)
     if (_temp >= 6500)
     {
         _r = (uint8_t)round(pow((float)_temp, -1.02) * 1000000.0 + 125.9);
-    }
+    }   
     else
     {
         _r = 255;

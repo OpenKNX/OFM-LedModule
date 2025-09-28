@@ -69,9 +69,12 @@
               <Parameter Id="%AID%_P-%TT%%CC%016" Name="ScenesActive_%C%"          ParameterType="%AID%_PT-OnOffYesNo" Text="Szenen" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="19" BitOffset="0" />
               </Parameter>
+              <Parameter ID="%AID%_P-%TT%%CC%019" Name="NightSwitchScene_%C%"  ParameterType="%AID%_PT-OnOffYesNo" Text="Nacht Umschaltung Szenendeaktivierung" Value="0">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="20" BitOffset="0" />
+              </Parameter>
               <Union SizeInBit="320">
                 <!-- 8 Scenes * 5 bytes: total 40 bytes -->
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="20" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="21" BitOffset="0" />
                 <!-- Scenes -->
                 <op:usePart name="LED_SC_SC" xpath="//Static/Parameters/Block[@Name='ScenesSC']/*" />
               </Union>
@@ -97,6 +100,7 @@
               <ParameterRef Id="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" RefId="%AID%_P-%TT%%CC%016" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" RefId="%AID%_UP-%TT%%CC%017" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" RefId="%AID%_UP-%TT%%CC%018" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%019_R-%TT%%CC%01901" RefId="%AID%_P-%TT%%CC%019" />
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_SC_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSC']/*" />
@@ -184,11 +188,13 @@
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601" IndentLevel="1" /> <!-- Scene -->
+                    
                     <choose ParamRefId="%AID%_P-%TT%%CC%016_R-%TT%%CC%01601">
                       <when test="1">
                         <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- Scene -->
                         
                         <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
+                          <ParameterRefRef RefId="%AID%_P-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="1" /> <!-- Night Switch Scene -->
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />
                           <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
                             <Rows>
