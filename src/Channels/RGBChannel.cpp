@@ -127,6 +127,16 @@ void RGBChannel::loop()
         {
             _pDimmer->setLevel(_pDimmer->scale(rgb.Blue(), (HWDimmer::DimLUTType)ParamLED_RGB_ChDimCurve), _pHWChannels[2]);
         }
+        
+        // RGB for WS 2812 HWDimmer
+        // if (_pHWChannels[0] < LED_ChannelCount && _pHWChannels[1] < LED_ChannelCount && _pHWChannels[2] < LED_ChannelCount)
+        // {
+        //     _pDimmer->setLevel(
+        //         _pDimmer->scale(rgb.Red(), (HWDimmer::DimLUTType)ParamLED_RGB_ChDimCurve),
+        //         _pDimmer->scale(rgb.Green(), (HWDimmer::DimLUTType)ParamLED_RGB_ChDimCurve),
+        //         _pDimmer->scale(rgb.Blue(), (HWDimmer::DimLUTType)ParamLED_RGB_ChDimCurve),
+        //         _pHWChannels[0]);
+        // }
     }
 
     // Stairway Timeout
@@ -139,24 +149,6 @@ void RGBChannel::loop()
         }
         _brightness.setTargetValue(0, dimmingTimeOFF());
     }
-
-    // Trigger RGB Change
-    /*    if (_brightness.getRGBChangingTrigger() && !RGB_night() &&
-              delayCheckMillis(_brightness.getRGBChangingTime(), ParamLED_RGB_ChColorTimeDay))
-        {
-            logInfoP("hu:%5X%", _hue.value());
-            _brightness.setRGBChangingTime(delayTimerInit());
-            _hue.setTargetValue(random(0x3FFF), ParamLED_RGB_ChColorTimeDay);
-            _saturation.setTargetValue(1024, ParamLED_RGB_ChColorTimeDay);
-        }
-        if (_brightness.getRGBChangingTrigger() && RGB_night() &&
-            delayCheckMillis(_brightness.getRGBChangingTime(), ParamLED_RGB_ChColorTimeNight))
-        {
-            _brightness.setRGBChangingTime(delayTimerInit());
-            _hue.setTargetValue(random(0x3FFF), ParamLED_RGB_ChColorTimeNight);
-            _saturation.setTargetValue(1024, ParamLED_RGB_ChColorTimeNight);
-            logInfoP("hue_val:%5X%", _hue.value());
-        }*/
 }
 
 void RGBChannel::processInputKo(GroupObject& ko)
@@ -520,6 +512,12 @@ void RGBChannel::setColorTemperature(uint16_t colorTemp)
     logDebugP("ColorTemp: %5X", colorTemp);
     logDebugP("ColorTemp RGB: %8X", conv_Temp2RGB(colorTemp));
     setRGB(conv_Temp2RGB(colorTemp));
+
+    if (_brightness.value() > 0)
+    {
+        setBrightness(_brightness.value());
+    }
+    KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
 }
 
 void RGBChannel::setRGB(uint32_t RGBvalue)

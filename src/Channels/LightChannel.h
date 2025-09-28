@@ -152,6 +152,7 @@ class LightChannel : public OpenKNX::Channel
     bool _stairTrigger = 0;
     bool _isNight = false;
     bool _isLocked = false;
+    uint8_t _sceneNumberActive = 0;
 
     SceneConfig *_scenes;
 

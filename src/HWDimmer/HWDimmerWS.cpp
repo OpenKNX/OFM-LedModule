@@ -41,6 +41,23 @@ bool HWDimmerWS::setLevel(uint16_t level, uint8_t channel)
     }
     return isValidChannel;
 }
+// bool HWDimmerWS::setLevel(uint16_t r_level, uint16_t g_level, uint16_t b_level, uint8_t channel)
+// {
+//     // logInfoP("setLevel_1");
+//     bool isValidChannel = false;
+//     if (HWDimmer::setLevel(r_level, channel) && HWDimmer::setLevel(g_level, channel) && HWDimmer::setLevel(b_level, channel))
+//     {
+//         isValidChannel = true;
+//         _pixels.clear();
+//         for (int i = 0; i < _numLeds; i++)
+//         {
+//             _pixels.setPixelColor(i, _pixels.Color(r_level, g_level, b_level));
+//             _pixels.show();
+//         }
+//         // logInfoP("setLevel_3");
+//     }
+//     return isValidChannel;
+// }
 
 /**
  * @brief Scale uint16 value to range of this HWDimmer (uint16)

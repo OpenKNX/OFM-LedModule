@@ -66,6 +66,10 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%018" Name="Ch%C%FrontControlBrightness" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="100" />
               </Union> -->
 
+              <Parameter Id="%AID%_P-%TT%%CC%019" Name="Ch%C%NightSwitchScene"  ParameterType="%AID%_PT-OnOffYesNo" Text="Nacht Umschaltung Szenendeaktivierung" Value="0">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="20" BitOffset="0" />
+              </Parameter>
+
               <Parameter Id="%AID%_P-%TT%%CC%016" Name="Ch%C%ScenesActive"          ParameterType="%AID%_PT-OnOffYesNo" Text="Szenen" Value="0">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="19" BitOffset="0" />
               </Parameter>
@@ -99,6 +103,8 @@
               <!-- UNUSED, remove during clean-up of final release
               <ParameterRef Id="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" RefId="%AID%_UP-%TT%%CC%017" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" RefId="%AID%_UP-%TT%%CC%018" /> -->
+
+              <ParameterRef Id="%AID%_P-%TT%%CC%019_R-%TT%%CC%01901" RefId="%AID%_P-%TT%%CC%019" />
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_SC_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSC']/*" />
@@ -179,6 +185,7 @@
                         <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- Scene -->
                         
                         <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
+                          <ParameterRefRef RefId="%AID%_P-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="1" /> <!-- Night Switch Scene -->
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />
                           <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
                             <Rows>

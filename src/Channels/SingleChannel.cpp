@@ -160,6 +160,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 if (!getLock())
                 {
                     handleScene(ko.value(DPT_SceneNumber));
+                    _sceneNumberActive = (uint8_t)ko.value(DPT_SceneNumber) + 1;
                 }
                 break;
 
@@ -287,6 +288,7 @@ void SingleChannel::setSwitch(bool _switch)
     }
     logDebugP("dimmingValTarget: %6X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+    _sceneNumberActive = 0;
 }
 
 void SingleChannel::setBrightness(uint16_t _bright)
@@ -294,6 +296,7 @@ void SingleChannel::setBrightness(uint16_t _bright)
     logDebugP("setBrightness(): %9X", _bright);
     _bright = checkMinMaxBrightness(_bright);
     _brightness.setTargetValue(_bright, dimmingTimeON());
+    _sceneNumberActive = 0;
 }
 
 void SingleChannel::setNight(bool _night)
@@ -301,22 +304,25 @@ void SingleChannel::setNight(bool _night)
     _isNight = _night;
     _brightness.setRange(ParamLED_SC_ChBrighnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
 
-    if (!_night)
+    if (_sceneNumberActive == 0 && ParamLED_SC_ChNightSwitchScene)
     {
-        logDebugP("Tag");
-
-        if (_brightness.value() == ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY)
+        if (!_night)
         {
-            _brightness.setTargetValue(ParamLED_SC_ChBrighnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmTimeDayON);
+            logDebugP("Tag");
+
+            if (_brightness.value() == ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY)
+            {
+                _brightness.setTargetValue(ParamLED_SC_ChBrighnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmTimeDayON);
+            }
         }
-    }
-    else
-    {
-        logDebugP("Nacht");
-
-        if (_brightness.value() > ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY)
+        else
         {
-            _brightness.setTargetValue(ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmTimeNightON);
+            logDebugP("Nacht");
+
+            if (_brightness.value() > ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY)
+            {
+                _brightness.setTargetValue(ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmTimeNightON);
+            }
         }
     }
 }
@@ -325,16 +331,19 @@ void SingleChannel::relDimUp()
 {
     logDebugP("relDim_UP");
     _brightness.setTargetValue(dimmingValMax(), ParamLED_SC_ChLightDimmTimeRel);
+    _sceneNumberActive = 0;
 }
 
 void SingleChannel::relDimDown()
 {
     logDebugP("relDim_DOWN");
     _brightness.setTargetValue(dimmingValMin(), ParamLED_SC_ChLightDimmTimeRel);
+    _sceneNumberActive = 0;
 }
 
 void SingleChannel::relDimStop()
 {
     logDebugP("relDim_STOP");
     _brightness.setTargetValue(_brightness.value(), 1);
+    _sceneNumberActive = 0;
 }
