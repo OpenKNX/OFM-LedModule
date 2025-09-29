@@ -135,15 +135,24 @@ void TWChannel::processInputKo(GroupObject& ko)
         switch (relKO)
         {
             case LED_TW_KoChSwitch:
-                setSwitch(ko.value(DPT_Switch));
+                if (!getLock())
+                {
+                    setSwitch(ko.value(DPT_Switch));
+                }
                 break;
 
             case LED_TW_KoChSwitchNoDim:
-                setSwitchNoDim(ko.value(DPT_Switch));
+                if (!getLock())
+                {
+                    setSwitchNoDim(ko.value(DPT_Switch));
+                }
                 break;
 
             case LED_TW_KoChSwitchBoost:
-                setBoost(ko.value(DPT_Switch));
+                if (!getLock())
+                {
+                    setBoost(ko.value(DPT_Switch));
+                }
                 break;
 
             case LED_TW_KoChStateOnOff:
@@ -152,36 +161,47 @@ void TWChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_TW_KoChBrightness:
-                setBrightness((uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
+                if (!getLock())
+                {
+                    setBrightness((uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
+                }
                 break;
 
             case LED_TW_KoChBrightnessStatus:
                 break;
             case LED_TW_KoChDimRel:
-                int16_t tmpu16;
-                tmpu16 = *KoLED_TW_ChDimRel.valueRef();
+                if (!getLock())
+                {
+                    int16_t tmpu16;
+                    tmpu16 = *KoLED_TW_ChDimRel.valueRef();
 
-                if (tmpu16 >= 0x09)
-                {
-                    relDimUp();
-                }
-                if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                {
-                    relDimDown();
-                }
-                if (tmpu16 == 0x00 || tmpu16 == 0x08)
-                {
-                    relDimStop();
+                    if (tmpu16 >= 0x09)
+                    {
+                        relDimUp();
+                    }
+                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
+                    {
+                        relDimDown();
+                    }
+                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                    {
+                        relDimStop();
+                    }
                 }
                 break;
 
             case LED_TW_KoChScene:
-                handleScene(ko.value(DPT_SceneNumber));
+                if (!getLock())
+                {
+                    handleScene(ko.value(DPT_SceneNumber));
+                }
                 break;
 
             case LED_TW_KoChColorTemperature:
-                setColorTemperature(ko.value(Dpt(7, 600)));
-
+                if (!getLock())
+                {
+                    setColorTemperature(ko.value(Dpt(7, 600)));
+                }
                 break;
 
             case LED_TW_KoChColorTemperatureStatus:

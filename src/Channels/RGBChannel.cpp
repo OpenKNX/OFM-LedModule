@@ -185,6 +185,13 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
+            case LED_RGB_KoChSwitchNoDim:
+                if (!getLock())
+                {
+                    setSwitchNoDim(ko.value(DPT_Switch));
+                }
+                break;
+
             case LED_RGB_KoChStateOnOff:
                 break;
 
