@@ -138,6 +138,14 @@ void TWChannel::processInputKo(GroupObject& ko)
                 setSwitch(ko.value(DPT_Switch));
                 break;
 
+            case LED_TW_KoChSwitchNoDim:
+                setSwitchNoDim(ko.value(DPT_Switch));
+                break;
+
+            case LED_TW_KoChSwitchBoost:
+                setBoost(ko.value(DPT_Switch));
+                break;
+
             case LED_TW_KoChStateOnOff:
                 break;
             case LED_TW_KoChLocking:
@@ -337,6 +345,41 @@ void TWChannel::setSwitch(bool _switch)
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTempTarget: %3X", dimmingTempTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+}
+
+void TWChannel::setSwitchNoDim(bool _switch)
+{
+    if (_switch)
+    {
+        logDebugP("switch_ON");
+        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+        _colorTemperature.setTargetValue(dimmingTempTarget(_switch), 1);
+    }
+    else
+    {
+        logDebugP("switch_OFF");
+        setLastOnValue(_brightness.value());
+        setLastOnValueTemp(_colorTemperature.value());
+        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+    }
+}
+
+void TWChannel::setBoost(bool _switch)
+{
+    if (_switch)
+    {
+        logDebugP("Boost_ON");
+        //_brightness.setTargetValue(dimmingValTarget(_switch), 1);
+        _pDimmer->setLevel(0xFFF, _pHWChannels[0]);
+        _pDimmer->setLevel(0xFFF, _pHWChannels[0]);
+    }
+    else
+    {
+        logDebugP("Boost_OFF");
+        //_brightness.setTargetValue(dimmingValTarget(_switch), 1);
+        _pDimmer->setLevel(0x0, _pHWChannels[0]);
+        _pDimmer->setLevel(0x0, _pHWChannels[1]);
+    }
 }
 
 void TWChannel::setBrightness(uint16_t _bright)

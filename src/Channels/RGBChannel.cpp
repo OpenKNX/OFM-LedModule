@@ -127,7 +127,7 @@ void RGBChannel::loop()
         {
             _pDimmer->setLevel(_pDimmer->scale(rgb.Blue(), (HWDimmer::DimLUTType)ParamLED_RGB_ChDimCurve), _pHWChannels[2]);
         }
-        
+
         // RGB for WS 2812 HWDimmer
         // if (_pHWChannels[0] < LED_ChannelCount && _pHWChannels[1] < LED_ChannelCount && _pHWChannels[2] < LED_ChannelCount)
         // {
@@ -443,6 +443,24 @@ void RGBChannel::setSwitch(bool _switch)
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
     logDebugP("parammaxday: %5X", (ParamLED_RGB_ChBrighnessMaxDay * VALUE_KNX_MULTIPLY));
+}
+
+void RGBChannel::setSwitchNoDim(bool _switch)
+{
+    if (_switch)
+    {
+        logDebugP("switchNoDim_ON");
+        setStartupColor();
+        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+    }
+    else
+    {
+        logDebugP("switchNoDim_OFF");
+        setLastOnValue(_brightness.value());
+        setLastOnValueHue(_hue.value());
+        setLastOnValueSat(_saturation.value());
+        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+    }
 }
 
 void RGBChannel::setHue(uint16_t hue)

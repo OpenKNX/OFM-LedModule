@@ -115,6 +115,13 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
+            case LED_SC_KoChSwitchNoDim:
+                if (!getLock())
+                {
+                    setSwitchNoDim(ko.value(DPT_Switch));
+                }
+                break;
+
             case LED_SC_KoChStateOnOff:
                 break;
 
@@ -166,7 +173,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
 
             // Day or Night
             case LED_SC_KoChNight:
-                if (!getLock())
+                if (!getLock() || _sceneNumberActive != 0)
                 {
                     setNight(ko.value(DPT_Switch));
                 }
@@ -288,6 +295,22 @@ void SingleChannel::setSwitch(bool _switch)
     }
     logDebugP("dimmingValTarget: %6X", dimmingValTarget(_switch));
     logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+    _sceneNumberActive = 0;
+}
+
+void SingleChannel::setSwitchNoDim(bool _switch)
+{
+    if (_switch)
+    {
+        logDebugP("switch_ON");
+        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+    }
+    else
+    {
+        logDebugP("switch_OFF");
+        setLastOnValue(_brightness.value());
+        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+    }
     _sceneNumberActive = 0;
 }
 

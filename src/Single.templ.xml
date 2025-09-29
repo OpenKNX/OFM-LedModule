@@ -120,6 +120,7 @@
               <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%DimRel"             Text="Dimmen Relativ"     Number="%K6%" FunctionText="EK %C% - Dimmen"             ObjectSize="4 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"  />
               <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%Scene"              Text="Szene"              Number="%K7%" FunctionText="EK %C% - Szene"              ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
               <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%Night"              Text="Nacht"              Number="%K8%" FunctionText="EK %C% - Nacht"              ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%SwitchNoDim"        Text="Schalten NoDim"     Number="%K9%" FunctionText="EK %C% - Ein/Aus NoDim"      ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
             </ComObjectTable>
 
             <ComObjectRefs>
@@ -132,6 +133,7 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" />
             </ComObjectRefs>
 
           </Static>
@@ -142,6 +144,7 @@
                 <when test="1">
                   <ParameterBlock Id="%AID%_PB-2" Name="SCLight_%CC%" Text="EK %C%: {{0:--}}" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201">
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" /> <!-- On/Off -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" /> <!-- On/Off NoDim-->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" /> <!-- On/Off Status -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" /> <!-- Lock -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" /> <!-- Lock Status -->

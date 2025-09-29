@@ -23,6 +23,7 @@ class SingleChannel : public LightChannel
     uint16_t checkMinMaxBrightness(uint16_t _bright);
 
     void setSwitch(bool _switch);
+    void setSwitchNoDim(bool _switch);
     void setBrightness(uint16_t _bright);
     void setNight(bool _night) override;
     void relDimUp();
