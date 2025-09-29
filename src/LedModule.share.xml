@@ -235,7 +235,7 @@
           </Static>
 
           <Dynamic>
-            <Channel Name="MainChannel" Text="LED-Dimmer" Number="%TT%" Id="%AID%_CH-%TT%" HelpContext="Empty" Icon="ceiling-light-multiple">
+            <Channel Name="MainChannel" Text="LED-Dimmer" Number="%PREFIX%" Id="%AID%_CH-%PREFIX%" HelpContext="Empty" Icon="ceiling-light-multiple">
               <ParameterBlock Id="%AID%_PB-nnn" Name="Settings" Text="Allgemein" Icon="cog-outline" ShowInComObjectTree="true">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="LED-Dimmer" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
