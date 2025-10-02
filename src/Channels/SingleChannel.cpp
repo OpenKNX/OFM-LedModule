@@ -173,7 +173,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
 
             // Day or Night
             case LED_SC_KoChNight:
-                if (!getLock() || _sceneNumberActive != 0)
+                if (!getLock())
                 {
                     setNight(ko.value(DPT_Switch));
                 }
@@ -201,7 +201,7 @@ void SingleChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
                     {
-                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()), dimmingTime(1));
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness() * VALUE_KNX_MULTIPLY), dimmingTime(1));
                     }
                     break;
 
@@ -302,12 +302,12 @@ void SingleChannel::setSwitchNoDim(bool _switch)
 {
     if (_switch)
     {
-        logDebugP("switch_ON");
+        logDebugP("NoDimSwitch_ON");
         _brightness.setTargetValue(dimmingValTarget(_switch), 1);
     }
     else
     {
-        logDebugP("switch_OFF");
+        logDebugP("NoDimSwitch_OFF");
         setLastOnValue(_brightness.value());
         _brightness.setTargetValue(dimmingValTarget(_switch), 1);
     }
@@ -324,11 +324,14 @@ void SingleChannel::setBrightness(uint16_t _bright)
 
 void SingleChannel::setNight(bool _night)
 {
-    _isNight = _night;
-    _brightness.setRange(ParamLED_SC_ChBrighnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
 
-    if (_sceneNumberActive == 0 && ParamLED_SC_ChNightSwitchScene)
+    logDebugP("setNight() %d -> %d", ParamLED_SC_ChNightSwitchScene, _sceneNumberActive);
+    logDebugP("treppenlicht %d ", ParamLED_SC_ChStairCaseActive);
+    if (ParamLED_SC_ChNightSwitchScene || (!ParamLED_SC_ChNightSwitchScene && _sceneNumberActive == 0))
     {
+        logDebugP("Nachtmodus:");
+        _isNight = _night;
+        _brightness.setRange(ParamLED_SC_ChBrighnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
         if (!_night)
         {
             logDebugP("Tag");

@@ -188,13 +188,11 @@
                         <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- Scene -->
                         
                         <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
-                          <ParameterRefRef RefId="%AID%_P-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="1" /> <!-- Night Switch Scene -->
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />
                           <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
                             <Rows>
                               <op:usePart name="LED_SC_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='Rows']/*" />
                             </Rows>
-
                             <Columns>
                               <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Szene" Width="15%" />
                               <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Typ" Width="25%" />
@@ -204,12 +202,13 @@
                               <!-- <Column Id="%AID%_PB-12_C-6" Name="Col6" Text="Lock1" Width="15%" /> -->
                               <!-- <Column Id="%AID%_PB-12_C-7" Name="Col7" Text="Lock2" Width="15%" /> -->
                             </Columns>
-
+                          
                             <!-- Scene Control-->
                             <op:usePart name="LED_SC_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='SceneSelectionSC']/*" />
 
                           </ParameterBlock>
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Fix: Wenn aktiv kann diese Szene nicht im Betrieb per Speichern überschrieben werden." />
+                          <ParameterRefRef RefId="%AID%_P-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="0" /> <!-- Night Switch Scene -->
                         </ParameterBlock>
                       </when>
                     </choose>

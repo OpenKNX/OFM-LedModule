@@ -54,4 +54,5 @@ bool LightChannel::getLock()
 void LightChannel::setLock(bool lock)
 {
     _isLocked = lock;
+    KoLED_SC_ChStateLocking.value(_isLocked, DPT_State);
 }
