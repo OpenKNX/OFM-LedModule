@@ -33,7 +33,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+3%" Name="Ch%C%Scene%SN%_LockobjectFunc" Offset="%MO%" BitOffset="7" ParameterType="%AID%_PT-LockUnlock" Text="Sperren" Value="0" /> <!-- 1 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+4%" Name="Ch%C%Scene%SN%_AllowSave" Offset="%MO+1%" BitOffset="0" ParameterType="%AID%_PT-CheckBox" Text="Speichern" Value="0" /> <!-- 1 bit -->
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+5%" Name="Ch%C%Scene%SN%_Number" Offset="%MO+1%" BitOffset="1" ParameterType="%AID%_PT-SceneNumber" Text="Typ" Value="%SZ%" /> <!-- 7 bit -->
-                <Parameter Id="%AID%_UP-%TT%%CC%%id+6%" Name="Ch%C%Scene%SN%_Function" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-SCFunction" Text="Funktion" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+6%" Name="Ch%C%Scene%SN%_Function" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-OnOffYesNo" Text="Funktion" Value="1" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+7%" Name="Ch%C%Scene%SN%_Sequence" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-SCSequence" Text="Ablauf" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%id+8%" Name="Ch%C%Scene%SN%_Brightness" Offset="%MO+2%" BitOffset="0" ParameterType="%AID%_PT-ValueDpt5001" Text="Helligkeit" Value="100" SuffixText="%" />
               </Block>

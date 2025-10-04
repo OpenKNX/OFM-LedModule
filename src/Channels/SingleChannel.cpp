@@ -70,7 +70,7 @@ void SingleChannel::loop()
         }
 
         // Stairway Timeout
-        if (getStairTrigger() && delayCheckMillis(getStairTime(), ParamLED_SC_ChStairCaseTimer * 1000))
+        if (getStairTrigger() && delayCheckMillis(getStairTime(), ParamLED_SC_ChStairCaseTimeMS))
         {
             setStairTrigger(0);
             if (ParamLED_SC_ChStartupBehavior)
@@ -142,11 +142,11 @@ void SingleChannel::processInputKo(GroupObject& ko)
             case LED_SC_KoChBrightnessStatus:
                 break;
 
-            case LED_SC_KoChDimRel:
+            case LED_SC_KoChBrightnessRel:
                 if (!getLock())
                 {
                     int16_t tmpu16;
-                    tmpu16 = *KoLED_SC_ChDimRel.valueRef();
+                    tmpu16 = *KoLED_SC_ChBrightnessRel.valueRef();
 
                     if (tmpu16 >= 0x09)
                     {
@@ -218,12 +218,12 @@ void SingleChannel::handleScene(uint8_t sceneNr)
 
 uint16_t SingleChannel::dimmingTimeON()
 {
-    return getNight() ? ParamLED_SC_ChLightDimmTimeNightON : ParamLED_SC_ChLightDimmTimeDayON;
+    return getNight() ? ParamLED_SC_ChLightDimmNightOnTime : ParamLED_SC_ChLightDimmDayOnTime;
 }
 
 uint16_t SingleChannel::dimmingTimeOFF()
 {
-    return getNight() ? ParamLED_SC_ChLightDimmTimeNightOFF : ParamLED_SC_ChLightDimmTimeDayOFF;
+    return getNight() ? ParamLED_SC_ChLightDimmNightOffTime : ParamLED_SC_ChLightDimmDayOffTime;
 }
 
 uint16_t SingleChannel::dimmingTime(bool _switch)
@@ -238,12 +238,12 @@ uint16_t SingleChannel::dimmingValStartup()
 
 uint16_t SingleChannel::dimmingValMin()
 {
-    return ParamLED_SC_ChBrighnessMin * VALUE_KNX_MULTIPLY;
+    return ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY;
 }
 
 uint16_t SingleChannel::dimmingValMax()
 {
-    return getNight() ? (ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY) : (ParamLED_SC_ChBrighnessMaxDay * VALUE_KNX_MULTIPLY);
+    return getNight() ? (ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY) : (ParamLED_SC_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY);
 }
 
 uint16_t SingleChannel::dimmingValTarget(bool _switch)
@@ -253,9 +253,9 @@ uint16_t SingleChannel::dimmingValTarget(bool _switch)
 
 uint16_t SingleChannel::checkMinMaxBrightness(uint16_t _bright)
 {
-    if (_bright < (ParamLED_SC_ChBrighnessMin * VALUE_KNX_MULTIPLY))
+    if (_bright < (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY))
     {
-        _bright = (ParamLED_SC_ChBrighnessMin * VALUE_KNX_MULTIPLY);
+        _bright = (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY);
     }
     if (_bright > dimmingValMax())
     {
@@ -269,9 +269,9 @@ void SingleChannel::setSwitch(bool _switch)
     if (_switch)
     {
         logDebugP("switch_ON");
-        _brightness.setTargetValue(ParamLED_SC_ChBrighnessMin * VALUE_KNX_MULTIPLY, 1);
+        _brightness.setTargetValue(ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY, 1);
         // in case of stairway light
-        if (ParamLED_SC_ChStairCaseActive && ParamLED_SC_ChStaicCaseTrigger == 0)
+        if (ParamLED_SC_ChStairCaseActive && ParamLED_SC_ChStairCaseTrigger == 0)
         {
             setStairTime(delayTimerInit());
             setStairTrigger(1);
@@ -282,7 +282,7 @@ void SingleChannel::setSwitch(bool _switch)
     {
         logDebugP("switch_OFF");
         // in case of stairway light
-        if (ParamLED_SC_ChStairCaseActive && ParamLED_SC_ChStaicCaseTrigger == 1)
+        if (ParamLED_SC_ChStairCaseActive && ParamLED_SC_ChStairCaseTrigger == 1)
         {
             setStairTime(delayTimerInit());
             setStairTrigger(1);
@@ -325,29 +325,29 @@ void SingleChannel::setBrightness(uint16_t _bright)
 void SingleChannel::setNight(bool _night)
 {
 
-    logDebugP("setNight() %d -> %d", ParamLED_SC_ChNightSwitchScene, _sceneNumberActive);
+    logDebugP("setNight() %d -> %d", ParamLED_SC_ChScenesDisableNightSw, _sceneNumberActive);
     logDebugP("treppenlicht %d ", ParamLED_SC_ChStairCaseActive);
-    if (ParamLED_SC_ChNightSwitchScene || (!ParamLED_SC_ChNightSwitchScene && _sceneNumberActive == 0))
+    if (ParamLED_SC_ChScenesDisableNightSw || (!ParamLED_SC_ChScenesDisableNightSw && _sceneNumberActive == 0))
     {
         logDebugP("Nachtmodus:");
         _isNight = _night;
-        _brightness.setRange(ParamLED_SC_ChBrighnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
+        _brightness.setRange(ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
         if (!_night)
         {
             logDebugP("Tag");
 
-            if (_brightness.value() == ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY)
+            if (_brightness.value() == ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
             {
-                _brightness.setTargetValue(ParamLED_SC_ChBrighnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmTimeDayON);
+                _brightness.setTargetValue(ParamLED_SC_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmDayOnTime);
             }
         }
         else
         {
             logDebugP("Nacht");
 
-            if (_brightness.value() > ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY)
+            if (_brightness.value() > ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
             {
-                _brightness.setTargetValue(ParamLED_SC_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmTimeNightON);
+                _brightness.setTargetValue(ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmNightOnTime);
             }
         }
     }
@@ -356,14 +356,14 @@ void SingleChannel::setNight(bool _night)
 void SingleChannel::relDimUp()
 {
     logDebugP("relDim_UP");
-    _brightness.setTargetValue(dimmingValMax(), ParamLED_SC_ChLightDimmTimeRel);
+    _brightness.setTargetValue(dimmingValMax(), ParamLED_SC_ChLightDimmRelTime);
     _sceneNumberActive = 0;
 }
 
 void SingleChannel::relDimDown()
 {
     logDebugP("relDim_DOWN");
-    _brightness.setTargetValue(dimmingValMin(), ParamLED_SC_ChLightDimmTimeRel);
+    _brightness.setTargetValue(dimmingValMin(), ParamLED_SC_ChLightDimmRelTime);
     _sceneNumberActive = 0;
 }
 

@@ -98,7 +98,7 @@ void TWChannel::loop()
     }
 
     // Stairway Timeout
-    if (getStairTrigger() && delayCheckMillis(getStairTime(), ParamLED_TW_ChStairCaseTimer * 1000))
+    if (getStairTrigger() && delayCheckMillis(getStairTime(), ParamLED_TW_ChStairCaseTimeMS))
     {
         setStairTrigger(0);
         if (ParamLED_TW_ChStartupBehavior)
@@ -169,11 +169,11 @@ void TWChannel::processInputKo(GroupObject& ko)
 
             case LED_TW_KoChBrightnessStatus:
                 break;
-            case LED_TW_KoChDimRel:
+            case LED_TW_KoChBrightnessRel:
                 if (!getLock())
                 {
                     int16_t tmpu16;
-                    tmpu16 = *KoLED_TW_ChDimRel.valueRef();
+                    tmpu16 = *KoLED_TW_ChBrightnessRel.valueRef();
 
                     if (tmpu16 >= 0x09)
                     {
@@ -256,12 +256,12 @@ void TWChannel::handleScene(uint8_t sceneNr)
 
 uint16_t TWChannel::dimmingTimeON()
 {
-    return getNight() ? ParamLED_TW_ChLightDimmTimeNightON : ParamLED_TW_ChLightDimmTimeDayON;
+    return getNight() ? ParamLED_TW_ChLightDimmNightOnTime : ParamLED_TW_ChLightDimmDayOnTime;
 }
 
 uint16_t TWChannel::dimmingTimeOFF()
 {
-    return getNight() ? ParamLED_TW_ChLightDimmTimeNightOFF : ParamLED_TW_ChLightDimmTimeDayOFF;
+    return getNight() ? ParamLED_TW_ChLightDimmNightOffTime : ParamLED_TW_ChLightDimmDayOffTime;
 }
 
 uint16_t TWChannel::dimmingTime(bool _switch)
@@ -276,12 +276,12 @@ uint16_t TWChannel::dimmingValStartup()
 
 uint16_t TWChannel::dimmingValMin()
 {
-    return ParamLED_TW_ChBrighnessMin * VALUE_KNX_MULTIPLY;
+    return ParamLED_TW_ChBrightnessMin * VALUE_KNX_MULTIPLY;
 }
 
 uint16_t TWChannel::dimmingValMax()
 {
-    return getNight() ? (ParamLED_TW_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY) : (ParamLED_TW_ChBrighnessMaxDay * VALUE_KNX_MULTIPLY);
+    return getNight() ? (ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY) : (ParamLED_TW_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY);
 }
 
 uint16_t TWChannel::dimmingValTarget(bool _switch)
@@ -291,9 +291,9 @@ uint16_t TWChannel::dimmingValTarget(bool _switch)
 
 uint16_t TWChannel::checkMinMaxBrightness(uint16_t _bright)
 {
-    if (_bright < (ParamLED_TW_ChBrighnessMin * VALUE_KNX_MULTIPLY))
+    if (_bright < (ParamLED_TW_ChBrightnessMin * VALUE_KNX_MULTIPLY))
     {
-        _bright = (ParamLED_TW_ChBrighnessMin * VALUE_KNX_MULTIPLY);
+        _bright = (ParamLED_TW_ChBrightnessMin * VALUE_KNX_MULTIPLY);
     }
     if (_bright > dimmingValMax())
     {
@@ -335,9 +335,9 @@ void TWChannel::setSwitch(bool _switch)
     if (_switch)
     {
         logDebugP("switch_ON");
-        _brightness.setTargetValue(ParamLED_TW_ChBrighnessMin * VALUE_KNX_MULTIPLY, 1);
+        _brightness.setTargetValue(ParamLED_TW_ChBrightnessMin * VALUE_KNX_MULTIPLY, 1);
         // in case of stairway light
-        if (ParamLED_TW_ChStairCaseActive && ParamLED_TW_ChStaicCaseTrigger == 0)
+        if (ParamLED_TW_ChStairCaseActive && ParamLED_TW_ChStairCaseTrigger == 0)
         {
             setStairTime(delayTimerInit());
             setStairTrigger(1);
@@ -349,7 +349,7 @@ void TWChannel::setSwitch(bool _switch)
     {
         logDebugP("switch_OFF");
         // in case of stairway light
-        if (ParamLED_TW_ChStairCaseActive && ParamLED_TW_ChStaicCaseTrigger == 1)
+        if (ParamLED_TW_ChStairCaseActive && ParamLED_TW_ChStairCaseTrigger == 1)
         {
             setStairTime(delayTimerInit());
             setStairTrigger(1);
@@ -412,24 +412,24 @@ void TWChannel::setBrightness(uint16_t _bright)
 void TWChannel::setNight(bool _night)
 {
     _isNight = _night;
-    _brightness.setRange(ParamLED_TW_ChBrighnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
+    _brightness.setRange(ParamLED_TW_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
 
     if (!_night)
     {
         logDebugP("Tag");
 
-        if (_brightness.value() == ParamLED_TW_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY)
+        if (_brightness.value() == ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
         {
-            _brightness.setTargetValue(ParamLED_TW_ChBrighnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmTimeDayON);
+            _brightness.setTargetValue(ParamLED_TW_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmDayOnTime);
         }
     }
     else
     {
         logDebugP("Nacht");
 
-        if (_brightness.value() > ParamLED_TW_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY)
+        if (_brightness.value() > ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
         {
-            _brightness.setTargetValue(ParamLED_TW_ChBrighnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmTimeNightON);
+            _brightness.setTargetValue(ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmNightOnTime);
         }
     }
 }
@@ -437,13 +437,13 @@ void TWChannel::setNight(bool _night)
 void TWChannel::relDimUp()
 {
     logDebugP("relDim_UP");
-    _brightness.setTargetValue(dimmingValMax(), ParamLED_TW_ChLightDimmTimeRel);
+    _brightness.setTargetValue(dimmingValMax(), ParamLED_TW_ChLightDimmRelTime);
 }
 
 void TWChannel::relDimDown()
 {
     logDebugP("relDim_DOWN");
-    _brightness.setTargetValue(dimmingValMin(), ParamLED_TW_ChLightDimmTimeRel);
+    _brightness.setTargetValue(dimmingValMin(), ParamLED_TW_ChLightDimmRelTime);
 }
 
 void TWChannel::relDimStop()

@@ -62,9 +62,10 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-StartupBehavior" Name="StartupBehavior">
-                <TypeRestriction Base="Value" SizeInBit="8">
+                <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="Helligkeit max. Tag/Nacht" Value="0" Id="%ENID%" />
                   <Enumeration Text="Letzter Wert" Value="1" Id="%ENID%" />
+                  <!-- 1 bit reserve -->
                 </TypeRestriction>
               </ParameterType>
 
@@ -73,6 +74,7 @@
                   <Enumeration Text="Linear" Value="0" Id="%ENID%" />
                   <Enumeration Text="Exponentiell 1.5" Value="1" Id="%ENID%" />
                   <Enumeration Text="Exponentiell 2.0" Value="2" Id="%ENID%" />
+                  <!-- 1 bit reserve -->
                 </TypeRestriction>
               </ParameterType>
 

@@ -21,14 +21,6 @@
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-ColorTemperatureWW" Name="ColorTemperatureWW">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="4000" Increment="50" />
-              </ParameterType>
-
-              <ParameterType Id="%AID%_PT-ColorTemperatureCW" Name="ColorTemperatureCW">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="4000" maxInclusive="8000" Increment="50" />
-              </ParameterType>
-
               <ParameterType Id="%AID%_PT-ColorTemperature" Name="ColorTemperature">
                 <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1000" maxInclusive="8000" Increment="50" />
               </ParameterType>
