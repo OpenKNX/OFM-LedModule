@@ -391,9 +391,9 @@ uint16_t RGBChannel::dimmingTimeOFF()
     return getNight() ? ParamLED_RGB_ChLightDimmNightOffTime : ParamLED_RGB_ChLightDimmDayOffTime;
 }
 
-uint16_t RGBChannel::dimmingTime(bool _switch)
+uint16_t RGBChannel::dimmingTime(bool switchOn)
 {
-    return _switch ? dimmingTimeON() : dimmingTimeOFF();
+    return switchOn ? dimmingTimeON() : dimmingTimeOFF();
 }
 
 uint16_t RGBChannel::dimmingValStartup()
@@ -411,22 +411,22 @@ uint16_t RGBChannel::dimmingValMax()
     return getNight() ? (ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY) : (ParamLED_RGB_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY);
 }
 
-uint16_t RGBChannel::checkMinMaxBrightness(uint16_t _bright)
+uint16_t RGBChannel::checkMinMaxBrightness(uint16_t bright)
 {
-    if (_bright < (ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY))
+    if (bright < (ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY))
     {
-        _bright = (ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY);
+        bright = (ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY);
     }
-    if (_bright > dimmingValMax())
+    if (bright > dimmingValMax())
     {
-        _bright = dimmingValMax();
+        bright = dimmingValMax();
     }
-    return _bright;
+    return bright;
 }
 
-uint16_t RGBChannel::dimmingValTarget(bool _switch)
+uint16_t RGBChannel::dimmingValTarget(bool switchOn)
 {
-    return _switch ? dimmingValStartup() : 0;
+    return switchOn ? dimmingValStartup() : 0;
 }
 
 void RGBChannel::setStartupColor()
@@ -459,9 +459,9 @@ uint16_t RGBChannel::checkMinMaxColorTemp(uint16_t colorTemp)
     return colorTemp;
 }
 
-void RGBChannel::setSwitch(bool _switch)
+void RGBChannel::setSwitch(bool switchOn)
 {
-    if (_switch)
+    if (switchOn)
     {
         logDebugP("switch_ON");
         _brightness.setTargetValue(ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY, 1);
@@ -473,7 +473,7 @@ void RGBChannel::setSwitch(bool _switch)
         }
         setStartupColor();
 
-        _brightness.setTargetValue(dimmingValTarget(_switch), dimmingTime(_switch));
+        _brightness.setTargetValue(dimmingValTarget(switchOn), dimmingTime(switchOn));
     }
     else
     {
@@ -490,21 +490,21 @@ void RGBChannel::setSwitch(bool _switch)
             setLastOnValueHue(_hue.value());
             setLastOnValueSat(_saturation.value());
 
-            _brightness.setTargetValue(dimmingValTarget(_switch), dimmingTime(_switch));
+            _brightness.setTargetValue(dimmingValTarget(switchOn), dimmingTime(switchOn));
         }
     }
-    logDebugP("dimmingValTarget: %3X", dimmingValTarget(_switch));
-    logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+    logDebugP("dimmingValTarget: %3X", dimmingValTarget(switchOn));
+    logDebugP("dimmingTime: %5X", dimmingTime(switchOn));
     logDebugP("parammaxday: %5X", (ParamLED_RGB_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY));
 }
 
-void RGBChannel::setSwitchNoDim(bool _switch)
+void RGBChannel::setSwitchNoDim(bool switchOn)
 {
-    if (_switch)
+    if (switchOn)
     {
         logDebugP("switchNoDim_ON");
         setStartupColor();
-        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+        _brightness.setTargetValue(dimmingValTarget(switchOn), 1);
     }
     else
     {
@@ -512,13 +512,13 @@ void RGBChannel::setSwitchNoDim(bool _switch)
         setLastOnValue(_brightness.value());
         setLastOnValueHue(_hue.value());
         setLastOnValueSat(_saturation.value());
-        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+        _brightness.setTargetValue(dimmingValTarget(switchOn), 1);
     }
 }
 
 void RGBChannel::setHue(uint16_t hue)
 {
-    logDebugP("setHue: %3X", _hue);
+    logDebugP("setHue: %3X", hue);
     // hue max 16384
     _hue.setTargetValue(hue, dimmingTimeON());
 }
@@ -530,16 +530,16 @@ void RGBChannel::setSaturation(uint16_t saturation)
     _saturation.setTargetValue(saturation, dimmingTimeON());
 }
 
-void RGBChannel::setBrightness(uint16_t _bright)
+void RGBChannel::setBrightness(uint16_t bright)
 {
-    logDebugP("setBrightness: %3X", _bright);
-    _bright = checkMinMaxBrightness(_bright);
-    _brightness.setTargetValue(_bright, dimmingTimeON());
+    logDebugP("setBrightness: %3X", bright);
+    bright = checkMinMaxBrightness(bright);
+    _brightness.setTargetValue(bright, dimmingTimeON());
 }
 
-void RGBChannel::setNight(bool _night)
+void RGBChannel::setNight(bool night)
 {
-    _isNight = _night;
+    _isNight = night;
     _brightness.setRange(ParamLED_RGB_ChBrightnessMin, dimmingValMax());
 
     if (!getNight())
@@ -617,12 +617,12 @@ void RGBChannel::setRGB(uint32_t RGBvalue)
     logDebugP("BRE:%05X%", _brightness.value());
 }
 
-void RGBChannel::RGBpicker(uint8_t _selection)
+void RGBChannel::RGBpicker(uint8_t selection)
 {
-    logDebugP("color selection:%3X%", _selection);
+    logDebugP("color selection:%3X%", selection);
     logDebugP("Color DAY: %3X", ParamLED_RGB_ChColorDay);
     logDebugP("Color NIGHT: %3X", ParamLED_RGB_ChColorNight);
-    switch (_selection)
+    switch (selection)
     {
         case 1:
             /* color rot */
@@ -764,56 +764,56 @@ void RGBChannel::setHSV(uint32_t HSVvalue)
     //_brightness.setTargetValue(hsv.Val(), ParamLED_RGB_ChLightDimmDayOnTime);
 }
 
-uint32_t RGBChannel::conv_Temp2RGB(int _temp)
+uint32_t RGBChannel::conv_Temp2RGB(int temp)
 {
-    uint8_t _r, _g, _b = 0;
-    if (_temp > 10000)
+    uint8_t r, g, b = 0;
+    if (temp > 10000)
     {
         return 0x000000;
     }
 
     // red
-    // unter 6500 = 255
-    // über 6500 = _temp^-1,02 * 1.000.000 + 125,9
-    if (_temp >= 6500)
+    // below 6500 = 255
+    // above 6500 = temp^-1,02 * 1.000.000 + 125,9
+    if (temp >= 6500)
     {
-        _r = (uint8_t)round(pow((float)_temp, -1.02) * 1000000.0 + 125.9);
+        r = (uint8_t)round(pow((float)temp, -1.02) * 1000000.0 + 125.9);
     }
     else
     {
-        _r = 255;
+        r = 255;
     }
 
     // green
-    // unter 6500 = 100 x ln(_temp) - 623
-    // über 6500 = _temp^-1,06 * 1.000.000 +165
-    if (_temp <= 6500)
+    // below 6500 = 100 x ln(temp) - 623
+    // above 6500 = temp^-1,06 * 1.000.000 +165
+    if (temp <= 6500)
     {
-        _g = 200.0 * log10((float)_temp) - 508.0;
+        g = 200.0 * log10((float)temp) - 508.0;
     }
-    if (_temp >= 6500)
+    if (temp >= 6500)
     {
-        _g = (uint8_t)round(pow((float)_temp, -1.06) * 1000000.0 + 164.16);
+        g = (uint8_t)round(pow((float)temp, -1.06) * 1000000.0 + 164.16);
     }
 
     // blue
-    // unter 2000 = 0
-    // 2000 - 6500 = 200 x ln(_temp)-1500
-    // über 6500 = 255
-    if (_temp <= 1900)
+    // below 2000 = 0
+    // 2000 - 6500 = 200 x ln(temp)-1500
+    // above 6500 = 255
+    if (temp <= 1900)
     {
-        _b = 0;
+        b = 0;
     }
-    if (_temp >= 1900)
+    if (temp >= 1900)
     {
-        _b = (uint8_t)round(477.5 * log10(_temp) - 1565.6);
+        b = (uint8_t)round(477.5 * log10(temp) - 1565.6);
     }
-    if (_temp >= 6800)
+    if (temp >= 6800)
     {
-        _b = 255;
+        b = 255;
     }
 
-    return (uint32_t)_r << 16 | _g << 8 | _b;
+    return (uint32_t)r << 16 | g << 8 | b;
 }
 
 // EOF

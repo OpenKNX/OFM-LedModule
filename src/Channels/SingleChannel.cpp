@@ -238,9 +238,9 @@ uint16_t SingleChannel::dimmingTimeOFF()
     return getNight() ? ParamLED_SC_ChLightDimmNightOffTime : ParamLED_SC_ChLightDimmDayOffTime;
 }
 
-uint16_t SingleChannel::dimmingTime(bool _switch)
+uint16_t SingleChannel::dimmingTime(bool switchOn)
 {
-    return _switch ? dimmingTimeON() : dimmingTimeOFF();
+    return switchOn ? dimmingTimeON() : dimmingTimeOFF();
 }
 
 uint16_t SingleChannel::dimmingValStartup()
@@ -258,27 +258,27 @@ uint16_t SingleChannel::dimmingValMax()
     return getNight() ? (ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY) : (ParamLED_SC_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY);
 }
 
-uint16_t SingleChannel::dimmingValTarget(bool _switch)
+uint16_t SingleChannel::dimmingValTarget(bool switchOn)
 {
-    return _switch ? dimmingValStartup() : 0;
+    return switchOn ? dimmingValStartup() : 0;
 }
 
-uint16_t SingleChannel::checkMinMaxBrightness(uint16_t _bright)
+uint16_t SingleChannel::checkMinMaxBrightness(uint16_t bright)
 {
-    if (_bright < (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY))
+    if (bright < (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY))
     {
-        _bright = (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY);
+        bright = (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY);
     }
-    if (_bright > dimmingValMax())
+    if (bright > dimmingValMax())
     {
-        _bright = dimmingValMax();
+        bright = dimmingValMax();
     }
-    return _bright;
+    return bright;
 }
 
-void SingleChannel::setSwitch(bool _switch)
+void SingleChannel::setSwitch(bool switchOn)
 {
-    if (_switch)
+    if (switchOn)
     {
         logDebugP("switch_ON");
         _brightness.setTargetValue(ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY, 1);
@@ -288,7 +288,7 @@ void SingleChannel::setSwitch(bool _switch)
             setStairTime(delayTimerInit());
             setStairTrigger(1);
         }
-        _brightness.setTargetValue(dimmingValTarget(_switch), dimmingTime(_switch));
+        _brightness.setTargetValue(dimmingValTarget(switchOn), dimmingTime(switchOn));
     }
     else
     {
@@ -302,39 +302,39 @@ void SingleChannel::setSwitch(bool _switch)
         else
         {
             setLastOnValue(_brightness.value());
-            _brightness.setTargetValue(dimmingValTarget(_switch), dimmingTime(_switch));
+            _brightness.setTargetValue(dimmingValTarget(switchOn), dimmingTime(switchOn));
         }
     }
-    logDebugP("dimmingValTarget: %6X", dimmingValTarget(_switch));
-    logDebugP("dimmingTime: %5X", dimmingTime(_switch));
+    logDebugP("dimmingValTarget: %6X", dimmingValTarget(switchOn));
+    logDebugP("dimmingTime: %5X", dimmingTime(switchOn));
     _sceneNumberActive = 0;
 }
 
-void SingleChannel::setSwitchNoDim(bool _switch)
+void SingleChannel::setSwitchNoDim(bool switchOn)
 {
-    if (_switch)
+    if (switchOn)
     {
         logDebugP("NoDimSwitch_ON");
-        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+        _brightness.setTargetValue(dimmingValTarget(switchOn), 1);
     }
     else
     {
         logDebugP("NoDimSwitch_OFF");
         setLastOnValue(_brightness.value());
-        _brightness.setTargetValue(dimmingValTarget(_switch), 1);
+        _brightness.setTargetValue(dimmingValTarget(switchOn), 1);
     }
     _sceneNumberActive = 0;
 }
 
-void SingleChannel::setBrightness(uint16_t _bright)
+void SingleChannel::setBrightness(uint16_t bright)
 {
-    logDebugP("setBrightness(): %9X", _bright);
-    _bright = checkMinMaxBrightness(_bright);
-    _brightness.setTargetValue(_bright, dimmingTimeON());
+    logDebugP("setBrightness(): %9X", bright);
+    bright = checkMinMaxBrightness(bright);
+    _brightness.setTargetValue(bright, dimmingTimeON());
     _sceneNumberActive = 0;
 }
 
-void SingleChannel::setNight(bool _night)
+void SingleChannel::setNight(bool night)
 {
 
     logDebugP("setNight() %d -> %d", ParamLED_SC_ChScenesDisableNightSw, _sceneNumberActive);
@@ -342,9 +342,9 @@ void SingleChannel::setNight(bool _night)
     if (ParamLED_SC_ChScenesDisableNightSw || (!ParamLED_SC_ChScenesDisableNightSw && _sceneNumberActive == 0))
     {
         logDebugP("Nachtmodus:");
-        _isNight = _night;
+        _isNight = night;
         _brightness.setRange(ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
-        if (!_night)
+        if (!night)
         {
             logDebugP("Tag");
 

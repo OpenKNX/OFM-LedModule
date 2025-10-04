@@ -16,12 +16,12 @@ class RGBChannel : public LightChannel
 
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
-    uint16_t dimmingTime(bool _switch);
+    uint16_t dimmingTime(bool switchOn);
     uint16_t dimmingValStartup();
     uint16_t dimmingValMin();
     uint16_t dimmingValMax();
-    uint16_t dimmingValTarget(bool _switch);
-    uint16_t checkMinMaxBrightness(uint16_t _bright);
+    uint16_t dimmingValTarget(bool switchOn);
+    uint16_t checkMinMaxBrightness(uint16_t bright);
     void setStartupColor();
     uint8_t getDefaultColor();
     uint16_t checkMinMaxColorTemp(uint16_t colorTemp);
@@ -30,20 +30,20 @@ class RGBChannel : public LightChannel
     uint16_t getLastOnValueSat() { return _lastOnValueSat; }
     void setLastOnValueSat(uint16_t lastOnValueSat) { _lastOnValueSat = lastOnValueSat; }
 
-    void setSwitch(bool _switch);
-    void setSwitchNoDim(bool _switch);
-    void setHue(uint16_t _hue);
+    void setSwitch(bool switchOn);
+    void setSwitchNoDim(bool switchOn);
+    void setHue(uint16_t hue);
     void setSaturation(uint16_t saturation);
-    void setBrightness(uint16_t _bright);
-    void setNight(bool _night) override;
+    void setBrightness(uint16_t bright);
+    void setNight(bool night) override;
     void relDimUp();
     void relDimDown();
     void relDimStop();
     void setColorTemperature(uint16_t colorTemp);
-    void RGBpicker(uint8_t _selection);
+    void RGBpicker(uint8_t selection);
     void setRGB(uint32_t RGBvalue);
     void setHSV(uint32_t HSVvalue);
-    uint32_t conv_Temp2RGB(int _temp);
+    uint32_t conv_Temp2RGB(int temp);
 
   private:
     const std::string name() override;

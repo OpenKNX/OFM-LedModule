@@ -16,24 +16,24 @@ class TWChannel : public LightChannel
 
     uint16_t dimmingTimeON();
     uint16_t dimmingTimeOFF();
-    uint16_t dimmingTime(bool _switch);
+    uint16_t dimmingTime(bool switchOn);
     uint16_t dimmingValStartup();
     uint16_t dimmingValMin();
     uint16_t dimmingValMax();
-    uint16_t dimmingValTarget(bool _switch);
-    uint16_t checkMinMaxBrightness(uint16_t _bright);
+    uint16_t dimmingValTarget(bool switchOn);
+    uint16_t checkMinMaxBrightness(uint16_t bright);
     int32_t dimmingTempStartup();
     int32_t dimmingTempMax();
-    int32_t dimmingTempTarget(bool _switch);
+    int32_t dimmingTempTarget(bool switchOn);
     uint16_t checkMinMaxColorTemp(uint16_t colorTemp);
     int32_t getLastOnValueTemp() { return _lastOnValueTemp; }
     void setLastOnValueTemp(int32_t lastOnValueTemp) { _lastOnValueTemp = lastOnValueTemp; }
 
-    void setSwitch(bool _switch);
-    void setSwitchNoDim(bool _switch);
-    void setBoost(bool _switch);
-    void setBrightness(uint16_t _bright);
-    void setNight(bool _night) override;
+    void setSwitch(bool switchOn);
+    void setSwitchNoDim(bool switchOn);
+    void setBoost(bool switchOn);
+    void setBrightness(uint16_t bright);
+    void setNight(bool night) override;
     void relDimUp();
     void relDimDown();
     void relDimStop();
