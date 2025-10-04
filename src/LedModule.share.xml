@@ -304,7 +304,7 @@
                             <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                             <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
                           </Columns>
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text=" Ausschaltverzögerung" Cell="1,2" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="  Ausschaltverzögerung" Cell="1,2" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%00005_R-%TT%0000501" Cell="1,3" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%00004_R-%TT%0000401" Cell="1,4" />
                         </ParameterBlock>
@@ -329,7 +329,7 @@
                             <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                             <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
                           </Columns>
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text=" Netzteilspannung zyklisch senden&#10; (0 = nicht senden)" Cell="1,2" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="  Netzteilspannung zyklisch senden&#10;  (0 = nicht senden)" Cell="1,2" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%00010_R-%TT%0001001" Cell="1,3" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%00009_R-%TT%0000901" Cell="1,4" />
                         </ParameterBlock>
@@ -351,7 +351,7 @@
                             <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                             <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
                           </Columns>
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text=" Temperatur zyklisch senden&#10; (0 = nicht senden)" Cell="1,2" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="  Temperatur zyklisch senden&#10;  (0 = nicht senden)" Cell="1,2" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%00016_R-%TT%0001601" Cell="1,3" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%00015_R-%TT%0001501" Cell="1,4" />
                         </ParameterBlock>

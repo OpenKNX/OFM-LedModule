@@ -47,6 +47,8 @@ class TWChannel : public LightChannel
 
     int32_t _lastOnValueTemp = 4000;
 
+    uint32_t _statusSendTemperaturTimer = 0;
+
     void handleScene(uint8_t sceneNr);
     enum ValueType
     {

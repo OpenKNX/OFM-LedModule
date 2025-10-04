@@ -32,40 +32,56 @@ const std::string TWChannel::name()
 void TWChannel::update()
 {
     uint16_t tmpBrightness = _brightness.value();
+    uint16_t tmpColor = _colorTemperature.value();
     bool stateOn = tmpBrightness > 0;
 
-    if (_lastBrightnessLevel != tmpBrightness)
+    if (ParamLED_TW_ChStatusOnOffSend)
     {
-        _lastBrightnessLevel = tmpBrightness;
-
-        if ((bool)KoLED_TW_ChStateOnOff.value(DPT_State) != stateOn)
-            KoLED_TW_ChStateOnOff.value(tmpBrightness > 0, DPT_State);
+        if ((bool)KoLED_TW_ChStateOnOff.value(DPT_State) != stateOn ||
+            ParamLED_TW_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_TW_ChStatusOnOffTimeMS))
+        {
+            KoLED_TW_ChStateOnOff.value(stateOn, DPT_State);
+            _statusSendOnOffTimer = delayTimerInit();
+        }
     }
 
-    uint16_t tmpColor = _colorTemperature.value();
-    if (_lastColorTemp != tmpColor)
-        _lastColorTemp = tmpColor;
-
-    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
+    if (ParamLED_TW_ChStatusBrightnessSend)
     {
-        _lastTimestamp = delayTimerInit();
-
-        if (((uint16_t)KoLED_TW_ChBrightnessStatus.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) != tmpBrightness)
+        if (_lastBrightnessLevel != tmpBrightness ||
+            ParamLED_TW_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_TW_ChStatusBrightnessTimeMS))
         {
-            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
-            KoLED_TW_ChBrightnessStatus.value((u_int16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
+            KoLED_TW_ChBrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
+            _statusSendBrightnessTimer = delayTimerInit();
         }
+    }
 
-        if ((uint16_t)KoLED_TW_ChColorTemperatureStatus.value(Dpt(7, 600)) != tmpColor)
+    if (ParamLED_TW_ChStatusTempSend)
+    {
+        if (_lastColorTemp != tmpColor ||
+            ParamLED_TW_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_TW_ChStatusTempTimeMS))
         {
-            logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
-
             if (stateOn)
                 KoLED_TW_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
             else
                 KoLED_TW_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
+            
+            _statusSendTemperaturTimer = delayTimerInit();
         }
     }
+        
+    if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
+    {
+        if (_lastBrightnessLevel != tmpBrightness)
+            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
+
+        if (_lastColorTemp != tmpColor)
+            logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
+
+        _debugTimer = delayTimerInit();
+    }
+    
+    _lastBrightnessLevel = tmpBrightness;
+    _lastColorTemp = tmpColor;
 }
 
 void TWChannel::loop()

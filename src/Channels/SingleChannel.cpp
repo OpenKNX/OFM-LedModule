@@ -31,25 +31,37 @@ const std::string SingleChannel::name()
 void SingleChannel::update()
 {
     uint16_t tmpBrightness = _brightness.value();
-    if (_lastBrightnessLevel != tmpBrightness)
+    bool stateOn = tmpBrightness > 0;
+
+    if (ParamLED_SC_ChStatusOnOffSend)
     {
-        _lastBrightnessLevel = tmpBrightness;
-
-        bool stateOn = tmpBrightness > 0;
-        if ((bool)KoLED_SC_ChStateOnOff.value(DPT_State) != stateOn)
-            KoLED_SC_ChStateOnOff.value(tmpBrightness > 0, DPT_State);
-    }
-
-    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY))
-    {
-        _lastTimestamp = delayTimerInit();
-
-        if (((uint16_t)KoLED_SC_ChBrightnessStatus.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) != tmpBrightness)
+        if ((bool)KoLED_SC_ChStateOnOff.value(DPT_State) != stateOn ||
+            ParamLED_SC_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_SC_ChStatusOnOffTimeMS))
         {
-            logDebugP("update: lastBrLevel: %d -> tmpBrLevel %d -> BR.value %d -> BR.step %d", _lastBrightnessLevel, tmpBrightness, _brightness.value(), 0);
-            KoLED_SC_ChBrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
+            KoLED_SC_ChStateOnOff.value(stateOn, DPT_State);
+            _statusSendOnOffTimer = delayTimerInit();
         }
     }
+
+    if (ParamLED_SC_ChStatusBrightnessSend)
+    {
+        if (_lastBrightnessLevel != tmpBrightness ||
+            ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
+        {
+            KoLED_SC_ChBrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
+            _statusSendBrightnessTimer = delayTimerInit();
+        }
+    }
+
+    if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
+    {
+        if (_lastBrightnessLevel != tmpBrightness)
+            logDebugP("update: lastBrLevel: %d -> tmpBrLevel %d -> BR.value %d -> BR.step %d", _lastBrightnessLevel, tmpBrightness, _brightness.value(), 0);
+
+        _debugTimer = delayTimerInit();
+    }
+
+    _lastBrightnessLevel = tmpBrightness;
 }
 
 void SingleChannel::loop()

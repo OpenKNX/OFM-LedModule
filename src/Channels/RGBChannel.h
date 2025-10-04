@@ -57,6 +57,10 @@ class RGBChannel : public LightChannel
     DimmableValue<uint16_t> _hue;
     DimmableValue<uint16_t> _saturation;
 
+    uint32_t _statusSendTemperaturTimer = 0;
+    uint32_t _statusSendRgbTimer = 0;
+    uint32_t _statusSendHsvTimer = 0;
+
     void handleScene(uint8_t sceneNr);
     enum ValueType
     {

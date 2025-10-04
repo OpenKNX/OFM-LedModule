@@ -6,7 +6,7 @@
 #include <Arduino.h>
 
 #define DIMLOOP_DELAY 20 // ms
-#define UPDATE_DELAY 500 // ms
+#define DEBUG_DELAY 500 // ms
 #define N_SCENES 8
 
 #define LED_INVALID_HW_CHANNEL 0xFF
@@ -143,7 +143,6 @@ class LightChannel : public OpenKNX::Channel
     uint8_t _numChannels;
     HWDimmer *_pDimmer;
     uint8_t *_pHWChannels;
-    uint32_t _lastTimestamp = 0;
     uint32_t _lastDimTimestamp = 0;
     uint16_t _lastBrightnessLevel = 0;
 
@@ -154,13 +153,17 @@ class LightChannel : public OpenKNX::Channel
     bool _isLocked = false;
     uint8_t _sceneNumberActive = 0;
 
+    uint32_t _statusSendOnOffTimer = 0;
+    uint32_t _statusSendBrightnessTimer = 0;
+
     SceneConfig *_scenes;
 
     DimmableValue<uint16_t> _brightness;
 
     virtual void update() = 0;
-
     virtual void handleScene(uint8_t sceneNr) = 0;
+
+    uint32_t _debugTimer = 0;
 
   private:
     const std::string name() override;

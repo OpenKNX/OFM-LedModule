@@ -36,55 +36,94 @@ const std::string RGBChannel::name()
 
 void RGBChannel::update()
 {
+    uint16_t tmpBrightness = _brightness.value();
+    //uint16_t tmpColor = _colorTemperature.value(); // #ToDo
     uint16_t tmpHue = _hue.value();
     uint16_t tmpSat = _saturation.value();
-    uint16_t tmpBrightness = _brightness.value();
-    // Colors::HSV hsv(tmpHue, tmpSat, _UFP16(tmpBrightness, 2));
     Colors::HSV hsv(tmpHue, tmpSat, tmpBrightness);
-
     bool stateOn = tmpBrightness > 0;
 
-    if (_lastBrightnessLevel != tmpBrightness)
+    if (ParamLED_RGB_ChStatusOnOffSend)
     {
-        _lastBrightnessLevel = tmpBrightness;
-
-        if ((bool)KoLED_RGB_ChStateOnOff.value(DPT_State) != stateOn)
-            KoLED_RGB_ChStateOnOff.value(tmpBrightness > 0, DPT_State);
+        if ((bool)KoLED_RGB_ChStateOnOff.value(DPT_State) != stateOn ||
+            ParamLED_RGB_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_RGB_ChStatusOnOffTimeMS))
+        {
+            KoLED_RGB_ChStateOnOff.value(stateOn, DPT_State);
+            _statusSendOnOffTimer = delayTimerInit();
+        }
     }
 
-    if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
+    if (ParamLED_RGB_ChStatusBrightnessSend)
     {
-        _lastHueValue = tmpHue;
-        _lastSatValue = tmpSat;
+        if (_lastBrightnessLevel != tmpBrightness ||
+            ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
+        {
+            // KoLED_RGB_BrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
+            KoLED_RGB_ChBrightnessStatus.value(map(tmpBrightness, -1, VALUE_KNX_COUNT - 2, 0, 100), DPT_Scaling);
+            _statusSendBrightnessTimer = delayTimerInit();
+        }
     }
 
-    if (delayCheckMillis(_lastTimestamp, UPDATE_DELAY * 5))
-    {
-        _lastTimestamp = delayTimerInit();
+    // #ToDo
+    // if (ParamLED_RGB_ChStatusTempSend)
+    // {
+    //     if (_lastColorTemp != tmpColor ||
+    //         ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
+    //     {
+    //         if (stateOn)
+    //             KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
+    //         else
+    //             KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
+            
+    //         _statusSendTemperaturTimer = delayTimerInit();
+    //     }
+    // }
 
-        if (((uint16_t)KoLED_RGB_ChBrightnessStatus.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) != tmpBrightness)
+    if (ParamLED_RGB_ChStatusRGBSend)
+    {
+        if (_lastHueValue != tmpHue || _lastSatValue != tmpSat ||
+            ParamLED_RGB_ChStatusRGBTimeMS > 0 && delayCheckMillis(_statusSendRgbTimer, ParamLED_RGB_ChStatusRGBTimeMS))
+        {
+            if (stateOn)
+                KoLED_RGB_ChRGBStatus.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+            else
+                KoLED_RGB_ChRGBStatus.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
+            
+            _statusSendRgbTimer = delayTimerInit();
+        }
+    }
+
+    if (ParamLED_RGB_ChStatusHSVSend)
+    {
+        if (_lastHueValue != tmpHue || _lastSatValue != tmpSat ||
+            ParamLED_RGB_ChStatusHSVTimeMS > 0 && delayCheckMillis(_statusSendHsvTimer, ParamLED_RGB_ChStatusHSVTimeMS))
+        {
+            if (stateOn)
+                KoLED_RGB_ChHSVStatus.value(hsv.toUint32(), DPT_Colour_RGB);
+            else
+                KoLED_RGB_ChHSVStatus.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
+            
+            _statusSendHsvTimer = delayTimerInit();
+        }
+    }
+        
+    if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
+    {
+        if (_lastBrightnessLevel != tmpBrightness)
+            logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
+
+        // #ToDo
+        // if (_lastColorTemp != tmpColor)
+        //     logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
+
+        if (_lastBrightnessLevel != tmpBrightness)
         {
             logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
             logDebugP("Brightness KO: %d, TMP: %d", (uint16_t)KoLED_RGB_ChBrightnessStatus.value(DPT_Scaling), tmpBrightness);
-            // KoLED_RGB_BrightnessStatus.value((uint16_t)(tmpBrightness/ VALUE_KNX_MULTIPLY), DPT_Scaling);
-            KoLED_RGB_ChBrightnessStatus.value(map(tmpBrightness, -1, VALUE_KNX_COUNT - 2, 0, 100), DPT_Scaling);
         }
 
-        if ((uint32_t)KoLED_RGB_ChHSVStatus.value(DPT_Colour_RGB) != hsv.toUint32())
-        {
+        if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
             logDebugP("update: Hue: %d -> %d Sat: %d -> %d", _lastHueValue, tmpHue, _lastSatValue, tmpSat);
-
-            if (stateOn)
-            {
-                KoLED_RGB_ChHSVStatus.value(hsv.toUint32(), DPT_Colour_RGB);
-                KoLED_RGB_ChRGBStatus.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
-            }
-            else
-            {
-                KoLED_RGB_ChHSVStatus.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
-                KoLED_RGB_ChRGBStatus.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
-            }
-        }
 
         Colors::RGB farbe = Colors::hsv2rgb(Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), ((uint16_t)_brightness.step(_lastDimTimestamp)) << 2));
         logDebugP("R: %d G: %d B: %d", farbe.Red(), farbe.Green(), farbe.Blue());
@@ -93,7 +132,14 @@ void RGBChannel::update()
         logDebugP("HSV: %d", Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp)));
         logDebugP("Bright: %d > LUTval: %d", _brightness.value(), _pDimmer->scale(_brightness.value(), (HWDimmer::DimLUTType)0));
         logDebugP("HUE: %d > LUTval: %d", _hue.value(), _pDimmer->scale(_hue.value(), (HWDimmer::DimLUTType)0));
+
+        _debugTimer = delayTimerInit();
     }
+    
+    _lastBrightnessLevel = tmpBrightness;
+    // _lastColorTemp = tmpColor; // #ToDo
+    _lastHueValue = tmpHue;
+    _lastSatValue = tmpSat;
 }
 
 void RGBChannel::loop()
