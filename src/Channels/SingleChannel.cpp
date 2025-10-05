@@ -134,14 +134,8 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_SC_KoChStateOnOff:
-                break;
-
             case LED_SC_KoChLocking:
                 setLock(ko.value(DPT_Switch));
-                break;
-
-            case LED_SC_KoChStateLocking:
                 break;
 
             case LED_SC_KoChBrightness:
@@ -149,9 +143,6 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 {
                     setBrightness((uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
                 }
-                break;
-
-            case LED_SC_KoChBrightnessStatus:
                 break;
 
             case LED_SC_KoChBrightnessRel:
@@ -189,6 +180,12 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 {
                     setNight(ko.value(DPT_Switch));
                 }
+                break;
+
+            case LED_SC_KoChStateOnOff:
+            case LED_SC_KoChStateLocking:
+            case LED_SC_KoChBrightnessStatus:
+                // read-only
                 break;
 
             default:

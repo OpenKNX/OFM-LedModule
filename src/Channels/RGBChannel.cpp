@@ -237,15 +237,9 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_RGB_KoChStateOnOff:
-                break;
-
             case LED_RGB_KoChLocking:
                 setLock(ko.value(DPT_Switch));
                 KoLED_RGB_ChStateLocking.value(getLock(), DPT_Switch);
-                break;
-
-            case LED_RGB_KoChStateLocking:
                 break;
 
             case LED_RGB_KoChBrightness:
@@ -253,9 +247,6 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 {
                     setBrightness((u_int16_t)((u_int16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
                 }
-                break;
-
-            case LED_RGB_KoChBrightnessStatus:
                 break;
 
             case LED_RGB_KoChBrightnessRel:
@@ -293,17 +284,11 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            // case LED_RGB_KoChColorTemperatureStatus:
-            //     break;
-
             case LED_RGB_KoChRGB:
                 if (!getLock())
                 {
                     setRGB(ko.value(DPT_Colour_RGB));
                 }
-                break;
-
-            case LED_RGB_KoChRGBStatus:
                 break;
 
             case LED_RGB_KoChHSV:
@@ -313,15 +298,21 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_RGB_KoChHSVStatus:
-                break;
-
             // Day or Night
             case LED_RGB_KoChNight:
                 if (!getLock())
                 {
                     setNight(ko.value(DPT_Switch));
                 }
+                break;
+
+            case LED_RGB_KoChStateOnOff:
+            case LED_RGB_KoChStateLocking:
+            case LED_RGB_KoChBrightnessStatus:
+            // case LED_RGB_KoChColorTemperatureStatus:
+            case LED_RGB_KoChRGBStatus:
+            case LED_RGB_KoChHSVStatus:
+                // read-only
                 break;
 
             default:

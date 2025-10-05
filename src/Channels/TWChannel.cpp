@@ -171,8 +171,6 @@ void TWChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_TW_KoChStateOnOff:
-                break;
             case LED_TW_KoChLocking:
                 break;
 
@@ -183,8 +181,6 @@ void TWChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_TW_KoChBrightnessStatus:
-                break;
             case LED_TW_KoChBrightnessRel:
                 if (!getLock())
                 {
@@ -220,12 +216,16 @@ void TWChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_TW_KoChColorTemperatureStatus:
-                break;
-
             // Day or Night
             case LED_TW_KoChNight:
                 setNight(ko.value(DPT_Switch));
+                break;
+
+            case LED_TW_KoChStateOnOff:
+            case LED_TW_KoChStateLocking:
+            case LED_TW_KoChBrightnessStatus:
+            case LED_TW_KoChColorTemperatureStatus:
+                // read-only
                 break;
 
             default:
