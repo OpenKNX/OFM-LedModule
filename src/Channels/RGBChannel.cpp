@@ -16,7 +16,7 @@ RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
 
     KoLED_RGB_ChStateOnOff.value(false, DPT_State);
     KoLED_RGB_ChBrightnessStatus.value((uint16_t)(_brightness.value() / VALUE_KNX_MULTIPLY), DPT_Scaling);
-    KoLED_RGB_ChColorTemperatureStatus.valueNoSend((uint16_t)0, Dpt(7, 600));
+    // KoLED_RGB_ChColorTemperatureStatus.valueNoSend((uint16_t)0, Dpt(7, 600));
     KoLED_RGB_ChHSVStatus.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
     KoLED_RGB_ChRGBStatus.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
 
@@ -64,7 +64,6 @@ void RGBChannel::update()
         }
     }
 
-    // #ToDo
     // if (ParamLED_RGB_ChStatusTempSend)
     // {
     //     if (_lastColorTemp != tmpColor ||
@@ -294,8 +293,8 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_RGB_KoChColorTemperatureStatus:
-                break;
+            // case LED_RGB_KoChColorTemperatureStatus:
+            //     break;
 
             case LED_RGB_KoChRGB:
                 if (!getLock())
@@ -588,7 +587,7 @@ void RGBChannel::setColorTemperature(uint16_t colorTemp)
     {
         setBrightness(_brightness.value());
     }
-    KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
+    // KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
 }
 
 void RGBChannel::setRGB(uint32_t RGBvalue)

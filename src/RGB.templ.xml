@@ -158,7 +158,7 @@
               <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%BrightnessRel"          Text="Helligkeit Relativ"    Number="%K6%"  FunctionText="RGB %C% - Helligkeit Relativ"    ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
               <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%BrightnessStatus"       Text="Helligkeit Status"     Number="%K7%"  FunctionText="RGB %C% - Helligkeit Status"     ObjectSize="1 Byte"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"     />
               <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%ColorTemperature"       Text="Farbtemperatur"        Number="%K8%"  FunctionText="RGB %C% - Farbtemperatur"        ObjectSize="2 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
-              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status" Number="%K9%"  FunctionText="RGB %C% - Farbtemperatur Status" ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
+              <!-- <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status" Number="%K9%"  FunctionText="RGB %C% - Farbtemperatur Status" ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   /> -->
               <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%RGB"                    Text="RGB"                   Number="%K10%" FunctionText="RGB %C% - RGB"                   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
               <ComObject Id="%AID%_O-%TT%%CC%011" Name="Ch%C%RGBStatus"              Text="RGB Status"            Number="%K11%" FunctionText="RGB %C% - RGB Status"            ObjectSize="3 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
               <ComObject Id="%AID%_O-%TT%%CC%012" Name="Ch%C%HSV"                    Text="HSV"                   Number="%K12%" FunctionText="RGB %C% - HSV"                   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
@@ -177,7 +177,7 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" />
+              <!-- <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" /> -->
               <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_O-%TT%%CC%011" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" RefId="%AID%_O-%TT%%CC%012" />
@@ -317,10 +317,10 @@
                       </when>
                     </choose>
 
-                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="1" /> <!-- StatusTempSend -->
+                    <!-- <ParameterRefRef RefId="%AID%_UP-%TT%%CC%019_R-%TT%%CC%01901" IndentLevel="1" /> <!- StatusTempSend ->
                     <choose ParamRefId="%AID%_UP-%TT%%CC%019_R-%TT%%CC%01901">
                       <when test="1">
-                        <ParameterBlock Id="%AID%_PB-nnn" Name="StatusTemp" Inline="true" Layout="Grid"> <!-- StatusTemp cyclic pattern -->
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="StatusTemp" Inline="true" Layout="Grid"> <!- StatusTemp cyclic pattern ->
                           <Rows>
                             <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
                           </Rows>
@@ -337,7 +337,7 @@
 
                         <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" />
                       </when>
-                    </choose>
+                    </choose> -->
 
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%022_R-%TT%%CC%02201" IndentLevel="1" /> <!-- StatusRGBSend -->
                     <choose ParamRefId="%AID%_UP-%TT%%CC%022_R-%TT%%CC%02201">
