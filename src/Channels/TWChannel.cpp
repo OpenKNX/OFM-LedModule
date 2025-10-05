@@ -172,6 +172,8 @@ void TWChannel::processInputKo(GroupObject& ko)
                 break;
 
             case LED_TW_KoChLocking:
+                setLock(ko.value(DPT_Switch));
+                KoLED_RGB_ChStateLocking.value(getLock(), DPT_Switch);
                 break;
 
             case LED_TW_KoChBrightness:

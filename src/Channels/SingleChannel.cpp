@@ -136,6 +136,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
 
             case LED_SC_KoChLocking:
                 setLock(ko.value(DPT_Switch));
+                KoLED_RGB_ChStateLocking.value(getLock(), DPT_Switch);
                 break;
 
             case LED_SC_KoChBrightness:
