@@ -1,5 +1,7 @@
 #include "HWDimmerRP2040.h"
 #include "OpenKNX.h"
+#include "hardware/pwm.h"
+#include "hardware/clocks.h"
 
 /**
  * @brief Construct a new HWDimmerRP2040::HWDimmerRP2040 object
@@ -9,14 +11,39 @@
  */
 HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwmFreq) : HWDimmer(numChannels)
 {
+    
+    assert(numChannels <= 16); // rp2040 can only support 16 pwm channels
+
+    uint32_t clk_hz = clock_get_hz(clock_handle_t::clk_sys);
+    logDebugP("RP2040 System clock: %d Hz", clk_hz);
+    float div = (float)clk_hz / (float)(pwmFreq);
+    logDebugP("RP2040 PWM freq: %d Hz, divider: %.4f", pwmFreq, div);
+
+    uint8_t slices = 0;
+    for (uint8_t ch = 0; ch < numChannels; ch++)
+    {
+        int slice_cand = pwm_gpio_to_slice_num(this->pins[ch]);
+        if (slices & (1 << slice_cand))
+        {
+            // already init
+            continue;
+        }
+        slices |= (1 << slice_cand);
+        pwm_config config = pwm_get_default_config();
+        pwm_config_set_clkdiv(&config, div);
+        pwm_config_set_output_polarity(&config, false, true); // invert channel B
+        pwm_init(slice_cand, &config, false);  // do not start yet
+    }
+
     this->pins = pins;
     for (uint8_t ch = 0; ch < numChannels; ch++)
     {
-        pinMode(this->pins[ch], OUTPUT);
-        setLevel(0, ch);
+        gpio_set_function(this->pins[ch], GPIO_FUNC_PWM);
+        pwm_set_gpio_level(this->pins[ch], 0);
     }
-    analogWriteFreq(pwmFreq);
-    analogWriteRange(DIM_RANGE);
+
+    // start all slices simultaneously
+    pwm_set_mask_enabled(slices);
 
 #if 0
         logDebugP("Lookup table:");
@@ -43,7 +70,11 @@ bool HWDimmerRP2040::setLevel(uint16_t level, uint8_t channel)
     if (setLevelInternal(level, channel))
     {
         isValidChannel = true;
-        analogWrite(pins[channel], min(getLevel(channel), DIM_RANGE));
+        if (pwm_gpio_to_channel(this->pins[channel]) == PWM_CHAN_B)
+        {
+            level = DIM_RANGE - level; // invert for channel B
+        }
+        pwm_set_gpio_level(this->pins[channel], level);
     }
     return isValidChannel;
 }
