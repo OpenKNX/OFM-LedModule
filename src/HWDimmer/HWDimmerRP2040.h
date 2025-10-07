@@ -4,7 +4,7 @@
 #include "OpenKNX.h"
 #include "hardware.h"
 
-#define DIM_RESOLUTION_BIT 13
+#define DIM_RESOLUTION_BIT 16
 #define DIM_RANGE ((1 << DIM_RESOLUTION_BIT) - 1)
 
 class HWDimmerRP2040 : public HWDimmer
