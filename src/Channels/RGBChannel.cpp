@@ -1,6 +1,8 @@
 #include "RGBChannel.h"
 #include <Math.h>
 #include <knx.h>
+#include <cmath>
+#include <algorithm>
 
 RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
     : LightChannel(index, pDimmer, hwChannels, 3), _hue(0, 0, H_PART - 1), _saturation(0, 0, VAL_RANGE)
@@ -16,7 +18,7 @@ RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
 
     KoLED_RGB_ChStateOnOff.value(false, DPT_State);
     KoLED_RGB_ChBrightnessStatus.value((uint16_t)(_brightness.value() / VALUE_KNX_MULTIPLY), DPT_Scaling);
-    // KoLED_RGB_ChColorTemperatureStatus.valueNoSend((uint16_t)0, Dpt(7, 600));
+    KoLED_RGB_ChColorTemperatureStatus.valueNoSend((uint16_t)0, Dpt(7, 600));
     KoLED_RGB_ChHSVStatus.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
     KoLED_RGB_ChRGBStatus.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
 
@@ -37,9 +39,9 @@ const std::string RGBChannel::name()
 void RGBChannel::update()
 {
     uint16_t tmpBrightness = _brightness.value();
-    // uint16_t tmpColor = _colorTemperature.value(); // #ToDo
     uint16_t tmpHue = _hue.value();
     uint16_t tmpSat = _saturation.value();
+    uint16_t tmpColor = _lastColorTemp;
     Colors::HSV hsv(tmpHue, tmpSat, tmpBrightness);
     bool stateOn = tmpBrightness > 0;
 
@@ -64,19 +66,25 @@ void RGBChannel::update()
         }
     }
 
-    // if (ParamLED_RGB_ChStatusTempSend)
-    // {
-    //     if (_lastColorTemp != tmpColor ||
-    //         ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
-    //     {
-    //         if (stateOn)
-    //             KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
-    //         else
-    //             KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
+    if (ParamLED_RGB_ChStatusTempSend)
+    {
+        // as color temperature calculation is quite CPU intensive,
+        // we only do this when status sending is enabled
+        // and color temperature can only change if hue or saturation changes
+        if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
+            tmpColor = conv_RGB2Temp(Colors::hsv2rgb(hsv).toUint32());
 
-    //         _statusSendTemperaturTimer = delayTimerInit();
-    //     }
-    // }
+        if (_lastColorTemp != tmpColor ||
+            ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
+        {
+            if (stateOn)
+                KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
+            else
+                KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
+
+            _statusSendTemperaturTimer = delayTimerInit();
+        }
+    }
 
     if (ParamLED_RGB_ChStatusRGBSend)
     {
@@ -111,9 +119,8 @@ void RGBChannel::update()
         if (_lastBrightnessLevel != tmpBrightness)
             logDebugP("update: Br: %d -> %d", _lastBrightnessLevel, tmpBrightness);
 
-        // #ToDo
-        // if (_lastColorTemp != tmpColor)
-        //     logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
+        if (_lastColorTemp != tmpColor)
+            logDebugP("update: CT: %d -> %d", _lastColorTemp, tmpColor);
 
         if (_lastBrightnessLevel != tmpBrightness)
         {
@@ -136,7 +143,7 @@ void RGBChannel::update()
     }
 
     _lastBrightnessLevel = tmpBrightness;
-    // _lastColorTemp = tmpColor; // #ToDo
+    _lastColorTemp = tmpColor;
     _lastHueValue = tmpHue;
     _lastSatValue = tmpSat;
 }
@@ -592,7 +599,8 @@ void RGBChannel::setColorTemperature(uint16_t colorTemp)
     {
         setBrightness(_brightness.value());
     }
-    // KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
+
+    KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
 }
 
 void RGBChannel::setRGB(uint32_t RGBvalue)
@@ -822,17 +830,56 @@ uint32_t RGBChannel::conv_Temp2RGB(int temp)
     return (uint32_t)r << 16 | g << 8 | b;
 }
 
-int RGBChannel::conv_RGB2Temp(uint32_t target_rgb)
+// uint32_t RGBChannel::conv_Temp2RGB(int temp)
+// {
+//     uint8_t r, g, b = 0;
+    
+//     // Clamp to practical range
+//     double temperature = CLAMP(temp, 1000.0, 40000.0);
+//     temperature = temperature / 100.0;
+
+//     double R, G, B;
+
+//     // Red
+//     if (temperature <= 66.0)
+//         R = 255.0;
+//     else
+//         R = 329.698727446 * pow(temperature - 60.0, -0.1332047592);
+
+//     // Green
+//     if (temperature <= 66.0)
+//         G = 99.4708025861 * logl(temperature) - 161.1195681661;
+//     else
+//         G = 288.1221695283 * pow(temperature - 60.0, -0.0755148492);
+
+//     // Blue
+//     if (temperature >= 66.0)
+//         B = 255.0;
+//     else if (temperature <= 19.0)
+//         B = 0.0;
+//     else
+//         B = 138.5177312231 * logl(temperature - 10.0) - 305.0447927307;
+
+//     // Clamp and round
+//     r = (int)CLAMP(R, 0.0, 255.0);
+//     g = (int)CLAMP(G, 0.0, 255.0);
+//     b = (int)CLAMP(B, 0.0, 255.0);
+
+//     return (uint32_t)r << 16 | g << 8 | b;
+// }
+
+int RGBChannel::conv_RGB2Temp(Colors::RGB target_rgb)
 {
-    uint8_t r_target = (target_rgb >> 16) & 0xFF;
-    uint8_t g_target = (target_rgb >> 8) & 0xFF;
-    uint8_t b_target = target_rgb & 0xFF;
+    uint8_t r_target = target_rgb._red;
+    uint8_t g_target = target_rgb._green;
+    uint8_t b_target = target_rgb._blue;
+
     int low = 1000;
     int high = 10000;
     int best_temp = low;
     uint32_t min_error = 0xFFFFFFFF;
 
-    // Grobe binäre Suche
+    // Rough binary search
     while (low <= high)
     {
         int mid = (low + high) / 2;
@@ -848,7 +895,7 @@ int RGBChannel::conv_RGB2Temp(uint32_t target_rgb)
             best_temp = mid;
         }
 
-        // Einfache Heuristik: gehe in Richtung größerer RGB-Werte
+        // Simple heuristic: go towards larger RGB values
 
         if ((r_mid + g_mid + b_mid) < (r_target + g_target + b_target))
         {
@@ -860,7 +907,7 @@ int RGBChannel::conv_RGB2Temp(uint32_t target_rgb)
         }
     }
 
-    // Feinjustierung im Bereich ±25K
+    // Fine adjustment in the range ±25K
 
     int fine_low = (best_temp - 25 < 1000) ? 1000 : best_temp - 25;
     int fine_high = (best_temp + 25 > 10000) ? 10000 : best_temp + 25;
@@ -882,5 +929,43 @@ int RGBChannel::conv_RGB2Temp(uint32_t target_rgb)
 
     return best_temp;
 }
+
+// int RGBChannel::conv_RGB2Temp(Colors::RGB target_rgb)
+// {
+//     uint8_t r = target_rgb._red;
+//     uint8_t g = target_rgb._green;
+//     uint8_t b = target_rgb._blue;
+
+//     // 1. Normalize RGB (0–255 → 0–1)
+//     double R = r / 255.0;
+//     double G = g / 255.0;
+//     double B = b / 255.0;
+
+//     // 2. Apply gamma correction (sRGB)
+//     auto linearize = [](double c) {
+//         return pow(c, 2.2);
+//     };
+//     R = linearize(R);
+//     G = linearize(G);
+//     B = linearize(B);
+
+//     // 3. Convert linear RGB to XYZ
+//     double X = R * 0.4124 + G * 0.3576 + B * 0.1805;
+//     double Y = R * 0.2126 + G * 0.7152 + B * 0.0722;
+//     double Z = R * 0.0193 + G * 0.1192 + B * 0.9505;
+
+//     double sum = X + Y + Z;
+//     if (sum == 0) return 0.0;  // Prevent division by zero
+
+//     // 4. Convert to chromaticity coordinates (x, y)
+//     double x = X / sum;
+//     double y = Y / sum;
+
+//     // 5. Apply McCamy's formula
+//     double n = (x - 0.3320) / (y - 0.1858);
+//     double cct = 449.0 * pow(n, 3) + 3525.0 * pow(n, 2) + 6823.3 * n + 5520.33;
+
+//     return cct;  // Color temperature in Kelvin
+// }
 
 // EOF
