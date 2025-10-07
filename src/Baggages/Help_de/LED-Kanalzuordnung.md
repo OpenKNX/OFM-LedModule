@@ -14,3 +14,5 @@ Beispiel: Hardwarekanäle "A" und "B" sollen zusammen Tunable White LEDs dimmen,
 
 In der letzten Spalte wird noch die Funktion innerhalb des Dimmkanals zugeordnet. Bei Tunable White wäre das "Warmweiß" und "Kaltweiß", bei RGB-Kanäle entsprechend die drei Farben.
 
+**ACHTUNG**: Bei der Nutzung von Tunable White sollte darauf geachtet werden, dass eine Farbe auf einem "ungeraden" Kanal A/C/E/... und eine auf einem "geraden" Kanal B/D/F/... liegt. Dies stellt sicher, dass die beiden Farb-LEDs nicht zur gleichen Zeit angesteuert werden sondern abwechseln. Wird dies nicht berücksichtigt muss mit kurzzeiti erhöhetn Strömen gerechnet und dies bei der Wahl des Netzteils eingeplant werden.
+
