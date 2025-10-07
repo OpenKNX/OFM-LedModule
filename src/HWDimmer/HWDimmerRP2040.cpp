@@ -16,8 +16,10 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
 
     uint32_t clk_hz = clock_get_hz(clock_handle_t::clk_sys);
     logDebugP("RP2040 System clock: %d Hz", clk_hz);
-    float div = (float)clk_hz / (float)(pwmFreq);
+    float div = (clk_hz / static_cast<float>(DIM_RANGE + 1)) / static_cast<float>(pwmFreq);
     logDebugP("RP2040 PWM freq: %d Hz, divider: %.4f", pwmFreq, div);
+
+    this->pins = pins;
 
     uint8_t slices = 0;
     for (uint8_t ch = 0; ch < numChannels; ch++)
@@ -33,17 +35,24 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
         pwm_config_set_clkdiv(&config, div);
         pwm_config_set_output_polarity(&config, false, true); // invert channel B
         pwm_init(slice_cand, &config, false);  // do not start yet
+        logDebugP("RP2040 PWM slice %d init", slice_cand);
     }
 
-    this->pins = pins;
     for (uint8_t ch = 0; ch < numChannels; ch++)
     {
+        if (pwm_gpio_to_channel(this->pins[ch]) == PWM_CHAN_B)
+        {
+            pwm_set_gpio_level(this->pins[ch], DIM_RANGE);
+        } else {
+            pwm_set_gpio_level(this->pins[ch], 0);
+        }
+        pwm_advance_count(pwm_gpio_to_slice_num(this->pins[ch])); // avoid flicker on startup
         gpio_set_function(this->pins[ch], GPIO_FUNC_PWM);
-        pwm_set_gpio_level(this->pins[ch], 0);
     }
 
     // start all slices simultaneously
     pwm_set_mask_enabled(slices);
+    logDebugP("RP2040 PWM started");
 
 #if 0
         logDebugP("Lookup table:");
