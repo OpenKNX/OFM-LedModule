@@ -37,7 +37,7 @@ const std::string RGBChannel::name()
 void RGBChannel::update()
 {
     uint16_t tmpBrightness = _brightness.value();
-    //uint16_t tmpColor = _colorTemperature.value(); // #ToDo
+    // uint16_t tmpColor = _colorTemperature.value(); // #ToDo
     uint16_t tmpHue = _hue.value();
     uint16_t tmpSat = _saturation.value();
     Colors::HSV hsv(tmpHue, tmpSat, tmpBrightness);
@@ -73,7 +73,7 @@ void RGBChannel::update()
     //             KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
     //         else
     //             KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
-            
+
     //         _statusSendTemperaturTimer = delayTimerInit();
     //     }
     // }
@@ -87,7 +87,7 @@ void RGBChannel::update()
                 KoLED_RGB_ChRGBStatus.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
             else
                 KoLED_RGB_ChRGBStatus.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
-            
+
             _statusSendRgbTimer = delayTimerInit();
         }
     }
@@ -101,11 +101,11 @@ void RGBChannel::update()
                 KoLED_RGB_ChHSVStatus.value(hsv.toUint32(), DPT_Colour_RGB);
             else
                 KoLED_RGB_ChHSVStatus.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
-            
+
             _statusSendHsvTimer = delayTimerInit();
         }
     }
-        
+
     if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
     {
         if (_lastBrightnessLevel != tmpBrightness)
@@ -124,17 +124,17 @@ void RGBChannel::update()
         if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
             logDebugP("update: Hue: %d -> %d Sat: %d -> %d", _lastHueValue, tmpHue, _lastSatValue, tmpSat);
 
-        //Colors::RGB farbe = Colors::hsv2rgb(Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), ((uint16_t)_brightness.step(_lastDimTimestamp)) << 2));
-        //logDebugP("R: %d G: %d B: %d", farbe.Red(), farbe.Green(), farbe.Blue());
-        //logDebugP("Scale: R%d G%d B%d", _pDimmer->scale(farbe.Red(), (HWDimmer::DimLUTType)0), _pDimmer->scale(farbe.Green(), (HWDimmer::DimLUTType)0), _pDimmer->scale(farbe.Blue(), (HWDimmer::DimLUTType)0));
-        //logDebugP("H: %d S: %d V: %d", _hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp));
-        //logDebugP("HSV: %d", Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp)));
-        //logDebugP("Bright: %d > LUTval: %d", _brightness.value(), _pDimmer->scale(_brightness.value(), (HWDimmer::DimLUTType)0));
-        //logDebugP("HUE: %d > LUTval: %d", _hue.value(), _pDimmer->scale(_hue.value(), (HWDimmer::DimLUTType)0));
+        // Colors::RGB farbe = Colors::hsv2rgb(Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), ((uint16_t)_brightness.step(_lastDimTimestamp)) << 2));
+        // logDebugP("R: %d G: %d B: %d", farbe.Red(), farbe.Green(), farbe.Blue());
+        // logDebugP("Scale: R%d G%d B%d", _pDimmer->scale(farbe.Red(), (HWDimmer::DimLUTType)0), _pDimmer->scale(farbe.Green(), (HWDimmer::DimLUTType)0), _pDimmer->scale(farbe.Blue(), (HWDimmer::DimLUTType)0));
+        // logDebugP("H: %d S: %d V: %d", _hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp));
+        // logDebugP("HSV: %d", Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), _brightness.step(_lastDimTimestamp)));
+        // logDebugP("Bright: %d > LUTval: %d", _brightness.value(), _pDimmer->scale(_brightness.value(), (HWDimmer::DimLUTType)0));
+        // logDebugP("HUE: %d > LUTval: %d", _hue.value(), _pDimmer->scale(_hue.value(), (HWDimmer::DimLUTType)0));
 
         _debugTimer = delayTimerInit();
     }
-    
+
     _lastBrightnessLevel = tmpBrightness;
     // _lastColorTemp = tmpColor; // #ToDo
     _lastHueValue = tmpHue;
@@ -274,6 +274,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 if (!getLock())
                 {
                     handleScene(ko.value(DPT_SceneNumber));
+                    _sceneNumberActive = (uint8_t)ko.value(DPT_SceneNumber) + 1;
                 }
                 break;
 
@@ -339,7 +340,7 @@ void RGBChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
                     {
-                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()), dimmingTime(1));
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()*VALUE_KNX_MULTIPLY), dimmingTime(1));
                     }
                     if (_scenes[i].valueType == ValueType::COLOR)
                     {
@@ -451,6 +452,7 @@ uint16_t RGBChannel::checkMinMaxColorTemp(uint16_t colorTemp)
 
 void RGBChannel::setSwitch(bool switchOn)
 {
+    _sceneNumberActive = 0;
     if (switchOn)
     {
         logDebugP("switch_ON");
@@ -490,6 +492,7 @@ void RGBChannel::setSwitch(bool switchOn)
 
 void RGBChannel::setSwitchNoDim(bool switchOn)
 {
+    _sceneNumberActive = 0;
     if (switchOn)
     {
         logDebugP("switchNoDim_ON");
@@ -508,6 +511,7 @@ void RGBChannel::setSwitchNoDim(bool switchOn)
 
 void RGBChannel::setHue(uint16_t hue)
 {
+    _sceneNumberActive = 0;
     logDebugP("setHue: %3X", hue);
     // hue max 16384
     _hue.setTargetValue(hue, dimmingTimeON());
@@ -515,6 +519,7 @@ void RGBChannel::setHue(uint16_t hue)
 
 void RGBChannel::setSaturation(uint16_t saturation)
 {
+    _sceneNumberActive = 0;
     logDebugP("setSaturation: %3X", saturation);
     // saturation max 1024
     _saturation.setTargetValue(saturation, dimmingTimeON());
@@ -522,6 +527,7 @@ void RGBChannel::setSaturation(uint16_t saturation)
 
 void RGBChannel::setBrightness(uint16_t bright)
 {
+    _sceneNumberActive = 0;
     logDebugP("setBrightness: %3X", bright);
     bright = checkMinMaxBrightness(bright);
     _brightness.setTargetValue(bright, dimmingTimeON());
@@ -529,46 +535,54 @@ void RGBChannel::setBrightness(uint16_t bright)
 
 void RGBChannel::setNight(bool night)
 {
-    _isNight = night;
-    _brightness.setRange(ParamLED_RGB_ChBrightnessMin, dimmingValMax());
 
-    if (!getNight())
+    if (ParamLED_RGB_ChScenesDisableNightSw || (!ParamLED_RGB_ChScenesDisableNightSw && _sceneNumberActive == 0))
     {
-        logDebugP("Tag");
-        RGBpicker(getDefaultColor());
-        if (_brightness.value() == ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
+        _isNight = night;
+        _brightness.setRange(ParamLED_RGB_ChBrightnessMin, dimmingValMax());
+
+        if (!getNight())
         {
-            _brightness.setTargetValue(ParamLED_RGB_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_RGB_ChLightDimmDayOnTime);
+            logDebugP("Tag");
+            RGBpicker(getDefaultColor());
+            if (_brightness.value() == ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
+            {
+                _brightness.setTargetValue(ParamLED_RGB_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_RGB_ChLightDimmDayOnTime);
+            }
         }
-    }
-    else
-    {
-        logDebugP("Nacht");
-        RGBpicker(getDefaultColor());
-        if (_brightness.value() > ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
+        else
         {
-            _brightness.setTargetValue(ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_RGB_ChLightDimmNightOnTime);
+            logDebugP("Nacht");
+            RGBpicker(getDefaultColor());
+            if (_brightness.value() > ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
+            {
+                _brightness.setTargetValue(ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_RGB_ChLightDimmNightOnTime);
+            }
         }
     }
 }
 
 void RGBChannel::relDimUp()
 {
+    _sceneNumberActive = 0;
     _brightness.setTargetValue(dimmingValMax(), ParamLED_RGB_ChLightDimmRelTime);
 }
 
 void RGBChannel::relDimDown()
 {
+    _sceneNumberActive = 0;
     _brightness.setTargetValue(dimmingValMin(), ParamLED_RGB_ChLightDimmRelTime);
 }
 
 void RGBChannel::relDimStop()
 {
+    _sceneNumberActive = 0;
     _brightness.setTargetValue(_brightness.value(), 1);
 }
 
 void RGBChannel::setColorTemperature(uint16_t colorTemp)
 {
+    _sceneNumberActive = 0;
     colorTemp = checkMinMaxColorTemp(colorTemp);
     logDebugP("ColorTemp: %5X", colorTemp);
     logDebugP("ColorTemp RGB: %8X", conv_Temp2RGB(colorTemp));
@@ -583,6 +597,7 @@ void RGBChannel::setColorTemperature(uint16_t colorTemp)
 
 void RGBChannel::setRGB(uint32_t RGBvalue)
 {
+    _sceneNumberActive = 0;
     Colors::HSV hsv;
     Colors::RGB rgb;
     // LED_RGB = ko.value(DPT_Colour_RGB);
@@ -737,6 +752,7 @@ void RGBChannel::RGBpicker(uint8_t selection)
 
 void RGBChannel::setHSV(uint32_t HSVvalue)
 {
+    _sceneNumberActive = 0;
     Colors::HSV hsv;
     Colors::RGB rgb;
     hsv = Colors::HSV(HSVvalue);
@@ -804,6 +820,67 @@ uint32_t RGBChannel::conv_Temp2RGB(int temp)
     }
 
     return (uint32_t)r << 16 | g << 8 | b;
+}
+
+int RGBChannel::conv_RGB2Temp(uint32_t target_rgb)
+{
+    uint8_t r_target = (target_rgb >> 16) & 0xFF;
+    uint8_t g_target = (target_rgb >> 8) & 0xFF;
+    uint8_t b_target = target_rgb & 0xFF;
+    int low = 1000;
+    int high = 10000;
+    int best_temp = low;
+    uint32_t min_error = 0xFFFFFFFF;
+
+    // Grobe binäre Suche
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        uint32_t rgb_mid = conv_Temp2RGB(mid);
+        uint8_t r_mid = (rgb_mid >> 16) & 0xFF;
+        uint8_t g_mid = (rgb_mid >> 8) & 0xFF;
+        uint8_t b_mid = rgb_mid & 0xFF;
+        uint32_t error = (r_mid - r_target) * (r_mid - r_target) + (g_mid - g_target) * (g_mid - g_target) + (b_mid - b_target) * (b_mid - b_target);
+
+        if (error < min_error)
+        {
+            min_error = error;
+            best_temp = mid;
+        }
+
+        // Einfache Heuristik: gehe in Richtung größerer RGB-Werte
+
+        if ((r_mid + g_mid + b_mid) < (r_target + g_target + b_target))
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+
+    // Feinjustierung im Bereich ±25K
+
+    int fine_low = (best_temp - 25 < 1000) ? 1000 : best_temp - 25;
+    int fine_high = (best_temp + 25 > 10000) ? 10000 : best_temp + 25;
+
+    for (int temp = fine_low; temp <= fine_high; temp += 1)
+    {
+        uint32_t rgb = conv_Temp2RGB(temp);
+        uint8_t r = (rgb >> 16) & 0xFF;
+        uint8_t g = (rgb >> 8) & 0xFF;
+        uint8_t b = rgb & 0xFF;
+        uint32_t error = (r - r_target) * (r - r_target) + (g - g_target) * (g - g_target) + (b - b_target) * (b - b_target);
+
+        if (error < min_error)
+        {
+            min_error = error;
+            best_temp = temp;
+        }
+    }
+
+    return best_temp;
 }
 
 // EOF

@@ -210,6 +210,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                 if (!getLock())
                 {
                     handleScene(ko.value(DPT_SceneNumber));
+                    _sceneNumberActive = (uint8_t)ko.value(DPT_SceneNumber) + 1;
                 }
                 break;
 
@@ -255,7 +256,7 @@ void TWChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS || _scenes[i].valueType == ValueType::COMBINED)
                     {
-                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()), dimmingTime(1));
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()*VALUE_KNX_MULTIPLY), dimmingTime(1));
                     }
                     if (_scenes[i].valueType == ValueType::TEMTPERATURE || _scenes[i].valueType == ValueType::COMBINED)
                     {
@@ -354,6 +355,7 @@ uint16_t TWChannel::checkMinMaxColorTemp(uint16_t colorTemp)
 void TWChannel::setSwitch(bool switchOn)
 {
     _boost = false;
+    _sceneNumberActive = 0;
     if (switchOn)
     {
         logDebugP("switch_ON");
@@ -392,6 +394,7 @@ void TWChannel::setSwitch(bool switchOn)
 void TWChannel::setSwitchNoDim(bool switchOn)
 {
     _boost = false;
+    _sceneNumberActive = 0;
     if (switchOn)
     {
         logDebugP("switch_ON");
@@ -442,6 +445,7 @@ void TWChannel::setBoost(bool switchOn)
 void TWChannel::setBrightness(uint16_t bright)
 {
     _boost = false;
+    _sceneNumberActive = 0;
     logDebugP("setBrightness: %3X", bright);
     bright = checkMinMaxBrightness(bright);
     _brightness.setTargetValue(bright, dimmingTimeON());
@@ -449,26 +453,29 @@ void TWChannel::setBrightness(uint16_t bright)
 
 void TWChannel::setNight(bool night)
 {
-    _boost = false;
-    _isNight = night;
-    _brightness.setRange(ParamLED_TW_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
-
-    if (!night)
+    if (ParamLED_TW_ChScenesDisableNightSw || (!ParamLED_TW_ChScenesDisableNightSw && _sceneNumberActive == 0))
     {
-        logDebugP("Tag");
+        _boost = false;
+        _isNight = night;
+        _brightness.setRange(ParamLED_TW_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
 
-        if (_brightness.value() == ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
+        if (!night)
         {
-            _brightness.setTargetValue(ParamLED_TW_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmDayOnTime);
+            logDebugP("Tag");
+
+            if (_brightness.value() == ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
+            {
+                _brightness.setTargetValue(ParamLED_TW_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmDayOnTime);
+            }
         }
-    }
-    else
-    {
-        logDebugP("Nacht");
-
-        if (_brightness.value() > ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
+        else
         {
-            _brightness.setTargetValue(ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmNightOnTime);
+            logDebugP("Nacht");
+
+            if (_brightness.value() > ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
+            {
+                _brightness.setTargetValue(ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmNightOnTime);
+            }
         }
     }
 }
@@ -476,6 +483,7 @@ void TWChannel::setNight(bool night)
 void TWChannel::relDimUp()
 {
     _boost = false;
+    _sceneNumberActive = 0;
     logDebugP("relDim_UP");
     _brightness.setTargetValue(dimmingValMax(), ParamLED_TW_ChLightDimmRelTime);
 }
@@ -483,6 +491,7 @@ void TWChannel::relDimUp()
 void TWChannel::relDimDown()
 {
     _boost = false;
+    _sceneNumberActive = 0;
     logDebugP("relDim_DOWN");
     _brightness.setTargetValue(dimmingValMin(), ParamLED_TW_ChLightDimmRelTime);
 }
@@ -490,6 +499,7 @@ void TWChannel::relDimDown()
 void TWChannel::relDimStop()
 {
     _boost = false;
+    _sceneNumberActive = 0;
     logDebugP("relDim_STOP");
     _brightness.setTargetValue(_brightness.value(), 1);
 }
@@ -497,6 +507,7 @@ void TWChannel::relDimStop()
 void TWChannel::setColorTemperature(uint16_t colorTemp)
 {
     _boost = false;
+    _sceneNumberActive = 0;
     logDebugP("setColorTemperature (colorTemp=%u)", colorTemp);
     colorTemp = checkMinMaxColorTemp(colorTemp);
     _colorTemperature.setTargetValue(colorTemp, dimmingTimeON());
