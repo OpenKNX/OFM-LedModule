@@ -339,7 +339,7 @@ void SingleChannel::setNight(bool night)
     logDebugP("treppenlicht %d ", ParamLED_SC_ChStairCaseActive);
     if (ParamLED_SC_ChScenesDisableNightSw || (!ParamLED_SC_ChScenesDisableNightSw && _sceneNumberActive == 0))
     {
-        logDebugP("Nachtmodus:");
+        logDebugP("Nachtmodus:  %d > %d", _brightness.value(), (ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY) );
         _isNight = night;
         _brightness.setRange(ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
         if (!night)

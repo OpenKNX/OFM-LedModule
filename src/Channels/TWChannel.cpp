@@ -64,11 +64,11 @@ void TWChannel::update()
                 KoLED_TW_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
             else
                 KoLED_TW_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
-            
+
             _statusSendTemperaturTimer = delayTimerInit();
         }
     }
-        
+
     if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
     {
         if (_lastBrightnessLevel != tmpBrightness)
@@ -79,7 +79,7 @@ void TWChannel::update()
 
         _debugTimer = delayTimerInit();
     }
-    
+
     _lastBrightnessLevel = tmpBrightness;
     _lastColorTemp = tmpColor;
 }
@@ -101,15 +101,17 @@ void TWChannel::loop()
 
         uint16_t ww = ((uint32_t)brightValue * (colorTempValue - ParamLED_TW_ChColorTempWW)) / (ParamLED_TW_ChColorTempCW - ParamLED_TW_ChColorTempWW);
         uint16_t cw = ((uint32_t)brightValue * (ParamLED_TW_ChColorTempCW - colorTempValue)) / (ParamLED_TW_ChColorTempCW - ParamLED_TW_ChColorTempWW);
-
-        if (_pHWChannels[0] < LED_ChannelCount)
+        if (!_boost)
         {
-            _pDimmer->setLevel(ww, _pHWChannels[0]);
-        }
+            if (_pHWChannels[0] < LED_ChannelCount)
+            {
+                _pDimmer->setLevel(ww, _pHWChannels[0]);
+            }
 
-        if (_pHWChannels[1] < LED_ChannelCount)
-        {
-            _pDimmer->setLevel(cw, _pHWChannels[1]);
+            if (_pHWChannels[1] < LED_ChannelCount)
+            {
+                _pDimmer->setLevel(cw, _pHWChannels[1]);
+            }
         }
     }
 
@@ -239,6 +241,7 @@ void TWChannel::processInputKo(GroupObject& ko)
 
 void TWChannel::handleScene(uint8_t sceneNr)
 {
+    _boost = false;
     for (int i = 0; i < N_SCENES; i++)
     {
         if (sceneNr == _scenes[i].sceneNr - 1)
@@ -350,6 +353,7 @@ uint16_t TWChannel::checkMinMaxColorTemp(uint16_t colorTemp)
 
 void TWChannel::setSwitch(bool switchOn)
 {
+    _boost = false;
     if (switchOn)
     {
         logDebugP("switch_ON");
@@ -387,6 +391,7 @@ void TWChannel::setSwitch(bool switchOn)
 
 void TWChannel::setSwitchNoDim(bool switchOn)
 {
+    _boost = false;
     if (switchOn)
     {
         logDebugP("switch_ON");
@@ -408,13 +413,27 @@ void TWChannel::setBoost(bool switchOn)
     {
         logDebugP("Boost_ON");
         //_brightness.setTargetValue(dimmingValTarget(switchOn), 1);
-        _pDimmer->setLevel(0xFFF, _pHWChannels[0]);
-        _pDimmer->setLevel(0xFFF, _pHWChannels[0]);
+        //_pDimmer->setLevel(0xFFF, _pHWChannels[0]);
+        //_pDimmer->setLevel(0xFFF, _pHWChannels[1]);
+        _boost = true;
+        uint16_t ww = _pDimmer->getScaleMax((HWDimmer::DimLUTType)ParamLED_TW_ChDimCurve);
+        uint16_t cw = _pDimmer->getScaleMax((HWDimmer::DimLUTType)ParamLED_TW_ChDimCurve);
+
+        if (_pHWChannels[0] < LED_ChannelCount)
+        {
+            _pDimmer->setLevel(ww, _pHWChannels[0]);
+        }
+
+        if (_pHWChannels[1] < LED_ChannelCount)
+        {
+            _pDimmer->setLevel(cw, _pHWChannels[1]);
+        }
     }
     else
     {
         logDebugP("Boost_OFF");
         //_brightness.setTargetValue(dimmingValTarget(switchOn), 1);
+        _boost = false;
         _pDimmer->setLevel(0x0, _pHWChannels[0]);
         _pDimmer->setLevel(0x0, _pHWChannels[1]);
     }
@@ -422,6 +441,7 @@ void TWChannel::setBoost(bool switchOn)
 
 void TWChannel::setBrightness(uint16_t bright)
 {
+    _boost = false;
     logDebugP("setBrightness: %3X", bright);
     bright = checkMinMaxBrightness(bright);
     _brightness.setTargetValue(bright, dimmingTimeON());
@@ -429,6 +449,7 @@ void TWChannel::setBrightness(uint16_t bright)
 
 void TWChannel::setNight(bool night)
 {
+    _boost = false;
     _isNight = night;
     _brightness.setRange(ParamLED_TW_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
 
@@ -454,24 +475,28 @@ void TWChannel::setNight(bool night)
 
 void TWChannel::relDimUp()
 {
+    _boost = false;
     logDebugP("relDim_UP");
     _brightness.setTargetValue(dimmingValMax(), ParamLED_TW_ChLightDimmRelTime);
 }
 
 void TWChannel::relDimDown()
 {
+    _boost = false;
     logDebugP("relDim_DOWN");
     _brightness.setTargetValue(dimmingValMin(), ParamLED_TW_ChLightDimmRelTime);
 }
 
 void TWChannel::relDimStop()
 {
+    _boost = false;
     logDebugP("relDim_STOP");
     _brightness.setTargetValue(_brightness.value(), 1);
 }
 
 void TWChannel::setColorTemperature(uint16_t colorTemp)
 {
+    _boost = false;
     logDebugP("setColorTemperature (colorTemp=%u)", colorTemp);
     colorTemp = checkMinMaxColorTemp(colorTemp);
     _colorTemperature.setTargetValue(colorTemp, dimmingTimeON());

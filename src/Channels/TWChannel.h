@@ -46,7 +46,7 @@ class TWChannel : public LightChannel
     DimmableValue<uint16_t> _colorTemperature;
 
     int32_t _lastOnValueTemp = 4000;
-
+    bool _boost = false;
     uint32_t _statusSendTemperaturTimer = 0;
 
     void handleScene(uint8_t sceneNr);
