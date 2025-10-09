@@ -40,12 +40,14 @@ void HWDimmer::checkPowerSupply()
 
     if (ParamLED_PowerSupplyVoltageChangeSend)
     {
-        if (abs(_lastVoltageSent - _powerSupplyVoltage) > VOLTAGE_MIN_DIFFERENCE ||
-            ParamLED_PowerSupplyVoltageCyclicTimeMS > 0 && delayCheck(_voltageSentTimer, ParamLED_PowerSupplyVoltageCyclicTimeMS))
+        float voltageDifference = abs(_lastVoltageSent - _powerSupplyVoltage);
+        if (_lastVoltageSent * ParamLED_PowerSupplyVoltageMinChangePercent / 100.0f > voltageDifference ||
+            voltageDifference * 1000 > ParamLED_PowerSupplyVoltageMinChangeAbsolute ||
+            ParamLED_PowerSupplyVoltageCyclicTimeMS > 0 && delayCheck(_voltageSendTimer, ParamLED_PowerSupplyVoltageCyclicTimeMS))
         {
             KoLED_PowerSupplyVoltage.value(_powerSupplyVoltage * 1000, DPT_Value_Volt);
             _lastVoltageSent = _powerSupplyVoltage;
-            _voltageSentTimer = delayTimerInit();
+            _voltageSendTimer = delayTimerInit();
         }
     }
 

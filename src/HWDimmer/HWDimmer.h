@@ -92,5 +92,5 @@ class HWDimmer
     uint32_t _powerSupplyLastRequest = 0;
     uint32_t _powerShutdownTimer = 0;
     float _lastVoltageSent = 0;
-    uint32_t _voltageSentTimer = 0;
+    uint32_t _voltageSendTimer = 0;
 };

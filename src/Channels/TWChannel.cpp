@@ -47,7 +47,9 @@ void TWChannel::update()
 
     if (ParamLED_TW_ChStatusBrightnessSend)
     {
-        if (_lastBrightnessLevel != tmpBrightness ||
+        float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
+        if (tmpBrightness * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f > brightnessDifference ||
+            brightnessDifference > ParamLED_TW_ChStatusBrightnessMinChangeAbsolute ||
             ParamLED_TW_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_TW_ChStatusBrightnessTimeMS))
         {
             KoLED_TW_ChBrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
@@ -57,7 +59,9 @@ void TWChannel::update()
 
     if (ParamLED_TW_ChStatusTempSend)
     {
-        if (_lastColorTemp != tmpColor ||
+        float colorDifference = abs(_lastColorTemp - tmpColor);
+        if (tmpColor * ParamLED_TW_ChStatusTempMinChangePercent / 100.0f > colorDifference ||
+            colorDifference > ParamLED_TW_ChStatusTempMinChangeAbsolute ||
             ParamLED_TW_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_TW_ChStatusTempTimeMS))
         {
             if (stateOn)

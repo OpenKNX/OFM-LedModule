@@ -17,8 +17,8 @@
           <Static>
             <Parameters>
 
-              <Parameter Id="%AID%_P-%TT%%CC%001" Name="Ch%C%LightActive"           ParameterType="%AID%_PT-OnOffYesNo" Text="Licht Aktiv" Value="0" />
-              <Parameter Id="%AID%_P-%TT%%CC%002" Name="Ch%C%LightText"             ParameterType="%AID%_PT-Text40Byte" Text="Licht Bezeichnung" Value="" />
+              <Parameter Id="%AID%_P-%TT%%CC%001" Name="Ch%C%LightActive"              ParameterType="%AID%_PT-OnOffYesNo" Text="Licht Aktiv" Value="0" />
+              <Parameter Id="%AID%_P-%TT%%CC%002" Name="Ch%C%LightText"                ParameterType="%AID%_PT-Text40Byte" Text="Licht Bezeichnung" Value="" />
               <Union SizeInBit="80">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%003" Name="Ch%C%LightDimmDayOnTime"    ParameterType="%AID%_PT-DimTime" Offset="0" BitOffset="0" Text="Dimmzeit Tag An" Value="1000" SuffixText="ms" />
@@ -39,18 +39,20 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%012" Name="Ch%C%StartupBehavior"       ParameterType="%AID%_PT-StartupBehavior" Offset="0" BitOffset="3" Text="Einschaltverhalten" Value="0" />
                 <!-- 3 bits free -->
               </Union>
-              <Union SizeInBit="40">
+              <Union SizeInBit="56">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="14" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%013" Name="Ch%C%StatusOnOffSend"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Status Ein/Aus senden" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%016" Name="Ch%C%StatusBrightnessSend"  ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Status Helligkeit senden" Value="0" />
                 <!-- 5 bits free -->
                 <Parameter Id="%AID%_UP-%TT%%CC%014" Name="Ch%C%StatusOnOffBase"       ParameterType="%AID%_PT-DelayBase" Offset="1" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%015" Name="Ch%C%StatusOnOffTime"       ParameterType="%AID%_PT-DelayTime" Offset="1" BitOffset="2" Text="Zeit" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%017" Name="Ch%C%StatusBrightnessBase"  ParameterType="%AID%_PT-DelayBase" Offset="3" BitOffset="0" Text="Zeitbasis" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%018" Name="Ch%C%StatusBrightnessTime"  ParameterType="%AID%_PT-DelayTime" Offset="3" BitOffset="2" Text="Zeit" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%025" Name="Ch%C%StatusBrightnessMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="3" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%026" Name="Ch%C%StatusBrightnessMinChangeAbsolute" ParameterType="%AID%_PT-ValueDpt5001" Offset="4" BitOffset="0" Text="Mindeständerung absolut" Value="0" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%017" Name="Ch%C%StatusBrightnessBase"  ParameterType="%AID%_PT-DelayBase" Offset="5" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%018" Name="Ch%C%StatusBrightnessTime"  ParameterType="%AID%_PT-DelayTime" Offset="5" BitOffset="2" Text="Zeit" Value="0" />
               </Union>
               <Union SizeInBit="24">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="19" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="21" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%019" Name="Ch%C%StairCaseActive"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Treppenlichtfunktion" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%022" Name="Ch%C%StairCaseTrigger"      ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Treppenlicht Trigger" Value="0" />
                 <!-- 6 bits free -->
@@ -58,14 +60,14 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%021" Name="Ch%C%StairCaseTime"         ParameterType="%AID%_PT-DelayTime" Offset="1" BitOffset="2" Text="Zeit" Value="0" />
               </Union>
               <Union SizeInBit="8">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="22" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="24" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%023" Name="Ch%C%ScenesActive"          ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Szenen" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%024" Name="Ch%C%ScenesDisableNightSw"  ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Deaktivierung bei Nachtumschaltung" Value="0" />
                 <!-- 6 bits free -->
               </Union>
               <Union SizeInBit="320">
                 <!-- 8 Scenes * 5 bytes: total 40 bytes -->
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="23" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="25" BitOffset="0" />
                 <!-- Scenes -->
                 <op:usePart name="LED_SC_SC" xpath="//Static/Parameters/Block[@Name='ScenesSC']/*" />
               </Union>
@@ -97,6 +99,8 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%022_R-%TT%%CC%02201" RefId="%AID%_UP-%TT%%CC%022" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%023_R-%TT%%CC%02301" RefId="%AID%_UP-%TT%%CC%023" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%024_R-%TT%%CC%02401" RefId="%AID%_UP-%TT%%CC%024" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%025_R-%TT%%CC%02501" RefId="%AID%_UP-%TT%%CC%025" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%026_R-%TT%%CC%02601" RefId="%AID%_UP-%TT%%CC%026" />
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_SC_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSC']/*" />
@@ -173,7 +177,7 @@
                             <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                             <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
                           </Columns>
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="  Ein/Aus zyklisch senden&#10;  (0 = nicht senden)" Cell="1,2" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="   Ein/Aus zyklisch senden&#10;   (0 = nicht senden)" Cell="1,2" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%%CC%015_R-%TT%%CC%01501" Cell="1,3" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%%CC%014_R-%TT%%CC%01401" Cell="1,4" />
                         </ParameterBlock>
@@ -185,6 +189,8 @@
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%016_R-%TT%%CC%01601" IndentLevel="1" /> <!-- StatusBrightnessSend -->
                     <choose ParamRefId="%AID%_UP-%TT%%CC%016_R-%TT%%CC%01601">
                       <when test="1">
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%025_R-%TT%%CC%02501" IndentLevel="2" />
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%026_R-%TT%%CC%02601" IndentLevel="2" />
                         <ParameterBlock Id="%AID%_PB-nnn" Name="StatusBrightness" Inline="true" Layout="Grid"> <!-- StatusBrightness cyclic pattern -->
                           <Rows>
                             <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
@@ -195,7 +201,7 @@
                             <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                             <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
                           </Columns>
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="  Helligkeit zyklisch senden&#10;  (0 = nicht senden)" Cell="1,2" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="   Helligkeit zyklisch senden&#10;   (0 = nicht senden)" Cell="1,2" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" Cell="1,3" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" Cell="1,4" />
                         </ParameterBlock>
@@ -222,7 +228,7 @@
                             <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                             <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
                           </Columns>
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="  Zeit für Treppenlicht" Cell="1,2" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="   Zeit für Treppenlicht" Cell="1,2" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%%CC%021_R-%TT%%CC%02101" Cell="1,3" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%%CC%020_R-%TT%%CC%02001" Cell="1,4" />
                         </ParameterBlock>

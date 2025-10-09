@@ -33,7 +33,7 @@ class LedModule : public OpenKNX::Module
     uint32_t _timer2 = 0;
     uint32_t _timerCheckConnection = 0;
     float _lastTemperatureSent = 0;
-    uint32_t _temperaturSentTimer = 0;
+    uint32_t _temperaturSendTimer = 0;
     bool _doResetPwm = false;
 
     OpenKNX::Flash::Driver *_ledStorage = nullptr;

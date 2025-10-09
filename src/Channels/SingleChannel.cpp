@@ -45,7 +45,9 @@ void SingleChannel::update()
 
     if (ParamLED_SC_ChStatusBrightnessSend)
     {
-        if (_lastBrightnessLevel != tmpBrightness ||
+        float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
+        if (tmpBrightness * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f > brightnessDifference ||
+            brightnessDifference > ParamLED_SC_ChStatusBrightnessMinChangeAbsolute ||
             ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
         {
             KoLED_SC_ChBrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);

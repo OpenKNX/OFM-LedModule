@@ -57,7 +57,9 @@ void RGBChannel::update()
 
     if (ParamLED_RGB_ChStatusBrightnessSend)
     {
-        if (_lastBrightnessLevel != tmpBrightness ||
+        float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
+        if (tmpBrightness * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f > brightnessDifference ||
+            brightnessDifference > ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute ||
             ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
         {
             // KoLED_RGB_BrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
@@ -74,7 +76,9 @@ void RGBChannel::update()
         if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
             tmpColor = conv_RGB2Temp(Colors::hsv2rgb(hsv).toUint32());
 
-        if (_lastColorTemp != tmpColor ||
+        float colorDifference = abs(_lastColorTemp - tmpColor);
+        if (tmpColor * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f > colorDifference ||
+            colorDifference > ParamLED_RGB_ChStatusTempMinChangeAbsolute ||
             ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
         {
             if (stateOn)
@@ -317,7 +321,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
             case LED_RGB_KoChStateOnOff:
             case LED_RGB_KoChStateLocking:
             case LED_RGB_KoChBrightnessStatus:
-            // case LED_RGB_KoChColorTemperatureStatus:
+            case LED_RGB_KoChColorTemperatureStatus:
             case LED_RGB_KoChRGBStatus:
             case LED_RGB_KoChHSVStatus:
                 // read-only

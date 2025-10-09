@@ -194,12 +194,14 @@ void LedModule::loop(bool configured)
     if (ParamLED_TemperatureChangeSend)
     {
         float temperature = _temperature.readTemperatureC();
-        if (abs(_lastTemperatureSent - temperature) > TEMPERATURE_MIN_DIFFERENCE ||
-            ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSentTimer, ParamLED_TemperatureCyclicTimeMS))
+        float temperatureDifference = abs(_lastTemperatureSent - temperature);
+        if (_lastTemperatureSent * ParamLED_TemperatureMinChangePercent / 100.0f > temperatureDifference ||
+            temperatureDifference > ParamLED_TemperatureMinChangeAbsolute ||
+            ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSendTimer, ParamLED_TemperatureCyclicTimeMS))
         {
             KoLED_Temperature.value(temperature, DPT_Value_Temp);
             _lastTemperatureSent = temperature;
-            _temperaturSentTimer = delayTimerInit();
+            _temperaturSendTimer = delayTimerInit();
         }
     }
 #endif
@@ -262,8 +264,8 @@ void LedModule::loop1(bool configured)
 
 void LedModule::processInputKo(GroupObject &ko)
 {
-    logDebugP("proc.Ko GA%04X", ko.asap());
-    logHexDebugP(ko.valueRef(), ko.valueSize());
+    // logDebugP("proc.Ko GA%04X", ko.asap());
+    // logHexDebugP(ko.valueRef(), ko.valueSize());
 
     uint16_t asap = ko.asap();
     uint16_t channelnumber = 0;
