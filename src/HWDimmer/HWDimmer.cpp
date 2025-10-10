@@ -41,7 +41,7 @@ void HWDimmer::checkPowerSupply()
     if (ParamLED_PowerSupplyVoltageChangeSend)
     {
         float voltageDifference = abs(_lastVoltageSent - _powerSupplyVoltage);
-        if (_lastVoltageSent * ParamLED_PowerSupplyVoltageMinChangePercent / 100.0f > voltageDifference ||
+        if (voltageDifference > _lastVoltageSent * ParamLED_PowerSupplyVoltageMinChangePercent / 100.0f ||
             voltageDifference * 1000 > ParamLED_PowerSupplyVoltageMinChangeAbsolute ||
             ParamLED_PowerSupplyVoltageCyclicTimeMS > 0 && delayCheck(_voltageSendTimer, ParamLED_PowerSupplyVoltageCyclicTimeMS))
         {

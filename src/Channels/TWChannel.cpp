@@ -48,7 +48,7 @@ void TWChannel::update()
     if (ParamLED_TW_ChStatusBrightnessSend)
     {
         float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if (tmpBrightness * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f > brightnessDifference ||
+        if (brightnessDifference > _lastBrightnessLevel * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f ||
             brightnessDifference > ParamLED_TW_ChStatusBrightnessMinChangeAbsolute ||
             ParamLED_TW_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_TW_ChStatusBrightnessTimeMS))
         {
@@ -60,7 +60,7 @@ void TWChannel::update()
     if (ParamLED_TW_ChStatusTempSend)
     {
         float colorDifference = abs(_lastColorTemp - tmpColor);
-        if (tmpColor * ParamLED_TW_ChStatusTempMinChangePercent / 100.0f > colorDifference ||
+        if (colorDifference > _lastColorTemp * ParamLED_TW_ChStatusTempMinChangePercent / 100.0f ||
             colorDifference > ParamLED_TW_ChStatusTempMinChangeAbsolute ||
             ParamLED_TW_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_TW_ChStatusTempTimeMS))
         {

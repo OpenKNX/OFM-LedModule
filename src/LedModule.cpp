@@ -195,7 +195,7 @@ void LedModule::loop(bool configured)
     {
         float temperature = _temperature.readTemperatureC();
         float temperatureDifference = abs(_lastTemperatureSent - temperature);
-        if (_lastTemperatureSent * ParamLED_TemperatureMinChangePercent / 100.0f > temperatureDifference ||
+        if (temperatureDifference > _lastTemperatureSent * ParamLED_TemperatureMinChangePercent / 100.0f ||
             temperatureDifference > ParamLED_TemperatureMinChangeAbsolute ||
             ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSendTimer, ParamLED_TemperatureCyclicTimeMS))
         {

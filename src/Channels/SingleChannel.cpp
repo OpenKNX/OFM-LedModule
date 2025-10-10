@@ -46,7 +46,7 @@ void SingleChannel::update()
     if (ParamLED_SC_ChStatusBrightnessSend)
     {
         float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if (tmpBrightness * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f > brightnessDifference ||
+        if (brightnessDifference > _lastBrightnessLevel * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f ||
             brightnessDifference > ParamLED_SC_ChStatusBrightnessMinChangeAbsolute ||
             ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
         {
