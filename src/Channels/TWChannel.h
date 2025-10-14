@@ -38,6 +38,9 @@ class TWChannel : public LightChannel
     void relDimDown();
     void relDimStop();
     void setColorTemperature(uint16_t colorTemp);
+    void relDimUpColor();
+    void relDimDownColor();
+    void relDimStopColor();
 
   private:
     const std::string name() override;

@@ -52,7 +52,9 @@ void TWChannel::update()
             brightnessDifference > ParamLED_TW_ChStatusBrightnessMinChangeAbsolute ||
             ParamLED_TW_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_TW_ChStatusBrightnessTimeMS))
         {
-            KoLED_TW_ChBrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
+            u8_t KO_Val = (u8_t)(round((float)(((u32_t)tmpBrightness / VALUE_KNX_MULTIPLY*1000)/100))/10.0);
+            KoLED_TW_ChBrightnessStatus.value(KO_Val, DPT_Scaling);
+            //KoLED_TW_ChBrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
             _statusSendBrightnessTimer = delayTimerInit();
         }
     }
@@ -224,6 +226,27 @@ void TWChannel::processInputKo(GroupObject& ko)
                     setColorTemperature(ko.value(Dpt(7, 600)));
                 }
                 break;
+
+            /*case LED_TW_KoChColorRel:
+                if (!getLock())
+                {
+                    int16_t tmpu16;
+                    tmpu16 = *KoLED_TW_ChColorRel.valueRef();
+
+                    if (tmpu16 >= 0x09)
+                    {
+                        relDimUpColor();
+                    }
+                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
+                    {
+                        relDimDownColor();
+                    }
+                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                    {
+                        relDimStopColor();
+                    }
+                }
+                break;*/
 
             // Day or Night
             case LED_TW_KoChNight:
@@ -516,3 +539,29 @@ void TWChannel::setColorTemperature(uint16_t colorTemp)
     colorTemp = checkMinMaxColorTemp(colorTemp);
     _colorTemperature.setTargetValue(colorTemp, dimmingTimeON());
 }
+
+void TWChannel::relDimUpColor()
+{
+    _boost = false;
+    _sceneNumberActive = 0;
+    logDebugP("relDim_UP");
+    _colorTemperature.setTargetValue(ParamLED_TW_ChColorTempCW, ParamLED_TW_ChLightDimmRelTime);
+}
+
+void TWChannel::relDimDownColor()
+{
+    _boost = false;
+    _sceneNumberActive = 0;
+    logDebugP("relDim_DOWN");
+    _colorTemperature.setTargetValue(ParamLED_TW_ChColorTempWW, ParamLED_TW_ChLightDimmRelTime);
+}
+
+void TWChannel::relDimStopColor()
+{
+    _boost = false;
+    _sceneNumberActive = 0;
+    logDebugP("relDim_STOP");
+    _colorTemperature.setTargetValue(_colorTemperature.value(), 1);
+}
+
+
