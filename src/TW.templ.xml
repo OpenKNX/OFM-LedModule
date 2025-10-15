@@ -137,10 +137,10 @@
               <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%BrightnessRel"          Text="Helligkeit Relativ"     Number="%K7%"  FunctionText="TW %C% - Helligkeit Relativ"     ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"   />
               <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%BrightnessStatus"       Text="Helligkeit Status"      Number="%K8%"  FunctionText="TW %C% - Helligkeit Status"      ObjectSize="1 Byte"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"   />
               <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%ColorTemperature"       Text="Farbtemperatur"         Number="%K9%"  FunctionText="TW %C% - Farbtemperatur"         ObjectSize="2 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600" />
-              <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status"  Number="%K10%" FunctionText="TW %C% - Farbtemperatur Status"  ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600" />
-              <ComObject Id="%AID%_O-%TT%%CC%011" Name="Ch%C%Night"                  Text="Nacht"                  Number="%K11%" FunctionText="TW %C% - Nacht"                  ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"   />
-              <ComObject Id="%AID%_O-%TT%%CC%012" Name="Ch%C%Scene"                  Text="Szene"                  Number="%K12%" FunctionText="TW %C% - Szene"                  ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1"  />
-              <!-- <ComObject Id="%AID%_O-%TT%%CC%013" Name="Ch%C%ColorRel"               Text="Farbtemperatur Relativ" Number="%K13%" FunctionText="TW %C% - Farbtemperatur Relativ" ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"   /> -->
+              <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%ColorTemperatureRel"    Text="Farbtemperatur Relativ" Number="%K10%" FunctionText="TW %C% - Farbtemperatur Relativ" ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"   />
+              <ComObject Id="%AID%_O-%TT%%CC%011" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status"  Number="%K11%" FunctionText="TW %C% - Farbtemperatur Status"  ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%012" Name="Ch%C%Night"                  Text="Nacht"                  Number="%K12%" FunctionText="TW %C% - Nacht"                  ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"   />
+              <ComObject Id="%AID%_O-%TT%%CC%013" Name="Ch%C%Scene"                  Text="Szene"                  Number="%K13%" FunctionText="TW %C% - Szene"                  ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1"  />
             </ComObjectTable>
 
             <ComObjectRefs>
@@ -157,7 +157,7 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_O-%TT%%CC%011" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" RefId="%AID%_O-%TT%%CC%012" />
-              <!-- <ComObjectRef Id="%AID%_O-%TT%%CC%012_R-%TT%%CC%01301" RefId="%AID%_O-%TT%%CC%013" /> -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%013_R-%TT%%CC%01301" RefId="%AID%_O-%TT%%CC%013" />
             </ComObjectRefs>
 
           </Static>
@@ -174,7 +174,8 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" /> <!-- Brightness -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- Brightness Rel -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" /> <!-- Color Temperature -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" /> <!-- Nacht -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" /> <!-- Color Temperature Rel -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" /> <!-- Nacht -->
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaldefinition" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" IndentLevel="1" /> <!-- ChannelName -->
@@ -265,7 +266,7 @@
                           <ParameterRefRef RefId="%AID%_UP-%TT%%CC%020_R-%TT%%CC%02001" Cell="1,4" />
                         </ParameterBlock>
 
-                        <ComObjectRefRef RefId="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" />
                       </when>
                     </choose>
                     
@@ -300,7 +301,7 @@
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%030_R-%TT%%CC%03001" IndentLevel="1" /> <!-- Scenes -->
                     <choose ParamRefId="%AID%_UP-%TT%%CC%030_R-%TT%%CC%03001">
                       <when test="1">
-                        <ComObjectRefRef RefId="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" /> <!-- Scenes -->
+                        <ComObjectRefRef RefId="%AID%_O-%TT%%CC%013_R-%TT%%CC%01301" /> <!-- Scenes -->
                         
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%031_R-%TT%%CC%03101" IndentLevel="2" /> <!-- ScenesDisableNightSw -->
                         
