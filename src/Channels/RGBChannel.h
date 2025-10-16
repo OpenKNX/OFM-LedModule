@@ -46,7 +46,9 @@ class RGBChannel : public LightChannel
     void setRGB(uint32_t RGBvalue);
     void setHSV(uint32_t HSVvalue);
     uint32_t conv_Temp2RGB(int temp);
-    int conv_RGB2Temp(Colors::RGB target_rgb);
+    int conv_RGB2Temp1(Colors::RGB target_rgb);
+    int conv_RGB2Temp2(Colors::RGB target_rgb);
+    //int conv_RGB2Temp3(Colors::RGB target_rgb);
 
   private:
     const std::string name() override;

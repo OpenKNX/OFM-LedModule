@@ -229,11 +229,11 @@ void TWChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            /*case LED_TW_KoChColorRel:
+            case LED_TW_KoChColorTemperatureRel:
                 if (!getLock())
                 {
                     int16_t tmpu16;
-                    tmpu16 = *KoLED_TW_ChColorRel.valueRef();
+                    tmpu16 = *KoLED_TW_ChColorTemperatureRel.valueRef();
 
                     if (tmpu16 >= 0x09)
                     {
@@ -248,7 +248,7 @@ void TWChannel::processInputKo(GroupObject& ko)
                         relDimStopColor();
                     }
                 }
-                break;*/
+                break;
 
             // Day or Night
             case LED_TW_KoChNight:

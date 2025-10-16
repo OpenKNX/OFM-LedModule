@@ -1,8 +1,8 @@
 #include "RGBChannel.h"
 #include <Math.h>
-#include <knx.h>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <knx.h>
 
 RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
     : LightChannel(index, pDimmer, hwChannels, 3), _hue(0, 0, H_PART - 1), _saturation(0, 0, VAL_RANGE)
@@ -59,14 +59,15 @@ void RGBChannel::update()
     {
         float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
         if ((brightnessDifference > EPSILON &&
-            (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f ||
-             brightnessDifference >= ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute)) ||
-             ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
+             (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f ||
+              brightnessDifference >= ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute)) ||
+            ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
         {
             // KoLED_RGB_BrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
-            u8_t KO_Val = (u8_t)(round((float)(((u32_t)tmpBrightness / VALUE_KNX_MULTIPLY*1000)/100))/10.0);
+            u8_t KO_Val = (u8_t)(round((float)(((u32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+            logDebugP("Brightness KNX Value: %d", KO_Val);
             KoLED_RGB_ChBrightnessStatus.value(KO_Val, DPT_Scaling);
-            //KoLED_RGB_ChBrightnessStatus.value(map(tmpBrightness, -1, VALUE_KNX_COUNT - 2, 0, 100), DPT_Scaling);
+            // KoLED_RGB_ChBrightnessStatus.value(map(tmpBrightness, -1, VALUE_KNX_COUNT - 2, 0, 100), DPT_Scaling);
             _statusSendBrightnessTimer = delayTimerInit();
         }
     }
@@ -77,13 +78,13 @@ void RGBChannel::update()
         // we only do this when status sending is enabled
         // and color temperature can only change if hue or saturation changes
         if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
-            tmpColor = conv_RGB2Temp(Colors::hsv2rgb(hsv).toUint32());
+            tmpColor = conv_RGB2Temp2(Colors::hsv2rgb(hsv).toUint32());
 
         float colorDifference = abs(_lastColorTemp - tmpColor);
         if ((colorDifference > EPSILON &&
              (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f ||
               colorDifference >= ParamLED_RGB_ChStatusTempMinChangeAbsolute)) ||
-              ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
+            ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
         {
             if (stateOn)
                 KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
@@ -355,7 +356,7 @@ void RGBChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
                     {
-                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()*VALUE_KNX_MULTIPLY), dimmingTime(1));
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness() * VALUE_KNX_MULTIPLY), dimmingTime(1));
                     }
                     if (_scenes[i].valueType == ValueType::COLOR)
                     {
@@ -786,6 +787,7 @@ void RGBChannel::setHSV(uint32_t HSVvalue)
     //_brightness.setTargetValue(hsv.Val(), ParamLED_RGB_ChLightDimmDayOnTime);
 }
 
+
 uint32_t RGBChannel::conv_Temp2RGB(int temp)
 {
     uint8_t r, g, b = 0;
@@ -876,7 +878,7 @@ uint32_t RGBChannel::conv_Temp2RGB(int temp)
 //     return (uint32_t)r << 16 | g << 8 | b;
 // }
 
-int RGBChannel::conv_RGB2Temp(Colors::RGB target_rgb)
+int RGBChannel::conv_RGB2Temp1(Colors::RGB target_rgb)
 {
     uint8_t r_target = target_rgb._red;
     uint8_t g_target = target_rgb._green;
@@ -938,42 +940,42 @@ int RGBChannel::conv_RGB2Temp(Colors::RGB target_rgb)
     return best_temp;
 }
 
-// int RGBChannel::conv_RGB2Temp(Colors::RGB target_rgb)
-// {
-//     uint8_t r = target_rgb._red;
-//     uint8_t g = target_rgb._green;
-//     uint8_t b = target_rgb._blue;
+ int RGBChannel::conv_RGB2Temp2(Colors::RGB target_rgb)
+ {
+     uint8_t r = target_rgb._red;
+     uint8_t g = target_rgb._green;
+     uint8_t b = target_rgb._blue;
 
-//     // 1. Normalize RGB (0–255 → 0–1)
-//     double R = r / 255.0;
-//     double G = g / 255.0;
-//     double B = b / 255.0;
+     // 1. Normalize RGB (0–255 → 0–1)
+     double R = r / 255.0;
+     double G = g / 255.0;
+     double B = b / 255.0;
 
-//     // 2. Apply gamma correction (sRGB)
-//     auto linearize = [](double c) {
-//         return pow(c, 2.2);
-//     };
-//     R = linearize(R);
-//     G = linearize(G);
-//     B = linearize(B);
+     // 2. Apply gamma correction (sRGB)
+     auto linearize = [](double c) {
+         return pow(c, 2.2);
+     };
+     R = linearize(R);
+     G = linearize(G);
+     B = linearize(B);
 
-//     // 3. Convert linear RGB to XYZ
-//     double X = R * 0.4124 + G * 0.3576 + B * 0.1805;
-//     double Y = R * 0.2126 + G * 0.7152 + B * 0.0722;
-//     double Z = R * 0.0193 + G * 0.1192 + B * 0.9505;
+     // 3. Convert linear RGB to XYZ
+     double X = R * 0.4124 + G * 0.3576 + B * 0.1805;
+     double Y = R * 0.2126 + G * 0.7152 + B * 0.0722;
+     double Z = R * 0.0193 + G * 0.1192 + B * 0.9505;
 
-//     double sum = X + Y + Z;
-//     if (sum == 0) return 0.0;  // Prevent division by zero
+     double sum = X + Y + Z;
+     if (sum == 0) return 0.0;  // Prevent division by zero
 
-//     // 4. Convert to chromaticity coordinates (x, y)
-//     double x = X / sum;
-//     double y = Y / sum;
+     // 4. Convert to chromaticity coordinates (x, y)
+     double x = X / sum;
+     double y = Y / sum;
 
-//     // 5. Apply McCamy's formula
-//     double n = (x - 0.3320) / (y - 0.1858);
-//     double cct = 449.0 * pow(n, 3) + 3525.0 * pow(n, 2) + 6823.3 * n + 5520.33;
+     // 5. Apply McCamy's formula
+     double n = (x - 0.3320) / (y - 0.1858);
+     double cct = 449.0 * pow(n, 3) + 3525.0 * pow(n, 2) + 6823.3 * n + 5520.33;
 
-//     return cct;  // Color temperature in Kelvin
-// }
+     return cct;  // Color temperature in Kelvin
+ }
 
 // EOF
