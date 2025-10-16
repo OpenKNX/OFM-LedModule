@@ -58,9 +58,10 @@ void RGBChannel::update()
     if (ParamLED_RGB_ChStatusBrightnessSend)
     {
         float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if (brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f ||
-            brightnessDifference >= ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute ||
-            ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
+        if ((brightnessDifference > EPSILON &&
+            (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f ||
+             brightnessDifference >= ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute)) ||
+             ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
         {
             // KoLED_RGB_BrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
             u8_t KO_Val = (u8_t)(round((float)(((u32_t)tmpBrightness / VALUE_KNX_MULTIPLY*1000)/100))/10.0);
@@ -79,9 +80,10 @@ void RGBChannel::update()
             tmpColor = conv_RGB2Temp(Colors::hsv2rgb(hsv).toUint32());
 
         float colorDifference = abs(_lastColorTemp - tmpColor);
-        if (colorDifference >= _lastColorTemp * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f ||
-            colorDifference >= ParamLED_RGB_ChStatusTempMinChangeAbsolute ||
-            ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
+        if ((colorDifference > EPSILON &&
+             (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f ||
+              colorDifference >= ParamLED_RGB_ChStatusTempMinChangeAbsolute)) ||
+              ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
         {
             if (stateOn)
                 KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));

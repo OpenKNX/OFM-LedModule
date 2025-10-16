@@ -50,11 +50,11 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%014" Name="Ch%C%StatusOnOffBase"       ParameterType="%AID%_PT-DelayBase" Offset="1" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%015" Name="Ch%C%StatusOnOffTime"       ParameterType="%AID%_PT-DelayTime" Offset="1" BitOffset="2" Text="Zeit" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%044" Name="Ch%C%StatusBrightnessMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="3" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%%CC%045" Name="Ch%C%StatusBrightnessMinChangeAbsolute" ParameterType="%AID%_PT-ValueDpt5001" Offset="4" BitOffset="0" Text="Mindeständerung absolut" Value="0" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%045" Name="Ch%C%StatusBrightnessMinChangeAbsolute" ParameterType="%AID%_PT-ValueDpt5001" Offset="4" BitOffset="0" Text="Mindeständerung absolut" Value="1" SuffixText="%" />
                 <Parameter Id="%AID%_UP-%TT%%CC%017" Name="Ch%C%StatusBrightnessBase"  ParameterType="%AID%_PT-DelayBase" Offset="5" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%018" Name="Ch%C%StatusBrightnessTime"  ParameterType="%AID%_PT-DelayTime" Offset="5" BitOffset="2" Text="Zeit" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%046" Name="Ch%C%StatusTempMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="7" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%%CC%047" Name="Ch%C%StatusTempMinChangeAbsolute" ParameterType="%AID%_PT-ColorTemperatureMinChange" Offset="8" BitOffset="0" Text="Mindeständerung absolut" Value="0" SuffixText="°K" />
+                <Parameter Id="%AID%_UP-%TT%%CC%047" Name="Ch%C%StatusTempMinChangeAbsolute" ParameterType="%AID%_PT-ColorTemperatureMinChange" Offset="8" BitOffset="0" Text="Mindeständerung absolut" Value="100" SuffixText="°K" />
                 <Parameter Id="%AID%_UP-%TT%%CC%020" Name="Ch%C%StatusTempBase"        ParameterType="%AID%_PT-DelayBase" Offset="10" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%021" Name="Ch%C%StatusTempTime"        ParameterType="%AID%_PT-DelayTime" Offset="10" BitOffset="2" Text="Zeit" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%023" Name="Ch%C%StatusRGBBase"         ParameterType="%AID%_PT-DelayBase" Offset="12" BitOffset="0" Text="Zeitbasis" Value="0" />
