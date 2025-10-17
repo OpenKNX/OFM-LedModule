@@ -35,8 +35,10 @@ void SingleChannel::update()
 
     if (ParamLED_SC_ChStatusOnOffSend)
     {
-        if ((bool)KoLED_SC_ChStateOnOff.value(DPT_State) != stateOn ||
-            ParamLED_SC_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_SC_ChStatusOnOffTimeMS))
+        if ((bool)KoLED_SC_ChStateOnOff.value(DPT_State) != stateOn)
+            KoLED_SC_ChStateOnOff.value(stateOn, DPT_State);
+
+        if (ParamLED_SC_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_SC_ChStatusOnOffTimeMS))
         {
             KoLED_SC_ChStateOnOff.value(stateOn, DPT_State);
             _statusSendOnOffTimer = delayTimerInit();
@@ -45,14 +47,22 @@ void SingleChannel::update()
 
     if (ParamLED_SC_ChStatusBrightnessSend)
     {
-        float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if ((brightnessDifference > EPSILON &&
-             (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f ||
-              brightnessDifference >= ParamLED_SC_ChStatusBrightnessMinChangeAbsolute)) ||
-            ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
+        uint8_t koValue = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+
+        uint16_t brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
+        if (brightnessDifference > 0 &&
+            (uint8_t)KoLED_SC_ChBrightnessStatus.value(DPT_Scaling) != koValue)
         {
-            uint8_t KO_Val = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
-            KoLED_SC_ChBrightnessStatus.value(KO_Val, DPT_Scaling);
+            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f ||
+                brightnessDifference >= ParamLED_SC_ChStatusBrightnessMinChangeAbsolute)
+                KoLED_SC_ChBrightnessStatus.value(koValue, DPT_Scaling);
+            else
+                KoLED_SC_ChBrightnessStatus.valueNoSend(koValue, DPT_Scaling);
+        }
+        
+        if (ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
+        {
+            KoLED_SC_ChBrightnessStatus.value(koValue, DPT_Scaling);
             _statusSendBrightnessTimer = delayTimerInit();
         }
     }

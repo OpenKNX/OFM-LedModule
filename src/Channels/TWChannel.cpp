@@ -37,8 +37,10 @@ void TWChannel::update()
 
     if (ParamLED_TW_ChStatusOnOffSend)
     {
-        if ((bool)KoLED_TW_ChStateOnOff.value(DPT_State) != stateOn ||
-            ParamLED_TW_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_TW_ChStatusOnOffTimeMS))
+        if ((bool)KoLED_TW_ChStateOnOff.value(DPT_State) != stateOn)
+            KoLED_TW_ChStateOnOff.value(stateOn, DPT_State);
+
+        if (ParamLED_TW_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_TW_ChStatusOnOffTimeMS))
         {
             KoLED_TW_ChStateOnOff.value(stateOn, DPT_State);
             _statusSendOnOffTimer = delayTimerInit();
@@ -47,25 +49,41 @@ void TWChannel::update()
 
     if (ParamLED_TW_ChStatusBrightnessSend)
     {
-        float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if ((brightnessDifference > EPSILON &&
-             (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f ||
-              brightnessDifference >= ParamLED_TW_ChStatusBrightnessMinChangeAbsolute)) ||
-            ParamLED_TW_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_TW_ChStatusBrightnessTimeMS))
+        uint8_t koValue = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+
+        uint16_t brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
+        if (brightnessDifference > 0 &&
+            (uint8_t)KoLED_TW_ChBrightnessStatus.value(DPT_Scaling) != koValue)
         {
-            uint8_t KO_Val = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
-            KoLED_TW_ChBrightnessStatus.value(KO_Val, DPT_Scaling);
+            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f ||
+                brightnessDifference >= ParamLED_TW_ChStatusBrightnessMinChangeAbsolute)
+                    KoLED_TW_ChBrightnessStatus.value(koValue, DPT_Scaling);
+                else
+                    KoLED_TW_ChBrightnessStatus.valueNoSend(koValue, DPT_Scaling);
+        }
+        
+        if (ParamLED_TW_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_TW_ChStatusBrightnessTimeMS))
+        {
+            KoLED_TW_ChBrightnessStatus.value(koValue, DPT_Scaling);
             _statusSendBrightnessTimer = delayTimerInit();
         }
     }
 
     if (ParamLED_TW_ChStatusTempSend)
     {
-        float colorDifference = abs(_lastColorTemp - tmpColor);
-        if ((colorDifference > EPSILON &&
-             (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_TW_ChStatusTempMinChangePercent / 100.0f ||
-              colorDifference >= ParamLED_TW_ChStatusTempMinChangeAbsolute)) ||
-            ParamLED_TW_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_TW_ChStatusTempTimeMS))
+        uint16_t colorDifference = abs(_lastColorTemp - tmpColor);
+        if (colorDifference > 0 &&
+            (uint16_t)KoLED_TW_ChColorTemperatureStatus.value(Dpt(7, 600)) != tmpColor)
+        {
+            if (stateOn &&
+                (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_TW_ChStatusTempMinChangePercent / 100.0f ||
+                 colorDifference >= ParamLED_TW_ChStatusTempMinChangeAbsolute))
+                KoLED_TW_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
+            else
+                KoLED_TW_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
+        }
+
+        if (ParamLED_TW_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_TW_ChStatusTempTimeMS))
         {
             if (stateOn)
                 KoLED_TW_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
