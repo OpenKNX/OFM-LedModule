@@ -195,9 +195,19 @@ void LedModule::loop(bool configured)
     {
         float temperature = _temperature.readTemperatureC();
         float temperatureDifference = abs(_lastTemperatureSent - temperature);
-        if (temperatureDifference > _lastTemperatureSent * ParamLED_TemperatureMinChangePercent / 100.0f ||
-            temperatureDifference > ParamLED_TemperatureMinChangeAbsolute ||
-            ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSendTimer, ParamLED_TemperatureCyclicTimeMS))
+        if (temperatureDifference > 0.01)
+        {
+            if (temperatureDifference >= _lastTemperatureSent * ParamLED_TemperatureMinChangePercent / 100.0f &&
+                temperatureDifference >= ParamLED_TemperatureMinChangeAbsolute)
+            {
+                KoLED_Temperature.value(temperature, DPT_Value_Temp);
+                _lastTemperatureSent = temperature;
+            }
+            else
+                KoLED_Temperature.valueNoSend(temperature, DPT_Value_Temp);
+        }
+
+        if (ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSendTimer, ParamLED_TemperatureCyclicTimeMS))
         {
             KoLED_Temperature.value(temperature, DPT_Value_Temp);
             _lastTemperatureSent = temperature;

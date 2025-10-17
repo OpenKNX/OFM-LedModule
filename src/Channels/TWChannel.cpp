@@ -55,7 +55,7 @@ void TWChannel::update()
         if (brightnessDifference > 0 &&
             (uint8_t)KoLED_TW_ChBrightnessStatus.value(DPT_Scaling) != koValue)
         {
-            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f ||
+            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f &&
                 brightnessDifference >= ParamLED_TW_ChStatusBrightnessMinChangeAbsolute)
                     KoLED_TW_ChBrightnessStatus.value(koValue, DPT_Scaling);
                 else
@@ -76,7 +76,7 @@ void TWChannel::update()
             (uint16_t)KoLED_TW_ChColorTemperatureStatus.value(Dpt(7, 600)) != tmpColor)
         {
             if (stateOn &&
-                (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_TW_ChStatusTempMinChangePercent / 100.0f ||
+                (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_TW_ChStatusTempMinChangePercent / 100.0f &&
                  colorDifference >= ParamLED_TW_ChStatusTempMinChangeAbsolute))
                 KoLED_TW_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
             else

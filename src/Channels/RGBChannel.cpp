@@ -65,7 +65,7 @@ void RGBChannel::update()
         if (brightnessDifference > 0 &&
             (uint8_t)KoLED_RGB_ChBrightnessStatus.value(DPT_Scaling) != koValue)
         {
-            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f ||
+            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f &&
                 brightnessDifference >= ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute)
                 KoLED_RGB_ChBrightnessStatus.value(koValue, DPT_Scaling);
             else
@@ -92,7 +92,7 @@ void RGBChannel::update()
             (uint16_t)KoLED_RGB_ChColorTemperatureStatus.value(Dpt(7, 600)) != tmpColor)
         {
             if (stateOn &&
-                (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f ||
+                (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f &&
                  colorDifference >= ParamLED_RGB_ChStatusTempMinChangeAbsolute))
                 KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
             else

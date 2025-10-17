@@ -53,7 +53,7 @@ void SingleChannel::update()
         if (brightnessDifference > 0 &&
             (uint8_t)KoLED_SC_ChBrightnessStatus.value(DPT_Scaling) != koValue)
         {
-            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f ||
+            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f &&
                 brightnessDifference >= ParamLED_SC_ChStatusBrightnessMinChangeAbsolute)
                 KoLED_SC_ChBrightnessStatus.value(koValue, DPT_Scaling);
             else
