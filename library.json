@@ -1,6 +1,6 @@
 {
     "name": "OFM-LedModule",
-    "version": "0.10.0-DEV",
+    "version": "0.11.0-DEV",
     "dependencies": {
         "adafruit/Adafruit PWM Servo Driver Library": "3.0.2",
         "adafruit/Adafruit NeoPixel": "1.12.4",
