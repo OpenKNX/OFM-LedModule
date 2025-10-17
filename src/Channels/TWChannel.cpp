@@ -49,13 +49,12 @@ void TWChannel::update()
     {
         float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
         if ((brightnessDifference > EPSILON &&
-            (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f ||
-             brightnessDifference >= ParamLED_TW_ChStatusBrightnessMinChangeAbsolute)) ||
+             (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f ||
+              brightnessDifference >= ParamLED_TW_ChStatusBrightnessMinChangeAbsolute)) ||
             ParamLED_TW_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_TW_ChStatusBrightnessTimeMS))
         {
-            u8_t KO_Val = (u8_t)(round((float)(((u32_t)tmpBrightness / VALUE_KNX_MULTIPLY*1000)/100))/10.0);
+            uint8_t KO_Val = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
             KoLED_TW_ChBrightnessStatus.value(KO_Val, DPT_Scaling);
-            //KoLED_TW_ChBrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
             _statusSendBrightnessTimer = delayTimerInit();
         }
     }
@@ -285,7 +284,7 @@ void TWChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS || _scenes[i].valueType == ValueType::COMBINED)
                     {
-                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness()*VALUE_KNX_MULTIPLY), dimmingTime(1));
+                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness() * VALUE_KNX_MULTIPLY), dimmingTime(1));
                     }
                     if (_scenes[i].valueType == ValueType::TEMTPERATURE || _scenes[i].valueType == ValueType::COMBINED)
                     {
@@ -565,5 +564,3 @@ void TWChannel::relDimStopColor()
     logDebugP("relDim_STOP");
     _colorTemperature.setTargetValue(_colorTemperature.value(), 1);
 }
-
-

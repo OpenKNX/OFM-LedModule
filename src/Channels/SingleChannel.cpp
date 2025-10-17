@@ -47,11 +47,11 @@ void SingleChannel::update()
     {
         float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
         if ((brightnessDifference > EPSILON &&
-            (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f ||
-             brightnessDifference >= ParamLED_SC_ChStatusBrightnessMinChangeAbsolute)) ||
-             ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
+             (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f ||
+              brightnessDifference >= ParamLED_SC_ChStatusBrightnessMinChangeAbsolute)) ||
+            ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
         {
-            u8_t KO_Val = (u8_t)(round((float)(((u32_t)tmpBrightness / VALUE_KNX_MULTIPLY*1000)/100))/10.0);
+            uint8_t KO_Val = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
             KoLED_SC_ChBrightnessStatus.value(KO_Val, DPT_Scaling);
             _statusSendBrightnessTimer = delayTimerInit();
         }
@@ -66,7 +66,6 @@ void SingleChannel::update()
     }
 
     _lastBrightnessLevel = tmpBrightness;
-    
 }
 
 void SingleChannel::loop()
@@ -97,7 +96,6 @@ void SingleChannel::loop()
             _brightness.setTargetValue(0, dimmingTimeOFF());
         }
     }
-    
 }
 
 void SingleChannel::processInputKo(GroupObject& ko)
@@ -149,7 +147,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 if (!getLock())
                 {
                     setBrightness((uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
-                    logDebugP("Brightness KO: %d -> BR.value %d", (uint16_t)ko.value(DPT_Scaling), (uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY) );
+                    logDebugP("Brightness KO: %d -> BR.value %d", (uint16_t)ko.value(DPT_Scaling), (uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
                 }
                 break;
 
@@ -346,7 +344,7 @@ void SingleChannel::setNight(bool night)
     logDebugP("treppenlicht %d ", ParamLED_SC_ChStairCaseActive);
     if (ParamLED_SC_ChScenesDisableNightSw || (!ParamLED_SC_ChScenesDisableNightSw && _sceneNumberActive == 0))
     {
-        logDebugP("Nachtmodus:  %d > %d", _brightness.value(), (ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY) );
+        logDebugP("Nachtmodus:  %d > %d", _brightness.value(), (ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY));
         _isNight = night;
         _brightness.setRange(ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
         if (!night)
