@@ -89,7 +89,7 @@ void RGBChannel::update()
         {
         Colors::RGB rgb_value = Colors::hsv2rgb(hsv).toUint32();
         u32_t rgb_value_ = rgb_value.toUint32();
-        tmpColor = conv_RGB2Temp2(rgb_value_);
+        tmpColor = conv_RGB2Temp1(rgb_value_);
         }
 
         uint16_t colorDifference = abs(_lastColorTemp - tmpColor);
