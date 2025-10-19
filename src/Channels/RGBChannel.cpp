@@ -73,12 +73,17 @@ void RGBChannel::update()
     }
 
     if (ParamLED_RGB_ChStatusTempSend)
-    {
+    {            
+        Colors::RGB rgb_value = Colors::hsv2rgb(hsv).toUint32();
+        u32_t rgb_value_ = rgb_value.toUint32();
+        //u32_t _rgb_value = Colors::hsv2rgb(hsv).toUint32();
         // as color temperature calculation is quite CPU intensive,
         // we only do this when status sending is enabled
         // and color temperature can only change if hue or saturation changes
         if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
-            tmpColor = conv_RGB2Temp2(Colors::hsv2rgb(hsv).toUint32());
+
+            //tmpColor = conv_RGB2Temp1(Colors::hsv2rgb(hsv).toUint32());
+            tmpColor = conv_RGB2Temp1(rgb_value_);
 
         float colorDifference = abs(_lastColorTemp - tmpColor);
         if ((colorDifference > EPSILON &&
@@ -90,7 +95,7 @@ void RGBChannel::update()
                 KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
             else
                 KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
-
+//logDebugP("Sending Color Value: H:%d S:%d V:%d RGB_Value:%d R:%d G:%d B:%d > R:%d G:%d B:%d", tmpHue, tmpSat, tmpBrightness, rgb_value_, (_rgb_value >> 16) & 0xFF, (_rgb_value >> 8) & 0xFF, _rgb_value & 0xFF, rgb_value._red, rgb_value._green, rgb_value._blue );
             _statusSendTemperaturTimer = delayTimerInit();
         }
     }
@@ -300,6 +305,27 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     setColorTemperature(ko.value(Dpt(7, 600)));
                 }
                 break;
+
+         /*   case LED_RGB_KoChColorTemperatureRel:
+                if (!getLock())
+                {
+                    int16_t tmpu16;
+                    tmpu16 = *KoLED_RGB_ChColorTemperatureRel.valueRef();
+
+                    if (tmpu16 >= 0x09)
+                    {
+                        relDimUpColor();
+                    }
+                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
+                    {
+                        relDimDownColor();
+                    }
+                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                    {
+                        relDimStopColor();
+                    }
+                }
+                break;   */             
 
             case LED_RGB_KoChRGB:
                 if (!getLock())
@@ -612,6 +638,30 @@ void RGBChannel::setColorTemperature(uint16_t colorTemp)
     KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
 }
 
+void RGBChannel::relDimUpColor()
+{
+    //_boost = false;
+    _sceneNumberActive = 0;
+    logDebugP("relDim_UP");
+    setColorTemperature(10000);
+}
+
+void RGBChannel::relDimDownColor()
+{
+    //_boost = false;
+    _sceneNumberActive = 0;
+    logDebugP("relDim_DOWN");
+    setColorTemperature(1000);
+}
+
+void RGBChannel::relDimStopColor()
+{
+    //_boost = false;
+    _sceneNumberActive = 0;
+    logDebugP("relDim_STOP");
+    //setColorTemperature(_colorTemperature.value(), 1);
+}
+
 void RGBChannel::setRGB(uint32_t RGBvalue)
 {
     _sceneNumberActive = 0;
@@ -878,16 +928,16 @@ uint32_t RGBChannel::conv_Temp2RGB(int temp)
 //     return (uint32_t)r << 16 | g << 8 | b;
 // }
 
-int RGBChannel::conv_RGB2Temp1(Colors::RGB target_rgb)
+int RGBChannel::conv_RGB2Temp1(u32_t target_rgb)
 {
-    uint8_t r_target = target_rgb._red;
-    uint8_t g_target = target_rgb._green;
-    uint8_t b_target = target_rgb._blue;
+    uint8_t r_target = ( target_rgb >> 16 ) & 0xFF;
+    uint8_t g_target = ( target_rgb >> 8  ) & 0xFF;
+    uint8_t b_target =   target_rgb         & 0xFF;
 
     int low = 1000;
     int high = 10000;
     int best_temp = low;
-    uint32_t min_error = 0xFFFFFFFF;
+    uint32_t min_error = 0x300;
 
     // Rough binary search
     while (low <= high)
@@ -898,7 +948,7 @@ int RGBChannel::conv_RGB2Temp1(Colors::RGB target_rgb)
         uint8_t g_mid = (rgb_mid >> 8) & 0xFF;
         uint8_t b_mid = rgb_mid & 0xFF;
         uint32_t error = (r_mid - r_target) * (r_mid - r_target) + (g_mid - g_target) * (g_mid - g_target) + (b_mid - b_target) * (b_mid - b_target);
-
+logDebugP("Temp: %d bestTemp:%d R:%d G:%d B:%d Error:%d Target R:%d G:%d B:%d RGB:%d", mid,best_temp, r_mid, g_mid, b_mid, error, r_target, g_target, b_target, target_rgb);
         if (error < min_error)
         {
             min_error = error;
@@ -909,18 +959,20 @@ int RGBChannel::conv_RGB2Temp1(Colors::RGB target_rgb)
 
         if ((r_mid + g_mid + b_mid) < (r_target + g_target + b_target))
         {
-            low = mid + 1;
+            low = mid + 10;
         }
         else
         {
-            high = mid - 1;
+            high = mid - 10;
         }
     }
 
     // Fine adjustment in the range ±25K
 
-    int fine_low = (best_temp - 25 < 1000) ? 1000 : best_temp - 25;
-    int fine_high = (best_temp + 25 > 10000) ? 10000 : best_temp + 25;
+    //int fine_low = (best_temp - 25 < 1000) ? 1000 : best_temp - 25;
+    //int fine_high = (best_temp + 25 > 10000) ? 10000 : best_temp + 25;
+    int fine_low = (best_temp - 1000 < 1000) ? 1000 : best_temp - 1000;
+    int fine_high = (best_temp + 1000 > 10000) ? 10000 : best_temp + 1000;
 
     for (int temp = fine_low; temp <= fine_high; temp += 1)
     {
@@ -940,11 +992,14 @@ int RGBChannel::conv_RGB2Temp1(Colors::RGB target_rgb)
     return best_temp;
 }
 
- int RGBChannel::conv_RGB2Temp2(Colors::RGB target_rgb)
+ int RGBChannel::conv_RGB2Temp2(u32_t target_rgb)
  {
-     uint8_t r = target_rgb._red;
-     uint8_t g = target_rgb._green;
-     uint8_t b = target_rgb._blue;
+    // uint8_t r = target_rgb._red;
+    // uint8_t g = target_rgb._green;
+    // uint8_t b = target_rgb._blue;
+    uint8_t r = ( target_rgb >> 16 ) & 0xFF;
+    uint8_t g = ( target_rgb >> 8  ) & 0xFF;
+    uint8_t b =   target_rgb         & 0xFF;
 
      // 1. Normalize RGB (0–255 → 0–1)
      double R = r / 255.0;

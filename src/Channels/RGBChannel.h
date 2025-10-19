@@ -42,13 +42,15 @@ class RGBChannel : public LightChannel
     void relDimDown();
     void relDimStop();
     void setColorTemperature(uint16_t colorTemp);
+    void relDimUpColor();
+    void relDimDownColor();
+    void relDimStopColor();
     void RGBpicker(uint8_t selection);
     void setRGB(uint32_t RGBvalue);
     void setHSV(uint32_t HSVvalue);
     uint32_t conv_Temp2RGB(int temp);
-    int conv_RGB2Temp1(Colors::RGB target_rgb);
-    int conv_RGB2Temp2(Colors::RGB target_rgb);
-    //int conv_RGB2Temp3(Colors::RGB target_rgb);
+    int conv_RGB2Temp1(u32_t target_rgb);
+    int conv_RGB2Temp2(u32_t target_rgb);
 
   private:
     const std::string name() override;
