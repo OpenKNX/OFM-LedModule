@@ -177,11 +177,11 @@
                 <Parameter Id="%AID%_UP-%TT%00014" Name="TemperatureChangeSend"               ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Temperatur senden" Value="0" />
                 <!-- 6 bits free -->
                 <Parameter Id="%AID%_UP-%TT%00017" Name="PowerSupplyVoltageMinChangePercent"  ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Mindeständerung Prozent" Value="5" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%00018" Name="PowerSupplyVoltageMinChangeAbsolute" ParameterType="%AID%_PT-ValueDpt7" Offset="2" BitOffset="0" Text="Mindeständerung Absolut" Value="0" SuffixText="mV" />
+                <Parameter Id="%AID%_UP-%TT%00018" Name="PowerSupplyVoltageMinChangeAbsolute" ParameterType="%AID%_PT-ValueDpt7" Offset="2" BitOffset="0" Text="Mindeständerung Absolut" Value="500" SuffixText="mV" />
                 <Parameter Id="%AID%_UP-%TT%00009" Name="PowerSupplyVoltageCyclicBase"        ParameterType="%AID%_PT-DelayBase" Offset="4" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%00010" Name="PowerSupplyVoltageCyclicTime"        ParameterType="%AID%_PT-DelayTime" Offset="4" BitOffset="2" Text="Zeit" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%00019" Name="TemperatureMinChangePercent"         ParameterType="%AID%_PT-ValueDpt5001" Offset="6" BitOffset="0" Text="Mindeständerung Prozent" Value="5" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%00020" Name="TemperatureMinChangeAbsolute"        ParameterType="%AID%_PT-ValueDpt5001" Offset="7" BitOffset="0" Text="Mindeständerung Absolut" Value="0" SuffixText="°C" />
+                <Parameter Id="%AID%_UP-%TT%00020" Name="TemperatureMinChangeAbsolute"        ParameterType="%AID%_PT-ValueDpt5001" Offset="7" BitOffset="0" Text="Mindeständerung Absolut" Value="1" SuffixText="°C" />
                 <Parameter Id="%AID%_UP-%TT%00015" Name="TemperatureCyclicBase"               ParameterType="%AID%_PT-DelayBase" Offset="8" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%00016" Name="TemperatureCyclicTime"               ParameterType="%AID%_PT-DelayTime" Offset="8" BitOffset="2" Text="Zeit" Value="0" />
               </Union>

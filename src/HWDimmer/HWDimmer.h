@@ -88,9 +88,9 @@ class HWDimmer
 
     uint32_t _currentManualModeLastChange[LEDMODULE_MAX_LIGHT_CHANNELS] = {0};
 
-    float _powerSupplyVoltage = 0;
+    uint16_t _powerSupplyVoltage = 0;
     uint32_t _powerSupplyLastRequest = 0;
     uint32_t _powerShutdownTimer = 0;
-    float _lastVoltageSent = 0;
+    uint16_t _lastVoltageSent = 0;
     uint32_t _voltageSendTimer = 0;
 };

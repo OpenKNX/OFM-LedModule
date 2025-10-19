@@ -10,7 +10,6 @@
 #define N_SCENES 8
 
 #define LED_INVALID_HW_CHANNEL 0xFF
-#define EPSILON 0.0001f
 
 class LightChannel : public OpenKNX::Channel
 {

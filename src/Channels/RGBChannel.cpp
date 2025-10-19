@@ -47,8 +47,10 @@ void RGBChannel::update()
 
     if (ParamLED_RGB_ChStatusOnOffSend)
     {
-        if ((bool)KoLED_RGB_ChStateOnOff.value(DPT_State) != stateOn ||
-            ParamLED_RGB_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_RGB_ChStatusOnOffTimeMS))
+        if ((bool)KoLED_RGB_ChStateOnOff.value(DPT_State) != stateOn)
+            KoLED_RGB_ChStateOnOff.value(stateOn, DPT_State);
+
+        if (ParamLED_RGB_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_RGB_ChStatusOnOffTimeMS))
         {
             KoLED_RGB_ChStateOnOff.value(stateOn, DPT_State);
             _statusSendOnOffTimer = delayTimerInit();
@@ -57,45 +59,58 @@ void RGBChannel::update()
 
     if (ParamLED_RGB_ChStatusBrightnessSend)
     {
-        float brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if ((brightnessDifference > EPSILON &&
-             (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f ||
-              brightnessDifference >= ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute)) ||
-            ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
+        uint8_t koValue = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+
+        uint16_t brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
+        if (brightnessDifference > 0 &&
+            (uint8_t)KoLED_RGB_ChBrightnessStatus.value(DPT_Scaling) != koValue)
         {
-            // KoLED_RGB_BrightnessStatus.value((uint16_t)(tmpBrightness / VALUE_KNX_MULTIPLY), DPT_Scaling);
-            u8_t KO_Val = (u8_t)(round((float)(((u32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
-            logDebugP("Brightness KNX Value: %d", KO_Val);
-            KoLED_RGB_ChBrightnessStatus.value(KO_Val, DPT_Scaling);
-            // KoLED_RGB_ChBrightnessStatus.value(map(tmpBrightness, -1, VALUE_KNX_COUNT - 2, 0, 100), DPT_Scaling);
+            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f &&
+                brightnessDifference >= ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute)
+                KoLED_RGB_ChBrightnessStatus.value(koValue, DPT_Scaling);
+            else
+                KoLED_RGB_ChBrightnessStatus.valueNoSend(koValue, DPT_Scaling);
+        }
+        
+        if (ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
+        {
+            KoLED_RGB_ChBrightnessStatus.value(koValue, DPT_Scaling);
             _statusSendBrightnessTimer = delayTimerInit();
         }
     }
 
     if (ParamLED_RGB_ChStatusTempSend)
-    {            
-        Colors::RGB rgb_value = Colors::hsv2rgb(hsv).toUint32();
-        u32_t rgb_value_ = rgb_value.toUint32();
-        //u32_t _rgb_value = Colors::hsv2rgb(hsv).toUint32();
+    {
+
         // as color temperature calculation is quite CPU intensive,
         // we only do this when status sending is enabled
         // and color temperature can only change if hue or saturation changes
         if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
+        {
+        Colors::RGB rgb_value = Colors::hsv2rgb(hsv).toUint32();
+        u32_t rgb_value_ = rgb_value.toUint32();
+        tmpColor = conv_RGB2Temp2(rgb_value_);
+        }
 
-            //tmpColor = conv_RGB2Temp1(Colors::hsv2rgb(hsv).toUint32());
-            tmpColor = conv_RGB2Temp1(rgb_value_);
+        uint16_t colorDifference = abs(_lastColorTemp - tmpColor);
+        if (colorDifference > 0 &&
+            (uint16_t)KoLED_RGB_ChColorTemperatureStatus.value(Dpt(7, 600)) != tmpColor)
+        {
+            if (stateOn &&
+                (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f &&
+                 colorDifference >= ParamLED_RGB_ChStatusTempMinChangeAbsolute))
+                KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
+            else
+                KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
+        }
 
-        float colorDifference = abs(_lastColorTemp - tmpColor);
-        if ((colorDifference > EPSILON &&
-             (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f ||
-              colorDifference >= ParamLED_RGB_ChStatusTempMinChangeAbsolute)) ||
-            ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
+        if (ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
         {
             if (stateOn)
                 KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
             else
                 KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
-//logDebugP("Sending Color Value: H:%d S:%d V:%d RGB_Value:%d R:%d G:%d B:%d > R:%d G:%d B:%d", tmpHue, tmpSat, tmpBrightness, rgb_value_, (_rgb_value >> 16) & 0xFF, (_rgb_value >> 8) & 0xFF, _rgb_value & 0xFF, rgb_value._red, rgb_value._green, rgb_value._blue );
+
             _statusSendTemperaturTimer = delayTimerInit();
         }
     }
@@ -306,7 +321,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-         /*   case LED_RGB_KoChColorTemperatureRel:
+            case LED_RGB_KoChColorTemperatureRel:
                 if (!getLock())
                 {
                     int16_t tmpu16;
@@ -325,7 +340,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
                         relDimStopColor();
                     }
                 }
-                break;   */             
+                break;
 
             case LED_RGB_KoChRGB:
                 if (!getLock())
@@ -837,7 +852,6 @@ void RGBChannel::setHSV(uint32_t HSVvalue)
     //_brightness.setTargetValue(hsv.Val(), ParamLED_RGB_ChLightDimmDayOnTime);
 }
 
-
 uint32_t RGBChannel::conv_Temp2RGB(int temp)
 {
     uint8_t r, g, b = 0;
@@ -893,7 +907,7 @@ uint32_t RGBChannel::conv_Temp2RGB(int temp)
 // uint32_t RGBChannel::conv_Temp2RGB(int temp)
 // {
 //     uint8_t r, g, b = 0;
-    
+
 //     // Clamp to practical range
 //     double temperature = CLAMP(temp, 1000.0, 40000.0);
 //     temperature = temperature / 100.0;
