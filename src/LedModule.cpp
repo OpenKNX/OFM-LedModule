@@ -302,14 +302,18 @@ void LedModule::processInputKo(GroupObject &ko)
 
 void LedModule::showHelp()
 {
-    openknx.console.printHelpLine("ledModule", "Print ledModule configuration");
-    openknx.console.printHelpLine("ledState", "Print ledModule status");
-    openknx.console.printHelpLine("ledLUT", "Print LED LUT");
+    openknx.console.printHelpLine("led info", "Print ledModule configuration");
+    openknx.console.printHelpLine("led state", "Print ledModule status");
+    openknx.console.printHelpLine("led lut", "Print LED LUT");
+    openknx.console.printHelpLine("led test mode", "Simple hardware test mode (currently RP2040 only)");
 }
 
 bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
 {
-    if (cmd.substr(0, 9) == "ledModule")
+    if (cmd.substr(0, 3) != "led")
+        return false;
+
+    if (cmd.length() == 8 && cmd.substr(4, 4) == "info")
     {
         logInfoP("======================== Information ===========================================");
         logIndentUp();
@@ -351,7 +355,7 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         return true;
     }
 
-    if (cmd.substr(0, 8) == "ledState")
+    if (cmd.length() == 9 && cmd.substr(4, 5) == "state")
     {
         logInfoP("======================== Information ===========================================");
         logInfoP("LED MODULE STATE INFORMATION");
@@ -363,7 +367,7 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         return true;
     }
 
-    if (cmd.substr(0, 6) == "ledLUT")
+    if (cmd.length() == 7 && cmd.substr(4, 3) == "lut")
     {
         logInfoP("======================== Information ===========================================");
         logInfoP("LED MODULE LUT INFORMATION");
@@ -374,6 +378,27 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("--------------------------------------------------------------------------------");
         return true;
     }
+
+    if (cmd.length() == 13 && cmd.substr(4, 9) == "test mode")
+    {
+        logDebugP("Running LED hardware test mode");
+        logIndentUp();
+
+        logDebugP("All LEDs to maximum brightness");
+        for (uint8_t ch = 0; ch < LEDMODULE_MAX_LIGHT_CHANNELS; ch++)
+            openknx.gpio.pinMode(dimPins[ch], OUTPUT, true, HIGH);
+
+        delay(30000);
+
+        logDebugP("All LEDs off");
+        for (uint8_t ch = 0; ch < LEDMODULE_MAX_LIGHT_CHANNELS; ch++)
+            openknx.gpio.digitalWrite(dimPins[ch], LOW);
+
+        logDebugP("Test mode finished");
+        logIndentDown();
+        return true;
+    }
+
     return false;
 }
 
