@@ -57,7 +57,7 @@ class RGBChannel : public LightChannel
 
     uint16_t _lastHueValue = 0;
     uint16_t _lastSatValue = 0;
-    uint16_t _lastColorTemp = 0;
+    uint16_t _lastColorTemp = 4000;
 
     uint16_t _lastOnValueHue = 0;
     uint16_t _lastOnValueSat = 0;
