@@ -100,6 +100,11 @@ void HWDimmerWS::outputLUT()
     }
 }
 
+void HWDimmerWS::runTestMode()
+{
+    // ToDo
+}
+
 /**
  * @brief Linear lookup tables to map 255% level to PCA driver levels
  *  0: Linear, 1: logarithmic x^1.5

@@ -305,7 +305,7 @@ void LedModule::showHelp()
     openknx.console.printHelpLine("led info", "Print ledModule configuration");
     openknx.console.printHelpLine("led state", "Print ledModule status");
     openknx.console.printHelpLine("led lut", "Print LED LUT");
-    openknx.console.printHelpLine("led test mode", "Simple hardware test mode (currently RP2040 only)");
+    openknx.console.printHelpLine("led test mode", "Simple hardware test mode");
 }
 
 bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
@@ -381,21 +381,7 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
 
     if (cmd.length() == 13 && cmd.substr(4, 9) == "test mode")
     {
-        logDebugP("Running LED hardware test mode");
-        logIndentUp();
-
-        logDebugP("All LEDs to maximum brightness");
-        for (uint8_t ch = 0; ch < LEDMODULE_MAX_LIGHT_CHANNELS; ch++)
-            openknx.gpio.pinMode(dimPins[ch], OUTPUT, true, HIGH);
-
-        delay(30000);
-
-        logDebugP("All LEDs off");
-        for (uint8_t ch = 0; ch < LEDMODULE_MAX_LIGHT_CHANNELS; ch++)
-            openknx.gpio.digitalWrite(dimPins[ch], LOW);
-
-        logDebugP("Test mode finished");
-        logIndentDown();
+        _pDimmer->runTestMode();
         return true;
     }
 

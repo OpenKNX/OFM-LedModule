@@ -134,6 +134,25 @@ void HWDimmerRP2040::outputLUT()
     logDebugP("Count %d  XAM: %d", VALUE_KNX_COUNT, dimLUT[0].Max());
 }
 
+void HWDimmerRP2040::runTestMode()
+{
+    logDebugP("Running LED hardware test mode");
+    logIndentUp();
+
+    logDebugP("All LEDs to maximum brightness");
+    for (uint8_t ch = 0; ch < numChannels; ch++)
+        openknx.gpio.pinMode(pins[ch], OUTPUT, true, HIGH);
+
+    delay(30000);
+
+    logDebugP("All LEDs off");
+    for (uint8_t ch = 0; ch < numChannels; ch++)
+        openknx.gpio.digitalWrite(pins[ch], LOW);
+
+    logDebugP("Test mode finished");
+    logIndentDown();
+}
+
 /**
  * @brief Linear lookup tables to map 255% level to RP2040 PWM range
  *  0: Linear, 1: logarithmic x^1.5

@@ -27,6 +27,7 @@ class HWDimmerWS : public HWDimmer
     uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType);
     uint16_t getScaleMax(HWDimmer::DimLUTType lutType);
     void outputLUT();
+    void runTestMode();
 
   private:
     Adafruit_NeoPixel _pixels;

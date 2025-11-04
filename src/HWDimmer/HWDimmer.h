@@ -35,6 +35,7 @@ class HWDimmer
     virtual uint16_t getScaleMax(HWDimmer::DimLUTType lutType) = 0;
     std::string logPrefix();
     virtual void outputLUT() = 0;
+    virtual void runTestMode() = 0;
 
     virtual bool checkConnection() { return true; } // TODO: try to remove this functionality from base class
     virtual void reconnect() {}
