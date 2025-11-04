@@ -1,6 +1,10 @@
 #pragma once
 #include <OpenKNX.h>
 
+#ifdef LEDMODULE_CURRENT_ADDR
+    #include <Adafruit_INA238.h>
+#endif
+
 // #define VALUE_KNX_COUNT 256
 // #define VALUE_KNX_COUNT 101
 #define VALUE_KNX_COUNT 4096
@@ -83,10 +87,21 @@ class HWDimmer
 
   private:
     void checkPowerSupply();
+    void processCurrentSense();
     void processFrontInput();
     void processFrontOutput();
 
     uint32_t _currentManualModeLastChange[LEDMODULE_MAX_LIGHT_CHANNELS] = {0};
+
+#ifdef LEDMODULE_CURRENT_ADDR
+    Adafruit_INA238 _currentSense[LEDMODULE_MAX_LIGHT_CHANNELS];
+
+    uint8_t currentInaAddr[LEDMODULE_MAX_LIGHT_CHANNELS] = {LEDMODULE_CURRENT_ADDR};
+    float _currentSenseValues[LEDMODULE_MAX_LIGHT_CHANNELS] = {0.0f};
+    float _currentVoltageValues[LEDMODULE_MAX_LIGHT_CHANNELS] = {0.0f};
+
+    uint32_t _currentSenseDebugTimer = 0;
+#endif
 
     uint16_t _powerSupplyVoltage = 0;
     uint32_t _powerSupplyLastRequest = 0;

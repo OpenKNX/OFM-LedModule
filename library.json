@@ -4,7 +4,9 @@
     "dependencies": {
         "adafruit/Adafruit PWM Servo Driver Library": "3.0.2",
         "adafruit/Adafruit NeoPixel": "1.12.4",
-        "adafruit/Adafruit BusIO": "1.16.1",
+        "adafruit/Adafruit BusIO": "1.17.4",
+        "adafruit/Adafruit INA228 Library": "^3.0.0",
+        "adafruit/Adafruit INA237 and INA238 Library": "^1.0.2",
         "jeremycole/I2C Temperature Sensors derived from the LM75": "1.0.3"
     },
     "build": {

@@ -9,6 +9,24 @@ HWDimmer::HWDimmer(uint8_t numChannels)
 {
     this->numChannels = numChannels;
     levels = new uint16_t[numChannels]{0};
+
+#ifdef LEDMODULE_CURRENT_ADDR
+    for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
+    {
+        _currentSense[i] = Adafruit_INA238();
+
+        if (_currentSense[i].begin(currentInaAddr[i], &OPENKNX_GPIO_WIRE))
+        {
+            logDebugP("KNX INA238 setup done with address %u", currentInaAddr[i]);
+
+            _currentSense[i].setShunt(LEDMODULE_INA_SHUNT, 3);
+            _currentSense[i].setAveragingCount(INA2XX_COUNT_16);
+            _currentSense[i].setMode(INA2XX_MODE_CONTINUOUS);
+        }
+        else
+            logDebugP("KNX INA238 not found at address %u", currentInaAddr[i]);
+    }
+#endif
 }
 
 /**
@@ -27,6 +45,8 @@ HWDimmer::~HWDimmer()
 void HWDimmer::loop()
 {
     checkPowerSupply();
+
+    processCurrentSense();
 
     processFrontInput();
     processFrontOutput();
@@ -89,6 +109,26 @@ void HWDimmer::checkPowerSupply()
                 }
             }
         }
+    }
+#endif
+}
+
+void HWDimmer::processCurrentSense()
+{
+#ifdef LEDMODULE_CURRENT_ADDR
+    for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
+    {
+        _currentSenseValues[i] = _currentSense[i].getCurrent_mA();
+        _currentVoltageValues[i] = _currentSense[i].getBusVoltage_V();
+
+        // if (delayCheck(_currentSenseDebugTimer, 1000))
+        //     logDebugP("Channel %d: %.2f mA, Voltage: %.2f V", i, _currentSenseValues[i], _currentVoltageValues[i]);
+    }
+
+    if (delayCheck(_currentSenseDebugTimer, 1000))
+    {
+        logDebugP("Channel %d: %.2f mA, Voltage: %.2f V", 0, _currentSenseValues[0], _currentVoltageValues[0]);
+        _currentSenseDebugTimer = delayTimerInit();
     }
 #endif
 }
