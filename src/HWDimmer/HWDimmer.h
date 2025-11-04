@@ -36,8 +36,7 @@ class HWDimmer
     std::string logPrefix();
     virtual void outputLUT() = 0;
     virtual void runTestMode() = 0;
-
-    virtual bool checkConnection() { return true; } // TODO: try to remove this functionality from base class
+    virtual bool checkConnection() = 0;
     virtual void reconnect() {}
 
     bool powerSupplyAvailableOrRequest();

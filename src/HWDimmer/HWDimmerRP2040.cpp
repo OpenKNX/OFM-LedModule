@@ -134,6 +134,12 @@ void HWDimmerRP2040::outputLUT()
     logDebugP("Count %d  XAM: %d", VALUE_KNX_COUNT, dimLUT[0].Max());
 }
 
+bool HWDimmerRP2040::checkConnection()
+{
+    // internal connection always OK
+    return true;
+}
+
 void HWDimmerRP2040::runTestMode()
 {
     logDebugP("Running LED hardware test mode");

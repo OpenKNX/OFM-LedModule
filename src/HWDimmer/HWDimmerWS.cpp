@@ -100,6 +100,12 @@ void HWDimmerWS::outputLUT()
     }
 }
 
+bool HWDimmerWS::checkConnection()
+{
+    // ToDo
+    return true;
+}
+
 void HWDimmerWS::runTestMode()
 {
     // ToDo
