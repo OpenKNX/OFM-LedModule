@@ -113,16 +113,6 @@
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-TimeFactor" Name="TimeFactor">
-                <TypeRestriction Base="Value" SizeInBit="4">
-                  <Enumeration Text="0.5" Value="1" Id="%ENID%" />
-                  <Enumeration Text="1.0" Value="2" Id="%ENID%" />
-                  <Enumeration Text="1.5" Value="3" Id="%ENID%" />
-                  <Enumeration Text="2.0" Value="4" Id="%ENID%" />
-                  <Enumeration Text="3.0" Value="6" Id="%ENID%" />
-                </TypeRestriction>
-              </ParameterType>
-
               <ParameterType Id="%AID%_PT-MinDim" Name="MinDimValue">
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="99" />
               </ParameterType>
@@ -139,6 +129,19 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="48" />
               </ParameterType>
 
+              <ParameterType Id="%AID%_PT-CableLength" Name="CableLength">
+                <TypeFloat Encoding="IEEE-754 Single" minInclusive="0" maxInclusive="1000" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-CableCrossSection" Name="CableCrossSection">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="0,75 mm² (AWG 17-19)" Value="0" Id="%ENID%" />
+                  <Enumeration Text="1,50 mm² (AWG 15-16)" Value="1" Id="%ENID%" />
+                  <Enumeration Text="2,50 mm² (AWG 13-14)" Value="2" Id="%ENID%" />
+                  <Enumeration Text="4,00 mm² (AWG 10-12)" Value="3" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-ManualModeChangeToAuto" Name="ManualModeChangeToAuto">
                 <TypeRestriction Base="Value" SizeInBit="2" UIHint="DropDown">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
@@ -151,6 +154,7 @@
             </ParameterTypes>
 
             <Parameters>
+              <Parameter Id="%AID%_P-%TT%00021" Name="HardwareVariantCanMeasure"              ParameterType="%AID%_PT-OnOffYesNo" Text="" Value="0" Access="None"/>
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%00001" Name="HardwareVariant"                     ParameterType="%AID%_PT-HardwareVariant" Offset="0" BitOffset="0" Text="Hardware-Variante" Value="0" />
@@ -215,6 +219,7 @@
               <ParameterRef Id="%AID%_UP-%TT%00018_R-%TT%0001801" RefId="%AID%_UP-%TT%00018" />
               <ParameterRef Id="%AID%_UP-%TT%00019_R-%TT%0001901" RefId="%AID%_UP-%TT%00019" />
               <ParameterRef Id="%AID%_UP-%TT%00020_R-%TT%0002001" RefId="%AID%_UP-%TT%00020" />
+              <ParameterRef Id="%AID%_P-%TT%00021_R-%TT%0002101" RefId="%AID%_P-%TT%00021" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -251,6 +256,11 @@
                   <when test="!=%LED_HardwareAB%">
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" HelpContext="%DOC%" /> <!-- AB-SmartHouse: Hardware Variant -->
+                    <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
+                      <when test="5 6"> <!-- AB-SmartHouse: With Current Measure -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00021_R-%TT%0002101" Value="1" /> <!-- HardwareVariantCanMeasure -->
+                      </when>
+                    </choose>
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                   </when>
                 </choose>
@@ -269,13 +279,13 @@
                 </ParameterBlock>
 
                 <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
-                  <when test="0"> <!-- AB-SmartHouse: 6 channels -->
+                  <when test="0 5"> <!-- AB-SmartHouse: 6 channels -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 6 Kanäle (A-F) verwendet werden." UIHint="Information" />
                   </when>
                   <when test="2"> <!-- AB-SmartHouse: 8 channels -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 8 Kanäle (A-H) verwendet werden." UIHint="Information" />
                   </when>
-                  <when test="1 4"> <!-- AB-SmartHouse: 12 channels -->
+                  <when test="1 4 6"> <!-- AB-SmartHouse: 12 channels -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 12 Kanäle (A-L) verwendet werden." UIHint="Information" />
                   </when>
                 </choose>
@@ -285,7 +295,7 @@
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Weitere Einstellungen" UIHint="Headline"/>
                     <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
-                      <when test="0 1"> <!-- AB-SmartHouse: CV variant -->
+                      <when test="0 1 5 6"> <!-- AB-SmartHouse: CV variant -->
                         <ParameterRefRef RefId="%AID%_UP-%TT%00007_R-%TT%0000701" IndentLevel="1" HelpContext="%DOC%" /> <!-- PWM Frequency -->
                       </when>
                       <when test="2 3 4"> <!-- AB-SmartHouse: CC variant -->

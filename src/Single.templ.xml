@@ -53,7 +53,7 @@
               </Union>
               <Union SizeInBit="24">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="21" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%019" Name="Ch%C%StairCaseActive"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Treppenlichtfunktion" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%019" Name="Ch%C%StairCaseActive"       ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Treppenlicht aktivieren" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%022" Name="Ch%C%StairCaseTrigger"      ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Treppenlicht Trigger" Value="0" />
                 <!-- 6 bits free -->
                 <Parameter Id="%AID%_UP-%TT%%CC%020" Name="Ch%C%StairCaseBase"         ParameterType="%AID%_PT-DelayBase" Offset="1" BitOffset="0" Text="Zeitbasis" Value="0" />
@@ -61,13 +61,52 @@
               </Union>
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="24" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%023" Name="Ch%C%ScenesActive"          ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Szenen" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%023" Name="Ch%C%ScenesActive"          ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Szenen aktivieren" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%024" Name="Ch%C%ScenesDisableNightSw"  ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Deaktivierung bei Nachtumschaltung" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%027" Name="Ch%C%MeasureActive"         ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="2" Text="Messungen aktivieren" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%028" Name="Ch%C%ProtecitonsActive"     ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="3" Text="Schutzfunktionen aktivieren" Value="1" />
+                <!-- 4 bits free -->
+              </Union>
+              <Union SizeInBit="88">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="25" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%029" Name="Ch%C%PowerSend" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Bei Änderung senden" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%034" Name="Ch%C%CurrentSend" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Bei Änderung senden" Value="0" />
                 <!-- 6 bits free -->
+                <Parameter Id="%AID%_UP-%TT%%CC%030" Name="Ch%C%PowerSendMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%031" Name="Ch%C%PowerSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangePower" Offset="2" BitOffset="0" Text="Mindeständerung absolut" Value="1" SuffixText="W" />
+                <Parameter Id="%AID%_UP-%TT%%CC%032" Name="Ch%C%PowerSendCyclicBase" ParameterType="%AID%_PT-DelayBase" Offset="4" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%033" Name="Ch%C%PowerSendCyclicTime" ParameterType="%AID%_PT-DelayTime" Offset="4" BitOffset="2" Text="Zeit" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%035" Name="Ch%C%CurrentSendMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="6" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%036" Name="Ch%C%CurrentSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangeCurrent" Offset="7" BitOffset="0" Text="Mindeständerung absolut" Value="10" SuffixText="mA" />
+                <Parameter Id="%AID%_UP-%TT%%CC%037" Name="Ch%C%CurrentSendCyclicBase" ParameterType="%AID%_PT-DelayBase" Offset="9" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%038" Name="Ch%C%CurrentSendCyclicTime" ParameterType="%AID%_PT-DelayTime" Offset="9" BitOffset="2" Text="Zeit" Value="0" />
+              </Union>
+              <Union SizeInBit="48">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="36" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%039" Name="Ch%C%DeviceProtActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Geräteschutz aktivieren" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%%CC%040" Name="Ch%C%DeviceProtCutOff" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Schutzabschaltung aktivieren" Value="1" />
+                <!-- 6 bits free -->
+                <Parameter Id="%AID%_UP-%TT%%CC%041" Name="Ch%C%DeviceProtContCurrent" ParameterType="%AID%_PT-MinimumChangeCurrent" Offset="1" BitOffset="0" Text="Dauerlast" Value="4" SuffixText="A" />
+                <Parameter Id="%AID%_UP-%TT%%CC%042" Name="Ch%C%DeviceProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="3" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%043" Name="Ch%C%DeviceProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="4" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%044" Name="Ch%C%DeviceProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="4" BitOffset="2" Text="Zeit" Value="30" />
+              </Union>
+              <Union SizeInBit="80">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="42" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%045" Name="Ch%C%LampProtActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Leuchtmittelschutz aktivieren" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%046" Name="Ch%C%LampProtCutOff" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Schutzabschaltung aktivieren" Value="1" />
+                <!-- 2 bits free -->
+                <Parameter Id="%AID%_UP-%TT%%CC%048" Name="Ch%C%LampProtCableCrossSect" ParameterType="%AID%_PT-CableCrossSection" Offset="0" BitOffset="4" Text="Leiterquerschnitt" Value="1" />
+                <!-- 2 bits free -->
+                <Parameter Id="%AID%_UP-%TT%%CC%047" Name="Ch%C%LampProtCableLength" ParameterType="%AID%_PT-CableLength" Offset="1" BitOffset="0" Text="Kabellänge" Value="10" SuffixText="m" />
+                <Parameter Id="%AID%_UP-%TT%%CC%049" Name="Ch%C%LampProtContPower" ParameterType="%AID%_PT-MinimumChangePower" Offset="5" BitOffset="0" Text="Dauerleistung" Value="20" SuffixText="W" />
+                <Parameter Id="%AID%_UP-%TT%%CC%050" Name="Ch%C%LampProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="7" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%051" Name="Ch%C%LampProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="8" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%052" Name="Ch%C%LampProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="8" BitOffset="2" Text="Zeit" Value="30" />
               </Union>
               <Union SizeInBit="320">
                 <!-- 8 Scenes * 5 bytes: total 40 bytes -->
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="25" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="52" BitOffset="0" />
                 <!-- Scenes -->
                 <op:usePart name="LED_SC_SC" xpath="//Static/Parameters/Block[@Name='ScenesSC']/*" />
               </Union>
@@ -101,22 +140,54 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%024_R-%TT%%CC%02401" RefId="%AID%_UP-%TT%%CC%024" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%025_R-%TT%%CC%02501" RefId="%AID%_UP-%TT%%CC%025" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%026_R-%TT%%CC%02601" RefId="%AID%_UP-%TT%%CC%026" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%027_R-%TT%%CC%02701" RefId="%AID%_UP-%TT%%CC%027" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%028_R-%TT%%CC%02801" RefId="%AID%_UP-%TT%%CC%028" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%029_R-%TT%%CC%02901" RefId="%AID%_UP-%TT%%CC%029" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%030_R-%TT%%CC%03001" RefId="%AID%_UP-%TT%%CC%030" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%031_R-%TT%%CC%03101" RefId="%AID%_UP-%TT%%CC%031" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201" RefId="%AID%_UP-%TT%%CC%032" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301" RefId="%AID%_UP-%TT%%CC%033" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401" RefId="%AID%_UP-%TT%%CC%034" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%035_R-%TT%%CC%03501" RefId="%AID%_UP-%TT%%CC%035" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%036_R-%TT%%CC%03601" RefId="%AID%_UP-%TT%%CC%036" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%037_R-%TT%%CC%03701" RefId="%AID%_UP-%TT%%CC%037" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%038_R-%TT%%CC%03801" RefId="%AID%_UP-%TT%%CC%038" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%039_R-%TT%%CC%03901" RefId="%AID%_UP-%TT%%CC%039" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%040_R-%TT%%CC%04001" RefId="%AID%_UP-%TT%%CC%040" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%041_R-%TT%%CC%04101" RefId="%AID%_UP-%TT%%CC%041" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%042_R-%TT%%CC%04201" RefId="%AID%_UP-%TT%%CC%042" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%043_R-%TT%%CC%04301" RefId="%AID%_UP-%TT%%CC%043" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%044_R-%TT%%CC%04401" RefId="%AID%_UP-%TT%%CC%044" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%045_R-%TT%%CC%04501" RefId="%AID%_UP-%TT%%CC%045" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%046_R-%TT%%CC%04601" RefId="%AID%_UP-%TT%%CC%046" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%047_R-%TT%%CC%04701" RefId="%AID%_UP-%TT%%CC%047" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%048_R-%TT%%CC%04801" RefId="%AID%_UP-%TT%%CC%048" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%049_R-%TT%%CC%04901" RefId="%AID%_UP-%TT%%CC%049" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%050_R-%TT%%CC%05001" RefId="%AID%_UP-%TT%%CC%050" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%051_R-%TT%%CC%05101" RefId="%AID%_UP-%TT%%CC%051" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%052_R-%TT%%CC%05201" RefId="%AID%_UP-%TT%%CC%052" />
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_SC_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSC']/*" />
             </ParameterRefs>
 
             <ComObjectTable>
-              <ComObject Id="%AID%_O-%TT%%CC%000" Name="Ch%C%Switch"             Text="Schalten"           Number="%K0%" FunctionText="EK %C% - Ein/Aus"            ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
-              <ComObject Id="%AID%_O-%TT%%CC%001" Name="Ch%C%SwitchNoDim"        Text="Schalten Sofort"    Number="%K1%" FunctionText="EK %C% - Ein/Aus Sofort"     ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
-              <ComObject Id="%AID%_O-%TT%%CC%002" Name="Ch%C%StateOnOff"         Text="Status Ein/Aus"     Number="%K2%" FunctionText="EK %C% - Status"             ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%003" Name="Ch%C%Locking"            Text="Sperren"            Number="%K3%" FunctionText="EK %C% - Sperre"             ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%004" Name="Ch%C%StateLocking"       Text="Sperren Status"     Number="%K4%" FunctionText="EK %C% - Sperre Status"      ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%005" Name="Ch%C%Brightness"         Text="Helligkeit"         Number="%K5%" FunctionText="EK %C% - Helligkeit"         ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
-              <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%BrightnessRel"      Text="Helligkeit Relativ" Number="%K6%" FunctionText="EK %C% - Helligkeit Relativ" ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"   />
-              <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%BrightnessStatus"   Text="Helligkeit Status"  Number="%K7%" FunctionText="EK %C% - Helligkeit Status"  ObjectSize="1 Byte" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
-              <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%Night"              Text="Nacht"              Number="%K8%" FunctionText="EK %C% - Nacht"              ObjectSize="1 Bit"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
-              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%Scene"              Text="Szene"              Number="%K9%" FunctionText="EK %C% - Szene"              ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
+              <ComObject Id="%AID%_O-%TT%%CC%000" Name="Ch%C%Switch"                Text="Schalten"           Number="%K0%"  FunctionText="EK %C% - Ein/Aus"            ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%001" Name="Ch%C%SwitchNoDim"           Text="Schalten Sofort"    Number="%K1%"  FunctionText="EK %C% - Ein/Aus Sofort"     ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%002" Name="Ch%C%StateOnOff"            Text="Status Ein/Aus"     Number="%K2%"  FunctionText="EK %C% - Status"             ObjectSize="1 Bit"   ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%003" Name="Ch%C%Locking"               Text="Sperren"            Number="%K3%"  FunctionText="EK %C% - Sperre"             ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%004" Name="Ch%C%StateLocking"          Text="Sperren Status"     Number="%K4%"  FunctionText="EK %C% - Sperre Status"      ObjectSize="1 Bit"   ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%005" Name="Ch%C%Brightness"            Text="Helligkeit"         Number="%K5%"  FunctionText="EK %C% - Helligkeit"         ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%BrightnessRel"         Text="Helligkeit Relativ" Number="%K6%"  FunctionText="EK %C% - Helligkeit Relativ" ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"   />
+              <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%BrightnessStatus"      Text="Helligkeit Status"  Number="%K7%"  FunctionText="EK %C% - Helligkeit Status"  ObjectSize="1 Byte"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%Night"                 Text="Nacht"              Number="%K8%"  FunctionText="EK %C% - Nacht"              ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"  />
+              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%Scene"                 Text="Szene"              Number="%K9%"  FunctionText="EK %C% - Szene"              ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1" />
+              <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%Power"                 Text="Leistung"           Number="%K10%" FunctionText="EK %C% - Leistung"           ObjectSize="4 Bytes" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-14-56" />
+              <ComObject Id="%AID%_O-%TT%%CC%011" Name="Ch%C%Current"               Text="Strom"              Number="%K11%" FunctionText="EK %C% - Strom"              ObjectSize="2 Bytes" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-12" />
+              <ComObject Id="%AID%_O-%TT%%CC%012" Name="Ch%C%DeviceProtContCurrent" Text="Geräteschutz"       Number="%K12%" FunctionText="EK %C% - Geräteschutz: Dauerlast überschritten"   ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%013" Name="Ch%C%DeviceProtOverload"    Text="Geräteschutz"       Number="%K13%" FunctionText="EK %C% - Geräteschutz: Maximallast überschritten" ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%014" Name="Ch%C%LampProtContCurrent"   Text="Leuchtmittelschutz" Number="%K14%" FunctionText="EK %C% - Leuchtmittelschutz: Dauerlast überschritten"   ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%015" Name="Ch%C%LampProtOverload"      Text="Leuchtmittelschutz" Number="%K15%" FunctionText="EK %C% - Leuchtmittelschutz: Maximallast überschritten" ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
             </ComObjectTable>
 
             <ComObjectRefs>
@@ -130,6 +201,12 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_O-%TT%%CC%011" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" RefId="%AID%_O-%TT%%CC%012" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%013_R-%TT%%CC%01301" RefId="%AID%_O-%TT%%CC%013" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%014_R-%TT%%CC%01401" RefId="%AID%_O-%TT%%CC%014" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%015_R-%TT%%CC%01501" RefId="%AID%_O-%TT%%CC%015" />
             </ComObjectRefs>
 
           </Static>
@@ -237,6 +314,126 @@
                       </when>
                     </choose>
 
+                    <choose ParamRefId="%AID%_P-2000021_R-200002101"> <!-- HardwareVariantCanMeasure -->
+                      <when test="1">
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Messungen &amp; Schutzfunktionen" UIHint="Headline" />
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%027_R-%TT%%CC%02701" IndentLevel="1" /> <!-- MeasureActive -->
+                        <choose ParamRefId="%AID%_UP-%TT%%CC%027_R-%TT%%CC%02701">
+                          <when test="1">
+                            <ParameterBlock Id="%AID%_PB-nnn" Text="Messungen" Icon="meter-electric-outline">
+                              <ParameterSeparator Id="%AID%_PS-nnn" Text="Leistung" UIHint="Headline" />
+                              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%029_R-%TT%%CC%02901" IndentLevel="1" />
+                              <choose ParamRefId="%AID%_UP-%TT%%CC%029_R-%TT%%CC%02901">
+                                <when test="1">
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%030_R-%TT%%CC%03001" IndentLevel="2" />
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%031_R-%TT%%CC%03101" IndentLevel="2" />
+                                  <ParameterBlock Id="%AID%_PB-nnn" Name="PowerSend" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
+                                    <Rows>
+                                      <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                                    </Rows>
+                                    <Columns>
+                                      <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                                      <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                                      <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                                      <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                                    </Columns>
+                                    <ParameterSeparator Id="%AID%_PS-nnn" Text="   Leistung zyklisch senden&#10;   (0 = nicht senden)" Cell="1,2" />
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%033_R-%TT%%CC%03301" Cell="1,3" />
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%032_R-%TT%%CC%03201" Cell="1,4" />
+                                  </ParameterBlock>
+                                  <ComObjectRefRef RefId="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" />
+                                </when>
+                              </choose>
+
+                              <ParameterSeparator Id="%AID%_PS-nnn" Text="Strom" UIHint="Headline" />
+                              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401" IndentLevel="1" />
+                              <choose ParamRefId="%AID%_UP-%TT%%CC%034_R-%TT%%CC%03401">
+                                <when test="1">
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%035_R-%TT%%CC%03501" IndentLevel="2" />
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%036_R-%TT%%CC%03601" IndentLevel="2" />
+                                  <ParameterBlock Id="%AID%_PB-nnn" Name="CurrentSend" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
+                                    <Rows>
+                                      <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                                    </Rows>
+                                    <Columns>
+                                      <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                                      <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                                      <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                                      <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                                    </Columns>
+                                    <ParameterSeparator Id="%AID%_PS-nnn" Text="   Strom zyklisch senden&#10;   (0 = nicht senden)" Cell="1,2" />
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%038_R-%TT%%CC%03801" Cell="1,3" />
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%037_R-%TT%%CC%03701" Cell="1,4" />
+                                  </ParameterBlock>
+                                  <ComObjectRefRef RefId="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" />
+                                </when>
+                              </choose>
+                            </ParameterBlock>
+                          </when>
+                        </choose>
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%028_R-%TT%%CC%02801" IndentLevel="1" /> <!-- ProtecitonsActive -->
+                        <choose ParamRefId="%AID%_UP-%TT%%CC%028_R-%TT%%CC%02801">
+                          <when test="1">
+                            <ParameterBlock Id="%AID%_PB-nnn" Text="Schutzfunktionen" Icon="shield">
+                              <ParameterSeparator Id="%AID%_PS-nnn" Text="Geräteschutz" UIHint="Headline" />
+                              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%039_R-%TT%%CC%03901" IndentLevel="1" />
+                              <choose ParamRefId="%AID%_UP-%TT%%CC%039_R-%TT%%CC%03901">
+                                <when test="1">
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%041_R-%TT%%CC%04101" IndentLevel="2" />
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%042_R-%TT%%CC%04201" IndentLevel="2" />
+                                  <ParameterBlock Id="%AID%_PB-nnn" Name="DeviceProtOverloadTime" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
+                                    <Rows>
+                                      <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                                    </Rows>
+                                    <Columns>
+                                      <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                                      <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                                      <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                                      <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                                    </Columns>
+                                    <ParameterSeparator Id="%AID%_PS-nnn" Text="   Max. Überlastdauer" Cell="1,2" />
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%044_R-%TT%%CC%04401" Cell="1,3" />
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%043_R-%TT%%CC%04301" Cell="1,4" />
+                                  </ParameterBlock>
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%040_R-%TT%%CC%04001" IndentLevel="2" />
+                                  <ComObjectRefRef RefId="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" />
+                                  <ComObjectRefRef RefId="%AID%_O-%TT%%CC%013_R-%TT%%CC%01301" />
+                                </when>
+                              </choose>
+
+                              <ParameterSeparator Id="%AID%_PS-nnn" Text="Leuchtmittelschutz" UIHint="Headline" />
+                              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%045_R-%TT%%CC%04501" IndentLevel="1" />
+                              <choose ParamRefId="%AID%_UP-%TT%%CC%045_R-%TT%%CC%04501">
+                                <when test="1">
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%047_R-%TT%%CC%04701" IndentLevel="2" />
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%048_R-%TT%%CC%04801" IndentLevel="2" />
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%049_R-%TT%%CC%04901" IndentLevel="2" />
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%050_R-%TT%%CC%05001" IndentLevel="2" />
+                                  <ParameterBlock Id="%AID%_PB-nnn" Name="LampProtOverloadTime" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
+                                    <Rows>
+                                      <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                                    </Rows>
+                                    <Columns>
+                                      <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                                      <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                                      <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                                      <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                                    </Columns>
+                                    <ParameterSeparator Id="%AID%_PS-nnn" Text="   Max. Überlastdauer" Cell="1,2" />
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%052_R-%TT%%CC%05201" Cell="1,3" />
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%051_R-%TT%%CC%05101" Cell="1,4" />
+                                  </ParameterBlock>
+                                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%046_R-%TT%%CC%04601" IndentLevel="2" />
+                                  <ComObjectRefRef RefId="%AID%_O-%TT%%CC%014_R-%TT%%CC%01401" />
+                                  <ComObjectRefRef RefId="%AID%_O-%TT%%CC%015_R-%TT%%CC%01501" />
+                                </when>
+                              </choose>
+                            </ParameterBlock>
+                          </when>
+                        </choose>
+                      </when>
+                    </choose>
+                    
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%023_R-%TT%%CC%02301" IndentLevel="1" /> <!-- Scenes -->
                     <choose ParamRefId="%AID%_UP-%TT%%CC%023_R-%TT%%CC%02301">
