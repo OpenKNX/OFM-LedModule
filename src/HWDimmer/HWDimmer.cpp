@@ -75,7 +75,7 @@ void HWDimmer::checkPowerSupply()
 
         if (ParamLED_PowerSupplyVoltageCyclicTimeMS > 0 && delayCheck(_voltageSendTimer, ParamLED_PowerSupplyVoltageCyclicTimeMS))
         {
-            KoLED_PowerSupplyVoltage.value(_powerSupplyVoltage, DPT_Value_Volt);
+            KoLED_PowerSupplyVoltage.objectWritten();
             _lastVoltageSent = _powerSupplyVoltage;
             _voltageSendTimer = delayTimerInit();
         }
@@ -120,6 +120,7 @@ void HWDimmer::processCurrentSense()
     {
         _currentSenseValues[i] = _currentSense[i].getCurrent_mA();
         _currentVoltageValues[i] = _currentSense[i].getBusVoltage_V();
+        _currentTemperatureValues[i] = _currentSense[i].readDieTemp();
 
         // if (delayCheck(_currentSenseDebugTimer, 1000))
         //     logDebugP("Channel %d: %.2f mA, Voltage: %.2f V", i, _currentSenseValues[i], _currentVoltageValues[i]);
@@ -127,7 +128,7 @@ void HWDimmer::processCurrentSense()
 
     if (delayCheck(_currentSenseDebugTimer, 1000))
     {
-        logDebugP("Channel %d: %.2f mA, Voltage: %.2f V", 0, _currentSenseValues[0], _currentVoltageValues[0]);
+        logDebugP("Channel %d: %.2f mA, Voltage: %.2f V, Temperature: %.2f °C", 0, _currentSenseValues[0], _currentVoltageValues[0], _currentTemperatureValues[0]);
         _currentSenseDebugTimer = delayTimerInit();
     }
 #endif

@@ -209,7 +209,7 @@ void LedModule::loop(bool configured)
 
         if (ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSendTimer, ParamLED_TemperatureCyclicTimeMS))
         {
-            KoLED_Temperature.value(temperature, DPT_Value_Temp);
+            KoLED_Temperature.objectWritten();
             _lastTemperatureSent = temperature;
             _temperaturSendTimer = delayTimerInit();
         }

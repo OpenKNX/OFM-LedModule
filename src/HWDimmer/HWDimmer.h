@@ -99,6 +99,7 @@ class HWDimmer
     uint8_t currentInaAddr[LEDMODULE_MAX_LIGHT_CHANNELS] = {LEDMODULE_CURRENT_ADDR};
     float _currentSenseValues[LEDMODULE_MAX_LIGHT_CHANNELS] = {0.0f};
     float _currentVoltageValues[LEDMODULE_MAX_LIGHT_CHANNELS] = {0.0f};
+    float _currentTemperatureValues[LEDMODULE_MAX_LIGHT_CHANNELS] = {0.0f};
 
     uint32_t _currentSenseDebugTimer = 0;
 #endif
