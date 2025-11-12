@@ -190,32 +190,6 @@ void LedModule::loop(bool configured)
         _timer1 = millis();
     }
 
-#ifdef OPENKNX_LED_TEMPSENS_ADDR
-    if (ParamLED_TemperatureChangeSend)
-    {
-        float temperature = _temperature.readTemperatureC();
-        float temperatureDifference = abs(_lastTemperatureSent - temperature);
-        if (temperatureDifference > 0.01)
-        {
-            if (temperatureDifference >= _lastTemperatureSent * ParamLED_TemperatureMinChangePercent / 100.0f &&
-                temperatureDifference >= ParamLED_TemperatureMinChangeAbsolute)
-            {
-                KoLED_Temperature.value(temperature, DPT_Value_Temp);
-                _lastTemperatureSent = temperature;
-            }
-            else
-                KoLED_Temperature.valueNoSend(temperature, DPT_Value_Temp);
-        }
-
-        if (ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSendTimer, ParamLED_TemperatureCyclicTimeMS))
-        {
-            KoLED_Temperature.objectWritten();
-            _lastTemperatureSent = temperature;
-            _temperaturSendTimer = delayTimerInit();
-        }
-    }
-#endif
-
     if (knx.configured())
     {
         if (delayCheck(_timerCheckConnection, 500))
@@ -251,6 +225,35 @@ void LedModule::loop(bool configured)
         }
 
         _pDimmer->loop();
+
+        if (ParamLED_TemperatureChangeSend)
+        {
+#ifdef OPENKNX_LED_TEMPSENS_ADDR
+            float temperature = _temperature.readTemperatureC();
+#elifdef LEDMODULE_CURRENT_ADDR
+            float temperature = _pDimmer->getTemperatureAvg();
+#endif
+
+            float temperatureDifference = abs(_lastTemperatureSent - temperature);
+            if (temperatureDifference > 0.01)
+            {
+                if (temperatureDifference >= _lastTemperatureSent * ParamLED_TemperatureMinChangePercent / 100.0f &&
+                    temperatureDifference >= ParamLED_TemperatureMinChangeAbsolute)
+                {
+                    KoLED_Temperature.value(temperature, DPT_Value_Temp);
+                    _lastTemperatureSent = temperature;
+                }
+                else
+                    KoLED_Temperature.valueNoSend(temperature, DPT_Value_Temp);
+            }
+
+            if (ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSendTimer, ParamLED_TemperatureCyclicTimeMS))
+            {
+                KoLED_Temperature.objectWritten();
+                _lastTemperatureSent = temperature;
+                _temperaturSendTimer = delayTimerInit();
+            }
+        }
     }
 }
 

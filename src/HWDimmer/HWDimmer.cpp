@@ -134,6 +134,28 @@ void HWDimmer::processCurrentSense()
 #endif
 }
 
+float HWDimmer::getTemperature(uint8_t channel)
+{
+#ifdef LEDMODULE_CURRENT_ADDR
+    return _currentTemperatureValues[channel];
+#else
+    return 0.0f;
+#endif
+}
+
+float HWDimmer::getTemperatureAvg()
+{
+#ifdef LEDMODULE_CURRENT_ADDR
+    float totalTemp = 0.0f;
+    for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
+        totalTemp += _currentTemperatureValues[i];
+    
+    return totalTemp / LEDMODULE_MAX_LIGHT_CHANNELS;
+#else
+    return 0.0f;
+#endif
+}
+
 bool HWDimmer::powerSupplyAvailableOrRequest()
 {
     if (!ParamLED_PowerSupplyRelay)

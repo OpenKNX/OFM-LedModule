@@ -31,6 +31,8 @@ class HWDimmer
 
     virtual bool setLevel(uint16_t level, uint8_t channel) = 0;
     uint16_t getLevel(uint8_t channel);
+    float getTemperature(uint8_t channel);
+    float getTemperatureAvg();
     virtual uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType) = 0;
     virtual uint16_t getScaleMax(HWDimmer::DimLUTType lutType) = 0;
     std::string logPrefix();
