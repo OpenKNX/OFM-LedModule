@@ -155,6 +155,7 @@
 
             <Parameters>
               <Parameter Id="%AID%_P-%TT%00021" Name="HardwareVariantCanMeasure"              ParameterType="%AID%_PT-OnOffYesNo" Text="" Value="0" Access="None"/>
+              <Parameter Id="%AID%_P-%TT%00038" Name="DisplayNumChannels"                     ParameterType="%AID%_PT-ValueDpt5" Text="" Value="%N%" Access="None"/>
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%00001" Name="HardwareVariant"                     ParameterType="%AID%_PT-HardwareVariant" Offset="0" BitOffset="0" Text="Hardware-Variante" Value="0" />
@@ -260,6 +261,7 @@
               <ParameterRef Id="%AID%_UP-%TT%00035_R-%TT%0003501" RefId="%AID%_UP-%TT%00035" />
               <ParameterRef Id="%AID%_UP-%TT%00036_R-%TT%0003601" RefId="%AID%_UP-%TT%00036" />
               <ParameterRef Id="%AID%_UP-%TT%00037_R-%TT%0003701" RefId="%AID%_UP-%TT%00037" />
+              <ParameterRef Id="%AID%_P-%TT%00038_R-%TT%0003801" RefId="%AID%_P-%TT%00038" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -313,8 +315,8 @@
                   </when>
                 </choose>
 
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline" />
-                <ParameterBlock Id="%AID%_PB-12" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table" HelpContext="LED-Kanalzuordnung">
+                <!-- <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline" />
+                <ParameterBlock Id="%AID%_PB-nnn" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table" HelpContext="LED-Kanalzuordnung">
                   <Rows>
                     <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='HWChannels']/Rows/*" prefix="LED" type="template" IsInner="true" />
                   </Rows>
@@ -325,16 +327,40 @@
                   </Columns>
                   <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTable']/*" prefix="LED" type="template" IsInner="true" />
                 </ParameterBlock>
-
+ -->
+                <!-- Table header -->
+                <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid" HelpContext="LED-Kanalzuordnung">
+                  <Rows>
+                    <Row Id="%AID%_PB-nnn_R-1" />
+                  </Rows>
+                  <Columns>
+                    <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="4%" />
+                    <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="32%" />
+                    <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="32%" />
+                    <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="32%" />
+                  </Columns>
+                  <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,2" Text="Typ" UIHint="Headline" />
+                  <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,3" Text="Dimmkanal (0=inaktiv)" UIHint="Headline" />
+                  <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,4" Text="Funktion" UIHint="Headline" />
+                </ParameterBlock>
+                <!-- Table content -->
+                <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTableLine']/*" prefix="LED" type="template" IsInner="true" />
+                
                 <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
                   <when test="0 5"> <!-- AB-SmartHouse: 6 channels -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 6 Kanäle (A-F) verwendet werden." UIHint="Information" />
+                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" />
                   </when>
                   <when test="2"> <!-- AB-SmartHouse: 8 channels -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 8 Kanäle (A-H) verwendet werden." UIHint="Information" />
+                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="8" />
                   </when>
                   <when test="1 4 6"> <!-- AB-SmartHouse: 12 channels -->
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 12 Kanäle (A-L) verwendet werden." UIHint="Information" />
+                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" />
+                  </when>
+                  <when default="true">
+                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" />
                   </when>
                 </choose>
 
