@@ -14,6 +14,15 @@
             <op:param name="%MO%" value="0" increment="5" digits="1" /> <!-- Memory Offset -->
           </op:part>
 
+          <op:part href="MeasureAndProtection.part.xml" name="MEASUREPROT" instances="1">
+            <op:param name="%ParamOffset%" value="78" increment="24" />
+            <op:param name="%TT%" value="23" increment="0" digits="2" />
+            <op:param name="%PPP%" value="44" increment="26" digits="3" />
+            <op:param name="%KKK%" value="17" increment="6" digits="3" />
+            <op:param name="%KO%" value="17" increment="6" />
+            <op:param name="%NAMES%" value="RGB" />
+          </op:part>
+
           <Static>
             <Parameters>
 
@@ -100,6 +109,7 @@
                 <!-- Scenes -->
                 <op:usePart name="LED_RGB_SC" xpath="//Static/Parameters/Block[@Name='ScenesRGB']/*" />
               </Union>
+              <op:usePart name="MEASUREPROT" xpath="//Static/Parameters/*" />
             </Parameters>
 
             <ParameterRefs>
@@ -153,7 +163,7 @@
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_RGB_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefRGB']/*" />
-
+              <op:usePart name="MEASUREPROT" xpath="//Static/ParameterRefs/*" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -166,14 +176,15 @@
               <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%BrightnessRel"          Text="Helligkeit Relativ"    Number="%K6%"  FunctionText="RGB %C% - Helligkeit Relativ"    ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
               <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%BrightnessStatus"       Text="Helligkeit Status"     Number="%K7%"  FunctionText="RGB %C% - Helligkeit Status"     ObjectSize="1 Byte"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"     />
               <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%ColorTemperature"       Text="Farbtemperatur"        Number="%K8%"  FunctionText="RGB %C% - Farbtemperatur"        ObjectSize="2 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
-              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%ColorTemperatureRel"    Text="Farbtemperatur Relativ" Number="%K9%"  FunctionText="RGB %C% - Farbtemperatur Relativ" ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
-              <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status" Number="%K10%"  FunctionText="RGB %C% - Farbtemperatur Status" ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
+              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%ColorTemperatureRel"    Text="Farbtemperatur Relativ" Number="%K9%" FunctionText="RGB %C% - Farbtemperatur Relativ" ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
+              <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status" Number="%K10%" FunctionText="RGB %C% - Farbtemperatur Status" ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
               <ComObject Id="%AID%_O-%TT%%CC%011" Name="Ch%C%RGB"                    Text="RGB"                   Number="%K11%" FunctionText="RGB %C% - RGB"                   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
               <ComObject Id="%AID%_O-%TT%%CC%012" Name="Ch%C%RGBStatus"              Text="RGB Status"            Number="%K12%" FunctionText="RGB %C% - RGB Status"            ObjectSize="3 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
               <ComObject Id="%AID%_O-%TT%%CC%013" Name="Ch%C%HSV"                    Text="HSV"                   Number="%K13%" FunctionText="RGB %C% - HSV"                   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
               <ComObject Id="%AID%_O-%TT%%CC%014" Name="Ch%C%HSVStatus"              Text="HSV Status"            Number="%K14%" FunctionText="RGB %C% - HSV Status"            ObjectSize="3 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
               <ComObject Id="%AID%_O-%TT%%CC%015" Name="Ch%C%Night"                  Text="Nacht"                 Number="%K15%" FunctionText="RGB %C% - Nacht"                 ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
               <ComObject Id="%AID%_O-%TT%%CC%016" Name="Ch%C%Scene"                  Text="Szene"                 Number="%K16%" FunctionText="RGB %C% - Szene"                 ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1"    />
+              <op:usePart name="MEASUREPROT" xpath="//Static/ComObjectTable/*" />
             </ComObjectTable>
 
             <ComObjectRefs>
@@ -194,6 +205,7 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%014_R-%TT%%CC%01401" RefId="%AID%_O-%TT%%CC%014" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%015_R-%TT%%CC%01501" RefId="%AID%_O-%TT%%CC%015" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%016_R-%TT%%CC%01601" RefId="%AID%_O-%TT%%CC%016" />
+              <op:usePart name="MEASUREPROT" xpath="//Static/ComObjectRefs/*" />
             </ComObjectRefs>
 
           </Static>
@@ -424,6 +436,8 @@
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%031_R-%TT%%CC%03101" IndentLevel="2" /> <!-- StairwayTrigger -->
                       </when>
                     </choose>
+
+                    <op:usePart name="MEASUREPROT" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock/*" />
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%042_R-%TT%%CC%04201" IndentLevel="1" /> <!-- Scenes -->

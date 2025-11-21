@@ -14,6 +14,14 @@
             <op:param name="%MO%" value="0" increment="5" digits="1" /> <!-- Memory Offset -->
           </op:part>
 
+          <op:part href="MeasureAndProtection.part.xml" name="MEASUREPROT" instances="1">
+            <op:param name="%ParamOffset%" value="78" increment="24" />
+            <op:param name="%TT%" value="22" increment="0" digits="2" />
+            <op:param name="%PPP%" value="32" increment="26" digits="3" />
+            <op:param name="%KKK%" value="14" increment="6" digits="3" />
+            <op:param name="%KO%" value="14" increment="6" />
+            <op:param name="%NAME%" values="TW" />
+          </op:part>
           <Static>
             <Parameters>
 
@@ -82,6 +90,7 @@
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="38" BitOffset="0" />
                 <op:usePart name="LED_TW_SC" xpath="//Static/Parameters/Block[@Name='ScenesTW']/*" />
               </Union>
+              <op:usePart name="MEASUREPROT" xpath="//Static/Parameters/*" />
 
             </Parameters>
 
@@ -124,6 +133,7 @@
 
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_TW_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefTW']/*" />
+              <op:usePart name="MEASUREPROT" xpath="//Static/ParameterRefs/*" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -141,6 +151,7 @@
               <ComObject Id="%AID%_O-%TT%%CC%011" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status"  Number="%K11%" FunctionText="TW %C% - Farbtemperatur Status"  ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600" />
               <ComObject Id="%AID%_O-%TT%%CC%012" Name="Ch%C%Night"                  Text="Nacht"                  Number="%K12%" FunctionText="TW %C% - Nacht"                  ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"   />
               <ComObject Id="%AID%_O-%TT%%CC%013" Name="Ch%C%Scene"                  Text="Szene"                  Number="%K13%" FunctionText="TW %C% - Szene"                  ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1"  />
+              <op:usePart name="MEASUREPROT" xpath="//Static/ComObjectTable/*" />
             </ComObjectTable>
 
             <ComObjectRefs>
@@ -158,6 +169,7 @@
               <ComObjectRef Id="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_O-%TT%%CC%011" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" RefId="%AID%_O-%TT%%CC%012" />
               <ComObjectRef Id="%AID%_O-%TT%%CC%013_R-%TT%%CC%01301" RefId="%AID%_O-%TT%%CC%013" />
+              <op:usePart name="MEASUREPROT" xpath="//Static/ComObjectRefs/*" />
             </ComObjectRefs>
 
           </Static>
@@ -296,6 +308,8 @@
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%025_R-%TT%%CC%02501" IndentLevel="2" /> <!-- StairwayTrigger -->
                       </when>
                     </choose>
+
+                    <op:usePart name="MEASUREPROT" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock/*" />
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%030_R-%TT%%CC%03001" IndentLevel="1" /> <!-- Scenes -->
