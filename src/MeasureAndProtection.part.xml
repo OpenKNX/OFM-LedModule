@@ -35,7 +35,7 @@
                                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+9%" Name="Ch%C%CurrentSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangeCurrent" Offset="6" BitOffset="0" Text="Mindeständerung absolut" Value="10" SuffixText="mA" />
                                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+10%" Name="Ch%C%CurrentSendCyclicBase" ParameterType="%AID%_PT-DelayBase" Offset="8" BitOffset="0" Text="Zeitbasis" Value="0" />
                                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+11%" Name="Ch%C%CurrentSendCyclicTime" ParameterType="%AID%_PT-DelayTime" Offset="8" BitOffset="2" Text="Zeit" Value="0" />
-                                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+14%" Name="Ch%C%DeviceProtContCurrent" ParameterType="%AID%_PT-MinimumChangeCurrent" Offset="10" BitOffset="0" Text="Dauerlast" Value="4" SuffixText="A" />
+                                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+14%" Name="Ch%C%DeviceProtContCurrent" ParameterType="%AID%_PT-MaxCurrent" Offset="10" BitOffset="0" Text="Dauerlast" Value="4" SuffixText="A" />
                                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+15%" Name="Ch%C%DeviceProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="11" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
                                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+16%" Name="Ch%C%DeviceProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="12" BitOffset="0" Text="Zeitbasis" Value="0" />
                                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+17%" Name="Ch%C%DeviceProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="12" BitOffset="2" Text="Zeit" Value="30" />
