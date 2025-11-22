@@ -118,9 +118,9 @@ void HWDimmer::processCurrentSense()
 #ifdef LEDMODULE_CURRENT_ADDR
     for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
     {
-        _currentSenseValues[i] = _currentSense[i].getCurrent_mA();
-        _currentVoltageValues[i] = _currentSense[i].getBusVoltage_V();
-        _currentTemperatureValues[i] = _currentSense[i].readDieTemp();
+        _currentValues[i] = _currentSense[i].getCurrent_mA();
+        _voltageValues[i] = _currentSense[i].getBusVoltage_V();
+        _temperatureValues[i] = _currentSense[i].readDieTemp();
 
         // if (delayCheck(_currentSenseDebugTimer, 1000))
         //     logDebugP("Channel %d: %.2f mA, Voltage: %.2f V", i, _currentSenseValues[i], _currentVoltageValues[i]);
@@ -128,7 +128,7 @@ void HWDimmer::processCurrentSense()
 
     if (delayCheck(_currentSenseDebugTimer, 1000))
     {
-        logDebugP("Channel %d: %.2f mA, Voltage: %.2f V, Temperature: %.2f °C", 0, _currentSenseValues[0], _currentVoltageValues[0], _currentTemperatureValues[0]);
+        logDebugP("Channel %d: %.2f mA, Voltage: %.2f V, Temperature: %.2f °C", 0, _currentValues[0], _voltageValues[0], _temperatureValues[0]);
         _currentSenseDebugTimer = delayTimerInit();
     }
 #endif
@@ -137,7 +137,7 @@ void HWDimmer::processCurrentSense()
 float HWDimmer::getTemperature(uint8_t channel)
 {
 #ifdef LEDMODULE_CURRENT_ADDR
-    return _currentTemperatureValues[channel];
+    return _temperatureValues[channel];
 #else
     return 0.0f;
 #endif
@@ -148,7 +148,7 @@ float HWDimmer::getTemperatureAvg()
 #ifdef LEDMODULE_CURRENT_ADDR
     float totalTemp = 0.0f;
     for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
-        totalTemp += _currentTemperatureValues[i];
+        totalTemp += _temperatureValues[i];
     
     return totalTemp / LEDMODULE_MAX_LIGHT_CHANNELS;
 #else
