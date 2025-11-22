@@ -352,15 +352,12 @@
                 
                 <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
                   <when test="0 5"> <!-- AB-SmartHouse: 6 channels -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 6 Kanäle (A-F) verwendet werden." UIHint="Information" />
                     <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" />
                   </when>
                   <when test="2"> <!-- AB-SmartHouse: 8 channels -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 8 Kanäle (A-H) verwendet werden." UIHint="Information" />
                     <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="8" />
                   </when>
                   <when test="1 4 6"> <!-- AB-SmartHouse: 12 channels -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Mit der gewählten Hardware-Variante können lediglich die ersten 12 Kanäle (A-L) verwendet werden." UIHint="Information" />
                     <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" />
                   </when>
                   <when default="true">
