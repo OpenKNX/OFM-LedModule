@@ -180,13 +180,15 @@ void RGBChannel::update()
     float current1 = _pDimmer->getCurrent(_pHWChannels[1]);
     float current2 = _pDimmer->getCurrent(_pHWChannels[2]);
     float current = current0 + current1 + current2;
-    processSendValue(KoLED_SC_ChCurrent, DPT_Value_Electric_Current, ParamLED_SC_ChCurrentSend, ParamLED_SC_ChCurrentSendMinChangePercent, ParamLED_SC_ChCurrentSendMinChangeAbsolute, ParamLED_SC_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
+    processSendValue(KoLED_RGB_ChCurrent, DPT_Value_Electric_Current, ParamLED_RGB_ChCurrentSend, ParamLED_RGB_ChCurrentSendMinChangePercent, ParamLED_RGB_ChCurrentSendMinChangeAbsolute, ParamLED_RGB_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
 
     float voltage0 = _pDimmer->getVoltage(_pHWChannels[0]);
     float voltage1 = _pDimmer->getVoltage(_pHWChannels[1]);
     float voltage2 = _pDimmer->getVoltage(_pHWChannels[2]);
     float power = (voltage0 * current0 + voltage1 * current1 + voltage2 * current2) / 1000.0f;
-    processSendValue(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, ParamLED_SC_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
+    processSendValue(KoLED_RGB_ChPower, DPT_Value_Power, ParamLED_RGB_ChPowerSend, ParamLED_RGB_ChPowerSendMinChangePercent, ParamLED_RGB_ChPowerSendMinChangeAbsolute, ParamLED_RGB_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
+
+    processDeviceProtection(KoLED_RGB_ChDeviceProtConstCurrent, KoLED_RGB_ChDeviceProtOverload, ParamLED_RGB_ChDeviceProtActive, ParamLED_RGB_ChDeviceProtConstCurrent, ParamLED_RGB_ChDeviceProtOverloadPercent, ParamLED_RGB_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_RGB_ChDeviceProtCutOff, current);
 }
 
 void RGBChannel::loop()

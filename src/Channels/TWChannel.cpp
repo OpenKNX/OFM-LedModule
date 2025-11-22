@@ -111,12 +111,14 @@ void TWChannel::update()
     float current0 = _pDimmer->getCurrent(_pHWChannels[0]);
     float current1 = _pDimmer->getCurrent(_pHWChannels[1]);
     float current = current0 + current1;
-    processSendValue(KoLED_SC_ChCurrent, DPT_Value_Electric_Current, ParamLED_SC_ChCurrentSend, ParamLED_SC_ChCurrentSendMinChangePercent, ParamLED_SC_ChCurrentSendMinChangeAbsolute, ParamLED_SC_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
+    processSendValue(KoLED_TW_ChCurrent, DPT_Value_Electric_Current, ParamLED_TW_ChCurrentSend, ParamLED_TW_ChCurrentSendMinChangePercent, ParamLED_TW_ChCurrentSendMinChangeAbsolute, ParamLED_TW_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
 
     float voltage0 = _pDimmer->getVoltage(_pHWChannels[0]);
     float voltage1 = _pDimmer->getVoltage(_pHWChannels[1]);
     float power = (voltage0 * current0 + voltage1 * current1) / 1000.0f;
-    processSendValue(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, ParamLED_SC_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
+    processSendValue(KoLED_TW_ChPower, DPT_Value_Power, ParamLED_TW_ChPowerSend, ParamLED_TW_ChPowerSendMinChangePercent, ParamLED_TW_ChPowerSendMinChangeAbsolute, ParamLED_TW_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
+
+    processDeviceProtection(KoLED_TW_ChDeviceProtConstCurrent, KoLED_TW_ChDeviceProtOverload, ParamLED_TW_ChDeviceProtActive, ParamLED_TW_ChDeviceProtConstCurrent, ParamLED_TW_ChDeviceProtOverloadPercent, ParamLED_TW_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_TW_ChDeviceProtCutOff, current);
 }
 
 void TWChannel::loop()

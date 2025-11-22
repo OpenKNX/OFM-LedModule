@@ -82,3 +82,43 @@ void LightChannel::processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t
         cyclicSendTimer = delayTimerInit();
     }
 }
+
+void LightChannel::processDeviceProtection(GroupObject& koContCurrent, GroupObject& koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current)
+{
+    if (!active)
+        return;
+    
+    if (current <= constCurrent)
+    {
+        overloadTimer = 0;
+
+        if (koContCurrent.value(DPT_Switch))
+            koContCurrent.value(false, DPT_Switch);
+        if (koOverload.value(DPT_Switch))
+            koOverload.value(false, DPT_Switch);
+    }
+    else
+    {
+        if (!koContCurrent.value(DPT_Switch))
+            koContCurrent.value(true, DPT_Switch);
+        
+        bool shouldCutOff = false;
+        if (current > constCurrent * (100 + overloadPercent) / 100)
+        {
+            shouldCutOff = true;
+
+            if (!koOverload.value(DPT_Switch))
+                koOverload.value(true, DPT_Switch);
+        }
+        else
+        {
+            if (overloadTimer == 0)
+                overloadTimer = delayTimerInit();
+            else if (delayCheckMillis(overloadTimer, overloadTimeMS))
+                shouldCutOff = true;
+        }
+
+        if (cutOff && shouldCutOff)
+            setSwitchNoDim(false);
+    }
+}

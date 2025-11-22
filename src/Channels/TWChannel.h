@@ -29,8 +29,8 @@ class TWChannel : public LightChannel
     int32_t getLastOnValueTemp() { return _lastOnValueTemp; }
     void setLastOnValueTemp(int32_t lastOnValueTemp) { _lastOnValueTemp = lastOnValueTemp; }
 
-    void setSwitch(bool switchOn);
-    void setSwitchNoDim(bool switchOn);
+    void setSwitch(bool switchOn) override;
+    void setSwitchNoDim(bool switchOn) override;
     void setBoost(bool switchOn);
     void setBrightness(uint16_t bright);
     void setNight(bool night) override;

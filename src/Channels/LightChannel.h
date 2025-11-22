@@ -25,6 +25,8 @@ class LightChannel : public OpenKNX::Channel
     bool getStairTrigger() { return _stairTrigger; }
     void setLastOnValue(int32_t lastOnVal) { _lastOnValue = lastOnVal; }
     int32_t getLastOnValue() { return _lastOnValue; }
+    virtual void setSwitch(bool switchOn) = 0;
+    virtual void setSwitchNoDim(bool switchOn) = 0;
     bool getNight();
     virtual void setNight(bool night) = 0;
     bool getLock();
@@ -150,6 +152,7 @@ class LightChannel : public OpenKNX::Channel
     float _lastSentPower = 0.0f;
     uint32_t _currentCyclicSendTimer = 0;
     uint32_t _powerCyclicSendTimer = 0;
+    uint32_t _deviceProtOverloadTimer = 0;
 
     int32_t _lastOnValue = VALUE_KNX_COUNT-1;
     unsigned long _stairTime = 0;
@@ -167,7 +170,9 @@ class LightChannel : public OpenKNX::Channel
 
     virtual void update() = 0;
     virtual void handleScene(uint8_t sceneNr) = 0;
+
     void processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply = 1);
+    void processDeviceProtection(GroupObject& koContCurrent, GroupObject& koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current);
 
     uint32_t _debugTimer = 0;
 

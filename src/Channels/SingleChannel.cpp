@@ -83,6 +83,8 @@ void SingleChannel::update()
     float voltage = _pDimmer->getVoltage(_pHWChannels[0]);
     float power = (voltage * current) / 1000.0f;
     processSendValue(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, ParamLED_SC_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
+
+    processDeviceProtection(KoLED_SC_ChDeviceProtConstCurrent, KoLED_SC_ChDeviceProtOverload, ParamLED_SC_ChDeviceProtActive, ParamLED_SC_ChDeviceProtConstCurrent, ParamLED_SC_ChDeviceProtOverloadPercent, ParamLED_SC_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_SC_ChDeviceProtCutOff, current);
 }
 
 void SingleChannel::loop()

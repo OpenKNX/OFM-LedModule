@@ -22,8 +22,8 @@ class SingleChannel : public LightChannel
     uint16_t dimmingValTarget(bool switchOn);
     uint16_t checkMinMaxBrightness(uint16_t bright);
 
-    void setSwitch(bool switchOn);
-    void setSwitchNoDim(bool switchOn);
+    void setSwitch(bool switchOn) override;
+    void setSwitchNoDim(bool switchOn) override;
     void setBrightness(uint16_t bright);
     void setNight(bool night) override;
     void relDimUp();

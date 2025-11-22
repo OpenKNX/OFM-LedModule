@@ -32,8 +32,8 @@ class RGBChannel : public LightChannel
     uint16_t getLastOnValueSat() { return _lastOnValueSat; }
     void setLastOnValueSat(uint16_t lastOnValueSat) { _lastOnValueSat = lastOnValueSat; }
 
-    void setSwitch(bool switchOn);
-    void setSwitchNoDim(bool switchOn);
+    void setSwitch(bool switchOn) override;
+    void setSwitchNoDim(bool switchOn) override;
     void setHue(uint16_t hue);
     void setSaturation(uint16_t saturation);
     void setBrightness(uint16_t bright);
