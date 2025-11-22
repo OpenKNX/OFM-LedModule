@@ -319,8 +319,7 @@
                         
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%031_R-%TT%%CC%03101" IndentLevel="2" /> <!-- ScenesDisableNightSw -->
                         
-                        <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Inline="false">
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen:" UIHint="Headline" />
+                        <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Icon="movie-open-outline">
                           <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
                             <Rows>
                               <op:usePart name="LED_TW_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='Rows']/*" />
