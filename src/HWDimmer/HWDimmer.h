@@ -34,7 +34,9 @@ class HWDimmer
     float getTemperature(uint8_t channel);
     float getTemperatureAvg();
     float getCurrent(uint8_t channel);
+    float getTotalCurrent();
     float getVoltage(uint8_t channel);
+    float getTotalPower();
     virtual uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType) = 0;
     virtual uint16_t getScaleMax(HWDimmer::DimLUTType lutType) = 0;
     std::string logPrefix();

@@ -165,10 +165,36 @@ float HWDimmer::getCurrent(uint8_t channel)
 #endif
 }
 
+float HWDimmer::getTotalCurrent()
+{
+#ifdef LEDMODULE_CURRENT_ADDR
+    float totalCurrent = 0.0f;
+    for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
+        totalCurrent += _currentValues[i];
+
+    return totalCurrent;
+#else
+    return 0.0f;
+#endif
+}
+
 float HWDimmer::getVoltage(uint8_t channel)
 {
 #ifdef LEDMODULE_CURRENT_ADDR
     return _voltageValues[channel];
+#else
+    return 0.0f;
+#endif
+}
+
+float HWDimmer::getTotalPower()
+{
+#ifdef LEDMODULE_CURRENT_ADDR
+    float totalPower = 0.0f;
+    for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
+        totalPower += _currentValues[i] * _voltageValues[i];
+
+    return totalPower;
 #else
     return 0.0f;
 #endif

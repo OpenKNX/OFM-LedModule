@@ -34,6 +34,8 @@ class LightChannel : public OpenKNX::Channel
     bool getLock();
     void setLock(bool lock);
 
+    static void processSendValue(GroupObject &ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply = 1);
+
     template <typename T>
     class DimmableValue
     {
@@ -174,7 +176,6 @@ class LightChannel : public OpenKNX::Channel
     virtual void update() = 0;
     virtual void handleScene(uint8_t sceneNr) = 0;
 
-    void processSendValue(GroupObject &ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply = 1);
     void processDeviceProtection(GroupObject &koConstCurrent, GroupObject &koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current);
     void processLampProtection(GroupObject &koConstCurrent, GroupObject &koOverload, bool active, uint16_t cableLength, uint8_t cableCrossSect, uint8_t constPower, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current, float voltage, uint8_t channelCount = 1);
 

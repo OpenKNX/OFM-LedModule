@@ -201,34 +201,20 @@ void LedModule::loop(bool configured)
 
         _pDimmer->loop();
 
-        if (ParamLED_TemperatureChangeSend)
-        {
+        float temperature = TEMPERATURE_INVALID;
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
-            float temperature = _temperature.readTemperatureC();
+        temperature = _temperature.readTemperatureC();
 #elifdef LEDMODULE_CURRENT_ADDR
-            float temperature = _pDimmer->getTemperatureAvg();
+        temperature = _pDimmer->getTemperatureAvg();
 #endif
-
-            float temperatureDifference = abs(_lastTemperatureSent - temperature);
-            if (temperatureDifference > 0.01)
-            {
-                if (temperatureDifference >= _lastTemperatureSent * ParamLED_TemperatureMinChangePercent / 100.0f &&
-                    temperatureDifference >= ParamLED_TemperatureMinChangeAbsolute)
-                {
-                    KoLED_Temperature.value(temperature, DPT_Value_Temp);
-                    _lastTemperatureSent = temperature;
-                }
-                else
-                    KoLED_Temperature.valueNoSend(temperature, DPT_Value_Temp);
-            }
-
-            if (ParamLED_TemperatureCyclicTimeMS > 0 && delayCheck(_temperaturSendTimer, ParamLED_TemperatureCyclicTimeMS))
-            {
-                KoLED_Temperature.objectWritten();
-                _lastTemperatureSent = temperature;
-                _temperaturSendTimer = delayTimerInit();
-            }
-        }
+        if (temperature > TEMPERATURE_INVALID)
+            LightChannel::processSendValue(KoLED_Temperature, DPT_Value_Temp, ParamLED_TemperatureChangeSend, ParamLED_TemperatureMinChangePercent, ParamLED_TemperatureMinChangeAbsolute, ParamLED_TemperatureCyclicTimeMS, _temperaturSendTimer, _lastTemperatureSent, temperature);
+        
+        float totalCurrent = _pDimmer->getTotalCurrent();
+        LightChannel::processSendValue(KoLED_TotalCurrent, DPT_Value_Electric_Current, ParamLED_TotalCurrentSend, ParamLED_TotalCurrentSendMinChangeAbsolute, ParamLED_TotalCurrentSendMinChangeAbsolute, ParamLED_TotalCurrentSendCyclicTimeMS, _totalCurrentSendTimer, _lastTotalCurrentSent, totalCurrent);
+        
+        float totalPower = _pDimmer->getTotalPower();
+        LightChannel::processSendValue(KoLED_TotalPower, DPT_Value_Power, ParamLED_TotalPowerSend, ParamLED_TotalPowerSendMinChangeAbsolute, ParamLED_TotalPowerSendMinChangeAbsolute, ParamLED_TotalPowerSendCyclicTimeMS, _totalPowerSendTimer, _lastTotalPowerSent, totalPower);
     }
 }
 
