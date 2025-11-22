@@ -75,28 +75,18 @@ void LedModule::setupChannels()
 
             case LightType::TunableWhite:
                 if (ParamLED_CH_TW_Function == 1)
-                {
                     _TW_HWChannels[ParamLED_CH_TW_Light - 1][1] = _channelIndex;
-                }
                 else if (ParamLED_CH_TW_Function == 2)
-                {
                     _TW_HWChannels[ParamLED_CH_TW_Light - 1][0] = _channelIndex;
-                }
                 break;
 
             case LightType::RGB:
                 if (ParamLED_CH_RGB_Function == 1)
-                {
                     _RGB_HWChannels[ParamLED_CH_RGB_Light - 1][0] = _channelIndex;
-                }
                 else if (ParamLED_CH_RGB_Function == 2)
-                {
                     _RGB_HWChannels[ParamLED_CH_RGB_Light - 1][1] = _channelIndex;
-                }
                 else if (ParamLED_CH_RGB_Function == 3)
-                {
                     _RGB_HWChannels[ParamLED_CH_RGB_Light - 1][2] = _channelIndex;
-                }
                 break;
 
             // TODO: Add other light type implementations here
@@ -109,17 +99,11 @@ void LedModule::setupChannels()
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++)
     {
         if (ch < LED_SC_ChannelCount)
-        {
             _singleChannels[ch] = new SingleChannel(ch, _pDimmer, _SC_HWChannels[ch]);
-        }
         if (ch < LED_TW_ChannelCount)
-        {
             _twChannels[ch] = new TWChannel(ch, _pDimmer, _TW_HWChannels[ch]);
-        }
         if (ch < LED_RGB_ChannelCount)
-        {
             _rgbChannels[ch] = new RGBChannel(ch, _pDimmer, _RGB_HWChannels[ch]);
-        }
     }
 
     logDebugP("Channel setup finished.");
@@ -198,31 +182,22 @@ void LedModule::loop(bool configured)
             if (!_pDimmer->checkConnection())
             {
                 if (_doResetPwm)
-                {
                     _pDimmer->reconnect();
-                }
             }
             else
-            {
                 _doResetPwm = true;
-            }
+
             _timerCheckConnection = millis();
         }
 
         for (size_t i = 0; i < LED_SC_ChannelCount; i++)
-        {
             _singleChannels[i]->loop();
-        }
 
         for (size_t i = 0; i < LED_TW_ChannelCount; i++)
-        {
             _twChannels[i]->loop();
-        }
 
         for (size_t i = 0; i < LED_RGB_ChannelCount; i++)
-        {
             _rgbChannels[i]->loop();
-        }
 
         _pDimmer->loop();
 
@@ -338,21 +313,13 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("HW Channel configuration:");
         logInfoP("CH\tTYPE\tSC\tTW\tFunc\tRGB\tFunc");
         for (int _channelIndex = 0; _channelIndex < LED_ChannelCount; _channelIndex++)
-        {
             logInfoP("%d\t%d\t%d\t%d\t%d\t%d\t%d", _channelIndex, ParamLED_CH_Lighttype, ParamLED_CH_SC_Light, ParamLED_CH_TW_Light, ParamLED_CH_TW_Function, ParamLED_CH_RGB_Light, ParamLED_CH_RGB_Function);
-        }
         for (int i = 0; i < LED_SC_ChannelCount; i++)
-        {
             logInfoP("SC %d: CH: %d", i, _SC_HWChannels[i][0]);
-        }
         for (int i = 0; i < LED_TW_ChannelCount; i++)
-        {
             logInfoP("TW %d: Cold: %d, Warm: %d", i, _TW_HWChannels[i][0], _TW_HWChannels[i][1]);
-        }
         for (int i = 0; i < LED_RGB_ChannelCount; i++)
-        {
             logInfoP("RGB %d: Red: %d, Green: %d, Blue: %d", i, _RGB_HWChannels[i][0], _RGB_HWChannels[i][1], _RGB_HWChannels[i][2]);
-        }
         logIndentDown();
         logInfoP("--------------------------------------------------------------------------------");
         return true;
@@ -363,9 +330,7 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("======================== Information ===========================================");
         logInfoP("LED MODULE STATE INFORMATION");
         for (int i = 0; i < LED_ChannelCount; i++)
-        {
             logInfoP("CH%d: %d", i, _pDimmer->getLevel(i));
-        }
         logInfoP("--------------------------------------------------------------------------------");
         return true;
     }

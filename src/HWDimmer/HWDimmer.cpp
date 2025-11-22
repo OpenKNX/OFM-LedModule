@@ -149,7 +149,7 @@ float HWDimmer::getTemperatureAvg()
     float totalTemp = 0.0f;
     for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
         totalTemp += _temperatureValues[i];
-    
+
     return totalTemp / LEDMODULE_MAX_LIGHT_CHANNELS;
 #else
     return 0.0f;

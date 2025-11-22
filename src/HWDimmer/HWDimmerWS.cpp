@@ -10,9 +10,7 @@ HWDimmerWS::HWDimmerWS(HWDimmerWS::WSType type, uint8_t pin, uint16_t numLeds) :
 {
     _pixels = Adafruit_NeoPixel(_numLeds, _pin, NEO_KHZ400);
     for (uint8_t ch = 0; ch < numChannels; ch++)
-    {
         setLevel(0, ch);
-    }
 }
 
 /**
@@ -95,9 +93,7 @@ std::string HWDimmerWS::logPrefix()
 void HWDimmerWS::outputLUT()
 {
     for (int i = 0; i < VALUE_KNX_COUNT; i++)
-    {
         logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
-    }
 }
 
 bool HWDimmerWS::checkConnection()

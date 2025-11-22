@@ -6,8 +6,6 @@
 #include "OpenKNX.h"
 #include <Arduino.h>
 
-#define CLAMP(x, a, b) ((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
-
 class RGBChannel : public LightChannel
 {
   public:
@@ -49,8 +47,7 @@ class RGBChannel : public LightChannel
     void setRGB(uint32_t RGBvalue);
     void setHSV(uint32_t HSVvalue);
     uint32_t conv_Temp2RGB(int temp);
-    int conv_RGB2Temp1(u32_t target_rgb);
-    int conv_RGB2Temp2(u32_t target_rgb);
+    int conv_RGB2Temp(uint32_t target_rgb);
 
   private:
     const std::string name() override;

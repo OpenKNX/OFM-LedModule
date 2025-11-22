@@ -1,7 +1,7 @@
 #include "HWDimmerRP2040.h"
 #include "OpenKNX.h"
-#include "hardware/pwm.h"
 #include "hardware/clocks.h"
+#include "hardware/pwm.h"
 
 /**
  * @brief Construct a new HWDimmerRP2040::HWDimmerRP2040 object
@@ -11,7 +11,7 @@
  */
 HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwmFreq) : HWDimmer(numChannels)
 {
-    
+
     assert(numChannels <= 16); // rp2040 can only support 16 pwm channels
 
     uint32_t clk_hz = clock_get_hz(clock_handle_t::clk_sys);
@@ -34,18 +34,17 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
         pwm_config config = pwm_get_default_config();
         pwm_config_set_clkdiv(&config, div);
         pwm_config_set_output_polarity(&config, false, true); // invert channel B
-        pwm_init(slice_cand, &config, false);  // do not start yet
+        pwm_init(slice_cand, &config, false);                 // do not start yet
         logDebugP("RP2040 PWM slice %d init", slice_cand);
     }
 
     for (uint8_t ch = 0; ch < numChannels; ch++)
     {
         if (pwm_gpio_to_channel(this->pins[ch]) == PWM_CHAN_B)
-        {
             pwm_set_gpio_level(this->pins[ch], DIM_RANGE);
-        } else {
+        else
             pwm_set_gpio_level(this->pins[ch], 0);
-        }
+
         pwm_advance_count(pwm_gpio_to_slice_num(this->pins[ch])); // avoid flicker on startup
         gpio_set_function(this->pins[ch], GPIO_FUNC_PWM);
     }
@@ -80,9 +79,8 @@ bool HWDimmerRP2040::setLevel(uint16_t level, uint8_t channel)
     {
         isValidChannel = true;
         if (pwm_gpio_to_channel(this->pins[channel]) == PWM_CHAN_B)
-        {
             level = DIM_RANGE - level; // invert for channel B
-        }
+
         pwm_set_gpio_level(this->pins[channel], level);
     }
     return isValidChannel;
@@ -125,9 +123,8 @@ void HWDimmerRP2040::outputLUT()
 {
     // logDebugP("RP2040 Dimmer LUT:");
     // for (int i = 0; i < VALUE_KNX_COUNT; i=i+10)
-    // {
     //     logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
-    // }
+
     logDebugP("Count %d LAST: %d", VALUE_KNX_COUNT - 2, dimLUT[0].Val(VALUE_KNX_COUNT - 2));
     logDebugP("Count %d LAST: %d", VALUE_KNX_COUNT - 1, dimLUT[0].Val(VALUE_KNX_COUNT - 1));
     logDebugP("Count %d  MAX: %d", VALUE_KNX_COUNT, dimLUT[0].Val(VALUE_KNX_COUNT));

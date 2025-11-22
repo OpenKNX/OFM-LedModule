@@ -57,11 +57,11 @@ void LightChannel::setLock(bool lock)
     KoLED_SC_ChStateLocking.value(_isLocked, DPT_State);
 }
 
-void LightChannel::processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply)
+void LightChannel::processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t& cyclicSendTimer, float& lastSentValue, float currentValue, uint16_t checkMultiply)
 {
     if (!send)
         return;
-    
+
     uint16_t currentDifference = round(abs(lastSentValue - currentValue * checkMultiply));
     if (currentDifference > 0)
     {
@@ -83,11 +83,11 @@ void LightChannel::processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t
     }
 }
 
-void LightChannel::processDeviceProtection(GroupObject& koConstCurrent, GroupObject& koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current)
+void LightChannel::processDeviceProtection(GroupObject& koConstCurrent, GroupObject& koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t& overloadTimer, bool cutOff, float current)
 {
     if (!active)
         return;
-    
+
     if (current <= constCurrent)
     {
         overloadTimer = 0;
@@ -101,7 +101,7 @@ void LightChannel::processDeviceProtection(GroupObject& koConstCurrent, GroupObj
     {
         if (!koConstCurrent.value(DPT_Switch))
             koConstCurrent.value(true, DPT_Switch);
-        
+
         bool shouldCutOff = false;
         if (current > constCurrent * (100 + overloadPercent) / 100)
         {
@@ -123,7 +123,7 @@ void LightChannel::processDeviceProtection(GroupObject& koConstCurrent, GroupObj
     }
 }
 
-void LightChannel::processLampProtection(GroupObject& koConstCurrent, GroupObject& koOverload, bool active, uint16_t cableLength, uint8_t cableCrossSect, uint8_t constPower, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current, float voltage, uint8_t channelCount)
+void LightChannel::processLampProtection(GroupObject& koConstCurrent, GroupObject& koOverload, bool active, uint16_t cableLength, uint8_t cableCrossSect, uint8_t constPower, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t& overloadTimer, bool cutOff, float current, float voltage, uint8_t channelCount)
 {
     if (!active)
         return;
@@ -152,7 +152,7 @@ void LightChannel::processLampProtection(GroupObject& koConstCurrent, GroupObjec
     float voltageDropToLamp = (CABLE_RESISTANCE_PER_METER * cableLength / cableCrossSectMM2) * current * channelCount;
     float voltageDropFromLamp = (CABLE_RESISTANCE_PER_METER * cableLength / cableCrossSectMM2) * current;
     float effectiveVoltage = voltage - voltageDropToLamp - voltageDropFromLamp;
-    
+
     float power = effectiveVoltage * current;
     if (power <= constPower)
     {
@@ -167,7 +167,7 @@ void LightChannel::processLampProtection(GroupObject& koConstCurrent, GroupObjec
     {
         if (!koConstCurrent.value(DPT_Switch))
             koConstCurrent.value(true, DPT_Switch);
-        
+
         bool shouldCutOff = false;
         if (power > constPower * (100 + overloadPercent) / 100)
         {

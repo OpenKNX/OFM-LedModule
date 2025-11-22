@@ -75,43 +75,27 @@ Colors::HSV Colors::rgb2hsv(RGB rgb)
     int32_t h = 0, s = 0;
 
     if (cMax == 0)
-    {
         s = 0;
-    }
     else
-    {
         s = (cDelta * VAL_RANGE + (cMax >> 1)) / cMax;
-    }
 
     if (cDelta == 0)
-    {
         h = 0;
-    }
     else if (cMax == rgb._red)
     {
         if (rgb._green > rgb._blue)
-        {
             h = (H_PART * ((int32_t)rgb._green - (int32_t)rgb._blue)) / cDelta;
-        }
         else
-        {
             h = H_PART * 6 - (H_PART * ((int32_t)rgb._blue - (int32_t)rgb._green)) / cDelta;
-        }
     }
     else if (cMax == rgb._green)
-    {
         h = (H_PART * ((int32_t)rgb._blue - (int32_t)rgb._red)) / cDelta + (H_PART) * 2;
-    }
     else // --> cMax = blue
-    {
         h = (H_PART * ((int32_t)rgb._red - (int32_t)rgb._green)) / cDelta + (H_PART) * 4;
-    }
 
     h = (h + 3) / 6;
     if (h == H_PART)
-    {
         h = 0;
-    }
 
     return HSV(h, s, cMax);
 }

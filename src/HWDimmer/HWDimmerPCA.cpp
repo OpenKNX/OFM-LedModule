@@ -21,9 +21,7 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFr
     _pwm.begin();
     _pwm.setPWMFreq(pwmFreq);
     for (uint8_t ch = 0; ch < numChannels; ch++)
-    {
         setLevel(0, ch);
-    }
 }
 
 /**
@@ -97,20 +95,14 @@ bool HWDimmerPCA::checkConnection()
     error = LEDMODULE_WIRE.endTransmission();
 
     if (error == 0)
-    {
         isOK = true;
-    }
     else
-    {
         logErrorP("PCA9685 PWM not available via I2C %s", error);
-    }
 
     // -----------------------------------------------------------------------------
     LEDMODULE_WIRE.requestFrom(_addr, 1);
     if (LEDMODULE_WIRE.read() < 0)
-    {
         logErrorP("PCA9685 0x40 fehler");
-    }
     else
     {
         // logErrorP("PCA9685 0x40 i.O.");
@@ -139,9 +131,7 @@ void HWDimmerPCA::reconnect()
 void HWDimmerPCA::outputLUT()
 {
     for (int i = 0; i < VALUE_KNX_COUNT; i++)
-    {
         logDebugP("Count%d: %d", i, dimLUT[0].Val(i));
-    }
 }
 
 void HWDimmerPCA::runTestMode()

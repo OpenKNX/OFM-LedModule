@@ -59,7 +59,7 @@ void SingleChannel::update()
             else
                 KoLED_SC_ChBrightnessStatus.valueNoSend(koValue, DPT_Scaling);
         }
-        
+
         if (ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
         {
             KoLED_SC_ChBrightnessStatus.value(koValue, DPT_Scaling);
@@ -85,7 +85,7 @@ void SingleChannel::update()
     processSendValue(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, ParamLED_SC_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
 
     processDeviceProtection(KoLED_SC_ChDeviceProtConstCurrent, KoLED_SC_ChDeviceProtOverload, ParamLED_SC_ChDeviceProtActive, ParamLED_SC_ChDeviceProtConstCurrent, ParamLED_SC_ChDeviceProtOverloadPercent, ParamLED_SC_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_SC_ChDeviceProtCutOff, current);
-    
+
     processLampProtection(KoLED_SC_ChLampProtConstCurrent, KoLED_SC_ChLampProtOverload, ParamLED_SC_ChLampProtActive, ParamLED_SC_ChLampProtCableLength, ParamLED_SC_ChLampProtCableCrossSect, ParamLED_SC_ChLampProtConstPower, ParamLED_SC_ChLampProtOverloadPercent, ParamLED_SC_ChLampProtOverloadTimeMS, _lampProtOverloadTimer, ParamLED_SC_ChLampProtCutOff, current, voltage);
 }
 
@@ -111,9 +111,7 @@ void SingleChannel::loop()
         {
             setStairTrigger(0);
             if (ParamLED_SC_ChStartupBehavior)
-            {
                 setLastOnValue(_brightness.value());
-            }
             _brightness.setTargetValue(0, dimmingTimeOFF());
         }
     }
@@ -129,34 +127,24 @@ void SingleChannel::processInputKo(GroupObject& ko)
 
     // check if channel is valid
     if ((int8_t)(relKO / LED_SC_KoBlockSize) == channelIndex())
-    {
         relKO = relKO % LED_SC_KoBlockSize;
-    }
     else
-    {
         relKO = -1;
-    }
 
     if (relKO == LED_SC_KoChLocking)
-    {
         _isLocked = ko.value(DPT_Switch);
-    }
     else if (!_isLocked)
     {
         switch (relKO)
         {
             case LED_SC_KoChSwitch:
                 if (!getLock())
-                {
                     setSwitch(ko.value(DPT_Switch));
-                }
                 break;
 
             case LED_SC_KoChSwitchNoDim:
                 if (!getLock())
-                {
                     setSwitchNoDim(ko.value(DPT_Switch));
-                }
                 break;
 
             case LED_SC_KoChLocking:
@@ -179,17 +167,11 @@ void SingleChannel::processInputKo(GroupObject& ko)
                     tmpu16 = *KoLED_SC_ChBrightnessRel.valueRef();
 
                     if (tmpu16 >= 0x09)
-                    {
                         relDimUp();
-                    }
                     if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                    {
                         relDimDown();
-                    }
                     if (tmpu16 == 0x00 || tmpu16 == 0x08)
-                    {
                         relDimStop();
-                    }
                 }
                 break;
 
@@ -204,9 +186,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
             // Day or Night
             case LED_SC_KoChNight:
                 if (!getLock())
-                {
                     setNight(ko.value(DPT_Switch));
-                }
                 break;
 
             case LED_SC_KoChStateOnOff:
@@ -236,9 +216,7 @@ void SingleChannel::handleScene(uint8_t sceneNr)
 
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
-                    {
                         _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness() * VALUE_KNX_MULTIPLY), dimmingTime(1));
-                    }
                     break;
 
                 case SceneConfig::FuncType::FUNCTION:
@@ -290,13 +268,9 @@ uint16_t SingleChannel::dimmingValTarget(bool switchOn)
 uint16_t SingleChannel::checkMinMaxBrightness(uint16_t bright)
 {
     if (bright < (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY))
-    {
         bright = (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY);
-    }
     if (bright > dimmingValMax())
-    {
         bright = dimmingValMax();
-    }
     return bright;
 }
 
@@ -373,18 +347,14 @@ void SingleChannel::setNight(bool night)
             logDebugP("Tag");
 
             if (_brightness.value() == ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
-            {
                 _brightness.setTargetValue(ParamLED_SC_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmDayOnTime);
-            }
         }
         else
         {
             logDebugP("Nacht");
 
             if (_brightness.value() > ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
-            {
                 _brightness.setTargetValue(ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmNightOnTime);
-            }
         }
     }
 }

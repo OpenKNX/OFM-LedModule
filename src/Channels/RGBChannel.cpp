@@ -1,7 +1,4 @@
 #include "RGBChannel.h"
-#include <Math.h>
-#include <algorithm>
-#include <cmath>
 #include <knx.h>
 
 RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
@@ -25,9 +22,7 @@ RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
 #ifdef EXT_DEBUG_LOG
     logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
     for (int i = 0; i < N_SCENES; i++)
-    {
         logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d", _channelIndex, _scenes[i].sceneNr, _scenes[i].funcType, _scenes[i].valueType, _scenes[i].lockObj, _scenes[i].lockFunc, _scenes[i].isFixed, _scenes[i].value[0], _scenes[i].value[1], _scenes[i].value[2]);
-    }
 #endif
 }
 
@@ -71,7 +66,7 @@ void RGBChannel::update()
             else
                 KoLED_RGB_ChBrightnessStatus.valueNoSend(koValue, DPT_Scaling);
         }
-        
+
         if (ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
         {
             KoLED_RGB_ChBrightnessStatus.value(koValue, DPT_Scaling);
@@ -87,9 +82,9 @@ void RGBChannel::update()
         // and color temperature can only change if hue or saturation changes
         if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
         {
-        Colors::RGB rgb_value = Colors::hsv2rgb(hsv).toUint32();
-        u32_t rgb_value_ = rgb_value.toUint32();
-        tmpColor = conv_RGB2Temp1(rgb_value_);
+            Colors::RGB rgb_value = Colors::hsv2rgb(hsv).toUint32();
+            u32_t rgb_value_ = rgb_value.toUint32();
+            tmpColor = conv_RGB2Temp(rgb_value_);
         }
 
         uint16_t colorDifference = abs(_lastColorTemp - tmpColor);
@@ -214,17 +209,11 @@ void RGBChannel::loop()
         Colors::RGB rgb = Colors::hsv2rgb(Colors::HSV(_hue.step(_lastDimTimestamp), _saturation.step(_lastDimTimestamp), ((uint16_t)_brightness.step(_lastDimTimestamp))));
 
         if (_pHWChannels[0] < LED_ChannelCount)
-        {
             _pDimmer->setLevel(_pDimmer->scale(rgb.Red(), (HWDimmer::DimLUTType)ParamLED_RGB_ChDimCurve), _pHWChannels[0]);
-        }
         if (_pHWChannels[1] < LED_ChannelCount)
-        {
             _pDimmer->setLevel(_pDimmer->scale(rgb.Green(), (HWDimmer::DimLUTType)ParamLED_RGB_ChDimCurve), _pHWChannels[1]);
-        }
         if (_pHWChannels[2] < LED_ChannelCount)
-        {
             _pDimmer->setLevel(_pDimmer->scale(rgb.Blue(), (HWDimmer::DimLUTType)ParamLED_RGB_ChDimCurve), _pHWChannels[2]);
-        }
 
         // RGB for WS 2812 HWDimmer
         // if (_pHWChannels[0] < LED_ChannelCount && _pHWChannels[1] < LED_ChannelCount && _pHWChannels[2] < LED_ChannelCount)
@@ -242,9 +231,7 @@ void RGBChannel::loop()
     {
         setStairTrigger(0);
         if (ParamLED_RGB_ChStartupBehavior)
-        {
             setLastOnValue(_brightness.value());
-        }
         _brightness.setTargetValue(0, dimmingTimeOFF());
     }
 }
@@ -260,34 +247,24 @@ void RGBChannel::processInputKo(GroupObject& ko)
 
     // check if channel is valid
     if ((int8_t)(relKO / LED_RGB_KoBlockSize) == channelIndex())
-    {
         relKO = relKO % LED_RGB_KoBlockSize;
-    }
     else
-    {
         relKO = -1;
-    }
 
     if (relKO == LED_RGB_KoChLocking)
-    {
         _isLocked = ko.value(DPT_Switch);
-    }
     else if (!_isLocked)
     {
         switch (relKO)
         {
             case LED_RGB_KoChSwitch:
                 if (!getLock())
-                {
                     setSwitch(ko.value(DPT_Switch));
-                }
                 break;
 
             case LED_RGB_KoChSwitchNoDim:
                 if (!getLock())
-                {
                     setSwitchNoDim(ko.value(DPT_Switch));
-                }
                 break;
 
             case LED_RGB_KoChLocking:
@@ -297,9 +274,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
 
             case LED_RGB_KoChBrightness:
                 if (!getLock())
-                {
                     setBrightness((u_int16_t)((u_int16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
-                }
                 break;
 
             case LED_RGB_KoChBrightnessRel:
@@ -309,17 +284,11 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     tmpu16 = *KoLED_RGB_ChBrightnessRel.valueRef();
 
                     if (tmpu16 >= 0x09)
-                    {
                         relDimUp();
-                    }
                     if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                    {
                         relDimDown();
-                    }
                     if (tmpu16 == 0x00 || tmpu16 == 0x08)
-                    {
                         relDimStop();
-                    }
                 }
                 break;
 
@@ -333,9 +302,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
 
             case LED_RGB_KoChColorTemperature:
                 if (!getLock())
-                {
                     setColorTemperature(ko.value(Dpt(7, 600)));
-                }
                 break;
 
             case LED_RGB_KoChColorTemperatureRel:
@@ -345,40 +312,28 @@ void RGBChannel::processInputKo(GroupObject& ko)
                     tmpu16 = *KoLED_RGB_ChColorTemperatureRel.valueRef();
 
                     if (tmpu16 >= 0x09)
-                    {
                         relDimUpColor();
-                    }
                     if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                    {
                         relDimDownColor();
-                    }
                     if (tmpu16 == 0x00 || tmpu16 == 0x08)
-                    {
                         relDimStopColor();
-                    }
                 }
                 break;
 
             case LED_RGB_KoChRGB:
                 if (!getLock())
-                {
                     setRGB(ko.value(DPT_Colour_RGB));
-                }
                 break;
 
             case LED_RGB_KoChHSV:
                 if (!getLock())
-                {
                     setHSV(ko.value(DPT_Colour_RGB));
-                }
                 break;
 
             // Day or Night
             case LED_RGB_KoChNight:
                 if (!getLock())
-                {
                     setNight(ko.value(DPT_Switch));
-                }
                 break;
 
             case LED_RGB_KoChStateOnOff:
@@ -413,9 +368,8 @@ void RGBChannel::handleScene(uint8_t sceneNr)
 
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
-                    {
                         _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness() * VALUE_KNX_MULTIPLY), dimmingTime(1));
-                    }
+
                     if (_scenes[i].valueType == ValueType::COLOR)
                     {
                         Colors::HSV tmpHSV = _scenes[i].HSV();
@@ -425,14 +379,13 @@ void RGBChannel::handleScene(uint8_t sceneNr)
                         _brightness.setTargetValue(checkMinMaxBrightness(tmpHSV.Val()), dimmingTime(1));
                         _saturation.setTargetValue(tmpHSV._sat, dimmingTime(1));
                     }
+
                     if (_scenes[i].valueType == ValueType::HUE)
-                    {
                         _hue.setTargetValue(_scenes[i].value[0], dimmingTime(1));
-                    }
+
                     if (_scenes[i].valueType == ValueType::SATURATION)
-                    {
                         _saturation.setTargetValue(_scenes[i].value[2], dimmingTime(1));
-                    }
+
                     break;
 
                 case SceneConfig::FuncType::FUNCTION:
@@ -479,13 +432,9 @@ uint16_t RGBChannel::dimmingValMax()
 uint16_t RGBChannel::checkMinMaxBrightness(uint16_t bright)
 {
     if (bright < (ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY))
-    {
         bright = (ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY);
-    }
     if (bright > dimmingValMax())
-    {
         bright = dimmingValMax();
-    }
     return bright;
 }
 
@@ -514,13 +463,9 @@ uint16_t RGBChannel::checkMinMaxColorTemp(uint16_t colorTemp)
 {
     // Werte evtl auf Globalen Parameter setzen
     if (colorTemp > 8000)
-    {
         colorTemp = 8000;
-    }
     else if (colorTemp < 1000)
-    {
         colorTemp = 1000;
-    }
     return colorTemp;
 }
 
@@ -620,18 +565,14 @@ void RGBChannel::setNight(bool night)
             logDebugP("Tag");
             RGBpicker(getDefaultColor());
             if (_brightness.value() == ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
-            {
                 _brightness.setTargetValue(ParamLED_RGB_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_RGB_ChLightDimmDayOnTime);
-            }
         }
         else
         {
             logDebugP("Nacht");
             RGBpicker(getDefaultColor());
             if (_brightness.value() > ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
-            {
                 _brightness.setTargetValue(ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_RGB_ChLightDimmNightOnTime);
-            }
         }
     }
 }
@@ -663,9 +604,7 @@ void RGBChannel::setColorTemperature(uint16_t colorTemp)
     setRGB(conv_Temp2RGB(colorTemp));
 
     if (_brightness.value() > 0)
-    {
         setBrightness(_brightness.value());
-    }
 
     KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
 }
@@ -691,7 +630,7 @@ void RGBChannel::relDimStopColor()
     //_boost = false;
     _sceneNumberActive = 0;
     logDebugP("relDim_STOP");
-    //setColorTemperature(_colorTemperature.value(), 1);
+    // setColorTemperature(_colorTemperature.value(), 1);
 }
 
 void RGBChannel::setRGB(uint32_t RGBvalue)
@@ -873,97 +812,43 @@ uint32_t RGBChannel::conv_Temp2RGB(int temp)
 {
     uint8_t r, g, b = 0;
     if (temp > 10000)
-    {
         return 0x000000;
-    }
 
     // red
     // below 6500 = 255
     // above 6500 = temp^-1,02 * 1.000.000 + 125,9
     if (temp >= 6500)
-    {
         r = (uint8_t)round(pow((float)temp, -1.02) * 1000000.0 + 125.9);
-    }
     else
-    {
         r = 255;
-    }
 
     // green
     // below 6500 = 100 x ln(temp) - 623
     // above 6500 = temp^-1,06 * 1.000.000 +165
     if (temp <= 6500)
-    {
         g = 200.0 * log10((float)temp) - 508.0;
-    }
     if (temp >= 6500)
-    {
         g = (uint8_t)round(pow((float)temp, -1.06) * 1000000.0 + 164.16);
-    }
 
     // blue
     // below 2000 = 0
     // 2000 - 6500 = 200 x ln(temp)-1500
     // above 6500 = 255
     if (temp <= 1900)
-    {
         b = 0;
-    }
     if (temp >= 1900)
-    {
         b = (uint8_t)round(477.5 * log10(temp) - 1565.6);
-    }
     if (temp >= 6800)
-    {
         b = 255;
-    }
 
     return (uint32_t)r << 16 | g << 8 | b;
 }
 
-// uint32_t RGBChannel::conv_Temp2RGB(int temp)
-// {
-//     uint8_t r, g, b = 0;
-
-//     // Clamp to practical range
-//     double temperature = CLAMP(temp, 1000.0, 40000.0);
-//     temperature = temperature / 100.0;
-
-//     double R, G, B;
-
-//     // Red
-//     if (temperature <= 66.0)
-//         R = 255.0;
-//     else
-//         R = 329.698727446 * pow(temperature - 60.0, -0.1332047592);
-
-//     // Green
-//     if (temperature <= 66.0)
-//         G = 99.4708025861 * logl(temperature) - 161.1195681661;
-//     else
-//         G = 288.1221695283 * pow(temperature - 60.0, -0.0755148492);
-
-//     // Blue
-//     if (temperature >= 66.0)
-//         B = 255.0;
-//     else if (temperature <= 19.0)
-//         B = 0.0;
-//     else
-//         B = 138.5177312231 * logl(temperature - 10.0) - 305.0447927307;
-
-//     // Clamp and round
-//     r = (int)CLAMP(R, 0.0, 255.0);
-//     g = (int)CLAMP(G, 0.0, 255.0);
-//     b = (int)CLAMP(B, 0.0, 255.0);
-
-//     return (uint32_t)r << 16 | g << 8 | b;
-// }
-
-int RGBChannel::conv_RGB2Temp1(u32_t target_rgb)
+int RGBChannel::conv_RGB2Temp(uint32_t target_rgb)
 {
-    uint8_t r_target = ( target_rgb >> 16 ) & 0xFF;
-    uint8_t g_target = ( target_rgb >> 8  ) & 0xFF;
-    uint8_t b_target =   target_rgb         & 0xFF;
+    uint8_t r_target = (target_rgb >> 16) & 0xFF;
+    uint8_t g_target = (target_rgb >> 8) & 0xFF;
+    uint8_t b_target = target_rgb & 0xFF;
 
     int low = 1000;
     int high = 10000;
@@ -979,7 +864,7 @@ int RGBChannel::conv_RGB2Temp1(u32_t target_rgb)
         uint8_t g_mid = (rgb_mid >> 8) & 0xFF;
         uint8_t b_mid = rgb_mid & 0xFF;
         uint32_t error = (r_mid - r_target) * (r_mid - r_target) + (g_mid - g_target) * (g_mid - g_target) + (b_mid - b_target) * (b_mid - b_target);
-logDebugP("Temp: %d bestTemp:%d R:%d G:%d B:%d Error:%d Target R:%d G:%d B:%d RGB:%d", mid,best_temp, r_mid, g_mid, b_mid, error, r_target, g_target, b_target, target_rgb);
+        logDebugP("Temp: %d bestTemp:%d R:%d G:%d B:%d Error:%d Target R:%d G:%d B:%d RGB:%d", mid, best_temp, r_mid, g_mid, b_mid, error, r_target, g_target, b_target, target_rgb);
         if (error < min_error)
         {
             min_error = error;
@@ -989,19 +874,15 @@ logDebugP("Temp: %d bestTemp:%d R:%d G:%d B:%d Error:%d Target R:%d G:%d B:%d RG
         // Simple heuristic: go towards larger RGB values
 
         if ((r_mid + g_mid + b_mid) < (r_target + g_target + b_target))
-        {
             low = mid + 10;
-        }
         else
-        {
             high = mid - 10;
-        }
     }
 
     // Fine adjustment in the range ±25K
 
-    //int fine_low = (best_temp - 25 < 1000) ? 1000 : best_temp - 25;
-    //int fine_high = (best_temp + 25 > 10000) ? 10000 : best_temp + 25;
+    // int fine_low = (best_temp - 25 < 1000) ? 1000 : best_temp - 25;
+    // int fine_high = (best_temp + 25 > 10000) ? 10000 : best_temp + 25;
     int fine_low = (best_temp - 1000 < 1000) ? 1000 : best_temp - 1000;
     int fine_high = (best_temp + 1000 > 10000) ? 10000 : best_temp + 1000;
 
@@ -1022,46 +903,5 @@ logDebugP("Temp: %d bestTemp:%d R:%d G:%d B:%d Error:%d Target R:%d G:%d B:%d RG
 
     return best_temp;
 }
-
- int RGBChannel::conv_RGB2Temp2(u32_t target_rgb)
- {
-    // uint8_t r = target_rgb._red;
-    // uint8_t g = target_rgb._green;
-    // uint8_t b = target_rgb._blue;
-    uint8_t r = ( target_rgb >> 16 ) & 0xFF;
-    uint8_t g = ( target_rgb >> 8  ) & 0xFF;
-    uint8_t b =   target_rgb         & 0xFF;
-
-     // 1. Normalize RGB (0–255 → 0–1)
-     double R = r / 255.0;
-     double G = g / 255.0;
-     double B = b / 255.0;
-
-     // 2. Apply gamma correction (sRGB)
-     auto linearize = [](double c) {
-         return pow(c, 2.2);
-     };
-     R = linearize(R);
-     G = linearize(G);
-     B = linearize(B);
-
-     // 3. Convert linear RGB to XYZ
-     double X = R * 0.4124 + G * 0.3576 + B * 0.1805;
-     double Y = R * 0.2126 + G * 0.7152 + B * 0.0722;
-     double Z = R * 0.0193 + G * 0.1192 + B * 0.9505;
-
-     double sum = X + Y + Z;
-     if (sum == 0) return 0.0;  // Prevent division by zero
-
-     // 4. Convert to chromaticity coordinates (x, y)
-     double x = X / sum;
-     double y = Y / sum;
-
-     // 5. Apply McCamy's formula
-     double n = (x - 0.3320) / (y - 0.1858);
-     double cct = 449.0 * pow(n, 3) + 3525.0 * pow(n, 2) + 6823.3 * n + 5520.33;
-
-     return cct;  // Color temperature in Kelvin
- }
 
 // EOF

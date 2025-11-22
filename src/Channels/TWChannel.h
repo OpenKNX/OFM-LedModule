@@ -48,7 +48,7 @@ class TWChannel : public LightChannel
     uint16_t _lastColorTemp = 0;
     DimmableValue<uint16_t> _colorTemperature;
 
-    int32_t _lastOnValueTemp = (ParamLED_TW_ChColorTempCW + ParamLED_TW_ChColorTempWW)/2;
+    int32_t _lastOnValueTemp = (ParamLED_TW_ChColorTempCW + ParamLED_TW_ChColorTempWW) / 2;
     bool _boost = false;
     uint32_t _statusSendTemperaturTimer = 0;
 
