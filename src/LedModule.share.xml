@@ -129,6 +129,10 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="48" />
               </ParameterType>
 
+              <ParameterType Id="%AID%_PT-MaxCurrent" Name="MaxCurrent">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="255" />
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-CableLength" Name="CableLength">
                 <TypeFloat Encoding="IEEE-754 Single" minInclusive="0" maxInclusive="1000" />
               </ParameterType>
