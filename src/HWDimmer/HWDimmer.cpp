@@ -118,7 +118,7 @@ void HWDimmer::processCurrentSense()
 #ifdef LEDMODULE_CURRENT_ADDR
     for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
     {
-        _currentValues[i] = _currentSense[i].getCurrent_mA();
+        _currentValues[i] = _currentSense[i].getCurrent_mA() / 1000.0f;
         _voltageValues[i] = _currentSense[i].getBusVoltage_V();
         _temperatureValues[i] = _currentSense[i].readDieTemp();
 

@@ -119,6 +119,9 @@ void TWChannel::update()
     processSendValue(KoLED_TW_ChPower, DPT_Value_Power, ParamLED_TW_ChPowerSend, ParamLED_TW_ChPowerSendMinChangePercent, ParamLED_TW_ChPowerSendMinChangeAbsolute, ParamLED_TW_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
 
     processDeviceProtection(KoLED_TW_ChDeviceProtConstCurrent, KoLED_TW_ChDeviceProtOverload, ParamLED_TW_ChDeviceProtActive, ParamLED_TW_ChDeviceProtConstCurrent, ParamLED_TW_ChDeviceProtOverloadPercent, ParamLED_TW_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_TW_ChDeviceProtCutOff, current);
+
+    float voltage = (voltage0 + voltage1) / 2.0f; // as voltage should be the same anyway for all channels, we just take the average here
+    processLampProtection(KoLED_TW_ChLampProtConstCurrent, KoLED_TW_ChLampProtOverload, ParamLED_TW_ChLampProtActive, ParamLED_TW_ChLampProtCableLength, ParamLED_TW_ChLampProtCableCrossSect, ParamLED_TW_ChLampProtConstPower, ParamLED_TW_ChLampProtOverloadPercent, ParamLED_TW_ChLampProtOverloadTimeMS, _lampProtOverloadTimer, ParamLED_TW_ChLampProtCutOff, current, voltage, 2);
 }
 
 void TWChannel::loop()

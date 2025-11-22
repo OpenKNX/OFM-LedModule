@@ -11,6 +11,8 @@
 
 #define LED_INVALID_HW_CHANNEL 0xFF
 
+#define CABLE_RESISTANCE_PER_METER 0.0175f // Copper 1.75 Ohm mm² / m
+
 class LightChannel : public OpenKNX::Channel
 {
   public:
@@ -153,6 +155,7 @@ class LightChannel : public OpenKNX::Channel
     uint32_t _currentCyclicSendTimer = 0;
     uint32_t _powerCyclicSendTimer = 0;
     uint32_t _deviceProtOverloadTimer = 0;
+    uint32_t _lampProtOverloadTimer = 0;
 
     int32_t _lastOnValue = VALUE_KNX_COUNT-1;
     unsigned long _stairTime = 0;
@@ -172,7 +175,8 @@ class LightChannel : public OpenKNX::Channel
     virtual void handleScene(uint8_t sceneNr) = 0;
 
     void processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply = 1);
-    void processDeviceProtection(GroupObject& koContCurrent, GroupObject& koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current);
+    void processDeviceProtection(GroupObject& koConstCurrent, GroupObject& koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current);
+    void processLampProtection(GroupObject& koConstCurrent, GroupObject& koOverload, bool active, uint16_t cableLength, uint8_t cableCrossSect, uint8_t constPower, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current, float voltage, uint8_t channelCount = 1);
 
     uint32_t _debugTimer = 0;
 

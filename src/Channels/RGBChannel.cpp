@@ -189,6 +189,9 @@ void RGBChannel::update()
     processSendValue(KoLED_RGB_ChPower, DPT_Value_Power, ParamLED_RGB_ChPowerSend, ParamLED_RGB_ChPowerSendMinChangePercent, ParamLED_RGB_ChPowerSendMinChangeAbsolute, ParamLED_RGB_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
 
     processDeviceProtection(KoLED_RGB_ChDeviceProtConstCurrent, KoLED_RGB_ChDeviceProtOverload, ParamLED_RGB_ChDeviceProtActive, ParamLED_RGB_ChDeviceProtConstCurrent, ParamLED_RGB_ChDeviceProtOverloadPercent, ParamLED_RGB_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_RGB_ChDeviceProtCutOff, current);
+
+    float voltage = (voltage0 + voltage1 + voltage2) / 3.0f; // as voltage should be the same anyway for all channels, we just take the average here
+    processLampProtection(KoLED_RGB_ChLampProtConstCurrent, KoLED_RGB_ChLampProtOverload, ParamLED_RGB_ChLampProtActive, ParamLED_RGB_ChLampProtCableLength, ParamLED_RGB_ChLampProtCableCrossSect, ParamLED_RGB_ChLampProtConstPower, ParamLED_RGB_ChLampProtOverloadPercent, ParamLED_RGB_ChLampProtOverloadTimeMS, _lampProtOverloadTimer, ParamLED_RGB_ChLampProtCutOff, current, voltage, 3);
 }
 
 void RGBChannel::loop()

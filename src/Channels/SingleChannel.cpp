@@ -85,6 +85,8 @@ void SingleChannel::update()
     processSendValue(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, ParamLED_SC_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
 
     processDeviceProtection(KoLED_SC_ChDeviceProtConstCurrent, KoLED_SC_ChDeviceProtOverload, ParamLED_SC_ChDeviceProtActive, ParamLED_SC_ChDeviceProtConstCurrent, ParamLED_SC_ChDeviceProtOverloadPercent, ParamLED_SC_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_SC_ChDeviceProtCutOff, current);
+    
+    processLampProtection(KoLED_SC_ChLampProtConstCurrent, KoLED_SC_ChLampProtOverload, ParamLED_SC_ChLampProtActive, ParamLED_SC_ChLampProtCableLength, ParamLED_SC_ChLampProtCableCrossSect, ParamLED_SC_ChLampProtConstPower, ParamLED_SC_ChLampProtOverloadPercent, ParamLED_SC_ChLampProtOverloadTimeMS, _lampProtOverloadTimer, ParamLED_SC_ChLampProtCutOff, current, voltage);
 }
 
 void SingleChannel::loop()
