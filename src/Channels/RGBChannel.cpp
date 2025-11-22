@@ -175,6 +175,18 @@ void RGBChannel::update()
     _lastColorTemp = tmpColor;
     _lastHueValue = tmpHue;
     _lastSatValue = tmpSat;
+
+    float current0 = _pDimmer->getCurrent(_pHWChannels[0]);
+    float current1 = _pDimmer->getCurrent(_pHWChannels[1]);
+    float current2 = _pDimmer->getCurrent(_pHWChannels[2]);
+    float current = current0 + current1 + current2;
+    processSendValue(KoLED_SC_ChCurrent, DPT_Value_Electric_Current, ParamLED_SC_ChCurrentSend, ParamLED_SC_ChCurrentSendMinChangePercent, ParamLED_SC_ChCurrentSendMinChangeAbsolute, ParamLED_SC_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
+
+    float voltage0 = _pDimmer->getVoltage(_pHWChannels[0]);
+    float voltage1 = _pDimmer->getVoltage(_pHWChannels[1]);
+    float voltage2 = _pDimmer->getVoltage(_pHWChannels[2]);
+    float power = (voltage0 * current0 + voltage1 * current1 + voltage2 * current2) / 1000.0f;
+    processSendValue(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, ParamLED_SC_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
 }
 
 void RGBChannel::loop()
