@@ -56,3 +56,29 @@ void LightChannel::setLock(bool lock)
     _isLocked = lock;
     KoLED_SC_ChStateLocking.value(_isLocked, DPT_State);
 }
+
+void LightChannel::processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply)
+{
+    if (!send)
+        return;
+    
+    uint16_t currentDifference = round(abs(lastSentValue - currentValue * checkMultiply));
+    if (currentDifference > 0)
+    {
+        if (lastSentValue > 0 && currentDifference >= lastSentValue * sendMinChangePercent / checkMultiply &&
+            currentDifference >= sendMinChangeAbsolute)
+        {
+            ko.value(currentValue, dpt);
+            lastSentValue = currentValue * checkMultiply;
+        }
+        else
+            ko.valueNoSend(currentValue, dpt);
+    }
+
+    if (sendCyclicTimeMS > 0 && delayCheckMillis(cyclicSendTimer, sendCyclicTimeMS))
+    {
+        ko.value(currentValue, dpt);
+        lastSentValue = currentValue * checkMultiply;
+        cyclicSendTimer = delayTimerInit();
+    }
+}

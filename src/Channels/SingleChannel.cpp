@@ -76,6 +76,13 @@ void SingleChannel::update()
     }
 
     _lastBrightnessLevel = tmpBrightness;
+
+    float current = _pDimmer->getCurrent(_pHWChannels[0]);
+    processSendValue(KoLED_SC_ChCurrent, DPT_Value_Electric_Current, ParamLED_SC_ChCurrentSend, ParamLED_SC_ChCurrentSendMinChangePercent, ParamLED_SC_ChCurrentSendMinChangeAbsolute, ParamLED_SC_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
+
+    float voltage = _pDimmer->getVoltage(_pHWChannels[0]);
+    float power = (voltage * current) / 1000.0f;
+    processSendValue(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, ParamLED_SC_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
 }
 
 void SingleChannel::loop()

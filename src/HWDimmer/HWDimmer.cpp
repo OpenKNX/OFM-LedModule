@@ -156,6 +156,24 @@ float HWDimmer::getTemperatureAvg()
 #endif
 }
 
+float HWDimmer::getCurrent(uint8_t channel)
+{
+#ifdef LEDMODULE_CURRENT_ADDR
+    return _currentValues[channel];
+#else
+    return 0.0f;
+#endif
+}
+
+float HWDimmer::getVoltage(uint8_t channel)
+{
+#ifdef LEDMODULE_CURRENT_ADDR
+    return _voltageValues[channel];
+#else
+    return 0.0f;
+#endif
+}
+
 bool HWDimmer::powerSupplyAvailableOrRequest()
 {
     if (!ParamLED_PowerSupplyRelay)

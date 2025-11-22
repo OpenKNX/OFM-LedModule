@@ -146,6 +146,11 @@ class LightChannel : public OpenKNX::Channel
     uint32_t _lastDimTimestamp = 0;
     uint16_t _lastBrightnessLevel = 0;
 
+    float _lastSentCurrent = 0.0f;
+    float _lastSentPower = 0.0f;
+    uint32_t _currentCyclicSendTimer = 0;
+    uint32_t _powerCyclicSendTimer = 0;
+
     int32_t _lastOnValue = VALUE_KNX_COUNT-1;
     unsigned long _stairTime = 0;
     bool _stairTrigger = 0;
@@ -162,6 +167,7 @@ class LightChannel : public OpenKNX::Channel
 
     virtual void update() = 0;
     virtual void handleScene(uint8_t sceneNr) = 0;
+    void processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply = 1);
 
     uint32_t _debugTimer = 0;
 
