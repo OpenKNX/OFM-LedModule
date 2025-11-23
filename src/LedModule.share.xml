@@ -133,6 +133,13 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="255" />
               </ParameterType>
 
+              <ParameterType Id="%AID%_PT-MinimumChangePower" Name="MinimumChangePower">
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="0" maxInclusive="5000" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-MinimumChangeCurrent" Name="MinimumChangeCurrent">
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="0" maxInclusive="20000" />
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-CableLength" Name="CableLength">
                 <TypeFloat Encoding="IEEE-754 Single" minInclusive="0" maxInclusive="1000" />
               </ParameterType>
