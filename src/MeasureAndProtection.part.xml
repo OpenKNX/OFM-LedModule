@@ -7,7 +7,6 @@
                 <ApplicationProgram Id="%AID%">
                     <!-- this ist just for documentation reasons, as an example for the caller -->
                     <!-- <op:partParams name="MEASUREPROT" instances="2">
-                        <op:param name="%ParamOffset%" value="65" increment="24" />
                         <op:param name="%TT%" value="21" increment="0" digits="2" />
                         <op:param name="%PPP%" value="27" increment="26" digits="3" />
                         <op:param name="%KKK%" value="10" increment="6" digits="3" />
