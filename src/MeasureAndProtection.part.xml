@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
   <ManufacturerData>
@@ -19,30 +19,30 @@
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="%ParamOffset%" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+0%" Name="Ch%C%MeasureActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Messungen aktivieren" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+1%" Name="Ch%C%ProtecitonsActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Schutzfunktionen aktivieren" Value="1" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+2%" Name="Ch%C%PowerSend" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="2" Text="Bei Ã„nderung senden" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+7%" Name="Ch%C%CurrentSend" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="3" Text="Bei Ã„nderung senden" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+12%" Name="Ch%C%DeviceProtActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="4" Text="GerÃ¤teschutz aktivieren" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+2%" Name="Ch%C%PowerSend" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="2" Text="Bei Änderung senden" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+7%" Name="Ch%C%CurrentSend" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="3" Text="Bei Änderung senden" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+12%" Name="Ch%C%DeviceProtActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="4" Text="Geräteschutz aktivieren" Value="1" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+13%" Name="Ch%C%DeviceProtCutOff" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="5" Text="Schutzabschaltung aktivieren" Value="1" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+18%" Name="Ch%C%LampProtActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="6" Text="Leuchtmittelschutz aktivieren" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+19%" Name="Ch%C%LampProtCutOff" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="7" Text="Schutzabschaltung aktivieren" Value="1" />
                 <!-- 0 bits free -->
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+3%" Name="Ch%C%PowerSendMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="MindestÃ¤nderung relativ" Value="5" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+4%" Name="Ch%C%PowerSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangePower" Offset="2" BitOffset="0" Text="MindestÃ¤nderung absolut" Value="1" SuffixText="W" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+3%" Name="Ch%C%PowerSendMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+4%" Name="Ch%C%PowerSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangePower" Offset="2" BitOffset="0" Text="Mindeständerung absolut" Value="1" SuffixText="W" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+5%" Name="Ch%C%PowerSendCyclicBase" ParameterType="%AID%_PT-DelayBase" Offset="4" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+6%" Name="Ch%C%PowerSendCyclicTime" ParameterType="%AID%_PT-DelayTime" Offset="4" BitOffset="2" Text="Zeit" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+8%" Name="Ch%C%CurrentSendMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="5" BitOffset="0" Text="MindestÃ¤nderung relativ" Value="5" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+9%" Name="Ch%C%CurrentSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangeCurrent" Offset="6" BitOffset="0" Text="MindestÃ¤nderung absolut" Value="10" SuffixText="mA" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+8%" Name="Ch%C%CurrentSendMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="5" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+9%" Name="Ch%C%CurrentSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangeCurrent" Offset="6" BitOffset="0" Text="Mindeständerung absolut" Value="10" SuffixText="mA" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+10%" Name="Ch%C%CurrentSendCyclicBase" ParameterType="%AID%_PT-DelayBase" Offset="8" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+11%" Name="Ch%C%CurrentSendCyclicTime" ParameterType="%AID%_PT-DelayTime" Offset="8" BitOffset="2" Text="Zeit" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+14%" Name="Ch%C%DeviceProtConstCurrent" ParameterType="%AID%_PT-MaxCurrent" Offset="10" BitOffset="0" Text="Dauerlast" Value="4" SuffixText="A" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+15%" Name="Ch%C%DeviceProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="11" BitOffset="0" Text="Max. Ãœberlast" Value="10" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+15%" Name="Ch%C%DeviceProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="11" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+16%" Name="Ch%C%DeviceProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="12" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+17%" Name="Ch%C%DeviceProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="12" BitOffset="2" Text="Zeit" Value="30" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+20%" Name="Ch%C%LampProtCableLength" ParameterType="%AID%_PT-CableLength" Offset="14" BitOffset="0" Text="KabellÃ¤nge" Value="10" SuffixText="m" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+20%" Name="Ch%C%LampProtCableLength" ParameterType="%AID%_PT-CableLength" Offset="14" BitOffset="0" Text="Kabellänge" Value="10" SuffixText="m" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+22%" Name="Ch%C%LampProtConstPower" ParameterType="%AID%_PT-MinimumChangePower" Offset="18" BitOffset="0" Text="Dauerleistung" Value="20" SuffixText="W" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+24%" Name="Ch%C%LampProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="20" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+25%" Name="Ch%C%LampProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="20" BitOffset="2" Text="Zeit" Value="30" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+23%" Name="Ch%C%LampProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="22" BitOffset="0" Text="Max. Ãœberlast" Value="10" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+23%" Name="Ch%C%LampProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="22" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+21%" Name="Ch%C%LampProtCableCrossSect" ParameterType="%AID%_PT-CableCrossSection" Offset="23" BitOffset="0" Text="Leiterquerschnitt" Value="1" />
                 <!-- 6 bits free -->
               </Union>
@@ -76,20 +76,20 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%%PPP+25%_R-%TT%%CC%%PPP+25%01" RefId="%AID%_UP-%TT%%CC%%PPP+25%" />
             </ParameterRefs>
             <ComObjectTable>
-              <ComObject Id="%AID%_O-%TT%%CC%%KKK+0%" Name="Ch%C%Power"                  Text="Leistung"           Number="%K%KO+0%%" FunctionText="%NAME% %C% - Leistung"           ObjectSize="4 Bytes" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-14-56" />
-              <ComObject Id="%AID%_O-%TT%%CC%%KKK+1%" Name="Ch%C%Current"                Text="Strom"              Number="%K%KO+1%%" FunctionText="%NAME% %C% - Strom"              ObjectSize="4 Bytes" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-14-19" />
-              <ComObject Id="%AID%_O-%TT%%CC%%KKK+2%" Name="Ch%C%DeviceProtConstCurrent" Text="GerÃ¤teschutz"       Number="%K%KO+2%%" FunctionText="%NAME% %C% - GerÃ¤teschutz: Dauerlast Ã¼berschritten"   ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%%KKK+3%" Name="Ch%C%DeviceProtOverload"     Text="GerÃ¤teschutz"       Number="%K%KO+3%%" FunctionText="%NAME% %C% - GerÃ¤teschutz: Maximallast Ã¼berschritten" ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%%KKK+4%" Name="Ch%C%LampProtConstCurrent"   Text="Leuchtmittelschutz" Number="%K%KO+4%%" FunctionText="%NAME% %C% - Leuchtmittelschutz: Dauerlast Ã¼berschritten"   ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-              <ComObject Id="%AID%_O-%TT%%CC%%KKK+5%" Name="Ch%C%LampProtOverload"       Text="Leuchtmittelschutz" Number="%K%KO+5%%" FunctionText="%NAME% %C% - Leuchtmittelschutz: Maximallast Ã¼berschritten" ObjectSize="1 Bit"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
-            </ComObjectTable>       
+              <ComObject Id="%AID%_O-%TT%%CC%%KKK+0%" Name="Ch%C%Power" Text="Leistung" Number="%K%KO+0%%" FunctionText="LED-%NAME% %C%: Status" ObjectSize="4 Bytes" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-14-56" />
+              <ComObject Id="%AID%_O-%TT%%CC%%KKK+1%" Name="Ch%C%Current" Text="Strom" Number="%K%KO+1%%" FunctionText="LED-%NAME% %C%: Status" ObjectSize="4 Bytes" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-14-19" />
+              <ComObject Id="%AID%_O-%TT%%CC%%KKK+2%" Name="Ch%C%DeviceProtConstCurrent" Text="Geräteschutz, Dauerlast überschritten" Number="%K%KO+2%%" FunctionText="LED-%NAME% %C%: Alarm" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%%KKK+3%" Name="Ch%C%DeviceProtOverload" Text="Geräteschutz, Maximallast überschritten" Number="%K%KO+3%%" FunctionText="LED-%NAME% %C%: Alarm" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%%KKK+4%" Name="Ch%C%LampProtConstCurrent" Text="Leuchtmittelschutz, Dauerlast überschritten" Number="%K%KO+4%%" FunctionText="LED-%NAME% %C%: Alarm" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+              <ComObject Id="%AID%_O-%TT%%CC%%KKK+5%" Name="Ch%C%LampProtOverload" Text="Leuchtmittelschutz, Maximallast überschritten" Number="%K%KO+5%%" FunctionText="LED-%NAME% %C%: Alarm" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11" />
+            </ComObjectTable>
             <ComObjectRefs>
-              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+0%_R-%TT%%CC%%KKK+0%01" RefId="%AID%_O-%TT%%CC%%KKK+0%" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+1%_R-%TT%%CC%%KKK+1%01" RefId="%AID%_O-%TT%%CC%%KKK+1%" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+2%_R-%TT%%CC%%KKK+2%01" RefId="%AID%_O-%TT%%CC%%KKK+2%" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+3%_R-%TT%%CC%%KKK+3%01" RefId="%AID%_O-%TT%%CC%%KKK+3%" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+4%_R-%TT%%CC%%KKK+4%01" RefId="%AID%_O-%TT%%CC%%KKK+4%" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+5%_R-%TT%%CC%%KKK+5%01" RefId="%AID%_O-%TT%%CC%%KKK+5%" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+0%_R-%TT%%CC%%KKK+0%01" RefId="%AID%_O-%TT%%CC%%KKK+0%" Text="{{0:LED-%NAME% %C%}}: Leistung" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+1%_R-%TT%%CC%%KKK+1%01" RefId="%AID%_O-%TT%%CC%%KKK+1%" Text="{{0:LED-%NAME% %C%}}: Strom" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+2%_R-%TT%%CC%%KKK+2%01" RefId="%AID%_O-%TT%%CC%%KKK+2%" Text="{{0:LED-%NAME% %C%}}: Geräteschutz, Dauerlast überschritten" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+3%_R-%TT%%CC%%KKK+3%01" RefId="%AID%_O-%TT%%CC%%KKK+3%" Text="{{0:LED-%NAME% %C%}}: Geräteschutz, Maximallast überschritten" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+4%_R-%TT%%CC%%KKK+4%01" RefId="%AID%_O-%TT%%CC%%KKK+4%" Text="{{0:LED-%NAME% %C%}}: Leuchtmittelschutz, Dauerlast überschritten" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%%KKK+5%_R-%TT%%CC%%KKK+5%01" RefId="%AID%_O-%TT%%CC%%KKK+5%" Text="{{0:LED-%NAME% %C%}}: Leuchtmittelschutz, Maximallast überschritten" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
             </ComObjectRefs>
           </Static>
           <Dynamic>
@@ -156,7 +156,7 @@
                     <choose ParamRefId="%AID%_UP-%TT%%CC%%PPP+1%_R-%TT%%CC%%PPP+1%01">
                       <when test="1">
                         <ParameterBlock Id="%AID%_PB-nnn" Text="Schutzfunktionen" Icon="shield">
-                          <ParameterSeparator Id="%AID%_PS-nnn" Text="GerÃ¤teschutz" UIHint="Headline" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Geräteschutz" UIHint="Headline" />
                           <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%PPP+12%_R-%TT%%CC%%PPP+12%01" IndentLevel="1" />
                           <choose ParamRefId="%AID%_UP-%TT%%CC%%PPP+12%_R-%TT%%CC%%PPP+12%01">
                             <when test="1">
@@ -172,7 +172,7 @@
                                   <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                                   <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
                                 </Columns>
-                                <ParameterSeparator Id="%AID%_PS-nnn" Text="   Max. Ãœberlastdauer" Cell="1,2" />
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="   Max. Überlastdauer" Cell="1,2" />
                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%PPP+17%_R-%TT%%CC%%PPP+17%01" Cell="1,3" />
                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%PPP+16%_R-%TT%%CC%%PPP+16%01" Cell="1,4" />
                               </ParameterBlock>
@@ -200,7 +200,7 @@
                                   <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
                                   <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
                                 </Columns>
-                                <ParameterSeparator Id="%AID%_PS-nnn" Text="   Max. Ãœberlastdauer" Cell="1,2" />
+                                <ParameterSeparator Id="%AID%_PS-nnn" Text="   Max. Überlastdauer" Cell="1,2" />
                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%PPP+25%_R-%TT%%CC%%PPP+25%01" Cell="1,3" />
                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%PPP+24%_R-%TT%%CC%%PPP+24%01" Cell="1,4" />
                               </ParameterBlock>
