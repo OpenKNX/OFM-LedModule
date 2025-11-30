@@ -18,44 +18,17 @@ HWDimmerWS::HWDimmerWS(HWDimmerWS::WSType type, uint8_t pin, uint16_t numLeds) :
  *
  * @param level new value
  * @param channel selected channel
- * @return true when channel is available
- * @return false when channel is invalid
  */
-bool HWDimmerWS::setLevel(uint16_t level, uint8_t channel)
+void HWDimmerWS::setLevelInternal(uint16_t level, uint8_t channel)
 {
-    // logInfoP("setLevel_1");
-    bool isValidChannel = false;
-    if (setLevelInternal(level, channel))
+    _pixels.clear();
+    for (int i = 0; i < 100; i++)
     {
-        isValidChannel = true;
-        _pixels.clear();
-        for (int i = 0; i < 100; i++)
-        {
-            uint16_t tmpLevel = getLevel(channel);
-            _pixels.setPixelColor(i, _pixels.Color(tmpLevel, tmpLevel, tmpLevel));
-            _pixels.show();
-        }
-        // logInfoP("setLevel_3");
+        uint16_t tmpLevel = getLevel(channel);
+        _pixels.setPixelColor(i, _pixels.Color(tmpLevel, tmpLevel, tmpLevel));
+        _pixels.show();
     }
-    return isValidChannel;
 }
-// bool HWDimmerWS::setLevel(uint16_t r_level, uint16_t g_level, uint16_t b_level, uint8_t channel)
-// {
-//     // logInfoP("setLevel_1");
-//     bool isValidChannel = false;
-//     if (HWDimmer::setLevel(r_level, channel) && HWDimmer::setLevel(g_level, channel) && HWDimmer::setLevel(b_level, channel))
-//     {
-//         isValidChannel = true;
-//         _pixels.clear();
-//         for (int i = 0; i < _numLeds; i++)
-//         {
-//             _pixels.setPixelColor(i, _pixels.Color(r_level, g_level, b_level));
-//             _pixels.show();
-//         }
-//         // logInfoP("setLevel_3");
-//     }
-//     return isValidChannel;
-// }
 
 /**
  * @brief Scale uint16 value to range of this HWDimmer (uint16)

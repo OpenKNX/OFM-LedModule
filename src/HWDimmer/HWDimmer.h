@@ -29,7 +29,7 @@ class HWDimmer
 
     void loop();
 
-    virtual bool setLevel(uint16_t level, uint8_t channel) = 0;
+    bool setLevel(uint16_t level, uint8_t channel);
     uint16_t getLevel(uint8_t channel);
     float getTemperature(uint8_t channel);
     float getTemperatureAvg();
@@ -48,7 +48,8 @@ class HWDimmer
     bool powerSupplyAvailableOrRequest();
 
   protected:
-    bool setLevelInternal(uint16_t level, uint8_t channel);
+    bool updateLevelValue(uint16_t level, uint8_t channel);
+    virtual void setLevelInternal(uint16_t level, uint8_t channel) = 0;
 
     uint8_t numChannels;
     uint16_t *levels;

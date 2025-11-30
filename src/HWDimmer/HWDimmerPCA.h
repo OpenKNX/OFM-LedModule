@@ -21,13 +21,15 @@ class HWDimmerPCA : public HWDimmer
     HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFreq);
 
     std::string logPrefix();
-    bool setLevel(uint16_t level, uint8_t channel);
     uint16_t scale(uint16_t level, HWDimmer::DimLUTType lutType);
     uint16_t getScaleMax(HWDimmer::DimLUTType lutType);
     void outputLUT();
     void runTestMode();
     bool checkConnection();
     void reconnect();
+
+  protected:
+    void setLevelInternal(uint16_t level, uint8_t channel);
 
   private:
     Adafruit_PWMServoDriver _pwm;

@@ -29,21 +29,12 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFr
  *
  * @param level new value
  * @param channel selected channel
- * @return true when channel is available
- * @return false when channel is invalid
  */
-bool HWDimmerPCA::setLevel(uint16_t level, uint8_t channel)
+void HWDimmerPCA::setLevelInternal(uint16_t level, uint8_t channel)
 {
-    // logInfoP("setLevel_1");
-    bool isValidChannel = false;
-    if (setLevelInternal(level, channel))
-    {
-        // logInfoP("setLevel: %3X",level);
-        isValidChannel = true;
-        _pwm.setPWM(channel, 0, min(getLevel(channel), DIM_RANGE));
-        // logInfoP("setLevel_3");
-    }
-    return isValidChannel;
+    // logInfoP("setLevel: %3X",level);
+    _pwm.setPWM(channel, 0, min(getLevel(channel), DIM_RANGE));
+    // logInfoP("setLevel_3");
 }
 
 /**

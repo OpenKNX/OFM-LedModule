@@ -240,7 +240,7 @@ void HWDimmer::processFrontInput()
             if (_currentManualMode[i])
                 powerSupplyAvailableOrRequest();
 
-            setLevel(levels[i], i);
+            setLevelInternal(getLevel(i), i);
         }
     }
 #endif
@@ -261,14 +261,31 @@ void HWDimmer::processFrontOutput()
 }
 
 /**
- * @brief Set level of selected channel to value
+ * @brief Sets level of selected channel to value
  *
  * @param level new value
  * @param channel selected channel
  * @return true when channel is available
  * @return false when channel is invalid
  */
-bool HWDimmer::setLevelInternal(uint16_t level, uint8_t channel)
+bool HWDimmer::setLevel(uint16_t level, uint8_t channel)
+{
+    bool isValidChannel = false;
+    if (updateLevelValue(level, channel))
+        setLevelInternal(getLevel(channel), channel);
+    
+    return isValidChannel;
+}
+
+/**
+ * @brief Updates level value of selected channel to value
+ *
+ * @param level new value
+ * @param channel selected channel
+ * @return true when channel is available
+ * @return false when channel is invalid
+ */
+bool HWDimmer::updateLevelValue(uint16_t level, uint8_t channel)
 {
     bool isValidChannel = false;
     if (channel < numChannels)
