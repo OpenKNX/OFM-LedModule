@@ -111,7 +111,7 @@ class HWDimmer
     uint32_t _currentSenseDebugTimer = 0;
 #endif
 
-    uint16_t _powerSupplyVoltage = 0;
+    float _powerSupplyVoltage = 0;
     uint32_t _powerSupplyLastRequest = 0;
     uint32_t _powerShutdownTimer = 0;
     uint16_t _lastVoltageSent = 0;

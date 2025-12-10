@@ -56,7 +56,7 @@ void HWDimmer::checkPowerSupply()
 {
 #ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
     int voltageAnalog = analogRead(LEDMODULE_VOLTAGE_MEASURE_PIN);
-    _powerSupplyVoltage = (float)voltageAnalog / 4095 * (float)3.3 * (float)LEDMODULE_VOLTAGE_MEASURE_FACTOR * 1000; // mV
+    _powerSupplyVoltage = (float)voltageAnalog / 4095 * (float)3.3 * (float)LEDMODULE_VOLTAGE_MEASURE_FACTOR;
 
     if (ParamLED_PowerSupplyVoltageChangeSend)
     {
@@ -64,18 +64,18 @@ void HWDimmer::checkPowerSupply()
         if (voltageDifference > 0)
         {
             if (voltageDifference >= _lastVoltageSent * ParamLED_PowerSupplyVoltageMinChangePercent / 100.0f &&
-                voltageDifference >= ParamLED_PowerSupplyVoltageMinChangeAbsolute)
+                voltageDifference >= ParamLED_PowerSupplyVoltageMinChangeAbsolute / 1000.0f)
             {
-                KoLED_PowerSupplyVoltage.value(_powerSupplyVoltage, DPT_Value_Volt);
+                KoLED_PowerSupplyVoltage.value(_powerSupplyVoltage, DPT_Value_Electric_Potential);
                 _lastVoltageSent = _powerSupplyVoltage;
             }
             else
-                KoLED_PowerSupplyVoltage.valueNoSend(_powerSupplyVoltage, DPT_Value_Volt);
+                KoLED_PowerSupplyVoltage.valueNoSend(_powerSupplyVoltage, DPT_Value_Electric_Potential);
         }
 
         if (ParamLED_PowerSupplyVoltageCyclicTimeMS > 0 && delayCheck(_voltageSendTimer, ParamLED_PowerSupplyVoltageCyclicTimeMS))
         {
-            KoLED_PowerSupplyVoltage.objectWritten();
+            KoLED_PowerSupplyVoltage.value(_powerSupplyVoltage, DPT_Value_Electric_Potential);
             _lastVoltageSent = _powerSupplyVoltage;
             _voltageSendTimer = delayTimerInit();
         }
@@ -216,7 +216,7 @@ bool HWDimmer::powerSupplyAvailableOrRequest()
 
     _powerShutdownTimer = 0;
 
-    bool available = _powerSupplyVoltage >= ParamLED_PowerSupplyRelayMinVoltage * 1000;
+    bool available = _powerSupplyVoltage >= ParamLED_PowerSupplyRelayMinVoltage;
     return available && KoLED_PowerSupplyRelayStatus.value(DPT_Switch);
 }
 
