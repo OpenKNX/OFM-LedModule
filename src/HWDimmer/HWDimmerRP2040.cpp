@@ -72,7 +72,7 @@ HWDimmerRP2040::HWDimmerRP2040(uint8_t pins[], uint8_t numChannels, uint16_t pwm
  */
 void HWDimmerRP2040::setLevelInternal(uint16_t level, uint8_t channel)
 {
-    logDebugP("setLevelInternal: Set channel %d to level %d", channel, level);
+    //logDebugP("setLevelInternal: Set channel %d to level %d", channel, level);
 
     if (pwm_gpio_to_channel(this->pins[channel]) == PWM_CHAN_B)
         level = DIM_RANGE - level; // invert for channel B
