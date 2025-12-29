@@ -13,15 +13,15 @@ HWDimmer::HWDimmer(uint8_t numChannels)
 #ifdef LEDMODULE_CURRENT_ADDR
     for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
     {
-        _currentSense[i] = Adafruit_INA238();
+        _currentSense[i] = new INA238(currentInaAddr[i], &OPENKNX_GPIO_WIRE);
 
-        if (_currentSense[i].begin(currentInaAddr[i], &OPENKNX_GPIO_WIRE))
+        if (_currentSense[i]->begin())
         {
             logDebugP("KNX INA238 setup done with address %u", currentInaAddr[i]);
 
-            _currentSense[i].setShunt(LEDMODULE_INA_SHUNT, 3);
-            _currentSense[i].setAveragingCount(INA2XX_COUNT_16);
-            _currentSense[i].setMode(INA2XX_MODE_CONTINUOUS);
+            _currentSense[i]->setMaxCurrentShunt(3, LEDMODULE_INA_SHUNT);
+            _currentSense[i]->setAverage(INA238_16_SAMPLES);
+            _currentSense[i]->setMode(INA238_MODE_CONT_TEMP_BUS_SHUNT);
         }
         else
             logDebugP("KNX INA238 not found at address %u", currentInaAddr[i]);
@@ -36,6 +36,13 @@ HWDimmer::HWDimmer(uint8_t numChannels)
 HWDimmer::~HWDimmer()
 {
     delete[] levels;
+#ifdef LEDMODULE_CURRENT_ADDR
+    for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
+    {
+        if (_currentSense[i] != nullptr)
+            delete _currentSense[i];
+    }
+#endif
 }
 
 /**
@@ -118,17 +125,17 @@ void HWDimmer::processCurrentSense()
 #ifdef LEDMODULE_CURRENT_ADDR
     for (int i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
     {
-        _currentValues[i] = _currentSense[i].getCurrent_mA() / 1000.0f;
-        _voltageValues[i] = _currentSense[i].getBusVoltage_V();
-        _temperatureValues[i] = _currentSense[i].readDieTemp();
-
-        // if (delayCheck(_currentSenseDebugTimer, 1000))
-        //     logDebugP("Channel %d: %.2f mA, Voltage: %.2f V", i, _currentSenseValues[i], _currentVoltageValues[i]);
+        if (_currentSense[i] != nullptr)
+        {
+            _currentValues[i] = _currentSense[i]->getCurrent();
+            _voltageValues[i] = _currentSense[i]->getBusVoltage();
+            _temperatureValues[i] = _currentSense[i]->getTemperature();
+        }
     }
 
     if (delayCheck(_currentSenseDebugTimer, 1000))
     {
-        logDebugP("Channel %d: %.2f mA, Voltage: %.2f V, Temperature: %.2f °C", 0, _currentValues[0], _voltageValues[0], _temperatureValues[0]);
+        logDebugP("Channel %d: %.2f mA, Voltage: %.2f V, Temperature: %.2f °C", 0, _currentValues[0] / 1000.0f, _voltageValues[0], _temperatureValues[0]);
         _currentSenseDebugTimer = delayTimerInit();
     }
 #endif

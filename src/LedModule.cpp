@@ -203,7 +203,7 @@ void LedModule::loop(bool configured)
 
         float temperature = TEMPERATURE_INVALID;
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
-        temperature = _temperature.readTemperatureC();
+        temperature = _temperature.getTemperature();
 #elifdef LEDMODULE_CURRENT_ADDR
         temperature = _pDimmer->getTemperatureAvg();
 #endif
