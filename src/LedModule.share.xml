@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <op:config name="%LED_HardwareSelect%" value="0" />
 
   <ManufacturerData>
     <Manufacturer>
@@ -166,6 +167,11 @@
 
             <Parameters>
               <Parameter Id="%AID%_P-%TT%00021" Name="HardwareVariantCanMeasure"              ParameterType="%AID%_PT-OnOffYesNo" Text="" Value="0" Access="None"/>
+              <Parameter Id="%AID%_P-%TT%00039" Name="HardwareVariantHasPwmFrequency"         ParameterType="%AID%_PT-OnOffYesNo" Text="" Value="0" Access="None"/>
+              <Parameter Id="%AID%_P-%TT%00040" Name="HardwareVariantHasCcDimmerType"         ParameterType="%AID%_PT-OnOffYesNo" Text="" Value="0" Access="None"/>
+              <Parameter Id="%AID%_P-%TT%00041" Name="HardwareVariantHasFrontControl"         ParameterType="%AID%_PT-OnOffYesNo" Text="" Value="0" Access="None"/>
+              <Parameter Id="%AID%_P-%TT%00042" Name="HardwareVariantHasSupplyVoltage"        ParameterType="%AID%_PT-OnOffYesNo" Text="" Value="0" Access="None"/>
+              <Parameter Id="%AID%_P-%TT%00043" Name="HardwareVariantHasTemperature"          ParameterType="%AID%_PT-OnOffYesNo" Text="" Value="0" Access="None"/>
               <Parameter Id="%AID%_P-%TT%00038" Name="DisplayNumChannels"                     ParameterType="%AID%_PT-ValueDpt5" Text="" Value="%N%" Access="None"/>
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
@@ -273,6 +279,11 @@
               <ParameterRef Id="%AID%_UP-%TT%00036_R-%TT%0003601" RefId="%AID%_UP-%TT%00036" />
               <ParameterRef Id="%AID%_UP-%TT%00037_R-%TT%0003701" RefId="%AID%_UP-%TT%00037" />
               <ParameterRef Id="%AID%_P-%TT%00038_R-%TT%0003801" RefId="%AID%_P-%TT%00038" />
+              <ParameterRef Id="%AID%_P-%TT%00039_R-%TT%0003901" RefId="%AID%_P-%TT%00039" />
+              <ParameterRef Id="%AID%_P-%TT%00040_R-%TT%0004001" RefId="%AID%_P-%TT%00040" />
+              <ParameterRef Id="%AID%_P-%TT%00041_R-%TT%0004101" RefId="%AID%_P-%TT%00041" />
+              <ParameterRef Id="%AID%_P-%TT%00042_R-%TT%0004201" RefId="%AID%_P-%TT%00042" />
+              <ParameterRef Id="%AID%_P-%TT%00043_R-%TT%0004301" RefId="%AID%_P-%TT%00043" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -314,31 +325,64 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
 
                 <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
-                  <when test="!=%LED_HardwareAB%">
+                  <when test="!=%LED_HardwareSelect%">
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" HelpContext="%DOC%" /> <!-- AB-SmartHouse: Hardware Variant -->
                     <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
-                      <when test="5 6"> <!-- AB-SmartHouse: With Current Measure -->
+                      <when test="0"> <!-- AB-SmartHouse: Const. Voltage, UP, 6-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00039_R-%TT%0003901" Value="1" /> <!-- HardwareVariantHasPwmFrequency -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="5"> <!-- AB-SmartHouse: Const. Voltage, UP, 6-fach mit Strommessung -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" /> <!-- DisplayNumChannels -->
                         <Assign TargetParamRefRef="%AID%_P-%TT%00021_R-%TT%0002101" Value="1" /> <!-- HardwareVariantCanMeasure -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00039_R-%TT%0003901" Value="1" /> <!-- HardwareVariantHasPwmFrequency -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="1"> <!-- AB-SmartHouse: Const. Voltage, REG, 12-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00039_R-%TT%0003901" Value="1" /> <!-- HardwareVariantHasPwmFrequency -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00041_R-%TT%0004101" Value="1" /> <!-- HardwareVariantHasFrontControl -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="6"> <!-- AB-SmartHouse: Const. Voltage, REG, 12-fach mit Strommessung -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00021_R-%TT%0002101" Value="1" /> <!-- HardwareVariantCanMeasure -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00039_R-%TT%0003901" Value="1" /> <!-- HardwareVariantHasPwmFrequency -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00041_R-%TT%0004101" Value="1" /> <!-- HardwareVariantHasFrontControl -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="2"> <!-- AB-SmartHouse: Const. Current, UP, 8-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="8" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00040_R-%TT%0004001" Value="1" /> <!-- HardwareVariantHasCcDimmerType -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="3"> <!-- AB-SmartHouse: Const. Current, UP, 16-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00040_R-%TT%0004001" Value="1" /> <!-- HardwareVariantHasCcDimmerType -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="4"> <!-- AB-SmartHouse: Const. Current, REG, 12-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00040_R-%TT%0004001" Value="1" /> <!-- HardwareVariantHasCcDimmerType -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00041_R-%TT%0004101" Value="1" /> <!-- HardwareVariantHasFrontControl -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
                       </when>
                     </choose>
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                  </when>
+                  <when test="%LED_HardwareSelect%"> <!-- revert to default of 16 channels if no specific hardware is used -->
+                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" /> <!-- DisplayNumChannels -->
                   </when>
                 </choose>
 
-                <!-- <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalzuordnung" UIHint="Headline" />
-                <ParameterBlock Id="%AID%_PB-nnn" Name="Table1ChannelAssignment" Text="Kanal" Inline="true" Layout="Table" HelpContext="LED-Kanalzuordnung">
-                  <Rows>
-                    <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='HWChannels']/Rows/*" prefix="LED" type="template" IsInner="true" />
-                  </Rows>
-                  <Columns>
-                    <Column Id="%AID%_PB-12_C-1" Name="Col1" Text="Typ" Width="33%" />
-                    <Column Id="%AID%_PB-12_C-2" Name="Col2" Text="Dimmkanal (0=inaktiv)" Width="33%" />
-                    <Column Id="%AID%_PB-12_C-3" Name="Col3" Text="Funktion" Width="33%" />
-                  </Columns>
-                  <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTable']/*" prefix="LED" type="template" IsInner="true" />
-                </ParameterBlock>
- -->
                 <!-- Table header -->
                 <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid" HelpContext="LED-Kanalzuordnung">
                   <Rows>
@@ -356,42 +400,23 @@
                 </ParameterBlock>
                 <!-- Table content -->
                 <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTableLine']/*" prefix="LED" type="template" IsInner="true" />
-                
-                <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
-                  <when test="!=%LED_HardwareAB%">
-                    <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
-                      <when test="0 5"> <!-- AB-SmartHouse: 6 channels -->
-                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" />
-                      </when>
-                      <when test="2"> <!-- AB-SmartHouse: 8 channels -->
-                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="8" />
-                      </when>
-                      <when test="1 4 6"> <!-- AB-SmartHouse: 12 channels -->
-                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" />
-                      </when>
-                      <when default="true">
-                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" />
-                      </when>
-                    </choose>
+
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Weitere Einstellungen" UIHint="Headline"/>
+                <choose ParamRefId="%AID%_P-%TT%00039_R-%TT%0003901"> <!-- HardwareVariantHasPwmFrequency -->
+                  <when test="1">
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00007_R-%TT%0000701" IndentLevel="1" HelpContext="%DOC%" /> <!-- PWM Frequency -->
                   </when>
-                  <when test="%LED_HardwareAB%"> <!-- revert to default of 16 channels if no specific hardware is used -->
-                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" />
+                </choose>
+                <choose ParamRefId="%AID%_P-%TT%00040_R-%TT%0004001"> <!-- HardwareVariantHasCcDimmerType -->
+                  <when test="1">
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00006_R-%TT%0000601" IndentLevel="1" HelpContext="%DOC%" /> <!-- Dimmer CC Type -->
                   </when>
                 </choose>
 
-                <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
-                  <when test="!=%LED_HardwareAB%">
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Weitere Einstellungen" UIHint="Headline"/>
-                    <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
-                      <when test="0 1 5 6"> <!-- AB-SmartHouse: CV variant -->
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00007_R-%TT%0000701" IndentLevel="1" HelpContext="%DOC%" /> <!-- PWM Frequency -->
-                      </when>
-                      <when test="2 3 4"> <!-- AB-SmartHouse: CC variant -->
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00006_R-%TT%0000601" IndentLevel="1" HelpContext="%DOC%" /> <!-- Dimmer CC Type -->
-                      </when>
-                    </choose>
-
+                <choose ParamRefId="%AID%_P-%TT%00042_R-%TT%0004201"> <!-- HardwareVariantHasSupplyVoltage -->
+                  <when test="1">
                     <ParameterRefRef RefId="%AID%_UP-%TT%00002_R-%TT%0000201" IndentLevel="1" /> <!-- Power Supply Relay -->
                     <choose ParamRefId="%AID%_UP-%TT%00002_R-%TT%0000201">
                       <when test="1">
@@ -416,8 +441,12 @@
                         <ComObjectRefRef RefId="%AID%_O-%TT%00002_R-%TT%0000201" />
                       </when>
                     </choose>
+                  </when>
+                </choose>
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Ausgaben" UIHint="Headline"/>
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Ausgaben" UIHint="Headline"/>
+                <choose ParamRefId="%AID%_P-%TT%00042_R-%TT%0004201"> <!-- HardwareVariantHasSupplyVoltage -->
+                  <when test="1">
                     <ParameterRefRef RefId="%AID%_UP-%TT%00008_R-%TT%0000801" IndentLevel="1" />
                     <choose ParamRefId="%AID%_UP-%TT%00008_R-%TT%0000801">
                       <when test="1">
@@ -441,6 +470,11 @@
                         <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
                       </when>
                     </choose>
+                  </when>
+                </choose>
+
+                <choose ParamRefId="%AID%_P-%TT%00043_R-%TT%0004301"> <!-- HardwareVariantHasTemperature -->
+                  <when test="1">
                     <ParameterRefRef RefId="%AID%_UP-%TT%00014_R-%TT%0001401" IndentLevel="1" />
                     <choose ParamRefId="%AID%_UP-%TT%00014_R-%TT%0001401">
                       <when test="1">
@@ -464,95 +498,95 @@
                         <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
                       </when>
                     </choose>
+                  </when>
+                </choose>
 
-                    <choose ParamRefId="%AID%_P-%TT%00021_R-%TT%0002101"> <!-- HardwareVariantCanMeasure -->
+                <choose ParamRefId="%AID%_P-%TT%00021_R-%TT%0002101"> <!-- HardwareVariantCanMeasure -->
+                  <when test="1">
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00022_R-%TT%0002201" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_UP-%TT%00022_R-%TT%0002201">
                       <when test="1">
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00022_R-%TT%0002201" IndentLevel="1" />
-                        <choose ParamRefId="%AID%_UP-%TT%00022_R-%TT%0002201">
-                          <when test="1">
-                            <ParameterRefRef RefId="%AID%_UP-%TT%00023_R-%TT%0002301" IndentLevel="2" />
-                            <ParameterRefRef RefId="%AID%_UP-%TT%00024_R-%TT%0002401" IndentLevel="2" />
-                            <ParameterBlock Id="%AID%_PB-nnn" Name="TotalPowerSend" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
-                              <Rows>
-                                <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
-                              </Rows>
-                              <Columns>
-                                <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
-                                <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
-                                <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
-                                <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
-                              </Columns>
-                              <ParameterSeparator Id="%AID%_PS-nnn" Text="   Gesamtleistung zyklisch senden&#10;   (0 = nicht senden)" Cell="1,2" />
-                              <ParameterRefRef RefId="%AID%_UP-%TT%00026_R-%TT%0002601" Cell="1,3" />
-                              <ParameterRefRef RefId="%AID%_UP-%TT%00025_R-%TT%0002501" Cell="1,4" />
-                            </ParameterBlock>
-                            <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
-                          </when>
-                        </choose>
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00027_R-%TT%0002701" IndentLevel="1" />
-                        <choose ParamRefId="%AID%_UP-%TT%00027_R-%TT%0002701">
-                          <when test="1">
-                            <ParameterRefRef RefId="%AID%_UP-%TT%00028_R-%TT%0002801" IndentLevel="2" />
-                            <ParameterRefRef RefId="%AID%_UP-%TT%00029_R-%TT%0002901" IndentLevel="2" />
-                            <ParameterBlock Id="%AID%_PB-nnn" Name="TotalCurrentSend" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
-                              <Rows>
-                                <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
-                              </Rows>
-                              <Columns>
-                                <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
-                                <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
-                                <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
-                                <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
-                              </Columns>
-                              <ParameterSeparator Id="%AID%_PS-nnn" Text="   Gesamtstrom zyklisch senden&#10;   (0 = nicht senden)" Cell="1,2" />
-                              <ParameterRefRef RefId="%AID%_UP-%TT%00031_R-%TT%0003101" Cell="1,3" />
-                              <ParameterRefRef RefId="%AID%_UP-%TT%00030_R-%TT%0003001" Cell="1,4" />
-                            </ParameterBlock>
-                            <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000601" />
-                          </when>
-                        </choose>
-
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Netzteilschutz" UIHint="Headline" />
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00032_R-%TT%0003201" IndentLevel="1" />
-                        <choose ParamRefId="%AID%_UP-%TT%00032_R-%TT%0003201">
-                          <when test="1">
-                            <ParameterRefRef RefId="%AID%_UP-%TT%00034_R-%TT%0003401" IndentLevel="2" />
-                            <ParameterRefRef RefId="%AID%_UP-%TT%00035_R-%TT%0003501" IndentLevel="2" />
-                            <ParameterBlock Id="%AID%_PB-nnn" Name="PowerSupplyProtOverloadTime" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
-                              <Rows>
-                                <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
-                              </Rows>
-                              <Columns>
-                                <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
-                                <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
-                                <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
-                                <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
-                              </Columns>
-                              <ParameterSeparator Id="%AID%_PS-nnn" Text="   Max. Überlastdauer" Cell="1,2" />
-                              <ParameterRefRef RefId="%AID%_UP-%TT%00037_R-%TT%0003701" Cell="1,3" />
-                              <ParameterRefRef RefId="%AID%_UP-%TT%00036_R-%TT%0003601" Cell="1,4" />
-                            </ParameterBlock>
-                            <ParameterRefRef RefId="%AID%_UP-%TT%00033_R-%TT%0003301" IndentLevel="2" />
-                            <ComObjectRefRef RefId="%AID%_O-%TT%00007_R-%TT%0000701" />
-                            <ComObjectRefRef RefId="%AID%_O-%TT%00008_R-%TT%0000801" />
-                          </when>
-                        </choose>
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00023_R-%TT%0002301" IndentLevel="2" />
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00024_R-%TT%0002401" IndentLevel="2" />
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="TotalPowerSend" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
+                          <Rows>
+                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                          </Rows>
+                          <Columns>
+                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                            <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                            <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                          </Columns>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="   Gesamtleistung zyklisch senden&#10;   (0 = nicht senden)" Cell="1,2" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00026_R-%TT%0002601" Cell="1,3" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00025_R-%TT%0002501" Cell="1,4" />
+                        </ParameterBlock>
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00027_R-%TT%0002701" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_UP-%TT%00027_R-%TT%0002701">
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00028_R-%TT%0002801" IndentLevel="2" />
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00029_R-%TT%0002901" IndentLevel="2" />
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="TotalCurrentSend" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
+                          <Rows>
+                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                          </Rows>
+                          <Columns>
+                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                            <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                            <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                          </Columns>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="   Gesamtstrom zyklisch senden&#10;   (0 = nicht senden)" Cell="1,2" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00031_R-%TT%0003101" Cell="1,3" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00030_R-%TT%0003001" Cell="1,4" />
+                        </ParameterBlock>
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000601" />
                       </when>
                     </choose>
 
-                    <choose ParamRefId="%AID%_UP-2000001_R-200000101">
-                      <when test="1 4 6"> <!-- AB-SmartHouse REG: Front Control Available -->
-                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00012_R-%TT%0001201" IndentLevel="1" />
-                        <choose ParamRefId="%AID%_UP-%TT%00012_R-%TT%0001201">
-                          <when test="1">
-                            <ParameterRefRef RefId="%AID%_UP-%TT%00013_R-%TT%0001301" IndentLevel="2" />
-                          </when>
-                        </choose>
-
-                        <ParameterRefRef RefId="%AID%_UP-%TT%00011_R-%TT%0001101" IndentLevel="1" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Netzteilschutz" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00032_R-%TT%0003201" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_UP-%TT%00032_R-%TT%0003201">
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00034_R-%TT%0003401" IndentLevel="2" />
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00035_R-%TT%0003501" IndentLevel="2" />
+                        <ParameterBlock Id="%AID%_PB-nnn" Name="PowerSupplyProtOverloadTime" Inline="true" Layout="Grid"> <!-- cyclic pattern -->
+                          <Rows>
+                            <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                          </Rows>
+                          <Columns>
+                            <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="1%" />
+                            <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="44%" />
+                            <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="15%" />
+                            <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="20%" />
+                          </Columns>
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="   Max. Überlastdauer" Cell="1,2" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00037_R-%TT%0003701" Cell="1,3" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00036_R-%TT%0003601" Cell="1,4" />
+                        </ParameterBlock>
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00033_R-%TT%0003301" IndentLevel="2" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00007_R-%TT%0000701" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00008_R-%TT%0000801" />
                       </when>
                     </choose>
+                  </when>
+                </choose>
+
+                <choose ParamRefId="%AID%_P-%TT%00041_R-%TT%0004101"> <!-- HardwareVariantHasFrontControl -->
+                  <when test="1">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Frontbedienung" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00012_R-%TT%0001201" IndentLevel="1" />
+                    <choose ParamRefId="%AID%_UP-%TT%00012_R-%TT%0001201">
+                      <when test="1">
+                        <ParameterRefRef RefId="%AID%_UP-%TT%00013_R-%TT%0001301" IndentLevel="2" />
+                      </when>
+                    </choose>
+
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00011_R-%TT%0001101" IndentLevel="1" />
                   </when>
                 </choose>
 
