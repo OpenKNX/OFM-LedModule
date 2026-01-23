@@ -357,17 +357,24 @@
                 <!-- Table content -->
                 <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTableLine']/*" prefix="LED" type="template" IsInner="true" />
                 
-                <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
-                  <when test="0 5"> <!-- AB-SmartHouse: 6 channels -->
-                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" />
+                <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
+                  <when test="!=%LED_HardwareAB%">
+                    <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
+                      <when test="0 5"> <!-- AB-SmartHouse: 6 channels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" />
+                      </when>
+                      <when test="2"> <!-- AB-SmartHouse: 8 channels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="8" />
+                      </when>
+                      <when test="1 4 6"> <!-- AB-SmartHouse: 12 channels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" />
+                      </when>
+                      <when default="true">
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" />
+                      </when>
+                    </choose>
                   </when>
-                  <when test="2"> <!-- AB-SmartHouse: 8 channels -->
-                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="8" />
-                  </when>
-                  <when test="1 4 6"> <!-- AB-SmartHouse: 12 channels -->
-                    <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" />
-                  </when>
-                  <when default="true">
+                  <when test="%LED_HardwareAB%"> <!-- revert to default of 16 channels if no specific hardware is used -->
                     <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" />
                   </when>
                 </choose>

@@ -63,7 +63,7 @@
 
               <ParameterBlock Id="%AID%_PB-nnn" Name="AssignmentTableLine">
                 <choose ParamRefId="%AID%_P-%TT%00038_R-%TT%0003801">
-                  <when test=">=%C%"> <!-- AB-SmartHouse: 6 channels -->
+                  <when test=">=%C%"> <!-- only show available channels -->
                     <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid" HelpContext="LED-Kanalzuordnung">
                       <Rows>
                         <Row Id="%AID%_PB-nnn_R-1" />
