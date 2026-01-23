@@ -17,12 +17,6 @@ const std::string LedModule::version()
 
 void LedModule::setup(bool configured)
 {
-    if (!configured)
-    {
-        logInfoP("Setup: not configured");
-        return;
-    }
-
     logInfoP("Init:");
     logIndentUp();
 
@@ -45,6 +39,12 @@ void LedModule::setup(bool configured)
     #endif
 #endif
     logIndentDown();
+
+    if (!configured)
+    {
+        logInfoP("Setup: not configured");
+        return;
+    }
 
     logInfoP("Setup0:");
     logIndentUp();
@@ -335,6 +335,7 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
 
     if (cmd.length() == 13 && cmd.substr(4, 9) == "test mode")
     {
+        openknx.watchdog.deactivate();
         _pDimmer->runTestMode();
         return true;
     }
