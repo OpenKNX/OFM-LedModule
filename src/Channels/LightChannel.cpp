@@ -65,7 +65,7 @@ void LightChannel::processSendValue(GroupObject& ko, Dpt dpt, bool send, uint8_t
     uint16_t currentDifference = round(abs(lastSentValue - currentValue * checkMultiply));
     if (currentDifference > 0)
     {
-        if (lastSentValue > 0 && currentDifference >= lastSentValue * sendMinChangePercent / checkMultiply &&
+        if ((lastSentValue == 0 || currentDifference >= lastSentValue * sendMinChangePercent / checkMultiply) &&
             currentDifference >= sendMinChangeAbsolute)
         {
             ko.value(currentValue, dpt);
