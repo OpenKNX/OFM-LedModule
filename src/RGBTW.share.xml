@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <ManufacturerData>
+    <Manufacturer>
+      <ApplicationPrograms>
+        <ApplicationProgram>
+
+          <Static>
+            <ParameterTypes>
+
+              <ParameterType Id="%AID%_PT-RGBTWLights" Name="RGBTWLights">
+                <TypeNumber SizeInBit="8" Type="signedInt" minInclusive="0" maxInclusive="%N%" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-RGBTWAssignment" Name="RGBTW-Assignment">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="-" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Rot" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Grün" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Blau" Value="3" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-RGBTWValueType" Name="RGBTWValueType">
+                <TypeRestriction Base="Value" SizeInBit="3" UIHint="DropDown">
+                  <Enumeration Text="Helligkeit" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Farbe" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Farbton" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Sättigung" Value="3" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-RGBTWSequence" Name="RGBTWSequence">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Ablauf 1" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Ablauf 2" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Ablauf 3" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-RGBTWFunction" Name="RGBTWFunction">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Ein" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Aus" Value="1" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-LightColorRGBTW" Name="LightColorRGBTW">
+                <TypeColor Space="RGBTW" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ColorPicker" Name="ColorPicker">
+                <TypeRestriction Base="Value" SizeInBit="5">
+                  <Enumeration Text="Rot"             Value="1"  Id="%ENID%" />
+                  <Enumeration Text="Orange"          Value="2"  Id="%ENID%" />
+                  <Enumeration Text="Gelb"            Value="3"  Id="%ENID%" />
+                  <Enumeration Text="GelbGrün"        Value="4"  Id="%ENID%" />
+                  <Enumeration Text="Grün"            Value="5"  Id="%ENID%" />
+                  <Enumeration Text="Aquamarin"       Value="6"  Id="%ENID%" />
+                  <Enumeration Text="Türkis"          Value="7"  Id="%ENID%" />
+                  <Enumeration Text="Mint"            Value="8"  Id="%ENID%" />
+                  <Enumeration Text="Blau"            Value="9"  Id="%ENID%" />
+                  <Enumeration Text="Lila"            Value="10" Id="%ENID%" />
+                  <Enumeration Text="Rosa"            Value="11" Id="%ENID%" />
+                  <Enumeration Text="Violett"         Value="12" Id="%ENID%" />
+                  <Enumeration Text="Weiß"            Value="13" Id="%ENID%" />
+                  <Enumeration Text="Random Steady"   Value="14" Id="%ENID%" />
+                  <Enumeration Text="Random Changing" Value="15" Id="%ENID%" />
+                  <Enumeration Text="Custom"          Value="16" Id="%ENID%" />
+                  <Enumeration Text="Farbtemperatur"  Value="17" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+            </ParameterTypes>
+
+            <Parameters>
+            </Parameters>
+
+            <ParameterRefs>
+            </ParameterRefs>
+
+            <ComObjectTable>
+            </ComObjectTable>
+
+            <ComObjectRefs>
+            </ComObjectRefs>
+
+          </Static>
+
+          <Dynamic>
+            <ChannelIndependentBlock>
+              <ParameterBlock Text="RGBTW - Rot/Grün/Blau/WW/CW" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Dimmkanäle erscheinen automatisch, wenn sie konfiguriert sind." />
+                <op:include href="RGBTW.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_RGBTW" IsInner="true" />
+              </ParameterBlock>
+            </ChannelIndependentBlock>
+          </Dynamic>
+
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>
