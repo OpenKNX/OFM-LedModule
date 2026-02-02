@@ -18,9 +18,11 @@
     #include "HWDimmer/HWDimmerWS.h"
 #endif
 #include "Channels/LightChannel.h"
-#include "Channels/RGBChannel.h"
 #include "Channels/SingleChannel.h"
 #include "Channels/TWChannel.h"
+#include "Channels/RGBChannel.h"
+#include "Channels/RGBWChannel.h"
+#include "Channels/RGBTWChannel.h"
 #include "LedModuleConfig.h"
 
 #define PWM_FREQUENCY_FACTOR 200 // based on ETS drop down
@@ -47,9 +49,13 @@ class LedModule : public OpenKNX::Module
     uint8_t _SC_HWChannels[LED_SC_ChannelCount][1];
     uint8_t _TW_HWChannels[LED_TW_ChannelCount][2];
     uint8_t _RGB_HWChannels[LED_RGB_ChannelCount][3];
+    uint8_t _RGBW_HWChannels[LED_RGBW_ChannelCount][4];
+    uint8_t _RGBTW_HWChannels[LED_RGBTW_ChannelCount][5];
     SingleChannel *_singleChannels[LED_SC_ChannelCount];
     TWChannel *_twChannels[LED_TW_ChannelCount];
     RGBChannel *_rgbChannels[LED_RGB_ChannelCount];
+    RGBWChannel *_rgbwChannels[LED_RGBW_ChannelCount];
+    RGBTWChannel *_rgbtwChannels[LED_RGBTW_ChannelCount];
 
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
     PCT2075 _temperature = PCT2075(OPENKNX_LED_TEMPSENS_ADDR, &OPENKNX_GPIO_WIRE);
@@ -74,6 +80,10 @@ class LedModule : public OpenKNX::Module
     bool processCommand(const std::string cmd, bool diagnoseKo);
     void savePower() override;
     void showHelp() override;
+
+    const uint8_t (*getTWHWChannels())[2] { return _TW_HWChannels; }
+    const uint8_t (*getSCHWChannels())[1] { return _SC_HWChannels; }
+    const uint8_t (*getRGBHWChannels())[3] { return _RGB_HWChannels; }
 
     enum LightType
     {

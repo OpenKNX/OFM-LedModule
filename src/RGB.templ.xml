@@ -15,10 +15,10 @@
           </op:part>
 
           <op:part href="MeasureAndProtection.part.xml" name="MEASUREPROTRGB" instances="1">
-            <op:param name="%TT%" value="23" increment="0" digits="2" />
-            <op:param name="%PPP%" value="48" increment="26" digits="3" />
-            <op:param name="%KKK%" value="17" increment="6" digits="3" />
-            <op:param name="%KO%" value="17" increment="6" />
+            <op:param name="%TT%"   value="23" increment="0" digits="2" />
+            <op:param name="%PPP%"  value="48" increment="26" digits="3" />
+            <op:param name="%KKK%"  value="17" increment="6" digits="3" />
+            <op:param name="%KO%"   value="17" increment="6" />
             <op:param name="%NAME%" value="RGB" />
           </op:part>
 
