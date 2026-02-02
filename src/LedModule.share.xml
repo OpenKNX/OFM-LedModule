@@ -26,6 +26,24 @@
             <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
           </op:part>
 
+          <op:part href="ChannelActivation.part.xml" name="LED_RGBW" instances="%LED_RGBW_NumChannels%">
+            <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
+            <op:param name="%TT%" value="24" increment="0" digits="2" /> <!-- Module Type -->
+            <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
+          </op:part>
+
+          <op:part href="ChannelActivation.part.xml" name="LED_RGBTW" instances="%LED_RGBTW_NumChannels%">
+            <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
+            <op:param name="%TT%" value="25" increment="0" digits="2" /> <!-- Module Type -->
+            <op:param name="%id%" value="001" increment="0" digits="3" /> <!-- Ref ID Base-->
+          </op:part>
+
+          <op:part href="ChannelActivation.part.xml" name="LED_CO" instances="%LED_CO_NumChannels%">
+            <op:param name="%Cn%" value="1" increment="1" digits="2" /> <!-- Channel number -->
+            <op:param name="%TT%" value="26" increment="0" digits="2" /> <!-- Module Type -->
+            <op:param name="%id%" value="002" increment="0" digits="3" /> <!-- Ref ID Base-->
+          </op:part>
+
           <op:part href="SceneBuilder.part.xml" name="LED_SC_NR" instances="%LED_Scene_NumChannels%">
             <op:param name="%SZ%" value="0" increment="1" digits="1" /> <!-- Szene number -->
           </op:part>
@@ -57,8 +75,8 @@
                   <Enumeration Text="EK - Einzelkanal" Value="1" Id="%ENID%" />
                   <Enumeration Text="TW - Tunable White" Value="2" Id="%ENID%" />
                   <Enumeration Text="RGB - Rot/Grün/Blau" Value="3" Id="%ENID%" />
-                  <!-- <Enumeration Text="RGBW" Value="4" Id="%ENID%" />
-                  <Enumeration Text="RGBTW" Value="5" Id="%ENID%" /> -->
+                  <Enumeration Text="RGBW" Value="4" Id="%ENID%" />
+                  <Enumeration Text="RGBTW" Value="5" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
 
@@ -72,7 +90,7 @@
 
               <ParameterType Id="%AID%_PT-DimCurve" Name="DimCurve">
                 <TypeRestriction Base="Value" SizeInBit="3">
-                  <Enumeration Text="Linear" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Linear"           Value="0" Id="%ENID%" />
                   <Enumeration Text="Exponentiell 1.5" Value="1" Id="%ENID%" />
                   <Enumeration Text="Exponentiell 2.0" Value="2" Id="%ENID%" />
                   <!-- 1 bit reserve -->
@@ -327,7 +345,56 @@
                 <choose ParamRefId="%AID%_P-1000099_R-100009901"> <!-- Static 0 -->
                   <when test="!=%LED_HardwareSelect%">
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Hardware" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" HelpContext="%DOC%" /> <!-- HardwareVariant -->
+                    <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" IndentLevel="1" HelpContext="%DOC%" /> <!-- AB-SmartHouse: Hardware Variant -->
+                    <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
+                      <when test="0"> <!-- AB-SmartHouse: Const. Voltage, UP, 6-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00039_R-%TT%0003901" Value="1" /> <!-- HardwareVariantHasPwmFrequency -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="5"> <!-- AB-SmartHouse: Const. Voltage, UP, 6-fach mit Strommessung -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="6" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00021_R-%TT%0002101" Value="1" /> <!-- HardwareVariantCanMeasure -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00039_R-%TT%0003901" Value="1" /> <!-- HardwareVariantHasPwmFrequency -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="1"> <!-- AB-SmartHouse: Const. Voltage, REG, 12-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00039_R-%TT%0003901" Value="1" /> <!-- HardwareVariantHasPwmFrequency -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00041_R-%TT%0004101" Value="1" /> <!-- HardwareVariantHasFrontControl -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="6"> <!-- AB-SmartHouse: Const. Voltage, REG, 12-fach mit Strommessung -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00021_R-%TT%0002101" Value="1" /> <!-- HardwareVariantCanMeasure -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00039_R-%TT%0003901" Value="1" /> <!-- HardwareVariantHasPwmFrequency -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00041_R-%TT%0004101" Value="1" /> <!-- HardwareVariantHasFrontControl -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="2"> <!-- AB-SmartHouse: Const. Current, UP, 8-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="8" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00040_R-%TT%0004001" Value="1" /> <!-- HardwareVariantHasCcDimmerType -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="3"> <!-- AB-SmartHouse: Const. Current, UP, 16-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00040_R-%TT%0004001" Value="1" /> <!-- HardwareVariantHasCcDimmerType -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                      <when test="4"> <!-- AB-SmartHouse: Const. Current, REG, 12-fach -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="12" /> <!-- DisplayNumChannels -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00040_R-%TT%0004001" Value="1" /> <!-- HardwareVariantHasCcDimmerType -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00041_R-%TT%0004101" Value="1" /> <!-- HardwareVariantHasFrontControl -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00042_R-%TT%0004201" Value="1" /> <!-- HardwareVariantHasSupplyVoltage -->
+                        <Assign TargetParamRefRef="%AID%_P-%TT%00043_R-%TT%0004301" Value="1" /> <!-- HardwareVariantHasTemperature -->
+                      </when>
+                    </choose>
                   </when>
                   <when test="%LED_HardwareSelect%"> <!-- revert to default of 16 channels if no specific hardware is used -->
                     <Assign TargetParamRefRef="%AID%_P-%TT%00038_R-%TT%0003801" Value="16" /> <!-- DisplayNumChannels -->
@@ -341,13 +408,15 @@
                   </Rows>
                   <Columns>
                     <Column Id="%AID%_PB-nnn_C-1" Name="Col1" Width="4%" />
-                    <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="32%" />
-                    <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="32%" />
-                    <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="32%" />
+                    <Column Id="%AID%_PB-nnn_C-2" Name="Col2" Width="30%" />
+                    <Column Id="%AID%_PB-nnn_C-3" Name="Col3" Width="30%" />
+                    <Column Id="%AID%_PB-nnn_C-4" Name="Col4" Width="30%" />
+                    <column id="%AID%_PB-nnn_C-5" name="Col5" width="6%" />
                   </Columns>
                   <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,2" Text="Typ" UIHint="Headline" />
                   <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,3" Text="Dimmkanal (0=inaktiv)" UIHint="Headline" />
                   <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,4" Text="Funktion" UIHint="Headline" />
+                  <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,5" Text="Zentralobjekt" UIHint="Headline" />
                 </ParameterBlock>
                 <!-- Table content -->
                 <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTableLine']/*" prefix="LED" type="template" IsInner="true" />
@@ -547,6 +616,8 @@
               <op:include href="Single.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_SC" />
               <op:include href="TW.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_TW" />
               <op:include href="RGB.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_RGB" />
+              <op:include href="RGBW.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_RGBW" />
+              <op:include href="RGBTW.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_RGBtw" />
             </Channel>
 
           </Dynamic>
