@@ -14,7 +14,7 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-TWAssignment" Name="TW-Assignment">
-                <TypeRestriction Base="Value" SizeInBit="2">
+                <TypeRestriction Base="Value" SizeInBit="3">
                   <Enumeration Text="-" Value="0" Id="%ENID%" />
                   <Enumeration Text="Warmweiss" Value="1" Id="%ENID%" />
                   <Enumeration Text="Kaltweiss" Value="2" Id="%ENID%" />

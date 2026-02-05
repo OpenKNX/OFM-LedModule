@@ -14,9 +14,9 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-RGBWAssignment" Name="RGBW-Assignment">
-                <TypeRestriction Base="Value" SizeInBit="2">
-                  <Enumeration Text="-" Value="0" Id="%ENID%" />
-                  <Enumeration Text="Rot" Value="1" Id="%ENID%" />
+                <TypeRestriction Base="Value" SizeInBit="3">
+                  <Enumeration Text="-"    Value="0" Id="%ENID%" />
+                  <Enumeration Text="Rot"  Value="1" Id="%ENID%" />
                   <Enumeration Text="Grün" Value="2" Id="%ENID%" />
                   <Enumeration Text="Blau" Value="3" Id="%ENID%" />
                   <Enumeration Text="Weiß" Value="4" Id="%ENID%" />
