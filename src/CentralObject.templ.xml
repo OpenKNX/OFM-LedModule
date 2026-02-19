@@ -6,6 +6,84 @@
       <ApplicationPrograms>
         <ApplicationProgram>
 
+          
+
+          
+
+          <Static>
+            <Parameters>
+<!-- VORICHT HINKEFUSS !!! in LedModule.temp.xml Target Parameter muss noch geändert werden -->
+              <Parameter Id="%AID%_P-%TT%%CC%001" Name="Ch%C%CentralObjectActive"              ParameterType="%AID%_PT-OnOffYesNo" Text="Zentralobjekt Aktiv" Value="0" />
+              <Parameter Id="%AID%_P-%TT%%CC%002" Name="Ch%C%CentralObjectText"                ParameterType="%AID%_PT-Text40Byte" Text="Zentralobjekt Bezeichnung" Value="" />
+
+
+            </Parameters>
+
+            <ParameterRefs>
+              <ParameterRef Id="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_P-%TT%%CC%001" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_P-%TT%%CC%002" />
+
+            </ParameterRefs>
+
+            <ComObjectTable>
+              <ComObject Id="%AID%_O-%TT%%CC%000" Name="Ch%C%Switch"                 Text="Schalten"               Number="%K0%"  FunctionText="LED-CO %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%001" Name="Ch%C%SwitchNoDim"            Text="Schalten sofort"        Number="%K1%"  FunctionText="LED-CO %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%002" Name="Ch%C%Locking"                Text="Sperren"                Number="%K2%"  FunctionText="LED-CO %C%: Sperre"   ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11"    />
+              <ComObject Id="%AID%_O-%TT%%CC%003" Name="Ch%C%Brightness"             Text="Dimmwert absolut"       Number="%K3%"  FunctionText="LED-CO %C%: Dimmen"   ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%004" Name="Ch%C%BrightnessRel"          Text="Dimmwert relativ"       Number="%K4%"  FunctionText="LED-CO %C%: Dimmen"   ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
+              <ComObject Id="%AID%_O-%TT%%CC%005" Name="Ch%C%ColorTemperature"       Text="Farbtemperatur absolut" Number="%K5%"  FunctionText="LED-CO %C%: Dimmen"   ObjectSize="2 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
+              <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%ColorTemperatureRel"    Text="Farbtemperatur relativ" Number="%K6%"  FunctionText="LED-CO %C%: Dimmen"   ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
+              <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%RGB"                    Text="RGB"                    Number="%K7%"  FunctionText="LED-CO %C%: Dimmen"   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%HSV"                    Text="HSV"                    Number="%K8%"  FunctionText="LED-CO %C%: Dimmen"   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%Night"                  Text="Nacht"                  Number="%K9%"  FunctionText="LED-CO %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%Scene"                  Text="Szene"                  Number="%K10%" FunctionText="LED-CO %C%: Szene"    ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1"    />
+            </ComObjectTable>
+
+            <ComObjectRefs>
+              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" Text="{{0:LED-CO %C%}}: Schalten"               TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_O-%TT%%CC%001" Text="{{0:LED-CO %C%}}: Schalten sofort"        TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_O-%TT%%CC%002" Text="{{0:LED-CO %C%}}: Sperren"                TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_O-%TT%%CC%003" Text="{{0:LED-CO %C%}}: Dimmwert absolut"       TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_O-%TT%%CC%004" Text="{{0:LED-CO %C%}}: Dimmwert relativ"       TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_O-%TT%%CC%005" Text="{{0:LED-CO %C%}}: Farbtemperatur absolut" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" Text="{{0:LED-CO %C%}}: Farbtemperatur relativ" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" Text="{{0:LED-CO %C%}}: RGB"                    TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" Text="{{0:LED-CO %C%}}: HSV"                    TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" Text="{{0:LED-CO %C%}}: Nacht"                  TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" Text="{{0:LED-CO %C%}}: Szene"                  TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+            </ComObjectRefs>
+
+          </Static>
+
+          <Dynamic>
+            <ChannelIndependentBlock>
+              
+              <ParameterSeparator Id="%AID%_PS-nnn" Text="blabla" UIHint="HorizontalRuler" />
+              
+              <choose ParamRefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101">
+                <when test="42">
+                  <ParameterBlock Id="%AID%_PB-nnn" Name="COLight_%CC%" Text="CO %C%: {{0:--}}" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201">
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" /> <!-- On/Off -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" /> <!-- On/Off NoDim-->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" /> <!-- Lock -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" /> <!-- Dimmwert absolut -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" /> <!-- Dimmwert relativ -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" /> <!-- Farbtemperatur absolut -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" /> <!-- Farbtemperatur Rel -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" /> <!-- RGB -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" /> <!-- HSV -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" /> <!-- Nacht -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" /> <!-- Scene -->
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="CO1" UIHint="HorizontalRuler" />
+                  </ParameterBlock>
+                </when>
+              </choose>
+
+
+
+            </ChannelIndependentBlock>
+          </Dynamic>
+
         </ApplicationProgram>
       </ApplicationPrograms>
     </Manufacturer>

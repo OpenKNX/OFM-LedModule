@@ -1,7 +1,7 @@
-#include "RGBChannel.h"
+#include "RGBTWChannel.h"
 #include <knx.h>
 
-RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
+RGBTWChannel::RGBTWChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
     : LightChannel(index, pDimmer, hwChannels, 3), _hue(0, 0, H_PART - 1), _saturation(0, 0, VAL_RANGE)
 {
     logInfoP("Trying to read Config from KNX...");
@@ -26,12 +26,12 @@ RGBChannel::RGBChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[3])
 #endif
 }
 
-const std::string RGBChannel::name()
+const std::string RGBTWChannel::name()
 {
     return "RGBChannel";
 }
 
-void RGBChannel::update()
+void RGBTWChannel::update()
 {
     uint16_t tmpBrightness = _brightness.value();
     uint16_t tmpHue = _hue.value();
@@ -189,7 +189,7 @@ void RGBChannel::update()
     processLampProtection(KoLED_RGB_ChLampProtConstCurrent, KoLED_RGB_ChLampProtOverload, ParamLED_RGB_ChLampProtActive, ParamLED_RGB_ChLampProtCableLength, ParamLED_RGB_ChLampProtCableCrossSect, ParamLED_RGB_ChLampProtConstPower, ParamLED_RGB_ChLampProtOverloadPercent, ParamLED_RGB_ChLampProtOverloadTimeMS, _lampProtOverloadTimer, ParamLED_RGB_ChLampProtCutOff, current, voltage, 3);
 }
 
-void RGBChannel::loop()
+void RGBTWChannel::loop()
 {
     if (!_channelActive)
         return;
@@ -236,7 +236,7 @@ void RGBChannel::loop()
     }
 }
 
-void RGBChannel::processInputKo(GroupObject& ko)
+void RGBTWChannel::processInputKo(GroupObject& ko)
 {
     Colors::HSV hsv;
     Colors::RGB rgb;
@@ -352,7 +352,7 @@ void RGBChannel::processInputKo(GroupObject& ko)
     }
 }
 
-void RGBChannel::handleScene(uint8_t sceneNr)
+void RGBTWChannel::handleScene(uint8_t sceneNr)
 {
     logDebugP("Scene: %d", sceneNr);
     for (int i = 0; i < N_SCENES; i++)
@@ -399,37 +399,37 @@ void RGBChannel::handleScene(uint8_t sceneNr)
     }
 }
 
-uint16_t RGBChannel::dimmingTimeON()
+uint16_t RGBTWChannel::dimmingTimeON()
 {
     return getNight() ? ParamLED_RGB_ChLightDimmNightOnTime : ParamLED_RGB_ChLightDimmDayOnTime;
 }
 
-uint16_t RGBChannel::dimmingTimeOFF()
+uint16_t RGBTWChannel::dimmingTimeOFF()
 {
     return getNight() ? ParamLED_RGB_ChLightDimmNightOffTime : ParamLED_RGB_ChLightDimmDayOffTime;
 }
 
-uint16_t RGBChannel::dimmingTime(bool switchOn)
+uint16_t RGBTWChannel::dimmingTime(bool switchOn)
 {
     return switchOn ? dimmingTimeON() : dimmingTimeOFF();
 }
 
-uint16_t RGBChannel::dimmingValStartup()
+uint16_t RGBTWChannel::dimmingValStartup()
 {
     return ParamLED_RGB_ChStartupBehavior ? getLastOnValue() : dimmingValMax();
 }
 
-uint16_t RGBChannel::dimmingValMin()
+uint16_t RGBTWChannel::dimmingValMin()
 {
     return ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY;
 }
 
-uint16_t RGBChannel::dimmingValMax()
+uint16_t RGBTWChannel::dimmingValMax()
 {
     return getNight() ? (ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY) : (ParamLED_RGB_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY);
 }
 
-uint16_t RGBChannel::checkMinMaxBrightness(uint16_t bright)
+uint16_t RGBTWChannel::checkMinMaxBrightness(uint16_t bright)
 {
     if (bright < (ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY))
         bright = (ParamLED_RGB_ChBrightnessMin * VALUE_KNX_MULTIPLY);
@@ -438,12 +438,12 @@ uint16_t RGBChannel::checkMinMaxBrightness(uint16_t bright)
     return bright;
 }
 
-uint16_t RGBChannel::dimmingValTarget(bool switchOn)
+uint16_t RGBTWChannel::dimmingValTarget(bool switchOn)
 {
     return switchOn ? dimmingValStartup() : 0;
 }
 
-void RGBChannel::setStartupColor()
+void RGBTWChannel::setStartupColor()
 {
     if (ParamLED_RGB_ChStartupBehavior)
     {
@@ -454,12 +454,12 @@ void RGBChannel::setStartupColor()
         RGBpicker(getDefaultColor());
 }
 
-uint8_t RGBChannel::getDefaultColor()
+uint8_t RGBTWChannel::getDefaultColor()
 {
     return getNight() ? ParamLED_RGB_ChColorNight : ParamLED_RGB_ChColorDay;
 }
 
-uint16_t RGBChannel::checkMinMaxColorTemp(uint16_t colorTemp)
+uint16_t RGBTWChannel::checkMinMaxColorTemp(uint16_t colorTemp)
 {
     // Werte evtl auf Globalen Parameter setzen
     if (colorTemp > 8000)
@@ -469,7 +469,7 @@ uint16_t RGBChannel::checkMinMaxColorTemp(uint16_t colorTemp)
     return colorTemp;
 }
 
-void RGBChannel::setSwitch(bool switchOn)
+void RGBTWChannel::setSwitch(bool switchOn)
 {
     _sceneNumberActive = 0;
     if (switchOn)
@@ -509,7 +509,7 @@ void RGBChannel::setSwitch(bool switchOn)
     logDebugP("parammaxday: %5X", (ParamLED_RGB_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY));
 }
 
-void RGBChannel::setSwitchNoDim(bool switchOn)
+void RGBTWChannel::setSwitchNoDim(bool switchOn)
 {
     _sceneNumberActive = 0;
     if (switchOn)
@@ -528,7 +528,7 @@ void RGBChannel::setSwitchNoDim(bool switchOn)
     }
 }
 
-void RGBChannel::setHue(uint16_t hue)
+void RGBTWChannel::setHue(uint16_t hue)
 {
     _sceneNumberActive = 0;
     logDebugP("setHue: %3X", hue);
@@ -536,7 +536,7 @@ void RGBChannel::setHue(uint16_t hue)
     _hue.setTargetValue(hue, dimmingTimeON());
 }
 
-void RGBChannel::setSaturation(uint16_t saturation)
+void RGBTWChannel::setSaturation(uint16_t saturation)
 {
     _sceneNumberActive = 0;
     logDebugP("setSaturation: %3X", saturation);
@@ -544,7 +544,7 @@ void RGBChannel::setSaturation(uint16_t saturation)
     _saturation.setTargetValue(saturation, dimmingTimeON());
 }
 
-void RGBChannel::setBrightness(uint16_t bright)
+void RGBTWChannel::setBrightness(uint16_t bright)
 {
     _sceneNumberActive = 0;
     logDebugP("setBrightness: %3X", bright);
@@ -552,7 +552,7 @@ void RGBChannel::setBrightness(uint16_t bright)
     _brightness.setTargetValue(bright, dimmingTimeON());
 }
 
-void RGBChannel::setNight(bool night)
+void RGBTWChannel::setNight(bool night)
 {
 
     if (ParamLED_RGB_ChScenesDisableNightSw || (!ParamLED_RGB_ChScenesDisableNightSw && _sceneNumberActive == 0))
@@ -577,25 +577,25 @@ void RGBChannel::setNight(bool night)
     }
 }
 
-void RGBChannel::relDimUp()
+void RGBTWChannel::relDimUp()
 {
     _sceneNumberActive = 0;
     _brightness.setTargetValue(dimmingValMax(), ParamLED_RGB_ChLightDimmRelTime);
 }
 
-void RGBChannel::relDimDown()
+void RGBTWChannel::relDimDown()
 {
     _sceneNumberActive = 0;
     _brightness.setTargetValue(dimmingValMin(), ParamLED_RGB_ChLightDimmRelTime);
 }
 
-void RGBChannel::relDimStop()
+void RGBTWChannel::relDimStop()
 {
     _sceneNumberActive = 0;
     _brightness.setTargetValue(_brightness.value(), 1);
 }
 
-void RGBChannel::setColorTemperature(uint16_t colorTemp)
+void RGBTWChannel::setColorTemperature(uint16_t colorTemp)
 {
     _sceneNumberActive = 0;
     colorTemp = checkMinMaxColorTemp(colorTemp);
@@ -609,7 +609,7 @@ void RGBChannel::setColorTemperature(uint16_t colorTemp)
     KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
 }
 
-void RGBChannel::relDimUpColor()
+void RGBTWChannel::relDimUpColor()
 {
     //_boost = false;
     _sceneNumberActive = 0;
@@ -617,7 +617,7 @@ void RGBChannel::relDimUpColor()
     setColorTemperature(10000);
 }
 
-void RGBChannel::relDimDownColor()
+void RGBTWChannel::relDimDownColor()
 {
     //_boost = false;
     _sceneNumberActive = 0;
@@ -625,7 +625,7 @@ void RGBChannel::relDimDownColor()
     setColorTemperature(1000);
 }
 
-void RGBChannel::relDimStopColor()
+void RGBTWChannel::relDimStopColor()
 {
     //_boost = false;
     _sceneNumberActive = 0;
@@ -633,7 +633,7 @@ void RGBChannel::relDimStopColor()
     // setColorTemperature(_colorTemperature.value(), 1);
 }
 
-void RGBChannel::setRGB(uint32_t RGBvalue)
+void RGBTWChannel::setRGB(uint32_t RGBvalue)
 {
     _sceneNumberActive = 0;
     Colors::HSV hsv;
@@ -660,7 +660,7 @@ void RGBChannel::setRGB(uint32_t RGBvalue)
     logDebugP("BRE:%05X%", _brightness.value());
 }
 
-void RGBChannel::RGBpicker(uint8_t selection)
+void RGBTWChannel::RGBpicker(uint8_t selection)
 {
     logDebugP("color selection:%3X%", selection);
     logDebugP("Color DAY: %3X", ParamLED_RGB_ChColorDay);
@@ -788,7 +788,7 @@ void RGBChannel::RGBpicker(uint8_t selection)
     }
 }
 
-void RGBChannel::setHSV(uint32_t HSVvalue)
+void RGBTWChannel::setHSV(uint32_t HSVvalue)
 {
     _sceneNumberActive = 0;
     Colors::HSV hsv;
@@ -808,7 +808,7 @@ void RGBChannel::setHSV(uint32_t HSVvalue)
     //_brightness.setTargetValue(hsv.Val(), ParamLED_RGB_ChLightDimmDayOnTime);
 }
 
-uint32_t RGBChannel::conv_Temp2RGB(int temp)
+uint32_t RGBTWChannel::conv_Temp2RGB(int temp)
 {
     uint8_t r, g, b = 0;
     if (temp > 10000)
@@ -844,7 +844,7 @@ uint32_t RGBChannel::conv_Temp2RGB(int temp)
     return (uint32_t)r << 16 | g << 8 | b;
 }
 
-int RGBChannel::conv_RGB2Temp(uint32_t target_rgb)
+int RGBTWChannel::conv_RGB2Temp(uint32_t target_rgb)
 {
     uint8_t r_target = (target_rgb >> 16) & 0xFF;
     uint8_t g_target = (target_rgb >> 8) & 0xFF;

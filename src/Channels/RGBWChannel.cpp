@@ -119,7 +119,7 @@ void RGBWChannel::update()
             else
                 KoLED_RGBW_ChRGBStatus.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
 
-            _statusSendRgbWTimer = delayTimerInit();
+            _statusSendRgbTimer = delayTimerInit();
         }
     }
 
@@ -315,9 +315,9 @@ void RGBWChannel::processInputKo(GroupObject& ko)
                 }
                 break;
 
-            case LED_RGBW_KoChRGBW:
+            case LED_RGBW_KoChRGB:
                 if (!getLock())
-                    setRGBW(ko.value(DPT_Colour_RGB));
+                    setRGB(ko.value(DPT_Colour_RGB));
                 break;
 
             case LED_RGBW_KoChHSV:
@@ -335,7 +335,7 @@ void RGBWChannel::processInputKo(GroupObject& ko)
             case LED_RGBW_KoChStateLocking:
             case LED_RGBW_KoChBrightnessStatus:
             case LED_RGBW_KoChColorTemperatureStatus:
-            case LED_RGBW_KoChRGBWStatus:
+            case LED_RGBW_KoChRGBStatus:
             case LED_RGBW_KoChHSVStatus:
                 // read-only
                 break;

@@ -6,10 +6,10 @@
 #include "OpenKNX.h"
 #include <Arduino.h>
 
-class RGBChannel : public LightChannel
+class COChannel : public LightChannel
 {
   public:
-    RGBChannel(uint8_t channel_number, HWDimmer* pDimmer, uint8_t hwChannels[3]);
+    COChannel(uint8_t channel_number, HWDimmer* pDimmer, uint8_t hwChannels[3]);
     void processInputKo(GroupObject& ko);
     void update();
     void loop();

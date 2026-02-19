@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-model href="../../../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+
   <ManufacturerData>
-    <Manufacturer>
+    <Manufacturer RefId="M-00FA">
       <ApplicationPrograms>
         <ApplicationProgram>
 
           <Static>
             <ParameterTypes>
+              
 
+              
 
             </ParameterTypes>
 
             <Parameters>
+              <!--<Parameter Id="%AID%_P-%TT%%CC%000" Name="ch%C%CO1_active"               ParameterType="%AID%_PT-ValueDpt1"  Text="CO1 Aktiv" Value="0" />
+              <Parameter Id="%AID%_P-%TT%%CC%001" Name="ch%C%CO2_active"               ParameterType="%AID%_PT-ValueDpt1"  Text="CO2 Aktiv" Value="0" />
+              <Parameter Id="%AID%_P-%TT%%CC%002" Name="ch%C%CO3_active"               ParameterType="%AID%_PT-ValueDpt1"  Text="CO3 Aktiv" Value="0" />-->
             </Parameters>
 
             <ParameterRefs>
+              <!-- <ParameterRef Id="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_P-%TT%%CC%000" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_P-%TT%%CC%001" />
+              <ParameterRef Id="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_P-%TT%%CC%002" />-->
             </ParameterRefs>
 
             <ComObjectTable>
@@ -23,18 +32,16 @@
 
             <ComObjectRefs>
             </ComObjectRefs>
-
           </Static>
 
           <Dynamic>
             <ChannelIndependentBlock>
-              <ParameterBlock Text="CO - CentralObject" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
-               
-                
+              <ParameterBlock Text="CO - ZentralObjekt" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="lightbulb-outline">
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Dimmkanäle erscheinen automatisch, wenn sie konfiguriert sind." />
+                <op:include href="CentralObject.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_CO" IsInner="true" />
               </ParameterBlock>
             </ChannelIndependentBlock>
           </Dynamic>
-
         </ApplicationProgram>
       </ApplicationPrograms>
     </Manufacturer>
