@@ -293,6 +293,24 @@ void LedModule::processInputKo(GroupObject &ko) {
     channelnumber = (asap - LED_RGB_KoBlockOffset) / LED_RGB_KoBlockSize;
     logDebugP("RGB %d", channelnumber);
     _rgbChannels[channelnumber]->processInputKo(ko);
+  } else if (asap >= LED_RGBW_KoBlockOffset &&
+             asap < (LED_RGBW_KoBlockOffset +
+                     LED_RGBW_ChannelCount * LED_RGBW_KoBlockSize)) {
+    channelnumber = (asap - LED_RGBW_KoBlockOffset) / LED_RGBW_KoBlockSize;
+    logDebugP("RGBW %d", channelnumber);
+    _rgbwChannels[channelnumber]->processInputKo(ko);
+  } else if (asap >= LED_RGBTW_KoBlockOffset &&
+             asap < (LED_RGBTW_KoBlockOffset +
+                     LED_RGBTW_ChannelCount * LED_RGBTW_KoBlockSize)) {
+    channelnumber = (asap - LED_RGBTW_KoBlockOffset) / LED_RGBTW_KoBlockSize;
+    logDebugP("RGBTW %d", channelnumber);
+    _rgbtwChannels[channelnumber]->processInputKo(ko);
+  } else if (asap >= LED_CO_KoBlockOffset &&
+             asap < (LED_CO_KoBlockOffset +
+                     LED_CO_ChannelCount * LED_CO_KoBlockSize)) {
+    channelnumber = (asap - LED_CO_KoBlockOffset) / LED_CO_KoBlockSize;
+    logDebugP("CO %d", channelnumber);
+    _coChannels[channelnumber]->processInputKo(ko);
   }
 }
 
