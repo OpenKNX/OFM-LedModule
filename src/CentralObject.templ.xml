@@ -74,7 +74,7 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" /> <!-- HSV -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" /> <!-- Nacht -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" /> <!-- Scene -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="CO1" UIHint="HorizontalRuler" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="CO%n" UIHint="HorizontalRuler" />
                   </ParameterBlock>
                 </when>
               </choose>

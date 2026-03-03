@@ -188,12 +188,11 @@ void RGBChannel::update()
     float voltage = (voltage0 + voltage1 + voltage2) / 3.0f; // as voltage should be the same anyway for all channels, we just take the average here
     processLampProtection(KoLED_RGB_ChLampProtConstCurrent, KoLED_RGB_ChLampProtOverload, ParamLED_RGB_ChLampProtActive, ParamLED_RGB_ChLampProtCableLength, ParamLED_RGB_ChLampProtCableCrossSect, ParamLED_RGB_ChLampProtConstPower, ParamLED_RGB_ChLampProtOverloadPercent, ParamLED_RGB_ChLampProtOverloadTimeMS, _lampProtOverloadTimer, ParamLED_RGB_ChLampProtCutOff, current, voltage, 3);
 }
-
+ 
 void RGBChannel::loop()
 {
     if (!_channelActive)
         return;
-
     LightChannel::loop();
 
     bool needsPowerUp =

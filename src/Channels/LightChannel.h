@@ -33,6 +33,7 @@ class LightChannel : public OpenKNX::Channel
     virtual void setNight(bool night) = 0;
     bool getLock();
     void setLock(bool lock);
+    bool isActive() { return _channelActive; };
 
     static void processSendValue(GroupObject &ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply = 1);
 

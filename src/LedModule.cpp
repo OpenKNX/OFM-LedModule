@@ -63,8 +63,9 @@ void LedModule::setupChannels() {
   memset(_SC_HWChannels, 0xFF, LED_SC_ChannelCount);
   memset(_TW_HWChannels, 0xFF, LED_TW_ChannelCount * 2);
   memset(_RGB_HWChannels, 0xFF, LED_RGB_ChannelCount * 3);
-  //memset(_RGBW_HWChannels, 0xFF, LED_RGBW_ChannelCount * 4);
-  //memset(_RGBTW_HWChannels, 0xFF, LED_RGBTW_ChannelCount * 5);
+  memset(_RGBW_HWChannels, 0xFF, LED_RGBW_ChannelCount * 4);
+  memset(_RGBTW_HWChannels, 0xFF, LED_RGBTW_ChannelCount * 5);
+  
 
   for (uint8_t _channelIndex = 0; _channelIndex < LED_ChannelCount;
        _channelIndex++) {
@@ -90,7 +91,7 @@ void LedModule::setupChannels() {
       break;
 
     // TODO: Add other light type implementations here
-    /*case LightType::RGBW:
+    case LightType::RGBW:
       if (ParamLED_CH_RGBW_Function == 1)
         _RGBW_HWChannels[ParamLED_CH_RGBW_Light - 1][0] = _channelIndex;
       else if (ParamLED_CH_RGBW_Function == 2)
@@ -110,8 +111,12 @@ void LedModule::setupChannels() {
       else if (ParamLED_CH_RGBTW_Function == 4)
         _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][3] = _channelIndex;
       else if (ParamLED_CH_RGBTW_Function == 5)
-        _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][4] = _channelIndex;*/
+        _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][4] = _channelIndex;
       break;
+    case LightType::CentralObject:
+      //_CO_HWChannels[ParamLED_CH_CO_Light - 1][0] = _channelIndex;
+      break;
+
     default:
       break;
     }
@@ -123,10 +128,12 @@ void LedModule::setupChannels() {
       _twChannels[ch] = new TWChannel(ch, _pDimmer, _TW_HWChannels[ch]);
     if (ch < LED_RGB_ChannelCount)
       _rgbChannels[ch] = new RGBChannel(ch, _pDimmer, _RGB_HWChannels[ch]);
-    /*if (ch < LED_RGBW_ChannelCount)
+    if (ch < LED_RGBW_ChannelCount)
       _rgbwChannels[ch] = new RGBWChannel(ch, _pDimmer, _RGBW_HWChannels[ch]);
     if (ch < LED_RGBTW_ChannelCount)
-      _rgbtwChannels[ch] = new RGBTWChannel(ch, _pDimmer, _RGBTW_HWChannels[ch]);*/
+      _rgbtwChannels[ch] = new RGBTWChannel(ch, _pDimmer, _RGBTW_HWChannels[ch]);
+    if( ch < LED_CO_ChannelCount)
+      _coChannels[ch] = new COChannel(ch, _pDimmer, _CO_HWChannels[ch]);
   }
 
   logDebugP("Channel setup finished.");
@@ -217,11 +224,11 @@ void LedModule::loop(bool configured) {
     for (size_t i = 0; i < LED_RGB_ChannelCount; i++)
       _rgbChannels[i]->loop();
 
-    /*for (size_t i = 0; i < LED_RGBW_ChannelCount; i++)
+    for (size_t i = 0; i < LED_RGBW_ChannelCount; i++)
       _rgbwChannels[i]->loop();
 
     for (size_t i = 0; i < LED_RGBTW_ChannelCount; i++)
-      _rgbtwChannels[i]->loop();*/
+      _rgbtwChannels[i]->loop();
 
     _pDimmer->loop();
 
@@ -359,6 +366,12 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo) {
     for (int i = 0; i < LED_RGB_ChannelCount; i++)
       logInfoP("RGB %d: Red: %d, Green: %d, Blue: %d", i, _RGB_HWChannels[i][0],
                _RGB_HWChannels[i][1], _RGB_HWChannels[i][2]);
+    for (int i = 0; i < LED_RGBW_ChannelCount; i++)
+      logInfoP("RGBW %d: Red: %d, Green: %d, Blue: %d, White: %d", i, _RGBW_HWChannels[i][0],
+               _RGBW_HWChannels[i][1], _RGBW_HWChannels[i][2], _RGBW_HWChannels[i][3]);
+    for (int i = 0; i < LED_RGBTW_ChannelCount; i++)      
+      logInfoP("RGBTW %d: Red: %d, Green: %d, Blue: %d, WarmWhite: %d, CoolWhite: %d", i, 
+              _RGBTW_HWChannels[i][0], _RGBTW_HWChannels[i][1], _RGBTW_HWChannels[i][2], _RGBTW_HWChannels[i][3], _RGBTW_HWChannels[i][4]);
     logIndentDown();
     logInfoP("-----------------------------------------------------------------"
              "---------------");

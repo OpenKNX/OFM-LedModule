@@ -17,11 +17,12 @@ void COChannel::loop() {
 }
 
 void COChannel::processInputKo(GroupObject &ko) {
+  logDebugP("processInputKo Channel CO %d", ((ko.asap()- LED_CO_KoBlockOffset)/ LED_CO_KoBlockSize)   );
   Colors::HSV hsv;
   Colors::RGB rgb;
   int16_t relKO = (ko.asap() - LED_CO_KoOffset);
 
-  logDebugP("processInputKo Channel");
+  
   logHexDebugP(ko.valueRef(), ko.valueSize());
 
   // check if channel is valid
@@ -126,6 +127,7 @@ void COChannel::processInputKo(GroupObject &ko) {
 }
 
 void COChannel::handleScene(uint8_t sceneNr) {
+  /*
   logDebugP("Scene: %d", sceneNr);
   for (int i = 0; i < N_SCENES; i++) {
     if (sceneNr == _scenes[i].sceneNr - 1) {
@@ -172,27 +174,36 @@ void COChannel::handleScene(uint8_t sceneNr) {
       }
     }
   }
+  */
 }
 
 void COChannel::setSwitch(bool switchOn) {
 
   for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-    if (ch < LED_SC_ChannelCount) {
-      openknxLedModule._singleChannels[ch]->setSwitch(switchOn);
+    if (ch < LED_SC_ChannelCount ) {
+      //openknxLedModule._singleChannels[ch]->setSwitch(switchOn);
+      logDebugP("CO setSwitch SC: %d > %d :: %d : %d : %d", ch, openknxLedModule._singleChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
     }
-    if (ch < LED_TW_ChannelCount) {
-      openknxLedModule._twChannels[ch]->setSwitch(switchOn);
+    if (ch < LED_TW_ChannelCount ) {
+      //openknxLedModule._twChannels[ch]->setSwitch(switchOn);
+      logDebugP("CO setSwitch TW: %d > %d :: %d : %d : %d", ch, openknxLedModule._twChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
     }
-    if (ch < LED_RGB_ChannelCount) {
-      openknxLedModule._rgbChannels[ch]->setSwitch(switchOn);
+    if (ch < LED_RGB_ChannelCount ) {
+      //openknxLedModule._rgbChannels[ch]->setSwitch(switchOn);
+      logDebugP("CO setSwitch RGB: %d > %d :: %d : %d : %d", ch, openknxLedModule._rgbChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
     }
-    if (ch < LED_RGBW_ChannelCount) {
-      openknxLedModule._rgbwChannels[ch]->setSwitch(switchOn);
+    if (ch < LED_RGBW_ChannelCount ) {
+      //openknxLedModule._rgbwChannels[ch]->setSwitch(switchOn);
+      logDebugP("CO setSwitch RGBW: %d > %d :: %d : %d : %d", ch, openknxLedModule._rgbwChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
     }
-    if (ch < LED_RGBTW_ChannelCount) {
-      openknxLedModule._rgbtwChannels[ch]->setSwitch(switchOn);
+    if (ch < LED_RGBTW_ChannelCount && openknxLedModule._rgbtwChannels[ch]->isActive()) {
+      //openknxLedModule._rgbtwChannels[ch]->setSwitch(switchOn);
+      logDebugP("CO setSwitch RGBTW: %d > %d", ch, openknxLedModule._rgbtwChannels[ch]->isActive());
     }
   }
+
+ParamLED_CH_CO1
+
 }
 
 void COChannel::setSwitchNoDim(bool switchOn) {
