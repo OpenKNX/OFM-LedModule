@@ -182,19 +182,19 @@ void COChannel::setSwitch(bool switchOn) {
   for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
     if (ch < LED_SC_ChannelCount ) {
       //openknxLedModule._singleChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch SC: %d > %d :: %d : %d : %d", ch, openknxLedModule._singleChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
+      logDebugP("CO setSwitch SC: %d > %d _____ %d : %d : %d", ch, openknxLedModule._singleChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
     }
     if (ch < LED_TW_ChannelCount ) {
       //openknxLedModule._twChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch TW: %d > %d :: %d : %d : %d", ch, openknxLedModule._twChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
+      logDebugP("CO setSwitch TW: %d > %d _____ %d : %d : %d", ch, openknxLedModule._twChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
     }
     if (ch < LED_RGB_ChannelCount ) {
       //openknxLedModule._rgbChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch RGB: %d > %d :: %d : %d : %d", ch, openknxLedModule._rgbChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
+      logDebugP("CO setSwitch RGB: %d > %d _____ %d : %d : %d", ch, openknxLedModule._rgbChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
     }
     if (ch < LED_RGBW_ChannelCount ) {
       //openknxLedModule._rgbwChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch RGBW: %d > %d :: %d : %d : %d", ch, openknxLedModule._rgbwChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
+      logDebugP("CO setSwitch RGBW: %d > %d _____ %d : %d : %d", ch, openknxLedModule._rgbwChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
     }
     if (ch < LED_RGBTW_ChannelCount && openknxLedModule._rgbtwChannels[ch]->isActive()) {
       //openknxLedModule._rgbtwChannels[ch]->setSwitch(switchOn);
@@ -202,7 +202,7 @@ void COChannel::setSwitch(bool switchOn) {
     }
   }
 
-ParamLED_CH_CO1
+
 
 }
 
