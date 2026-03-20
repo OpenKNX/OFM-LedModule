@@ -17,7 +17,8 @@ void COChannel::loop() {
 }
 
 void COChannel::processInputKo(GroupObject &ko) {
-  logDebugP("processInputKo Channel CO %d", ((ko.asap()- LED_CO_KoBlockOffset)/ LED_CO_KoBlockSize)   );
+  CO_Number = (ko.asap() - LED_CO_KoOffset) / LED_CO_KoBlockSize;
+  logDebugP("processInputKo Channel CO %d", CO_Number);
   Colors::HSV hsv;
   Colors::RGB rgb;
   int16_t relKO = (ko.asap() - LED_CO_KoOffset);
@@ -180,25 +181,20 @@ void COChannel::handleScene(uint8_t sceneNr) {
 void COChannel::setSwitch(bool switchOn) {
 
   for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-    if (ch < LED_SC_ChannelCount ) {
-      //openknxLedModule._singleChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch SC: %d > %d _____ %d : %d : %d", ch, openknxLedModule._singleChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
+    if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
+      openknxLedModule._singleChannels[ch]->setSwitch(switchOn);
     }
-    if (ch < LED_TW_ChannelCount ) {
-      //openknxLedModule._twChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch TW: %d > %d _____ %d : %d : %d", ch, openknxLedModule._twChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
+    if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
+      openknxLedModule._twChannels[ch]->setSwitch(switchOn);
     }
-    if (ch < LED_RGB_ChannelCount ) {
-      //openknxLedModule._rgbChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch RGB: %d > %d _____ %d : %d : %d", ch, openknxLedModule._rgbChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
+    if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
+      openknxLedModule._rgbChannels[ch]->setSwitch(switchOn);
     }
-    if (ch < LED_RGBW_ChannelCount ) {
-      //openknxLedModule._rgbwChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch RGBW: %d > %d _____ %d : %d : %d", ch, openknxLedModule._rgbwChannels[ch]->isActive(), ParamLED_CH_CO1, ParamLED_CH_CO2, ParamLED_CH_CO3);
+    if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
+      openknxLedModule._rgbwChannels[ch]->setSwitch(switchOn);
     }
-    if (ch < LED_RGBTW_ChannelCount && openknxLedModule._rgbtwChannels[ch]->isActive()) {
-      //openknxLedModule._rgbtwChannels[ch]->setSwitch(switchOn);
-      logDebugP("CO setSwitch RGBTW: %d > %d", ch, openknxLedModule._rgbtwChannels[ch]->isActive());
+    if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
+      openknxLedModule._rgbtwChannels[ch]->setSwitch(switchOn);
     }
   }
 
@@ -208,19 +204,19 @@ void COChannel::setSwitch(bool switchOn) {
 
 void COChannel::setSwitchNoDim(bool switchOn) {
   for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-    if (ch < LED_SC_ChannelCount) {
+    if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
       openknxLedModule._singleChannels[ch]->setSwitchNoDim(switchOn);
     }
-    if (ch < LED_TW_ChannelCount) {
+    if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
       openknxLedModule._twChannels[ch]->setSwitch(switchOn);
     }
-    if (ch < LED_RGB_ChannelCount) {
+    if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
       openknxLedModule._rgbChannels[ch]->setSwitchNoDim(switchOn);
     }
-    if (ch < LED_RGBW_ChannelCount) {
+    if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
       openknxLedModule._rgbwChannels[ch]->setSwitchNoDim(switchOn);
     }
-    if (ch < LED_RGBTW_ChannelCount) {
+    if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
       openknxLedModule._rgbtwChannels[ch]->setSwitchNoDim(switchOn);
     }
   }
@@ -228,19 +224,19 @@ void COChannel::setSwitchNoDim(bool switchOn) {
 
   void COChannel::setHue(uint16_t hue) {
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-      if (ch < LED_SC_ChannelCount) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
         //openknxLedModule._singleChannels[ch]->setHue(hue);
       }
-      if (ch < LED_TW_ChannelCount) {
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
         //openknxLedModule._twChannels[ch]->setHue(hue);
       }
-      if (ch < LED_RGB_ChannelCount) {
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
         openknxLedModule._rgbChannels[ch]->setHue(hue);
       }
-      if (ch < LED_RGBW_ChannelCount) {
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
         openknxLedModule._rgbwChannels[ch]->setHue(hue);
       }
-      if (ch < LED_RGBTW_ChannelCount) {
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
         openknxLedModule._rgbtwChannels[ch]->setHue(hue);
       }
     }
@@ -248,19 +244,19 @@ void COChannel::setSwitchNoDim(bool switchOn) {
 
   void COChannel::setSaturation(uint16_t saturation) {
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-      if (ch < LED_SC_ChannelCount) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
         //openknxLedModule._singleChannels[ch]->setSaturation(saturation);
       }
-      if (ch < LED_TW_ChannelCount) {
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
         //openknxLedModule._twChannels[ch]->setSaturation(saturation);
       }
-      if (ch < LED_RGB_ChannelCount) {
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
         openknxLedModule._rgbChannels[ch]->setSaturation(saturation);
       }
-      if (ch < LED_RGBW_ChannelCount) {
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
         openknxLedModule._rgbwChannels[ch]->setSaturation(saturation);
       }
-      if (ch < LED_RGBTW_ChannelCount) {
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
         openknxLedModule._rgbtwChannels[ch]->setSaturation(saturation);
       }
     }
@@ -268,19 +264,19 @@ void COChannel::setSwitchNoDim(bool switchOn) {
 
   void COChannel::setBrightness(uint16_t bright) {
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-      if (ch < LED_SC_ChannelCount) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
         openknxLedModule._singleChannels[ch]->setBrightness(bright);
       }
-      if (ch < LED_TW_ChannelCount) {
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
         openknxLedModule._twChannels[ch]->setBrightness(bright);
       }
-      if (ch < LED_RGB_ChannelCount) {
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
         openknxLedModule._rgbChannels[ch]->setBrightness(bright);
       }
-      if (ch < LED_RGBW_ChannelCount) {
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
         openknxLedModule._rgbwChannels[ch]->setBrightness(bright);
       }
-      if (ch < LED_RGBTW_ChannelCount) {
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
         openknxLedModule._rgbtwChannels[ch]->setBrightness(bright);
       }
     }
@@ -288,97 +284,179 @@ void COChannel::setSwitchNoDim(bool switchOn) {
 
   void COChannel::setNight(bool night) {
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-      if (ch < LED_SC_ChannelCount) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
         openknxLedModule._singleChannels[ch]->setNight(night);
       }
-      if (ch < LED_TW_ChannelCount) {
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
         openknxLedModule._twChannels[ch]->setNight(night);
       }
-      if (ch < LED_RGB_ChannelCount) {
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
         openknxLedModule._rgbChannels[ch]->setNight(night);
       }
-      if (ch < LED_RGBW_ChannelCount) {
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
         openknxLedModule._rgbwChannels[ch]->setNight(night);
       }
-      if (ch < LED_RGBTW_ChannelCount) {
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
         openknxLedModule._rgbtwChannels[ch]->setNight(night);
       }
     }
   }
 
   void COChannel::relDimUp() {
-    /*_sceneNumberActive = 0;
-    _brightness.setTargetValue(dimmingValMax(),
-    ParamLED_RGB_ChLightDimmRelTime);*/
+    for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
+        openknxLedModule._singleChannels[ch]->relDimUp();
+      }
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
+        openknxLedModule._twChannels[ch]->relDimUp();
+      }
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
+        openknxLedModule._rgbChannels[ch]->relDimUp();
+      }
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
+        openknxLedModule._rgbwChannels[ch]->relDimUp();
+      }
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
+        openknxLedModule._rgbtwChannels[ch]->relDimUp();
+      }
+    }
   }
 
   void COChannel::relDimDown() {
-    /*_sceneNumberActive = 0;
-    _brightness.setTargetValue(dimmingValMin(),
-    ParamLED_RGB_ChLightDimmRelTime);*/
+    for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
+        openknxLedModule._singleChannels[ch]->relDimDown();
+      }
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
+        openknxLedModule._twChannels[ch]->relDimDown();
+      }
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
+        openknxLedModule._rgbChannels[ch]->relDimDown();
+      }
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
+        openknxLedModule._rgbwChannels[ch]->relDimDown();
+      }
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
+        openknxLedModule._rgbtwChannels[ch]->relDimDown();
+      }
+    }
   }
 
   void COChannel::relDimStop() {
-    /*_sceneNumberActive = 0;
-    _brightness.setTargetValue(_brightness.value(), 1);*/
+    for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
+        openknxLedModule._singleChannels[ch]->relDimStop();
+      }
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
+        openknxLedModule._twChannels[ch]->relDimStop();
+      }
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
+        openknxLedModule._rgbChannels[ch]->relDimStop();
+      }
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
+        openknxLedModule._rgbwChannels[ch]->relDimStop();
+      }
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
+        openknxLedModule._rgbtwChannels[ch]->relDimStop();
+      }
+    }
   }
 
   void COChannel::setColorTemperature(uint16_t colorTemp) {
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-      if (ch < LED_SC_ChannelCount) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
         //openknxLedModule._singleChannels[ch]->setColorTemperature(colorTemp);
       }
-      if (ch < LED_TW_ChannelCount) {
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
         openknxLedModule._twChannels[ch]->setColorTemperature(colorTemp);
       }
-      if (ch < LED_RGB_ChannelCount) {
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
         openknxLedModule._rgbChannels[ch]->setColorTemperature(colorTemp);
       }
-      if (ch < LED_RGBW_ChannelCount) {
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
         openknxLedModule._rgbwChannels[ch]->setColorTemperature(colorTemp);
       }
-      if (ch < LED_RGBTW_ChannelCount) {
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
         openknxLedModule._rgbtwChannels[ch]->setColorTemperature(colorTemp);
       }
     }
   }
 
   void COChannel::relDimUpColor() {
-    /*//_boost = false;
-    _sceneNumberActive = 0;
-    logDebugP("relDim_UP");
-    setColorTemperature(10000);*/
+    for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
+        //openknxLedModule._singleChannels[ch]->relDimUpColor();
+      }
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
+        openknxLedModule._twChannels[ch]->relDimUpColor();
+      }
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
+        openknxLedModule._rgbChannels[ch]->relDimUpColor();
+      }
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
+        openknxLedModule._rgbwChannels[ch]->relDimUpColor();
+      }
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
+        openknxLedModule._rgbtwChannels[ch]->relDimUpColor();
+      }
+    }
   }
 
   void COChannel::relDimDownColor() {
-    /*//_boost = false;
-    _sceneNumberActive = 0;
-    logDebugP("relDim_DOWN");
-    setColorTemperature(1000);  */
+    for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
+        //openknxLedModule._singleChannels[ch]->relDimDownColor();
+      }
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
+        openknxLedModule._twChannels[ch]->relDimDownColor();
+      }
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
+        openknxLedModule._rgbChannels[ch]->relDimDownColor();
+      }
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
+        openknxLedModule._rgbwChannels[ch]->relDimDownColor();
+      }
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
+        openknxLedModule._rgbtwChannels[ch]->relDimDownColor();
+      }
+    }
   }
 
   void COChannel::relDimStopColor() {
-    /*//_boost = false;
-    _sceneNumberActive = 0;
-    logDebugP("relDim_STOP");
-    // setColorTemperature(_colorTemperature.value(), 1);*/
+    for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
+        //openknxLedModule._singleChannels[ch]->relDimStopColor();
+      }
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
+        openknxLedModule._twChannels[ch]->relDimStopColor();
+      }
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
+        openknxLedModule._rgbChannels[ch]->relDimStopColor();
+      }
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
+        openknxLedModule._rgbwChannels[ch]->relDimStopColor();
+      }
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
+        openknxLedModule._rgbtwChannels[ch]->relDimStopColor();
+      }
+    }
   }
 
   void COChannel::setRGB(uint32_t RGBvalue) {
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-      if (ch < LED_SC_ChannelCount) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
         //openknxLedModule._singleChannels[ch]->setRGB(RGBvalue);
       }
-      if (ch < LED_TW_ChannelCount) {
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
         //openknxLedModule._twChannels[ch]->setRGB(RGBvalue);
       }
-      if (ch < LED_RGB_ChannelCount) {
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
         openknxLedModule._rgbChannels[ch]->setRGB(RGBvalue);
       }
-      if (ch < LED_RGBW_ChannelCount) {
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
         openknxLedModule._rgbwChannels[ch]->setRGB(RGBvalue);
       }
-      if (ch < LED_RGBTW_ChannelCount) {
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
         openknxLedModule._rgbtwChannels[ch]->setRGB(RGBvalue);
       }
     }
@@ -388,23 +466,33 @@ void COChannel::setSwitchNoDim(bool switchOn) {
 
   void COChannel::setHSV(uint32_t HSVvalue) {
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
-      if (ch < LED_SC_ChannelCount) {
+      if (ch < LED_SC_ChannelCount && openknxLedModule._CO_Active_SC[ch][CO_Number]) {
         //openknxLedModule._singleChannels[ch]->setHSV(HSVvalue);
       }
-      if (ch < LED_TW_ChannelCount) {
+      if (ch < LED_TW_ChannelCount && openknxLedModule._CO_Active_TW[ch][CO_Number]) {
         //openknxLedModule._twChannels[ch]->setHSV(HSVvalue);
       }
-      if (ch < LED_RGB_ChannelCount) {
+      if (ch < LED_RGB_ChannelCount && openknxLedModule._CO_Active_RGB[ch][CO_Number]) {
         openknxLedModule._rgbChannels[ch]->setHSV(HSVvalue);
       }
-      if (ch < LED_RGBW_ChannelCount) {
+      if (ch < LED_RGBW_ChannelCount && openknxLedModule._CO_Active_RGBW[ch][CO_Number]) {
         openknxLedModule._rgbwChannels[ch]->setHSV(HSVvalue);
       }
-      if (ch < LED_RGBTW_ChannelCount) {
+      if (ch < LED_RGBTW_ChannelCount && openknxLedModule._CO_Active_RGBTW[ch][CO_Number]) {
         openknxLedModule._rgbtwChannels[ch]->setHSV(HSVvalue);
       }
     }
   }
   uint32_t COChannel::conv_Temp2RGB(int temp) { return 0; }
 
+
+  bool COChannel::getCO1() {
+    return 0;
+  }
+  bool COChannel::getCO2() {
+    return 0;
+  }
+  bool COChannel::getCO3() {
+    return 0;
+  }
   // EOF

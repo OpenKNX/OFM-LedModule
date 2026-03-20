@@ -543,3 +543,16 @@ void TWChannel::relDimStopColor()
     logDebugP("relDim_STOP");
     _colorTemperature.setTargetValue(_colorTemperature.value(), 1);
 }
+
+bool TWChannel::getCO1()
+{
+    return ParamLED_TW_ChCO1;
+}
+bool TWChannel::getCO2()
+{
+    return ParamLED_TW_ChCO2;
+}
+bool TWChannel::getCO3()
+{
+    return ParamLED_TW_ChCO3;
+}

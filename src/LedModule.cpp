@@ -114,7 +114,7 @@ void LedModule::setupChannels() {
         _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][4] = _channelIndex;
       break;
     case LightType::CentralObject:
-      //_CO_HWChannels[ParamLED_CH_CO_Light - 1][0] = _channelIndex;
+       _CO_HWChannels[ParamLED_CH_CO_Light - 1][0] = _channelIndex;
       break;
 
     default:
@@ -123,15 +123,40 @@ void LedModule::setupChannels() {
   }
   for (uint8_t ch = 0; ch < LED_ChannelCount; ch++) {
     if (ch < LED_SC_ChannelCount)
+      {
       _singleChannels[ch] = new SingleChannel(ch, _pDimmer, _SC_HWChannels[ch]);
+      _CO_Active_SC[ch][0] = _singleChannels[ch]->getCO1();
+      _CO_Active_SC[ch][1] = _singleChannels[ch]->getCO2();
+      _CO_Active_SC[ch][2] = _singleChannels[ch]->getCO3();
+      }
     if (ch < LED_TW_ChannelCount)
+      {
       _twChannels[ch] = new TWChannel(ch, _pDimmer, _TW_HWChannels[ch]);
+      _CO_Active_TW[ch][0] = _twChannels[ch]->getCO1();
+      _CO_Active_TW[ch][1] = _twChannels[ch]->getCO2();
+      _CO_Active_TW[ch][2] = _twChannels[ch]->getCO3();
+      }
     if (ch < LED_RGB_ChannelCount)
+      {
       _rgbChannels[ch] = new RGBChannel(ch, _pDimmer, _RGB_HWChannels[ch]);
+      _CO_Active_RGB[ch][0] = _rgbChannels[ch]->getCO1();
+      _CO_Active_RGB[ch][1] = _rgbChannels[ch]->getCO2();
+      _CO_Active_RGB[ch][2] = _rgbChannels[ch]->getCO3();
+      }
     if (ch < LED_RGBW_ChannelCount)
+      {
       _rgbwChannels[ch] = new RGBWChannel(ch, _pDimmer, _RGBW_HWChannels[ch]);
+      _CO_Active_RGBW[ch][0] = _rgbwChannels[ch]->getCO1();
+      _CO_Active_RGBW[ch][1] = _rgbwChannels[ch]->getCO2();
+      _CO_Active_RGBW[ch][2] = _rgbwChannels[ch]->getCO3();
+      }
     if (ch < LED_RGBTW_ChannelCount)
+      {
       _rgbtwChannels[ch] = new RGBTWChannel(ch, _pDimmer, _RGBTW_HWChannels[ch]);
+      _CO_Active_RGBTW[ch][0] = _rgbtwChannels[ch]->getCO1();
+      _CO_Active_RGBTW[ch][1] = _rgbtwChannels[ch]->getCO2();
+      _CO_Active_RGBTW[ch][2] = _rgbtwChannels[ch]->getCO3();
+      }
     if( ch < LED_CO_ChannelCount)
       _coChannels[ch] = new COChannel(ch, _pDimmer, _CO_HWChannels[ch]);
   }
@@ -351,27 +376,35 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo) {
     logInfoP("%s", tmp.c_str());
 #endif
     logInfoP("HW Channel configuration:");
-    logInfoP("CH\tTYPE\tSC\tTW\tFunc\tRGB\tFunc");
+    logInfoP("CH\tTYPE\tSC\tTW\tFunc\tRGB\tFunc\tRGBW\tFunc\tRGBTW\tFunc");
     for (int _channelIndex = 0; _channelIndex < LED_ChannelCount;
          _channelIndex++)
-      logInfoP("%d\t%d\t%d\t%d\t%d\t%d\t%d", _channelIndex,
+      logInfoP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d", _channelIndex,
                ParamLED_CH_Lighttype, ParamLED_CH_SC_Light,
                ParamLED_CH_TW_Light, ParamLED_CH_TW_Function,
-               ParamLED_CH_RGB_Light, ParamLED_CH_RGB_Function);
+               ParamLED_CH_RGB_Light, ParamLED_CH_RGB_Function,
+              ParamLED_CH_RGBW_Light, ParamLED_CH_RGBW_Function,
+              ParamLED_CH_RGBTW_Light, ParamLED_CH_RGBTW_Function);
     for (int i = 0; i < LED_SC_ChannelCount; i++)
-      logInfoP("SC %d: CH: %d", i, _SC_HWChannels[i][0]);
+      logInfoP("SC %d: CH: %d CO1: %d CO2: %d CO3: %d", 
+      i, _SC_HWChannels[i][0], 
+      _singleChannels[i]->getCO1(), _singleChannels[i]->getCO2(), _singleChannels[i]->getCO3()  );
     for (int i = 0; i < LED_TW_ChannelCount; i++)
-      logInfoP("TW %d: Cold: %d, Warm: %d", i, _TW_HWChannels[i][0],
-               _TW_HWChannels[i][1]);
+      logInfoP("TW %d: Cold: %d, Warm: %d CO1: %d CO2: %d CO3: %d",
+       i, _TW_HWChannels[i][0], _TW_HWChannels[i][1]   ,
+       _twChannels[i]->getCO1(), _twChannels[i]->getCO2(), _twChannels[i]->getCO3() );
     for (int i = 0; i < LED_RGB_ChannelCount; i++)
-      logInfoP("RGB %d: Red: %d, Green: %d, Blue: %d", i, _RGB_HWChannels[i][0],
-               _RGB_HWChannels[i][1], _RGB_HWChannels[i][2]);
+      logInfoP("RGB %d: Red: %d, Green: %d, Blue: %d CO1: %d CO2: %d CO3: %d", 
+       i, _RGB_HWChannels[i][0], _RGB_HWChannels[i][1], _RGB_HWChannels[i][2], 
+       _rgbChannels[i]->getCO1(), _rgbChannels[i]->getCO2(), _rgbChannels[i]->getCO3());
     for (int i = 0; i < LED_RGBW_ChannelCount; i++)
-      logInfoP("RGBW %d: Red: %d, Green: %d, Blue: %d, White: %d", i, _RGBW_HWChannels[i][0],
-               _RGBW_HWChannels[i][1], _RGBW_HWChannels[i][2], _RGBW_HWChannels[i][3]);
+      logInfoP("RGBW %d: Red: %d, Green: %d, Blue: %d, White: %d CO1: %d CO2: %d CO3: %d", 
+    i, _RGBW_HWChannels[i][0], _RGBW_HWChannels[i][1], _RGBW_HWChannels[i][2], _RGBW_HWChannels[i][3], 
+    _rgbwChannels[i]->getCO1(), _rgbwChannels[i]->getCO2(), _rgbwChannels[i]->getCO3());
     for (int i = 0; i < LED_RGBTW_ChannelCount; i++)      
-      logInfoP("RGBTW %d: Red: %d, Green: %d, Blue: %d, WarmWhite: %d, CoolWhite: %d", i, 
-              _RGBTW_HWChannels[i][0], _RGBTW_HWChannels[i][1], _RGBTW_HWChannels[i][2], _RGBTW_HWChannels[i][3], _RGBTW_HWChannels[i][4]);
+      logInfoP("RGBTW %d: Red: %d, Green: %d, Blue: %d, WarmWhite: %d, CoolWhite: %d CO1: %d CO2: %d CO3: %d", 
+      i, _RGBTW_HWChannels[i][0], _RGBTW_HWChannels[i][1], _RGBTW_HWChannels[i][2], _RGBTW_HWChannels[i][3], _RGBTW_HWChannels[i][4], 
+      _rgbtwChannels[i]->getCO1(), _rgbtwChannels[i]->getCO2(), _rgbtwChannels[i]->getCO3());
     logIndentDown();
     logInfoP("-----------------------------------------------------------------"
              "---------------");

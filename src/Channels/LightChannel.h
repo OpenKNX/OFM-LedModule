@@ -34,6 +34,9 @@ class LightChannel : public OpenKNX::Channel
     bool getLock();
     void setLock(bool lock);
     bool isActive() { return _channelActive; };
+    virtual bool getCO1() = 0;
+    virtual bool getCO2() = 0; 
+    virtual bool getCO3() = 0;
 
     static void processSendValue(GroupObject &ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply = 1);
 

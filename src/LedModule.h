@@ -54,6 +54,8 @@ private:
   uint8_t _RGBTW_HWChannels[LED_RGBTW_ChannelCount][5];
   uint8_t _CO_HWChannels[LED_CO_ChannelCount][1];
 
+
+
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
   PCT2075 _temperature = PCT2075(OPENKNX_LED_TEMPSENS_ADDR, &OPENKNX_GPIO_WIRE);
 #endif
@@ -91,6 +93,12 @@ public:
   RGBWChannel *_rgbwChannels[LED_RGBW_ChannelCount];
   RGBTWChannel *_rgbtwChannels[LED_RGBTW_ChannelCount];
   COChannel *_coChannels[LED_CO_ChannelCount];
+
+  bool _CO_Active_SC[LED_SC_ChannelCount][LED_CO_ChannelCount];
+  bool _CO_Active_TW[LED_TW_ChannelCount][LED_CO_ChannelCount];
+  bool _CO_Active_RGB[LED_RGB_ChannelCount][LED_CO_ChannelCount];
+  bool _CO_Active_RGBW[LED_RGBW_ChannelCount][LED_CO_ChannelCount];
+  bool _CO_Active_RGBTW[LED_RGBTW_ChannelCount][LED_CO_ChannelCount];
 
   enum LightType {
     Single = 1,

@@ -30,6 +30,10 @@ class SingleChannel : public LightChannel
     void relDimDown();
     void relDimStop();
 
+    bool getCO1();
+    bool getCO2();
+    bool getCO3();
+
   private:
     const std::string name() override;
 

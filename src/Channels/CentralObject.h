@@ -49,6 +49,11 @@ class COChannel : public LightChannel
     uint32_t conv_Temp2RGB(int temp);
     int conv_RGB2Temp(uint32_t target_rgb);
 
+    bool getCO1();
+    bool getCO2();
+    bool getCO3();
+    uint8_t CO_Number = 255;
+
   private:
     const std::string name() override;
 

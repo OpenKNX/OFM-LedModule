@@ -899,4 +899,19 @@ int RGBWChannel::conv_RGB2Temp(uint32_t target_rgb)
     return best_temp;
 }
 
+bool RGBWChannel::getCO1()
+{
+    return ParamLED_RGBW_ChCO1;
+}
+
+bool RGBWChannel::getCO2()
+{
+    return ParamLED_RGBW_ChCO2;
+}
+
+bool RGBWChannel::getCO3()
+{
+    return ParamLED_RGBW_ChCO3;
+}
+
 // EOF

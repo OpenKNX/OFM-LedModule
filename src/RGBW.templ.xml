@@ -16,7 +16,7 @@
 
           <op:part href="MeasureAndProtection.part.xml" name="MEASUREPROTRGBW" instances="1">
             <op:param name="%TT%" value="24" increment="0" digits="2" />
-            <op:param name="%PPP%" value="48" increment="26" digits="3" />
+            <op:param name="%PPP%" value="51" increment="26" digits="3" />
             <op:param name="%KKK%" value="17" increment="6" digits="3" />
             <op:param name="%KO%" value="17" increment="6" />
             <op:param name="%NAME%" value="RGBW" />
@@ -102,6 +102,13 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%043" Name="Ch%C%ScenesDisableNightSw"  ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Deaktivierung bei Nachtumschaltung" Value="0" />
                 <!-- 6 bits free -->
               </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="38" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%048" Name="Ch%C%CO1"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="0" Text="Zentralobjekt 1" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%049" Name="Ch%C%CO2"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="1" Text="Zentralobjekt 2" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%050" Name="Ch%C%CO3"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="2" Text="Zentralobjekt 3" Value="0" />
+                <!-- 5 bits free -->
+              </Union>                            
 
               <Union SizeInBit="320"> <!-- 8 Scenes * 5 bytes: total 40 bytes -->
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="46" BitOffset="0" />
@@ -162,6 +169,9 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%045_R-%TT%%CC%04501" RefId="%AID%_UP-%TT%%CC%045" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%046_R-%TT%%CC%04601" RefId="%AID%_UP-%TT%%CC%046" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%047_R-%TT%%CC%04701" RefId="%AID%_UP-%TT%%CC%047" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%048_R-%TT%%CC%04801" RefId="%AID%_UP-%TT%%CC%048" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%049_R-%TT%%CC%04901" RefId="%AID%_UP-%TT%%CC%049" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%050_R-%TT%%CC%05001" RefId="%AID%_UP-%TT%%CC%050" />
               <!-- PART uses IDs 048-73 -->
               <op:usePart name="MEASUREPROTRGBW" xpath="//Static/ParameterRefs/*" />
               <!-- Scene Parameter Refs -->
@@ -474,6 +484,26 @@
                         </ParameterBlock>
                       </when>
                     </choose>
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Zentrale Objekte" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%048_R-%TT%%CC%04801" IndentLevel="1"/>
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%049_R-%TT%%CC%04901" IndentLevel="1"/>
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%050_R-%TT%%CC%05001" IndentLevel="1"/>      
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%048_R-%TT%%CC%04801">
+                      <when test="1">
+                        <Assign TargetParamRefRef="%AID%_P-2601001_R-260100101" Value="42" />
+                      </when>
+                    </choose>
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%049_R-%TT%%CC%04901">
+                      <when test="1">
+                        <Assign TargetParamRefRef="%AID%_P-2602001_R-260200101" Value="42" />
+                      </when>
+                    </choose>
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%050_R-%TT%%CC%05001">
+                      <when test="1">
+                        <Assign TargetParamRefRef="%AID%_P-2603001_R-260300101" Value="42" />
+                      </when>
+                    </choose>                                                      
 
                   </ParameterBlock>
                 </when>

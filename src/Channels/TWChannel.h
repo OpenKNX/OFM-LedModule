@@ -42,6 +42,10 @@ class TWChannel : public LightChannel
     void relDimDownColor();
     void relDimStopColor();
 
+    bool getCO1();
+    bool getCO2();
+    bool getCO3();
+
   private:
     const std::string name() override;
 

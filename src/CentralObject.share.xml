@@ -10,6 +10,9 @@
           <Static>
             <ParameterTypes>
               
+              <ParameterType Id="%AID%_PT-COLights" Name="COLights">
+                <TypeNumber SizeInBit="8" Type="signedInt" minInclusive="0" maxInclusive="%N%" />
+              </ParameterType>
 
               
 
