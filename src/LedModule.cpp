@@ -110,6 +110,19 @@ void LedModule::setupChannels()
     logIndentDown();
 }
 
+void LedModule::setupTemperatureSensor()
+{
+    #ifdef OPENKNX_GPIO_WIRE
+        #if OPENKNX_LED_TEMPSENS_WIRE == OPENKNX_GPIO_WIRE
+            return;
+        #endif
+    #endif
+    OPENKNX_LED_TEMPSENS_WIRE.setSDA(OPENKNX_LED_TEMPSENS_PIN_SDA);
+    OPENKNX_LED_TEMPSENS_WIRE.setSCL(OPENKNX_LED_TEMPSENS_PIN_SCL);
+    OPENKNX_LED_TEMPSENS_WIRE.begin();
+    _temperature.begin();
+}
+
 void LedModule::setupFrontPlate()
 {
 #ifdef LEDMODULE_FRONT_PLATE_USED
