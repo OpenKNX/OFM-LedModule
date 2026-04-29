@@ -55,12 +55,10 @@ class LedModule : public OpenKNX::Module
     SingleChannel *_singleChannels[LED_SC_ChannelCount];
     TWChannel *_twChannels[LED_TW_ChannelCount];
     RGBChannel *_rgbChannels[LED_RGB_ChannelCount];
-#if defined(OPENKNX_LED_TEMPSENS_TYPE_LM75)
+#if defined(OPENKNX_LED_TEMPSENS_TYPE_TMP100) || defined(OPENKNX_LED_TEMPSENS_TYPE_TMP102)
     #ifdef OPENKNX_LED_TEMPSENS_ADDR
         PCT2075 _temperature = PCT2075(OPENKNX_LED_TEMPSENS_ADDR, &OPENKNX_LED_TEMPSENS_WIRE);
     #endif
-#elif defined(OPENKNX_LED_TEMPSENS_TYPE_TMP100)
-
 #endif
 
     void setupCustomFlash();
