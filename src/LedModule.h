@@ -4,7 +4,9 @@
 #include <SPI.h>
 #include <Wire.h>
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
-    #include <PCT2075.h>
+    #if defined(OPENKNX_LED_TEMPSENS_TYPE_TMP100) || defined(OPENKNX_LED_TEMPSENS_TYPE_TMP102)
+        #include <PCT2075.h>
+    #endif
 #endif
 #include "HWDimmer/HWDimmer.h"
 #ifdef LEDMODULE_DIMMER_PCA9685
@@ -50,13 +52,15 @@ class LedModule : public OpenKNX::Module
     SingleChannel *_singleChannels[LED_SC_ChannelCount];
     TWChannel *_twChannels[LED_TW_ChannelCount];
     RGBChannel *_rgbChannels[LED_RGB_ChannelCount];
-
-#ifdef OPENKNX_LED_TEMPSENS_ADDR
-    PCT2075 _temperature = PCT2075(OPENKNX_LED_TEMPSENS_ADDR, &OPENKNX_GPIO_WIRE);
+#if defined(OPENKNX_LED_TEMPSENS_TYPE_TMP100) || defined(OPENKNX_LED_TEMPSENS_TYPE_TMP102)
+    #ifdef OPENKNX_LED_TEMPSENS_ADDR
+        PCT2075 _temperature = PCT2075(OPENKNX_LED_TEMPSENS_ADDR, &OPENKNX_LED_TEMPSENS_WIRE);
+    #endif
 #endif
 
     void setupCustomFlash();
     void setupChannels();
+    void setupTemperatureSensor();
     void setupFrontPlate();
     void setupVoltageMeasurement();
     void setupConstantCurrentMode();

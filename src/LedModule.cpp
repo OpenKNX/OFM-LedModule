@@ -50,6 +50,7 @@ void LedModule::setup(bool configured)
     logIndentUp();
     setupCustomFlash();
     setupFrontPlate();
+    setupTemperatureSensor();
     setupVoltageMeasurement();
     setupConstantCurrentMode();
     setupChannels();
@@ -108,6 +109,22 @@ void LedModule::setupChannels()
 
     logDebugP("Channel setup finished.");
     logIndentDown();
+}
+
+void LedModule::setupTemperatureSensor()
+{
+    #ifdef OPENKNX_GPIO_WIRE
+        #if OPENKNX_LED_TEMPSENS_WIRE == OPENKNX_GPIO_WIRE
+            return;
+        #endif
+    #endif
+    OPENKNX_LED_TEMPSENS_WIRE.setSDA(OPENKNX_LED_TEMPSENS_PIN_SDA);
+    OPENKNX_LED_TEMPSENS_WIRE.setSCL(OPENKNX_LED_TEMPSENS_PIN_SCL);
+    OPENKNX_LED_TEMPSENS_WIRE.begin();
+    _temperature.begin();
+    #ifdef OPENKNX_LED_TEMPSENS_TYPE_TMP100
+    _temperature.setConfiguration(0x60);    // change to 12bit mode for compatibility with PTC2075 lib
+    #endif
 }
 
 void LedModule::setupFrontPlate()
