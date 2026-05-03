@@ -18,50 +18,50 @@ void Schedule::setup()
                        : OffBehavior::SequenzStoppen;
     _fallbackMinutes = ParamLED_SC_ChScheduleFallbackMin;
 
-    _points[0].mode       = ParamLED_SC_ChSchedulePoint01_Mode;
-    _points[0].hour       = ParamLED_SC_ChSchedulePoint01_Hour;
-    _points[0].minute     = ParamLED_SC_ChSchedulePoint01_Minute;
-    _points[0].brightness = ParamLED_SC_ChSchedulePoint01_Brightness;
+    _points[0].mode       = ParamLED_SC_ChSchedulePoint1_Mode;
+    _points[0].hour       = ParamLED_SC_ChSchedulePoint1_Hour;
+    _points[0].minute     = ParamLED_SC_ChSchedulePoint1_Minute;
+    _points[0].brightness = ParamLED_SC_ChSchedulePoint1_Brightness;
 
-    _points[1].mode       = ParamLED_SC_ChSchedulePoint02_Mode;
-    _points[1].hour       = ParamLED_SC_ChSchedulePoint02_Hour;
-    _points[1].minute     = ParamLED_SC_ChSchedulePoint02_Minute;
-    _points[1].brightness = ParamLED_SC_ChSchedulePoint02_Brightness;
+    _points[1].mode       = ParamLED_SC_ChSchedulePoint2_Mode;
+    _points[1].hour       = ParamLED_SC_ChSchedulePoint2_Hour;
+    _points[1].minute     = ParamLED_SC_ChSchedulePoint2_Minute;
+    _points[1].brightness = ParamLED_SC_ChSchedulePoint2_Brightness;
 
-    _points[2].mode       = ParamLED_SC_ChSchedulePoint03_Mode;
-    _points[2].hour       = ParamLED_SC_ChSchedulePoint03_Hour;
-    _points[2].minute     = ParamLED_SC_ChSchedulePoint03_Minute;
-    _points[2].brightness = ParamLED_SC_ChSchedulePoint03_Brightness;
+    _points[2].mode       = ParamLED_SC_ChSchedulePoint3_Mode;
+    _points[2].hour       = ParamLED_SC_ChSchedulePoint3_Hour;
+    _points[2].minute     = ParamLED_SC_ChSchedulePoint3_Minute;
+    _points[2].brightness = ParamLED_SC_ChSchedulePoint3_Brightness;
 
-    _points[3].mode       = ParamLED_SC_ChSchedulePoint04_Mode;
-    _points[3].hour       = ParamLED_SC_ChSchedulePoint04_Hour;
-    _points[3].minute     = ParamLED_SC_ChSchedulePoint04_Minute;
-    _points[3].brightness = ParamLED_SC_ChSchedulePoint04_Brightness;
+    _points[3].mode       = ParamLED_SC_ChSchedulePoint4_Mode;
+    _points[3].hour       = ParamLED_SC_ChSchedulePoint4_Hour;
+    _points[3].minute     = ParamLED_SC_ChSchedulePoint4_Minute;
+    _points[3].brightness = ParamLED_SC_ChSchedulePoint4_Brightness;
 
-    _points[4].mode       = ParamLED_SC_ChSchedulePoint05_Mode;
-    _points[4].hour       = ParamLED_SC_ChSchedulePoint05_Hour;
-    _points[4].minute     = ParamLED_SC_ChSchedulePoint05_Minute;
-    _points[4].brightness = ParamLED_SC_ChSchedulePoint05_Brightness;
+    _points[4].mode       = ParamLED_SC_ChSchedulePoint5_Mode;
+    _points[4].hour       = ParamLED_SC_ChSchedulePoint5_Hour;
+    _points[4].minute     = ParamLED_SC_ChSchedulePoint5_Minute;
+    _points[4].brightness = ParamLED_SC_ChSchedulePoint5_Brightness;
 
-    _points[5].mode       = ParamLED_SC_ChSchedulePoint06_Mode;
-    _points[5].hour       = ParamLED_SC_ChSchedulePoint06_Hour;
-    _points[5].minute     = ParamLED_SC_ChSchedulePoint06_Minute;
-    _points[5].brightness = ParamLED_SC_ChSchedulePoint06_Brightness;
+    _points[5].mode       = ParamLED_SC_ChSchedulePoint6_Mode;
+    _points[5].hour       = ParamLED_SC_ChSchedulePoint6_Hour;
+    _points[5].minute     = ParamLED_SC_ChSchedulePoint6_Minute;
+    _points[5].brightness = ParamLED_SC_ChSchedulePoint6_Brightness;
 
-    _points[6].mode       = ParamLED_SC_ChSchedulePoint07_Mode;
-    _points[6].hour       = ParamLED_SC_ChSchedulePoint07_Hour;
-    _points[6].minute     = ParamLED_SC_ChSchedulePoint07_Minute;
-    _points[6].brightness = ParamLED_SC_ChSchedulePoint07_Brightness;
+    _points[6].mode       = ParamLED_SC_ChSchedulePoint7_Mode;
+    _points[6].hour       = ParamLED_SC_ChSchedulePoint7_Hour;
+    _points[6].minute     = ParamLED_SC_ChSchedulePoint7_Minute;
+    _points[6].brightness = ParamLED_SC_ChSchedulePoint7_Brightness;
 
-    _points[7].mode       = ParamLED_SC_ChSchedulePoint08_Mode;
-    _points[7].hour       = ParamLED_SC_ChSchedulePoint08_Hour;
-    _points[7].minute     = ParamLED_SC_ChSchedulePoint08_Minute;
-    _points[7].brightness = ParamLED_SC_ChSchedulePoint08_Brightness;
+    _points[7].mode       = ParamLED_SC_ChSchedulePoint8_Mode;
+    _points[7].hour       = ParamLED_SC_ChSchedulePoint8_Hour;
+    _points[7].minute     = ParamLED_SC_ChSchedulePoint8_Minute;
+    _points[7].brightness = ParamLED_SC_ChSchedulePoint8_Brightness;
 
-    _points[8].mode       = ParamLED_SC_ChSchedulePoint09_Mode;
-    _points[8].hour       = ParamLED_SC_ChSchedulePoint09_Hour;
-    _points[8].minute     = ParamLED_SC_ChSchedulePoint09_Minute;
-    _points[8].brightness = ParamLED_SC_ChSchedulePoint09_Brightness;
+    _points[8].mode       = ParamLED_SC_ChSchedulePoint9_Mode;
+    _points[8].hour       = ParamLED_SC_ChSchedulePoint9_Hour;
+    _points[8].minute     = ParamLED_SC_ChSchedulePoint9_Minute;
+    _points[8].brightness = ParamLED_SC_ChSchedulePoint9_Brightness;
 
     _points[9].mode       = ParamLED_SC_ChSchedulePoint10_Mode;
     _points[9].hour       = ParamLED_SC_ChSchedulePoint10_Hour;

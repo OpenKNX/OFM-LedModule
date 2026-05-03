@@ -41,17 +41,20 @@
 
           <Dynamic>
 
-            <ChannelIndependentBlock Name="ScheduleStuetzPunktUI">
-              <!-- Visibility: this Stützpunkt is shown only when Ch%C%ScheduleNumPoints >= %SP% -->
-              <!-- Visibility: Stützpunkt %SP% sichtbar wenn ScheduleNumPoints (id 241) >= %SP%, also > %SP-1% -->
-              <choose ParamRefId="%AID%_UP-%TT%%CC%241_R-%TT%%CC%24101">
-                <when test=">%SP-1%">
-                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Stützpunkt %SP%" />
-                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+1%_R-%TT%%CC%%id+1%01" IndentLevel="2" />
-                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+2%_R-%TT%%CC%%id+2%01" IndentLevel="2" />
-                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+3%_R-%TT%%CC%%id+3%01" IndentLevel="2" />
-                </when>
-              </choose>
+            <!-- Row per Stützpunkt for the table layout. All 10 rows always
+                 shown; the C++ side respects ScheduleNumPoints to ignore
+                 unused trailing rows. (Conditional Row visibility breaks
+                 ETS' hasher — see git history for the experiment.) -->
+            <ChannelIndependentBlock Name="ScheduleRows">
+              <Row Id="%AID%_PB-Sched_R-%SP%" Name="Row%SP%" Text="Stützpunkt %SP%" />
+            </ChannelIndependentBlock>
+
+            <!-- Cells for the row of stützpunkt %SP%. Cells are 1-indexed:
+                 col 1 = Stunde, col 2 = Minute, col 3 = Helligkeit. -->
+            <ChannelIndependentBlock Name="ScheduleCells">
+              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+1%_R-%TT%%CC%%id+1%01" Cell="%SP%,1" />
+              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+2%_R-%TT%%CC%%id+2%01" Cell="%SP%,2" />
+              <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+3%_R-%TT%%CC%%id+3%01" Cell="%SP%,3" />
             </ChannelIndependentBlock>
 
           </Dynamic>

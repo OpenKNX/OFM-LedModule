@@ -202,20 +202,8 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ScheduleMinute" Name="ScheduleMinute">
-                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
-                  <Enumeration Text="00" Value="0" Id="%ENID%" />
-                  <Enumeration Text="05" Value="5" Id="%ENID%" />
-                  <Enumeration Text="10" Value="10" Id="%ENID%" />
-                  <Enumeration Text="15" Value="15" Id="%ENID%" />
-                  <Enumeration Text="20" Value="20" Id="%ENID%" />
-                  <Enumeration Text="25" Value="25" Id="%ENID%" />
-                  <Enumeration Text="30" Value="30" Id="%ENID%" />
-                  <Enumeration Text="35" Value="35" Id="%ENID%" />
-                  <Enumeration Text="40" Value="40" Id="%ENID%" />
-                  <Enumeration Text="45" Value="45" Id="%ENID%" />
-                  <Enumeration Text="50" Value="50" Id="%ENID%" />
-                  <Enumeration Text="55" Value="55" Id="%ENID%" />
-                </TypeRestriction>
+                <!-- Full minute granularity (0-59), consistent with ScheduleHour as TypeNumber -->
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="59" />
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ScheduleBrightness" Name="ScheduleBrightness">

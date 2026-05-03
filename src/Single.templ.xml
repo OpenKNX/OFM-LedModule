@@ -24,7 +24,7 @@
           </op:part>
 
           <op:part href="Schedule.part.xml" name="LED_SC_SCHED" instances="10">
-            <op:param name="%SP%" value="1"   increment="1" digits="2" /> <!-- Stützpunkt 01..10 -->
+            <op:param name="%SP%" value="1"   increment="1" digits="1" /> <!-- Stützpunkt 1..10 (single-digit so Cell=int sortable) -->
             <op:param name="%TT%" value="21"  increment="0" digits="2" />
             <op:param name="%id%" value="250" increment="5" digits="3" /> <!-- 250/255/.../295 (above SceneBuilder 130-229) -->
             <op:param name="%MO%" value="0"   increment="4" digits="2" /> <!-- relative to Union's Memory base @ ch-offset 94 -->
@@ -301,7 +301,19 @@
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%241_R-%TT%%CC%24101" IndentLevel="2" /> <!-- NumPoints -->
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%242_R-%TT%%CC%24201" IndentLevel="2" /> <!-- OffBehavior -->
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%243_R-%TT%%CC%24301" IndentLevel="2" /> <!-- FallbackTime -->
-                        <op:usePart name="LED_SC_SCHED" xpath="//Dynamic/ChannelIndependentBlock[@Name='ScheduleStuetzPunktUI']/*" />
+
+                        <!-- Stützpunkte als Tabelle (eine Zeile pro Stützpunkt) -->
+                        <ParameterBlock Id="%AID%_PB-Sched%CC%" Name="ScheduleTable_%CC%" Text="" Inline="true" Layout="Table">
+                          <Rows>
+                            <op:usePart name="LED_SC_SCHED" xpath="//Dynamic/ChannelIndependentBlock[@Name='ScheduleRows']/*" />
+                          </Rows>
+                          <Columns>
+                            <Column Id="%AID%_PB-Sched%CC%_C-1" Name="ColHour"   Text="Stunde"     Width="20%" />
+                            <Column Id="%AID%_PB-Sched%CC%_C-2" Name="ColMinute" Text="Minute"     Width="20%" />
+                            <Column Id="%AID%_PB-Sched%CC%_C-3" Name="ColBright" Text="Helligkeit (%)" Width="25%" />
+                          </Columns>
+                          <op:usePart name="LED_SC_SCHED" xpath="//Dynamic/ChannelIndependentBlock[@Name='ScheduleCells']/*" />
+                        </ParameterBlock>
                       </when>
                     </choose>
 
