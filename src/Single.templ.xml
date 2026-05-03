@@ -24,10 +24,10 @@
           </op:part>
 
           <op:part href="Schedule.part.xml" name="LED_SC_SCHED" instances="10">
-            <op:param name="%SP%" value="1"   increment="1" digits="1" /> <!-- Stützpunkt 1..10 (single-digit so Cell=int sortable) -->
+            <op:param name="%SP%" value="1"   increment="1" digits="1" /> <!-- 1..10 -->
             <op:param name="%TT%" value="21"  increment="0" digits="2" />
-            <op:param name="%id%" value="250" increment="5" digits="3" /> <!-- 250/255/.../295 (above SceneBuilder 130-229) -->
-            <op:param name="%MO%" value="0"   increment="4" digits="2" /> <!-- relative to Union's Memory base @ ch-offset 94 -->
+            <op:param name="%id%" value="250" increment="3" digits="3" /> <!-- 3 IDs/SP: 250/253/256/259/.../277 -->
+            <op:param name="%MO%" value="0"   increment="2" digits="2" /> <!-- 2 Bytes/SP relative to Union @ ch-offset 95 -->
           </op:part>
 
           <Static>
@@ -93,18 +93,19 @@
                 <op:usePart name="MEASUREPROT" xpath="//Static/Parameters/Union/*[position()>1]" />
               </Union>
 
-              <!-- Uhrzeitabhängiges Dimmen — Header (5 bytes) + 10 Stützpunkte à 4 bytes -->
-              <Union SizeInBit="40">
+              <!-- Uhrzeitabhängiges Dimmen — Header (6 bytes) + 10 Stützpunkte à 2 bytes -->
+              <Union SizeInBit="48">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="89" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%240" Name="Ch%C%ScheduleActive"       ParameterType="%AID%_PT-OnOffYesNo"           Offset="0" BitOffset="0" Text="Uhrzeitabhängiges Dimmen aktivieren" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%240" Name="Ch%C%ScheduleActive"        ParameterType="%AID%_PT-OnOffYesNo"            Offset="0" BitOffset="0" Text="Uhrzeitabhängiges Dimmen aktivieren" Value="0" />
                 <!-- 7 bits free -->
-                <Parameter Id="%AID%_UP-%TT%%CC%241" Name="Ch%C%ScheduleNumPoints"    ParameterType="%AID%_PT-ScheduleNumPoints"    Offset="1" BitOffset="0" Text="Anzahl Stützpunkte" Value="4" />
-                <Parameter Id="%AID%_UP-%TT%%CC%242" Name="Ch%C%ScheduleOffBehavior"  ParameterType="%AID%_PT-ScheduleOffBehavior"  Offset="2" BitOffset="0" Text="Verhalten bei Steuerobjekt &quot;Aus&quot;" Value="1" />
-                <Parameter Id="%AID%_UP-%TT%%CC%243" Name="Ch%C%ScheduleFallbackMin"  ParameterType="%AID%_PT-ScheduleFallbackTime" Offset="3" BitOffset="0" Text="Rückfallzeit der Helligkeit" Value="0" SuffixText="min" />
+                <Parameter Id="%AID%_UP-%TT%%CC%241" Name="Ch%C%ScheduleNumPoints"     ParameterType="%AID%_PT-ScheduleNumPoints"     Offset="1" BitOffset="0" Text="Anzahl Stützpunkte" Value="4" />
+                <Parameter Id="%AID%_UP-%TT%%CC%242" Name="Ch%C%ScheduleOffBehavior"   ParameterType="%AID%_PT-ScheduleOffBehavior"   Offset="2" BitOffset="0" Text="Verhalten bei Steuerobjekt &quot;Aus&quot;" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%%CC%243" Name="Ch%C%ScheduleFallbackMin"   ParameterType="%AID%_PT-ScheduleFallbackTime" Offset="3" BitOffset="0" Text="Rückfallzeit der Helligkeit" Value="0" SuffixText="min" />
+                <Parameter Id="%AID%_UP-%TT%%CC%244" Name="Ch%C%ScheduleSchaltzeiten" ParameterType="%AID%_PT-ScheduleSchaltzeiten" Offset="5" BitOffset="0" Text="Schaltzeiten" Value="0" />
               </Union>
-              <Union SizeInBit="320">
-                <!-- 10 Stützpunkte * 4 bytes = 40 bytes -->
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="94" BitOffset="0" />
+              <Union SizeInBit="160">
+                <!-- 10 Stützpunkte * 2 bytes = 20 bytes (Uhrzeit/Sun overlap @ byte 0; Brightness @ byte 1) -->
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="95" BitOffset="0" />
                 <op:usePart name="LED_SC_SCHED" xpath="//Static/Parameters/Block[@Name='ScheduleStuetzPunkt']/*" />
               </Union>
 
@@ -141,12 +142,13 @@
               <op:usePart name="MEASUREPROT" xpath="//Static/ParameterRefs/*" />
               <!-- Scene Parameter Refs -->
               <op:usePart name="LED_SC_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSC']/*" />
-              <!-- Schedule Header Parameter Refs (IDs 240-243) -->
+              <!-- Schedule Header Parameter Refs (IDs 240-244) -->
               <ParameterRef Id="%AID%_UP-%TT%%CC%240_R-%TT%%CC%24001" RefId="%AID%_UP-%TT%%CC%240" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%241_R-%TT%%CC%24101" RefId="%AID%_UP-%TT%%CC%241" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%242_R-%TT%%CC%24201" RefId="%AID%_UP-%TT%%CC%242" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%243_R-%TT%%CC%24301" RefId="%AID%_UP-%TT%%CC%243" />
-              <!-- Schedule Stützpunkte Parameter Refs (IDs 250-298, via op:part) -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%244_R-%TT%%CC%24401" RefId="%AID%_UP-%TT%%CC%244" />
+              <!-- Schedule Stützpunkte Parameter Refs (IDs 250-..., via op:part) -->
               <op:usePart name="LED_SC_SCHED" xpath="//Static/ParameterRefs/Block[@Name='ParamRefSchedule']/*" />
             </ParameterRefs>
 
@@ -298,22 +300,13 @@
                       <when test="1">
                         <ComObjectRefRef RefId="%AID%_O-%TT%%CC%016_R-%TT%%CC%01601" /> <!-- Schedule_Active KO -->
                         <ComObjectRefRef RefId="%AID%_O-%TT%%CC%017_R-%TT%%CC%01701" /> <!-- Schedule_Status KO -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%244_R-%TT%%CC%24401" IndentLevel="2" /> <!-- Schaltzeiten -->
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%241_R-%TT%%CC%24101" IndentLevel="2" /> <!-- NumPoints -->
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%242_R-%TT%%CC%24201" IndentLevel="2" /> <!-- OffBehavior -->
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%243_R-%TT%%CC%24301" IndentLevel="2" /> <!-- FallbackTime -->
 
-                        <!-- Stützpunkte als Tabelle (eine Zeile pro Stützpunkt) -->
-                        <ParameterBlock Id="%AID%_PB-Sched%CC%" Name="ScheduleTable_%CC%" Text="" Inline="true" Layout="Table">
-                          <Rows>
-                            <op:usePart name="LED_SC_SCHED" xpath="//Dynamic/ChannelIndependentBlock[@Name='ScheduleRows']/*" />
-                          </Rows>
-                          <Columns>
-                            <Column Id="%AID%_PB-Sched%CC%_C-1" Name="ColHour"   Text="Stunde"     Width="20%" />
-                            <Column Id="%AID%_PB-Sched%CC%_C-2" Name="ColMinute" Text="Minute"     Width="20%" />
-                            <Column Id="%AID%_PB-Sched%CC%_C-3" Name="ColBright" Text="Helligkeit (%)" Width="25%" />
-                          </Columns>
-                          <op:usePart name="LED_SC_SCHED" xpath="//Dynamic/ChannelIndependentBlock[@Name='ScheduleCells']/*" />
-                        </ParameterBlock>
+                        <!-- Stützpunkte vertikal — sichtbar via per-SP <choose> in Schedule.part.xml -->
+                        <op:usePart name="LED_SC_SCHED" xpath="//Dynamic/ChannelIndependentBlock[@Name='ScheduleStuetzPunktUI']/*" />
                       </when>
                     </choose>
 

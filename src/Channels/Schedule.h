@@ -1,37 +1,30 @@
-// Phase A — Uhrzeitabhängiges Dimmen (per-channel time-based dimming evaluator).
+// Phase A + B — Uhrzeitabhängiges Dimmen (per-channel time-based dimming evaluator).
 // MDT 4.4.14 parity: continuous tracking of an N-point linear-interpolated
-// brightness curve over the day. Active while lamp is on. Manual dim/switch
-// pauses tracking; optional fallback time auto-resumes.
+// brightness curve. Stützpunkt times are either fixed clock hours OR
+// sunrise/sunset-relative offsets (channel-level mode).
 #pragma once
 
 #include "OpenKNX.h"
 #include "HWDimmer/HWDimmer.h"
 #include <stdint.h>
 
-class SingleChannel;  // forward declaration
+class SingleChannel;
 
 class Schedule
 {
   public:
     Schedule(uint8_t channelIndex, SingleChannel *pChannel, HWDimmer *pDimmer);
 
-    // Read parameters from ETS, initialize state. Call once after construction.
     void setup();
-
-    // Tick once per loop. Internally throttled to 1 Hz.
     void loop();
 
-    // Channel's processInputKo passes here for relative-KO offsets we own
-    // (LED_SC_KoChScheduleActive). Returns true if KO was handled.
+    // Returns true if the KO was handled (Schedule_Active).
     bool processInputKo(GroupObject &ko, int16_t relKo);
 
-    // Called by the channel when a manual KO arrives that should pause tracking
-    // (Brightness absolute, Dim relative, Scene). NOT called for Switch ON.
+    // Manual override: pause tracking; resume after fallback minutes (if set).
     void notifyManualChange();
 
-    // Called by the channel when a Switch OFF KO arrives. Schedule will not
-    // actively write while lamp is off; will resume when lamp is switched on
-    // again (next setup/loop tick after Switch ON).
+    // Lamp turned off externally: don't actively re-write while off, resume on next ON.
     void notifyLampOff();
 
     bool isActive() const { return _active && !_suspendedByManual; }
@@ -45,13 +38,19 @@ class Schedule
         Ausschalten = 1
     };
 
+    enum class Schaltzeiten : uint8_t
+    {
+        Uhrzeit = 0,
+        Sonne = 1
+    };
+
+    // For Schaltzeiten=Uhrzeit: timeByte holds hour (0..23).
+    // For Schaltzeiten=Sonne:    timeByte holds enum 0..33; decoded via
+    //   isSunrise() + sunOffsetMinutes() (uses SUN_OFFSETS[idx % 17]).
     struct StuetzPunkt
     {
-        uint8_t mode;        // Phase A: only 0 = Fixed
-        uint8_t hour;        // 0..23
-        uint8_t minute;      // 0/5/10/.../55
+        uint8_t timeByte;
         uint8_t brightness;  // 0..100 percent
-        uint16_t timeMin() const { return hour * 60 + minute; }
     };
 
     uint8_t _channelIndex;
@@ -63,6 +62,7 @@ class Schedule
     uint8_t _numPoints = 4;
     OffBehavior _offBehavior = OffBehavior::Ausschalten;
     uint16_t _fallbackMinutes = 0;
+    Schaltzeiten _schaltzeiten = Schaltzeiten::Uhrzeit;
 
     // Runtime state
     bool _active = true;
@@ -72,10 +72,15 @@ class Schedule
     uint32_t _lastEvalMillis = 0;
     bool _lastStatusPublished = false;
 
-    // Returns 0..100 percent for the given minutes-since-midnight, linear-
-    // interpolated between the two bracketing active points (wrap-aware).
+    // Returns minutes-since-midnight (0..1439) for a stützpunkt under current
+    // Schaltzeiten mode. For Sonne mode, returns -1 if the sun calc isn't valid
+    // yet (caller must skip the point).
+    int16_t pointTimeMinutes(const StuetzPunkt &p) const;
+
+    // Computes interpolated brightness 0..100 for nowMin (minutes-since-midnight),
+    // wrap-aware. Returns 0 if no valid points.
     uint8_t computeInterpolatedLevel(uint16_t nowMin) const;
 
-    // Sends Schedule_Status KO if state changed since last publish.
+    // Send Schedule_Status KO if state changed.
     void publishStatus(bool active);
 };
