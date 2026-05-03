@@ -350,7 +350,7 @@
                   <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,4" Text="Funktion" UIHint="Headline" />
                 </ParameterBlock>
                 <!-- Table content -->
-                <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTableLine']/*" prefix="LED" type="template" IsInner="true" />
+                <op:include href="LedModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTableLine']/*" prefix="LED" type="template" IsInner="true" />
 
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
@@ -541,7 +541,7 @@
                   </when>
                 </choose>
 
-                <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='FunctionAssignment']/*" prefix="LED" type="template" IsInner="true" />
+                <op:include href="LedModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='FunctionAssignment']/*" prefix="LED" type="template" IsInner="true" />
               </ParameterBlock>
 
               <op:include href="Single.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_SC" />
