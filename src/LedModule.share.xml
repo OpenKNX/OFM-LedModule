@@ -169,7 +169,8 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-ScheduleOffBehavior" Name="ScheduleOffBehavior">
-                <TypeRestriction Base="Value" SizeInBit="8" UIHint="Radio">
+                <!-- TypeRestriction UIHint per Project_23.xsd: Text/DropDown/Buttons/Segmented -->
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="Buttons">
                   <Enumeration Text="Sequenz stoppen" Value="0" Id="%ENID%" />
                   <Enumeration Text="Ausschalten" Value="1" Id="%ENID%" />
                 </TypeRestriction>
