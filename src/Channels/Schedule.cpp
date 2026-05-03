@@ -58,6 +58,8 @@ void Schedule::setup()
     _suspendedByManual = false;
     _lastLevelSent = -1;
     _lastEvalMillis = 0;
+    // Default KO to "On" — reaching setup() already implies ETS-enabled.
+    KoLED_SC_ChScheduleActive.valueNoSend(true, DPT_Switch);
     publishStatus(true);
 }
 
