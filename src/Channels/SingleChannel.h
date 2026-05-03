@@ -5,10 +5,13 @@
 #include "OpenKNX.h"
 #include <Arduino.h>
 
+class Schedule;
+
 class SingleChannel : public LightChannel
 {
   public:
     SingleChannel(uint8_t channel_number, HWDimmer* pDimmer, uint8_t hwChannels[1]);
+    ~SingleChannel();
     void processInputKo(GroupObject& ko);
     void update();
     void loop();
@@ -30,6 +33,9 @@ class SingleChannel : public LightChannel
     void relDimDown();
     void relDimStop();
 
+    // Phase A — Uhrzeitabhängiges Dimmen
+    bool isOn() { return _brightness.target() > 0; }
+
   private:
     const std::string name() override;
 
@@ -38,4 +44,6 @@ class SingleChannel : public LightChannel
     {
         BRIGHTNESS = 0
     };
+
+    Schedule *_schedule = nullptr;
 };
