@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="OpenKNX" ToolVersion="0">
+
+  <ManufacturerData>
+    <Manufacturer>
+      <ApplicationPrograms>
+        <ApplicationProgram>
+
+          <op:partParams name="TBD">
+            <!-- Documentation only — actual values come from the caller's <op:part> declaration -->
+            <op:param name="%SP%" value="1" increment="1" digits="1" />  <!-- Stützpunkt 1..10 -->
+            <op:param name="%TT%" value="21" increment="0" digits="2" />
+            <op:param name="%id%" value="250" increment="3" digits="3" /> <!-- 3 Param-IDs/SP -->
+            <op:param name="%MO%" value="0"  increment="2" digits="2" />  <!-- 2 Bytes/SP relative to Union base -->
+          </op:partParams>
+
+          <Static>
+
+            <Parameters>
+              <!-- Per Stützpunkt: 2 Bytes Storage.
+                   Byte 0: Uhrzeit-or-SunOffset (Union — only one ParameterType visible at a time)
+                   Byte 1: Brightness -->
+              <Block Name="ScheduleStuetzPunkt">
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+0%" Name="Ch%C%SchedulePoint%SP%_Uhrzeit"    ParameterType="%AID%_PT-ScheduleHourTime"   Offset="%MO%"   BitOffset="0" Text="Uhrzeit %SP%" Value="12" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+1%" Name="Ch%C%SchedulePoint%SP%_SunOffset"  ParameterType="%AID%_PT-ScheduleSunOffset"  Offset="%MO%"   BitOffset="0" Text="Uhrzeit %SP%" Value="12" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+2%" Name="Ch%C%SchedulePoint%SP%_Brightness" ParameterType="%AID%_PT-ScheduleBrightness" Offset="%MO+1%" BitOffset="0" Text="Helligkeit"   Value="100" SuffixText="%" />
+              </Block>
+            </Parameters>
+
+            <ParameterRefs>
+              <Block Name="ParamRefSchedule">
+                <ParameterRef Id="%AID%_UP-%TT%%CC%%id+0%_R-%TT%%CC%%id+0%01" RefId="%AID%_UP-%TT%%CC%%id+0%" />
+                <ParameterRef Id="%AID%_UP-%TT%%CC%%id+1%_R-%TT%%CC%%id+1%01" RefId="%AID%_UP-%TT%%CC%%id+1%" />
+                <ParameterRef Id="%AID%_UP-%TT%%CC%%id+2%_R-%TT%%CC%%id+2%01" RefId="%AID%_UP-%TT%%CC%%id+2%" />
+              </Block>
+            </ParameterRefs>
+
+          </Static>
+
+          <Dynamic>
+
+            <!-- Per-Stützpunkt UI block. Outer choose: visible only if
+                 ScheduleNumPoints (id 241) >= %SP%. Inner choose: pick
+                 between Uhrzeit and Sun-Offset based on channel-level
+                 ScheduleSchaltzeiten (id 244). Brightness always visible.
+                 Tight layout (no separators per SP) per UX feedback. -->
+            <ChannelIndependentBlock Name="ScheduleStuetzPunktUI">
+              <choose ParamRefId="%AID%_UP-%TT%%CC%241_R-%TT%%CC%24101">
+                <when test=">%SP-1%">
+                  <choose ParamRefId="%AID%_UP-%TT%%CC%244_R-%TT%%CC%24401">
+                    <when test="0"> <!-- Uhrzeit -->
+                      <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+0%_R-%TT%%CC%%id+0%01" IndentLevel="2" />
+                    </when>
+                    <when test="1"> <!-- Sonne -->
+                      <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+1%_R-%TT%%CC%%id+1%01" IndentLevel="2" />
+                    </when>
+                  </choose>
+                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+2%_R-%TT%%CC%%id+2%01" IndentLevel="3" />
+                </when>
+              </choose>
+            </ChannelIndependentBlock>
+
+          </Dynamic>
+
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

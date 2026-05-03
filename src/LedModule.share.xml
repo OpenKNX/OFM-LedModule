@@ -163,6 +163,118 @@
                 </TypeRestriction>
               </ParameterType>
 
+              <!-- Uhrzeitabhängiges Dimmen — Phase A + B -->
+              <ParameterType Id="%AID%_PT-ScheduleNumPoints" Name="ScheduleNumPoints">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="2" maxInclusive="10" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ScheduleOffBehavior" Name="ScheduleOffBehavior">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="Buttons">
+                  <Enumeration Text="Sequenz stoppen" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Ausschalten" Value="1" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ScheduleFallbackTime" Name="ScheduleFallbackTime">
+                <TypeRestriction Base="Value" SizeInBit="16" UIHint="DropDown">
+                  <Enumeration Text="kein Rückfall" Value="0" Id="%ENID%" />
+                  <Enumeration Text="1 min" Value="1" Id="%ENID%" />
+                  <Enumeration Text="5 min" Value="5" Id="%ENID%" />
+                  <Enumeration Text="15 min" Value="15" Id="%ENID%" />
+                  <Enumeration Text="30 min" Value="30" Id="%ENID%" />
+                  <Enumeration Text="1 h" Value="60" Id="%ENID%" />
+                  <Enumeration Text="2 h" Value="120" Id="%ENID%" />
+                  <Enumeration Text="6 h" Value="360" Id="%ENID%" />
+                  <Enumeration Text="12 h" Value="720" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <!-- Channel-level Schaltzeiten (Phase B): Uhrzeit oder Sun-Offset.
+                   Steuert pro Kanal welcher der zwei Stützpunkt-Time-Parameter
+                   sichtbar ist (Union @ same byte). -->
+              <ParameterType Id="%AID%_PT-ScheduleSchaltzeiten" Name="ScheduleSchaltzeiten">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="Buttons">
+                  <Enumeration Text="Uhrzeit" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang/-untergang" Value="1" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <!-- Stützpunkt-Time when Schaltzeiten=Uhrzeit: full-hour dropdown. -->
+              <ParameterType Id="%AID%_PT-ScheduleHourTime" Name="ScheduleHourTime">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="00:00" Value="0"  Id="%ENID%" />
+                  <Enumeration Text="01:00" Value="1"  Id="%ENID%" />
+                  <Enumeration Text="02:00" Value="2"  Id="%ENID%" />
+                  <Enumeration Text="03:00" Value="3"  Id="%ENID%" />
+                  <Enumeration Text="04:00" Value="4"  Id="%ENID%" />
+                  <Enumeration Text="05:00" Value="5"  Id="%ENID%" />
+                  <Enumeration Text="06:00" Value="6"  Id="%ENID%" />
+                  <Enumeration Text="07:00" Value="7"  Id="%ENID%" />
+                  <Enumeration Text="08:00" Value="8"  Id="%ENID%" />
+                  <Enumeration Text="09:00" Value="9"  Id="%ENID%" />
+                  <Enumeration Text="10:00" Value="10" Id="%ENID%" />
+                  <Enumeration Text="11:00" Value="11" Id="%ENID%" />
+                  <Enumeration Text="12:00" Value="12" Id="%ENID%" />
+                  <Enumeration Text="13:00" Value="13" Id="%ENID%" />
+                  <Enumeration Text="14:00" Value="14" Id="%ENID%" />
+                  <Enumeration Text="15:00" Value="15" Id="%ENID%" />
+                  <Enumeration Text="16:00" Value="16" Id="%ENID%" />
+                  <Enumeration Text="17:00" Value="17" Id="%ENID%" />
+                  <Enumeration Text="18:00" Value="18" Id="%ENID%" />
+                  <Enumeration Text="19:00" Value="19" Id="%ENID%" />
+                  <Enumeration Text="20:00" Value="20" Id="%ENID%" />
+                  <Enumeration Text="21:00" Value="21" Id="%ENID%" />
+                  <Enumeration Text="22:00" Value="22" Id="%ENID%" />
+                  <Enumeration Text="23:00" Value="23" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <!-- Stützpunkt-Time when Schaltzeiten=Sonne: relative offset.
+                   Encoding: 0..16 = Sonnenaufgang -5h..+5h, 17..33 = Sonnenuntergang -5h..+5h.
+                   Decoded in Schedule.cpp via SUN_OFFSET_MIN[idx mod 17]. -->
+              <ParameterType Id="%AID%_PT-ScheduleSunOffset" Name="ScheduleSunOffset">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="Sonnenaufgang -5h"     Value="0"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang -4h"     Value="1"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang -3h"     Value="2"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang -2h"     Value="3"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang -1h"     Value="4"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang -45min"  Value="5"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang -30min"  Value="6"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang -15min"  Value="7"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +- 0min" Value="8"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +15min"  Value="9"  Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +30min"  Value="10" Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +45min"  Value="11" Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +1h"     Value="12" Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +2h"     Value="13" Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +3h"     Value="14" Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +4h"     Value="15" Id="%ENID%" />
+                  <Enumeration Text="Sonnenaufgang +5h"     Value="16" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang -5h"     Value="17" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang -4h"     Value="18" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang -3h"     Value="19" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang -2h"     Value="20" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang -1h"     Value="21" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang -45min"  Value="22" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang -30min"  Value="23" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang -15min"  Value="24" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +- 0min" Value="25" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +15min"  Value="26" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +30min"  Value="27" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +45min"  Value="28" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +1h"     Value="29" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +2h"     Value="30" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +3h"     Value="31" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +4h"     Value="32" Id="%ENID%" />
+                  <Enumeration Text="Sonnenuntergang +5h"     Value="33" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ScheduleBrightness" Name="ScheduleBrightness">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="100" />
+              </ParameterType>
+
             </ParameterTypes>
 
             <Parameters>
@@ -350,7 +462,7 @@
                   <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,4" Text="Funktion" UIHint="Headline" />
                 </ParameterBlock>
                 <!-- Table content -->
-                <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTableLine']/*" prefix="LED" type="template" IsInner="true" />
+                <op:include href="LedModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='AssignmentTableLine']/*" prefix="LED" type="template" IsInner="true" />
 
 
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
@@ -541,7 +653,7 @@
                   </when>
                 </choose>
 
-                <op:include href="LEDModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='FunctionAssignment']/*" prefix="LED" type="template" IsInner="true" />
+                <op:include href="LedModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='FunctionAssignment']/*" prefix="LED" type="template" IsInner="true" />
               </ParameterBlock>
 
               <op:include href="Single.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LED_SC" />

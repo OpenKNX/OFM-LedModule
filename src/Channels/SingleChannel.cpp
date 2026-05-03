@@ -1,4 +1,5 @@
 #include "SingleChannel.h"
+#include "Schedule.h"
 #include <knx.h>
 
 SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannels[1])
@@ -14,6 +15,13 @@ SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannel
     KoLED_SC_ChStateOnOff.value(false, DPT_State);
     KoLED_SC_ChBrightnessStatus.value((uint16_t)(_brightness.value() / VALUE_KNX_MULTIPLY), DPT_Scaling);
 
+    // Phase A — Uhrzeitabhängiges Dimmen: instantiate evaluator if enabled in ETS.
+    if (_channelActive && ParamLED_SC_ChScheduleActive)
+    {
+        _schedule = new Schedule(index, this, pDimmer);
+        _schedule->setup();
+    }
+
 #ifdef EXT_DEBUG_LOG
     logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
     for (int i = 0; i < N_SCENES; i++)
@@ -21,6 +29,11 @@ SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannel
         logDebugP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d", _channelIndex, _scenes[i].sceneNr, _scenes[i].funcType, _scenes[i].valueType, _scenes[i].lockObj, _scenes[i].lockFunc, _scenes[i].isFixed, _scenes[i].value[0], _scenes[i].value[1], _scenes[i].value[2]);
     }
 #endif
+}
+
+SingleChannel::~SingleChannel()
+{
+    delete _schedule;
 }
 
 const std::string SingleChannel::name()
@@ -115,6 +128,9 @@ void SingleChannel::loop()
             _brightness.setTargetValue(0, dimmingTimeOFF());
         }
     }
+
+    // Phase A — Uhrzeitabhängiges Dimmen: tick the schedule (no-op if not enabled).
+    if (_schedule) _schedule->loop();
 }
 
 void SingleChannel::processInputKo(GroupObject& ko)
@@ -131,6 +147,10 @@ void SingleChannel::processInputKo(GroupObject& ko)
     else
         relKO = -1;
 
+    // Phase A — Schedule_Active KO is owned by the Schedule evaluator
+    if (_schedule && _schedule->processInputKo(ko, relKO))
+        return;
+
     if (relKO == LED_SC_KoChLocking)
         _isLocked = ko.value(DPT_Switch);
     else if (!_isLocked)
@@ -139,12 +159,22 @@ void SingleChannel::processInputKo(GroupObject& ko)
         {
             case LED_SC_KoChSwitch:
                 if (!getLock())
-                    setSwitch(ko.value(DPT_Switch));
+                {
+                    bool on = ko.value(DPT_Switch);
+                    setSwitch(on);
+                    // Switch ON does not pause the schedule (it should immediately
+                    // pick up tracking). Switch OFF pauses (lamp is off).
+                    if (!on && _schedule) _schedule->notifyLampOff();
+                }
                 break;
 
             case LED_SC_KoChSwitchNoDim:
                 if (!getLock())
-                    setSwitchNoDim(ko.value(DPT_Switch));
+                {
+                    bool on = ko.value(DPT_Switch);
+                    setSwitchNoDim(on);
+                    if (!on && _schedule) _schedule->notifyLampOff();
+                }
                 break;
 
             case LED_SC_KoChLocking:
@@ -157,6 +187,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 {
                     setBrightness((uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
                     logDebugP("Brightness KO: %d -> BR.value %d", (uint16_t)ko.value(DPT_Scaling), (uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
+                    if (_schedule) _schedule->notifyManualChange();
                 }
                 break;
 
@@ -172,6 +203,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                         relDimDown();
                     if (tmpu16 == 0x00 || tmpu16 == 0x08)
                         relDimStop();
+                    if (_schedule) _schedule->notifyManualChange();
                 }
                 break;
 
@@ -180,6 +212,7 @@ void SingleChannel::processInputKo(GroupObject& ko)
                 {
                     handleScene(ko.value(DPT_SceneNumber));
                     _sceneNumberActive = (uint8_t)ko.value(DPT_SceneNumber) + 1;
+                    if (_schedule) _schedule->notifyManualChange();
                 }
                 break;
 
