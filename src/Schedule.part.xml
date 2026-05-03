@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="OpenKNX" ToolVersion="0">
+
+  <ManufacturerData>
+    <Manufacturer>
+      <ApplicationPrograms>
+        <ApplicationProgram>
+
+          <op:partParams name="TBD">
+            <!-- Documentation only — actual values come from the caller's <op:part> declaration -->
+            <op:param name="%SP%" value="1" increment="1" digits="2" />  <!-- Stützpunkt number 01..10 -->
+            <op:param name="%TT%" value="21" increment="0" digits="2" />  <!-- Module Type -->
+            <op:param name="%id%" value="210" increment="5" digits="3" /> <!-- Param ID base -->
+            <op:param name="%MO%" value="94" increment="4" digits="3" />  <!-- Memory Offset -->
+          </op:partParams>
+
+          <Static>
+
+            <Parameters>
+
+              <Block Name="ScheduleStuetzPunkt"> <!-- 4 bytes per Stützpunkt -->
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+0%" Name="Ch%C%SchedulePoint%SP%_Mode"       ParameterType="%AID%_PT-SchedulePointMode" Offset="%MO%"   BitOffset="0" Text="Modus"      Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+1%" Name="Ch%C%SchedulePoint%SP%_Hour"       ParameterType="%AID%_PT-ScheduleHour"      Offset="%MO+1%" BitOffset="0" Text="Stunde"     Value="0" SuffixText="Uhr" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+2%" Name="Ch%C%SchedulePoint%SP%_Minute"     ParameterType="%AID%_PT-ScheduleMinute"    Offset="%MO+2%" BitOffset="0" Text="Minute"     Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%id+3%" Name="Ch%C%SchedulePoint%SP%_Brightness" ParameterType="%AID%_PT-ScheduleBrightness" Offset="%MO+3%" BitOffset="0" Text="Helligkeit" Value="50" SuffixText="%" />
+              </Block>
+
+            </Parameters>
+
+            <ParameterRefs>
+              <Block Name="ParamRefSchedule">
+                <ParameterRef Id="%AID%_UP-%TT%%CC%%id+0%_R-%TT%%CC%%id+0%01" RefId="%AID%_UP-%TT%%CC%%id+0%" />
+                <ParameterRef Id="%AID%_UP-%TT%%CC%%id+1%_R-%TT%%CC%%id+1%01" RefId="%AID%_UP-%TT%%CC%%id+1%" />
+                <ParameterRef Id="%AID%_UP-%TT%%CC%%id+2%_R-%TT%%CC%%id+2%01" RefId="%AID%_UP-%TT%%CC%%id+2%" />
+                <ParameterRef Id="%AID%_UP-%TT%%CC%%id+3%_R-%TT%%CC%%id+3%01" RefId="%AID%_UP-%TT%%CC%%id+3%" />
+              </Block>
+            </ParameterRefs>
+
+          </Static>
+
+          <Dynamic>
+
+            <ChannelIndependentBlock Name="ScheduleStuetzPunktUI">
+              <!-- Visibility: this Stützpunkt is shown only when Ch%C%ScheduleNumPoints >= %SP% -->
+              <!-- Visibility: Stützpunkt %SP% sichtbar wenn ScheduleNumPoints (id 241) >= %SP%, also > %SP-1% -->
+              <choose ParamRefId="%AID%_UP-%TT%%CC%241_R-%TT%%CC%24101">
+                <when test=">%SP-1%">
+                  <ParameterSeparator Id="%AID%_PS-nnn" Text="Stützpunkt %SP%" />
+                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+1%_R-%TT%%CC%%id+1%01" IndentLevel="2" />
+                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+2%_R-%TT%%CC%%id+2%01" IndentLevel="2" />
+                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%id+3%_R-%TT%%CC%%id+3%01" IndentLevel="2" />
+                </when>
+              </choose>
+            </ChannelIndependentBlock>
+
+          </Dynamic>
+
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

@@ -163,6 +163,64 @@
                 </TypeRestriction>
               </ParameterType>
 
+              <!-- Uhrzeitabhängiges Dimmen — Phase A -->
+              <ParameterType Id="%AID%_PT-ScheduleNumPoints" Name="ScheduleNumPoints">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="2" maxInclusive="10" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ScheduleOffBehavior" Name="ScheduleOffBehavior">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="Radio">
+                  <Enumeration Text="Sequenz stoppen" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Ausschalten" Value="1" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ScheduleFallbackTime" Name="ScheduleFallbackTime">
+                <TypeRestriction Base="Value" SizeInBit="16" UIHint="DropDown">
+                  <Enumeration Text="kein Rückfall" Value="0" Id="%ENID%" />
+                  <Enumeration Text="1 min" Value="1" Id="%ENID%" />
+                  <Enumeration Text="5 min" Value="5" Id="%ENID%" />
+                  <Enumeration Text="15 min" Value="15" Id="%ENID%" />
+                  <Enumeration Text="30 min" Value="30" Id="%ENID%" />
+                  <Enumeration Text="1 h" Value="60" Id="%ENID%" />
+                  <Enumeration Text="2 h" Value="120" Id="%ENID%" />
+                  <Enumeration Text="6 h" Value="360" Id="%ENID%" />
+                  <Enumeration Text="12 h" Value="720" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-SchedulePointMode" Name="SchedulePointMode">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="Feste Uhrzeit" Value="0" Id="%ENID%" />
+                  <!-- Phase B: Sonnenaufgang, Sonnenuntergang -->
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ScheduleHour" Name="ScheduleHour">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="23" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ScheduleMinute" Name="ScheduleMinute">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="00" Value="0" Id="%ENID%" />
+                  <Enumeration Text="05" Value="5" Id="%ENID%" />
+                  <Enumeration Text="10" Value="10" Id="%ENID%" />
+                  <Enumeration Text="15" Value="15" Id="%ENID%" />
+                  <Enumeration Text="20" Value="20" Id="%ENID%" />
+                  <Enumeration Text="25" Value="25" Id="%ENID%" />
+                  <Enumeration Text="30" Value="30" Id="%ENID%" />
+                  <Enumeration Text="35" Value="35" Id="%ENID%" />
+                  <Enumeration Text="40" Value="40" Id="%ENID%" />
+                  <Enumeration Text="45" Value="45" Id="%ENID%" />
+                  <Enumeration Text="50" Value="50" Id="%ENID%" />
+                  <Enumeration Text="55" Value="55" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-ScheduleBrightness" Name="ScheduleBrightness">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="100" />
+              </ParameterType>
+
             </ParameterTypes>
 
             <Parameters>
