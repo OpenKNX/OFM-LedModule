@@ -8,7 +8,7 @@
           <Static>
 
             <Parameters>
-              <Union SizeInBit="56">
+              <Union SizeInBit="104">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%001" Name="CH%C%_Lighttype"      ParameterType="%AID%_PT-Lighttype"       Offset="0"  BitOffset="0" Text="Licht"          Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%005" Name="CH%C%_TW_Light"       ParameterType="%AID%_PT-TWLights"        Offset="1"  BitOffset="0" Text="TW Licht"       Value="0" />

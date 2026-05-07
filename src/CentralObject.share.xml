@@ -39,10 +39,12 @@
 
           <Dynamic>
             <ChannelIndependentBlock>
-              <ParameterBlock Text="CO - ZentralObjekt" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="lightbulb-outline">
+              <!-- 
+              <ParameterBlock Visiblility="false" Text="CO - ZentralObjekt" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="lightbulb-outline">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Dimmkanäle erscheinen automatisch, wenn sie konfiguriert sind." />
                 <op:include href="CentralObject.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_CO" IsInner="true" />
               </ParameterBlock>
+            -->
             </ChannelIndependentBlock>
           </Dynamic>
         </ApplicationProgram>

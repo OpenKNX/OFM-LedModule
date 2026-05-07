@@ -58,11 +58,14 @@
           <Dynamic>
             <ChannelIndependentBlock>
               
-              <ParameterSeparator Id="%AID%_PS-nnn" Text="blabla" UIHint="HorizontalRuler" />
+              
               
               <choose ParamRefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101">
                 <when test="42">
-                  <ParameterBlock Id="%AID%_PB-nnn" Name="COLight_%CC%" Text="CO %C%: {{0:--}}" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201">
+                  <!-- 
+                  <ParameterBlock Id="%AID%_PB-nnn" Name="COLight_%CC%" Text="CO %C%: {{0:-}}" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201"> 
+                  -->
+
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" /> <!-- On/Off -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" /> <!-- On/Off NoDim-->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" /> <!-- Lock -->
@@ -74,9 +77,10 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" /> <!-- HSV -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" /> <!-- Nacht -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" /> <!-- Scene -->
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="CO%n%" UIHint="HorizontalRuler" />
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Nothing To Do" UIHint="Headline"/>
+                    <!-- 
                   </ParameterBlock>
+
+                -->
                 </when>
               </choose>
 

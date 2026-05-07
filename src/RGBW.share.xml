@@ -91,10 +91,12 @@
 
           <Dynamic>
             <ChannelIndependentBlock>
+            <!-- 
               <ParameterBlock Text="RGBW - Rot/Grün/Blau/Weiß" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Dimmkanäle erscheinen automatisch, wenn sie konfiguriert sind." />
                 <op:include href="RGBW.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_RGBW" IsInner="true" />
               </ParameterBlock>
+              -->
             </ChannelIndependentBlock>
           </Dynamic>
 
