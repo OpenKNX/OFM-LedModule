@@ -111,12 +111,12 @@
               </Union>
                                          
 
-              <Union SizeInBit="320"> <!-- 8 Scenes * 5 bytes: total 40 bytes -->
+              <Union SizeInBit="320" op:nowarn="true"> <!-- 8 Scenes * 5 bytes: total 40 bytes -->
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="47" BitOffset="0" />
                 <!-- Scenes -->
                 <op:usePart name="LED_RGB_SC" xpath="//Static/Parameters/Block[@Name='ScenesRGB']/*" />
               </Union>
-              <Union SizeInBit="192">
+              <Union SizeInBit="200">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="87" BitOffset="0" />
                 <op:usePart name="MEASUREPROTRGB" xpath="//Static/Parameters/Union/*[position()>1]" />
               </Union>

@@ -15,7 +15,7 @@
           </op:partParams> -->
           <Static>
             <Parameters>
-              <Union SizeInBit="192">
+              <Union SizeInBit="200">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="%ParamOffset%" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+0%" Name="Ch%C%MeasureActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Messungen aktivieren" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+1%" Name="Ch%C%ProtecitonsActive" ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Schutzfunktionen aktivieren" Value="1" />
@@ -30,20 +30,20 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+4%" Name="Ch%C%PowerSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangePower" Offset="2" BitOffset="0" Text="Mindeständerung absolut" Value="1" SuffixText="W" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+5%" Name="Ch%C%PowerSendCyclicBase" ParameterType="%AID%_PT-DelayBase" Offset="4" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%%PPP+6%" Name="Ch%C%PowerSendCyclicTime" ParameterType="%AID%_PT-DelayTime" Offset="4" BitOffset="2" Text="Zeit" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+8%" Name="Ch%C%CurrentSendMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="5" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+9%" Name="Ch%C%CurrentSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangeCurrent" Offset="6" BitOffset="0" Text="Mindeständerung absolut" Value="10" SuffixText="mA" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+10%" Name="Ch%C%CurrentSendCyclicBase" ParameterType="%AID%_PT-DelayBase" Offset="8" BitOffset="0" Text="Zeitbasis" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+11%" Name="Ch%C%CurrentSendCyclicTime" ParameterType="%AID%_PT-DelayTime" Offset="8" BitOffset="2" Text="Zeit" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+14%" Name="Ch%C%DeviceProtConstCurrent" ParameterType="%AID%_PT-MaxCurrent" Offset="10" BitOffset="0" Text="Dauerlast" Value="4" SuffixText="A" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+15%" Name="Ch%C%DeviceProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="11" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+16%" Name="Ch%C%DeviceProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="12" BitOffset="0" Text="Zeitbasis" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+17%" Name="Ch%C%DeviceProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="12" BitOffset="2" Text="Zeit" Value="30" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+20%" Name="Ch%C%LampProtCableLength" ParameterType="%AID%_PT-CableLength" Offset="14" BitOffset="0" Text="Kabellänge" Value="10" SuffixText="m" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+22%" Name="Ch%C%LampProtConstPower" ParameterType="%AID%_PT-MinimumChangePower" Offset="18" BitOffset="0" Text="Dauerleistung" Value="20" SuffixText="W" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+24%" Name="Ch%C%LampProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="20" BitOffset="0" Text="Zeitbasis" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+25%" Name="Ch%C%LampProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="20" BitOffset="2" Text="Zeit" Value="30" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+23%" Name="Ch%C%LampProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="22" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
-                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+21%" Name="Ch%C%LampProtCableCrossSect" ParameterType="%AID%_PT-CableCrossSection" Offset="23" BitOffset="0" Text="Leiterquerschnitt" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+8%" Name="Ch%C%CurrentSendMinChangePercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="6" BitOffset="0" Text="Mindeständerung relativ" Value="5" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+9%" Name="Ch%C%CurrentSendMinChangeAbsolute" ParameterType="%AID%_PT-MinimumChangeCurrent" Offset="7" BitOffset="0" Text="Mindeständerung absolut" Value="10" SuffixText="mA" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+10%" Name="Ch%C%CurrentSendCyclicBase" ParameterType="%AID%_PT-DelayBase" Offset="9" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+11%" Name="Ch%C%CurrentSendCyclicTime" ParameterType="%AID%_PT-DelayTime" Offset="9" BitOffset="2" Text="Zeit" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+14%" Name="Ch%C%DeviceProtConstCurrent" ParameterType="%AID%_PT-MaxCurrent" Offset="11" BitOffset="0" Text="Dauerlast" Value="4" SuffixText="A" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+15%" Name="Ch%C%DeviceProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="12" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+16%" Name="Ch%C%DeviceProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="13" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+17%" Name="Ch%C%DeviceProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="13" BitOffset="2" Text="Zeit" Value="30" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+20%" Name="Ch%C%LampProtCableLength" ParameterType="%AID%_PT-CableLength" Offset="15" BitOffset="0" Text="Kabellänge" Value="10" SuffixText="m" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+22%" Name="Ch%C%LampProtConstPower" ParameterType="%AID%_PT-MinimumChangePower" Offset="19" BitOffset="0" Text="Dauerleistung" Value="20" SuffixText="W" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+24%" Name="Ch%C%LampProtOverloadBase" ParameterType="%AID%_PT-DelayBase" Offset="21" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+25%" Name="Ch%C%LampProtOverloadTime" ParameterType="%AID%_PT-DelayTime" Offset="21" BitOffset="2" Text="Zeit" Value="30" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+23%" Name="Ch%C%LampProtOverloadPercent" ParameterType="%AID%_PT-ValueDpt5001" Offset="23" BitOffset="0" Text="Max. Überlast" Value="10" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%%CC%%PPP+21%" Name="Ch%C%LampProtCableCrossSect" ParameterType="%AID%_PT-CableCrossSection" Offset="24" BitOffset="0" Text="Leiterquerschnitt" Value="1" />
                 <!-- 6 bits free -->
               </Union>
             </Parameters>
