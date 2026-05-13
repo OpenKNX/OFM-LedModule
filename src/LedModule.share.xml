@@ -121,7 +121,7 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-LockUnlock" Name="Sperren">
-                <TypeRestriction Base="Value" SizeInBit="2" UIHint="DropDown">
+                <TypeRestriction Base="Value" SizeInBit="1" UIHint="DropDown">
                   <Enumeration Text="Entsperren" Value="0" Id="%ENID%" />
                   <Enumeration Text="Sperren" Value="1" Id="%ENID%" />
                 </TypeRestriction>
