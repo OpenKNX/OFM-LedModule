@@ -40,17 +40,17 @@
             </ComObjectTable>
 
             <ComObjectRefs>
-              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" Text="{{0:LED-CO %C%}}: Schalten"               TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_O-%TT%%CC%001" Text="{{0:LED-CO %C%}}: Schalten sofort"        TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_O-%TT%%CC%002" Text="{{0:LED-CO %C%}}: Sperren"                TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_O-%TT%%CC%003" Text="{{0:LED-CO %C%}}: Dimmwert absolut"       TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_O-%TT%%CC%004" Text="{{0:LED-CO %C%}}: Dimmwert relativ"       TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_O-%TT%%CC%005" Text="{{0:LED-CO %C%}}: Farbtemperatur absolut" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" Text="{{0:LED-CO %C%}}: Farbtemperatur relativ" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" Text="{{0:LED-CO %C%}}: RGB"                    TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" Text="{{0:LED-CO %C%}}: HSV"                    TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" Text="{{0:LED-CO %C%}}: Nacht"                  TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" Text="{{0:LED-CO %C%}}: Szene"                  TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" Text="{{0:LED-Zentral %C%}}: Schalten"               TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_O-%TT%%CC%001" Text="{{0:LED-Zentral %C%}}: Schalten sofort"        TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_O-%TT%%CC%002" Text="{{0:LED-Zentral %C%}}: Sperren"                TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_O-%TT%%CC%003" Text="{{0:LED-Zentral %C%}}: Dimmwert absolut"       TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_O-%TT%%CC%004" Text="{{0:LED-Zentral %C%}}: Dimmwert relativ"       TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_O-%TT%%CC%005" Text="{{0:LED-Zentral %C%}}: Farbtemperatur absolut" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" Text="{{0:LED-Zentral %C%}}: Farbtemperatur relativ" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" Text="{{0:LED-Zentral %C%}}: RGB"                    TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" Text="{{0:LED-Zentral %C%}}: HSV"                    TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" Text="{{0:LED-Zentral %C%}}: Nacht"                  TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" Text="{{0:LED-Zentral %C%}}: Szene"                  TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
             </ComObjectRefs>
 
           </Static>
