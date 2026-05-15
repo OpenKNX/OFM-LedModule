@@ -27,6 +27,7 @@ class LightChannel : public OpenKNX::Channel
     bool getStairTrigger() { return _stairTrigger; }
     void setLastOnValue(int32_t lastOnVal) { _lastOnValue = lastOnVal; }
     int32_t getLastOnValue() { return _lastOnValue; }
+    int32_t getCurrentBrightnessValue() { return _brightness.value(); }
     virtual void setSwitch(bool switchOn) = 0;
     virtual void setSwitchNoDim(bool switchOn) = 0;
     bool getNight();

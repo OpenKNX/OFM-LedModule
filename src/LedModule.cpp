@@ -453,4 +453,37 @@ void LedModule::savePower() {
   }
 }
 
+SingleChannel* LedModule::getSingleChannel(uint8_t channel)
+{
+    if (channel >= LED_SC_ChannelCount)
+    {
+        logErrorP("Invalid single channel requested: %d", channel);
+        return nullptr;
+    }
+    
+    return _singleChannels[channel];
+}
+
+TWChannel* LedModule::getTWChannel(uint8_t channel)
+{
+    if (channel >= LED_TW_ChannelCount)
+    {
+        logErrorP("Invalid tunable white channel requested: %d", channel);
+        return nullptr;
+    }
+
+    return _twChannels[channel];
+}
+
+RGBChannel* LedModule::getRGBChannel(uint8_t channel)
+{
+    if (channel >= LED_RGB_ChannelCount)
+    {
+        logErrorP("Invalid RGB channel requested: %d", channel);
+        return nullptr;
+    }
+
+    return _rgbChannels[channel];
+}
+
 LedModule openknxLedModule;

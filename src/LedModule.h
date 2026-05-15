@@ -94,6 +94,10 @@ public:
   RGBTWChannel *_rgbtwChannels[LED_RGBTW_ChannelCount];
   COChannel *_coChannels[LED_CO_ChannelCount];
 
+  SingleChannel* getSingleChannel(uint8_t channel);
+  TWChannel* getTWChannel(uint8_t channel);
+  RGBChannel* getRGBChannel(uint8_t channel);
+
   bool _CO_Active_SC[LED_SC_ChannelCount][LED_CO_ChannelCount];
   bool _CO_Active_TW[LED_TW_ChannelCount][LED_CO_ChannelCount];
   bool _CO_Active_RGB[LED_RGB_ChannelCount][LED_CO_ChannelCount];
