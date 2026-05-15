@@ -17,7 +17,7 @@
           <op:part href="MeasureAndProtection.part.xml" name="MEASUREPROT" instances="1">
             <op:param name="%ParamOffset%" value="65" increment="24" />
             <op:param name="%TT%" value="21" increment="0" digits="2" />
-            <op:param name="%PPP%" value="27" increment="26" digits="3" />
+            <op:param name="%PPP%" value="30" increment="26" digits="3" />
             <op:param name="%KKK%" value="10" increment="6" digits="3" />
             <op:param name="%KO%" value="10" increment="6" />
             <op:param name="%NAME%" value="EK" />
@@ -74,15 +74,23 @@
                 <!-- <Parameter Id="%AID%_UP-%TT%%CC%027" Name="Ch%C%MeasureActive"         ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="2" Text="Messungen aktivieren" Value="0" /> -->
                 <!-- <Parameter Id="%AID%_UP-%TT%%CC%028" Name="Ch%C%ProtecitonsActive"     ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="3" Text="Schutzfunktionen aktivieren" Value="1" /> -->
                 <!-- 6 bits free -->
+              </Union>              
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="25" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%027" Name="Ch%C%CO1"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="0" Text="Zentralobjekt 1" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%028" Name="Ch%C%CO2"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="1" Text="Zentralobjekt 2" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%029" Name="Ch%C%CO3"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="2" Text="Zentralobjekt 3" Value="0" />
+                <!-- 5 bits free -->
               </Union>
               <Union SizeInBit="320">
                 <!-- 8 Scenes * 5 bytes: total 40 bytes -->
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="25" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="26" BitOffset="0" />
                 <!-- Scenes -->
                 <op:usePart name="LED_SC_SC" xpath="//Static/Parameters/Block[@Name='ScenesSC']/*" />
               </Union>
-              <Union SizeInBit="192">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="65" BitOffset="0" />
+
+              <Union SizeInBit="200">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="66" BitOffset="0" />
                 <op:usePart name="MEASUREPROT" xpath="//Static/Parameters/Union/*[position()>1]" />
               </Union>
 
@@ -115,6 +123,9 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%024_R-%TT%%CC%02401" RefId="%AID%_UP-%TT%%CC%024" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%025_R-%TT%%CC%02501" RefId="%AID%_UP-%TT%%CC%025" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%026_R-%TT%%CC%02601" RefId="%AID%_UP-%TT%%CC%026" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%027_R-%TT%%CC%02701" RefId="%AID%_UP-%TT%%CC%027" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%028_R-%TT%%CC%02801" RefId="%AID%_UP-%TT%%CC%028" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%029_R-%TT%%CC%02901" RefId="%AID%_UP-%TT%%CC%029" />
               <!-- PART uses IDs 027-052 -->
               <op:usePart name="MEASUREPROT" xpath="//Static/ParameterRefs/*" />
               <!-- Scene Parameter Refs -->
@@ -286,6 +297,26 @@
                           </ParameterBlock>
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Fix: Wenn aktiv kann diese Szene nicht im Betrieb per Speichern überschrieben werden." />
                         </ParameterBlock>
+                      </when>
+                    </choose>
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Zentrale Objekte" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%027_R-%TT%%CC%02701" IndentLevel="1"/>
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%028_R-%TT%%CC%02801" IndentLevel="1"/>
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%029_R-%TT%%CC%02901" IndentLevel="1"/>
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%027_R-%TT%%CC%02701">
+                      <when test="1">
+                        <Assign TargetParamRefRef="%AID%_P-2601001_R-260100101" Value="42" />
+                      </when>
+                    </choose>
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%028_R-%TT%%CC%02801">
+                      <when test="1">
+                        <Assign TargetParamRefRef="%AID%_P-2602001_R-260200101" Value="42" />
+                      </when>
+                    </choose>
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%029_R-%TT%%CC%02901">
+                      <when test="1">
+                        <Assign TargetParamRefRef="%AID%_P-2603001_R-260300101" Value="42" />
                       </when>
                     </choose>
 

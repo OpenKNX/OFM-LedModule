@@ -1,4 +1,7 @@
 #include "HWDimmerPCA.h"
+#include "HWDimmer.h"
+#include "../LedModule.h"
+
 
 /**
  * @brief Construct a new HWDimmerPCA::HWDimmerPCA object
@@ -32,8 +35,55 @@ HWDimmerPCA::HWDimmerPCA(HWDimmerPCA::PCAType type, uint8_t addr, uint16_t pwmFr
  */
 void HWDimmerPCA::setLevelInternal(uint16_t level, uint8_t channel)
 {
-    // logInfoP("setLevel: %3X",level);
-    _pwm.setPWM(channel, 0, min(getLevel(channel), DIM_RANGE));
+
+    const uint8_t (*pSCChannels)[1] = openknxLedModule.getSCHWChannels();
+    const uint8_t (*pTWChannels)[2] = openknxLedModule.getTWHWChannels();
+    const uint8_t (*pRGBChannels)[3] = openknxLedModule.getRGBHWChannels();
+    
+    for (int i = 0; i < LED_SC_ChannelCount; i++)
+    {
+        level = min(getLevel(channel), DIM_RANGE);
+        if (channel == pSCChannels[i][0])
+        {
+            _pwm.setPWM(channel, 0, level);   
+        }
+    }
+
+    for (int i = 0; i < LED_TW_ChannelCount; i++)
+    {
+        level = min(getLevel(channel), DIM_RANGE);
+        if (channel == pTWChannels[i][0])
+        {
+            _pwm.setPWM(channel, 0, level);   
+        }
+        if (channel == pTWChannels[i][1])
+        {
+            level = (level + 2048) % 4097;
+            _pwm.setPWM(channel, 2048 , level);
+        }
+    }
+    for (int i = 0; i < LED_RGB_ChannelCount; i++)
+    {
+        level = min(getLevel(channel), DIM_RANGE);
+        if (channel == pRGBChannels[i][0])
+        {
+            _pwm.setPWM(channel, 0, level);
+        }
+        if (channel == pRGBChannels[i][1])
+        {            
+            level = (level + 1365) % 4097;
+            _pwm.setPWM(channel, 1365, level);
+        }
+        if (channel == pRGBChannels[i][2])
+        {
+            level = (level + 2730) % 4097;
+            _pwm.setPWM(channel, 2730, level);
+        }
+    }
+
+
+    //logDebugP("setLevelInternal: Set channel %d to level %d", channel, min(getLevel(channel), DIM_RANGE));
+    //_pwm.setPWM(channel, 0, min(getLevel(channel), DIM_RANGE)  );
     // logInfoP("setLevel_3");
 }
 
@@ -127,7 +177,29 @@ void HWDimmerPCA::outputLUT()
 
 void HWDimmerPCA::runTestMode()
 {
-    // ToDo
+    logDebugP("Running LED hardware test mode for PCA");
+    logIndentUp();
+int vorher = 0;
+int nachher = 0;
+    logDebugP("All LEDs to maximum brightness");
+    for (uint8_t ch = 0; ch < 16; ch++)
+    {
+    logDebugP("Ch %d vorher: %d", ch, _pwm.getPWM(ch, true));    
+    _pwm.setPWM( ch, 0, 4095);
+    logDebugP("Ch %d nachher: %d", ch, _pwm.getPWM(ch, true));    
+    }
+    delay(30000);
+vorher = 0;
+nachher = 0;
+    logDebugP("All LEDs off");
+    for (uint8_t ch = 0; ch < 16; ch++)
+    {
+    logDebugP("Ch %d vorher: %d", ch, _pwm.getPWM(ch, true));    
+    _pwm.setPWM(ch, 0, 0);
+    logDebugP("Ch %d nachher: %d", ch, _pwm.getPWM(ch, true));
+    }
+    logDebugP("PCA Test mode finished");
+    logIndentDown();
 }
 
 /**

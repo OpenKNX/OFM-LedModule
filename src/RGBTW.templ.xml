@@ -6,20 +6,20 @@
       <ApplicationPrograms>
         <ApplicationProgram>
 
-          <op:part href="SceneBuilder.part.xml" name="LED_RGB_SC" instances="8">
+          <op:part href="SceneBuilder.part.xml" name="LED_RGBTW_SC" instances="8">
             <op:param name="%SZ%" value="1" increment="1" digits="1" /> <!-- Szene number -->
             <op:param name="%SN%" value="0" increment="1" digits="1" asLetter="true" /> <!-- Szene number -->
-            <op:param name="%TT%" value="23" increment="0" digits="2" /> <!-- Module Type -->
+            <op:param name="%TT%" value="25" increment="0" digits="2" /> <!-- Module Type -->
             <op:param name="%id%" value="130" increment="13" digits="3" /> <!-- Ref ID Base-->
             <op:param name="%MO%" value="0" increment="5" digits="1" /> <!-- Memory Offset -->
           </op:part>
 
-          <op:part href="MeasureAndProtection.part.xml" name="MEASUREPROTRGB" instances="1">
-            <op:param name="%TT%"   value="23" increment="0" digits="2" />
+          <op:part href="MeasureAndProtection.part.xml" name="MEASUREPROTRGBTW" instances="1">
+            <op:param name="%TT%"   value="25" increment="0" digits="2" />
             <op:param name="%PPP%"  value="51" increment="26" digits="3" />
             <op:param name="%KKK%"  value="17" increment="6" digits="3" />
             <op:param name="%KO%"   value="17" increment="6" />
-            <op:param name="%NAME%" value="RGB" />
+            <op:param name="%NAME%" value="RGBTW" />
           </op:part>
 
           <Static>
@@ -86,7 +86,7 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%034" Name="Ch%C%ColorDayTemp"          ParameterType="%AID%_PT-ColorTemperature" Offset="2" BitOffset="0" Text="Farbtemperatur Tag" Value="4000" />
                 <Parameter Id="%AID%_UP-%TT%%CC%035" Name="Ch%C%ColorDayBase"          ParameterType="%AID%_PT-DelayBase" Offset="4" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%036" Name="Ch%C%ColorDayTime"          ParameterType="%AID%_PT-DelayTime" Offset="4" BitOffset="2" Text="Zeit" Value="0" />
-              </Union>
+              </Union>              
               <Union SizeInBit="8">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="39" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%048" Name="Ch%C%CO1"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="0" Text="Zentralobjekt 1" Value="0" />
@@ -109,16 +109,16 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%043" Name="Ch%C%ScenesDisableNightSw"  ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Deaktivierung bei Nachtumschaltung" Value="0" />
                 <!-- 6 bits free -->
               </Union>
-                                         
+                           
 
               <Union SizeInBit="320"> <!-- 8 Scenes * 5 bytes: total 40 bytes -->
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="47" BitOffset="0" />
                 <!-- Scenes -->
-                <op:usePart name="LED_RGB_SC" xpath="//Static/Parameters/Block[@Name='ScenesRGB']/*" />
+                <op:usePart name="LED_RGBTW_SC" xpath="//Static/Parameters/Block[@Name='ScenesRGBTW']/*" />
               </Union>
               <Union SizeInBit="200">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="87" BitOffset="0" />
-                <op:usePart name="MEASUREPROTRGB" xpath="//Static/Parameters/Union/*[position()>1]" />
+                <op:usePart name="MEASUREPROTRGBTW" xpath="//Static/Parameters/Union/*[position()>1]" />
               </Union>
             </Parameters>
 
@@ -173,53 +173,54 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%048_R-%TT%%CC%04801" RefId="%AID%_UP-%TT%%CC%048" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%049_R-%TT%%CC%04901" RefId="%AID%_UP-%TT%%CC%049" />
               <ParameterRef Id="%AID%_UP-%TT%%CC%050_R-%TT%%CC%05001" RefId="%AID%_UP-%TT%%CC%050" />
+
               <!-- PART uses IDs 048-73 -->
-              <op:usePart name="MEASUREPROTRGB" xpath="//Static/ParameterRefs/*" />
+              <op:usePart name="MEASUREPROTRGBTW" xpath="//Static/ParameterRefs/*" />
               <!-- Scene Parameter Refs -->
-              <op:usePart name="LED_RGB_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefRGB']/*" />
+              <op:usePart name="LED_RGBTW_SC" xpath="//Static/ParameterRefs/Block[@Name='ParamRefRGBTW']/*" />
             </ParameterRefs>
 
             <ComObjectTable>
-              <ComObject Id="%AID%_O-%TT%%CC%000" Name="Ch%C%Switch"                 Text="Schalten"               Number="%K0%"  FunctionText="LED-RGB %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
-              <ComObject Id="%AID%_O-%TT%%CC%001" Name="Ch%C%SwitchNoDim"            Text="Schalten sofort"        Number="%K1%"  FunctionText="LED-RGB %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
-              <ComObject Id="%AID%_O-%TT%%CC%002" Name="Ch%C%StateOnOff"             Text="Schalten Status"        Number="%K2%"  FunctionText="LED-RGB %C%: Status"   ObjectSize="1 Bit"   ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11"    /> 
-              <ComObject Id="%AID%_O-%TT%%CC%003" Name="Ch%C%Locking"                Text="Sperren"                Number="%K3%"  FunctionText="LED-RGB %C%: Sperre"   ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11"    />
-              <ComObject Id="%AID%_O-%TT%%CC%004" Name="Ch%C%StateLocking"           Text="Sperren Status"         Number="%K4%"  FunctionText="LED-RGB %C%: Status"   ObjectSize="1 Bit"   ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11"    />
-              <ComObject Id="%AID%_O-%TT%%CC%005" Name="Ch%C%Brightness"             Text="Dimmwert absolut"       Number="%K5%"  FunctionText="LED-RGB %C%: Dimmen"   ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"     />
-              <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%BrightnessRel"          Text="Dimmwert relativ"       Number="%K6%"  FunctionText="LED-RGB %C%: Dimmen"   ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
-              <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%BrightnessStatus"       Text="Dimmwert Status"        Number="%K7%"  FunctionText="LED-RGB %C%: Status"   ObjectSize="1 Byte"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"     />
-              <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%ColorTemperature"       Text="Farbtemperatur absolut" Number="%K8%"  FunctionText="LED-RGB %C%: Dimmen"   ObjectSize="2 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
-              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%ColorTemperatureRel"    Text="Farbtemperatur relativ" Number="%K9%"  FunctionText="LED-RGB %C%: Dimmen"   ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
-              <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status"  Number="%K10%" FunctionText="LED-RGB %C%: Status"   ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
-              <ComObject Id="%AID%_O-%TT%%CC%011" Name="Ch%C%RGB"                    Text="RGB"                    Number="%K11%" FunctionText="LED-RGB %C%: Dimmen"   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
-              <ComObject Id="%AID%_O-%TT%%CC%012" Name="Ch%C%RGBStatus"              Text="RGB Status"             Number="%K12%" FunctionText="LED-RGB %C%: Status"   ObjectSize="3 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
-              <ComObject Id="%AID%_O-%TT%%CC%013" Name="Ch%C%HSV"                    Text="HSV"                    Number="%K13%" FunctionText="LED-RGB %C%: Dimmen"   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
-              <ComObject Id="%AID%_O-%TT%%CC%014" Name="Ch%C%HSVStatus"              Text="HSV Status"             Number="%K14%" FunctionText="LED-RGB %C%: Status"   ObjectSize="3 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
-              <ComObject Id="%AID%_O-%TT%%CC%015" Name="Ch%C%Night"                  Text="Nacht"                  Number="%K15%" FunctionText="LED-RGB %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
-              <ComObject Id="%AID%_O-%TT%%CC%016" Name="Ch%C%Scene"                  Text="Szene"                  Number="%K16%" FunctionText="LED-RGB %C%: Szene"    ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1"    />
-              <op:usePart name="MEASUREPROTRGB" xpath="//Static/ComObjectTable/*" />
+              <ComObject Id="%AID%_O-%TT%%CC%000" Name="Ch%C%Switch"                 Text="Schalten"               Number="%K0%"  FunctionText="LED-RGBTW %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%001" Name="Ch%C%SwitchNoDim"            Text="Schalten sofort"        Number="%K1%"  FunctionText="LED-RGBTW %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%002" Name="Ch%C%StateOnOff"             Text="Schalten Status"        Number="%K2%"  FunctionText="LED-RGBTW %C%: Status"   ObjectSize="1 Bit"   ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11"    /> 
+              <ComObject Id="%AID%_O-%TT%%CC%003" Name="Ch%C%Locking"                Text="Sperren"                Number="%K3%"  FunctionText="LED-RGBTW %C%: Sperre"   ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11"    />
+              <ComObject Id="%AID%_O-%TT%%CC%004" Name="Ch%C%StateLocking"           Text="Sperren Status"         Number="%K4%"  FunctionText="LED-RGBTW %C%: Status"   ObjectSize="1 Bit"   ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-11"    />
+              <ComObject Id="%AID%_O-%TT%%CC%005" Name="Ch%C%Brightness"             Text="Dimmwert absolut"       Number="%K5%"  FunctionText="LED-RGBTW %C%: Dimmen"   ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%006" Name="Ch%C%BrightnessRel"          Text="Dimmwert relativ"       Number="%K6%"  FunctionText="LED-RGBTW %C%: Dimmen"   ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
+              <ComObject Id="%AID%_O-%TT%%CC%007" Name="Ch%C%BrightnessStatus"       Text="Dimmwert Status"        Number="%K7%"  FunctionText="LED-RGBTW %C%: Status"   ObjectSize="1 Byte"  ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%008" Name="Ch%C%ColorTemperature"       Text="Farbtemperatur absolut" Number="%K8%"  FunctionText="LED-RGBTW %C%: Dimmen"   ObjectSize="2 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
+              <ComObject Id="%AID%_O-%TT%%CC%009" Name="Ch%C%ColorTemperatureRel"    Text="Farbtemperatur relativ" Number="%K9%"  FunctionText="LED-RGBTW %C%: Dimmen"   ObjectSize="4 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-3-7"     />
+              <ComObject Id="%AID%_O-%TT%%CC%010" Name="Ch%C%ColorTemperatureStatus" Text="Farbtemperatur Status"  Number="%K10%" FunctionText="LED-RGBTW %C%: Status"   ObjectSize="2 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-7-600"   />
+              <ComObject Id="%AID%_O-%TT%%CC%011" Name="Ch%C%RGB"                    Text="RGB"                    Number="%K11%" FunctionText="LED-RGBTW %C%: Dimmen"   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%012" Name="Ch%C%RGBStatus"              Text="RGB Status"             Number="%K12%" FunctionText="LED-RGBTW %C%: Status"   ObjectSize="3 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%013" Name="Ch%C%HSV"                    Text="HSV"                    Number="%K13%" FunctionText="LED-RGBTW %C%: Dimmen"   ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%014" Name="Ch%C%HSVStatus"              Text="HSV Status"             Number="%K14%" FunctionText="LED-RGBTW %C%: Status"   ObjectSize="3 Bytes" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-232-600" />
+              <ComObject Id="%AID%_O-%TT%%CC%015" Name="Ch%C%Night"                  Text="Nacht"                  Number="%K15%" FunctionText="LED-RGBTW %C%: Schalten" ObjectSize="1 Bit"   ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1"     />
+              <ComObject Id="%AID%_O-%TT%%CC%016" Name="Ch%C%Scene"                  Text="Szene"                  Number="%K16%" FunctionText="LED-RGBTW %C%: Szene"    ObjectSize="1 Byte"  ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-17-1"    />
+              <op:usePart name="MEASUREPROTRGBTW" xpath="//Static/ComObjectTable/*" />
             </ComObjectTable>
 
             <ComObjectRefs>
-              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" Text="{{0:LED-RGB %C%}}: Schalten" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_O-%TT%%CC%001" Text="{{0:LED-RGB %C%}}: Schalten sofort" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_O-%TT%%CC%002" Text="{{0:LED-RGB %C%}}: Schalten Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_O-%TT%%CC%003" Text="{{0:LED-RGB %C%}}: Sperren" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_O-%TT%%CC%004" Text="{{0:LED-RGB %C%}}: Sperren Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_O-%TT%%CC%005" Text="{{0:LED-RGB %C%}}: Dimmwert absolut" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" Text="{{0:LED-RGB %C%}}: Dimmwert relativ" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" Text="{{0:LED-RGB %C%}}: Dimmwert Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" Text="{{0:LED-RGB %C%}}: Farbtemperatur absolut" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" Text="{{0:LED-RGB %C%}}: Farbtemperatur relativ" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" Text="{{0:LED-RGB %C%}}: Farbtemperatur Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_O-%TT%%CC%011" Text="{{0:LED-RGB %C%}}: RGB" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" RefId="%AID%_O-%TT%%CC%012" Text="{{0:LED-RGB %C%}}: RGB Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%013_R-%TT%%CC%01301" RefId="%AID%_O-%TT%%CC%013" Text="{{0:LED-RGB %C%}}: HSV" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%014_R-%TT%%CC%01401" RefId="%AID%_O-%TT%%CC%014" Text="{{0:LED-RGB %C%}}: HSV Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%015_R-%TT%%CC%01501" RefId="%AID%_O-%TT%%CC%015" Text="{{0:LED-RGB %C%}}: Nacht" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
-              <ComObjectRef Id="%AID%_O-%TT%%CC%016_R-%TT%%CC%01601" RefId="%AID%_O-%TT%%CC%016" Text="{{0:LED-RGB %C%}}: Szene" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" Text="{{0:LED-RGBTW %C%}}: Schalten" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_O-%TT%%CC%001" Text="{{0:LED-RGBTW %C%}}: Schalten sofort" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_O-%TT%%CC%002" Text="{{0:LED-RGBTW %C%}}: Schalten Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_O-%TT%%CC%003" Text="{{0:LED-RGBTW %C%}}: Sperren" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_O-%TT%%CC%004" Text="{{0:LED-RGBTW %C%}}: Sperren Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_O-%TT%%CC%005" Text="{{0:LED-RGBTW %C%}}: Dimmwert absolut" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" Text="{{0:LED-RGBTW %C%}}: Dimmwert relativ" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" Text="{{0:LED-RGBTW %C%}}: Dimmwert Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" Text="{{0:LED-RGBTW %C%}}: Farbtemperatur absolut" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" Text="{{0:LED-RGBTW %C%}}: Farbtemperatur relativ" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_O-%TT%%CC%010" Text="{{0:LED-RGBTW %C%}}: Farbtemperatur Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_O-%TT%%CC%011" Text="{{0:LED-RGBTW %C%}}: RGB" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%012_R-%TT%%CC%01201" RefId="%AID%_O-%TT%%CC%012" Text="{{0:LED-RGBTW %C%}}: RGB Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%013_R-%TT%%CC%01301" RefId="%AID%_O-%TT%%CC%013" Text="{{0:LED-RGBTW %C%}}: HSV" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%014_R-%TT%%CC%01401" RefId="%AID%_O-%TT%%CC%014" Text="{{0:LED-RGBTW %C%}}: HSV Status" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%015_R-%TT%%CC%01501" RefId="%AID%_O-%TT%%CC%015" Text="{{0:LED-RGBTW %C%}}: Nacht" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%016_R-%TT%%CC%01601" RefId="%AID%_O-%TT%%CC%016" Text="{{0:LED-RGBTW %C%}}: Szene" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201" />
               <!-- PART uses IDs 017-021 -->
-              <op:usePart name="MEASUREPROTRGB" xpath="//Static/ComObjectRefs/*" />
+              <op:usePart name="MEASUREPROTRGBTW" xpath="//Static/ComObjectRefs/*" />
             </ComObjectRefs>
 
           </Static>
@@ -227,7 +228,7 @@
             <ChannelIndependentBlock>
               <choose ParamRefId="%AID%_P-%TT%%CC%001_R-%TT%%CC%00101">
                 <when test="1">
-                  <ParameterBlock Id="%AID%_PB-2" Name="RGBLight_%CC%" Text="RGB %C%: {{0:--}}" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201">
+                  <ParameterBlock Id="%AID%_PB-2" Name="RGBTWLight_%CC%" Text="RGBTW %C%: {{0:--}}" TextParameterRefId="%AID%_P-%TT%%CC%002_R-%TT%%CC%00201">
 
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" /> <!-- On/Off -->
                     <ComObjectRefRef RefId="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" /> <!-- On/Off NoDim -->
@@ -451,7 +452,7 @@
                       </when>
                     </choose>
 
-                    <op:usePart name="MEASUREPROTRGB" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock/*" />
+                    <op:usePart name="MEASUREPROTRGBTW" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock/*" />
 
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Szenen" UIHint="Headline" />
                     <ParameterRefRef RefId="%AID%_UP-%TT%%CC%042_R-%TT%%CC%04201" IndentLevel="1" /> <!-- Scenes -->
@@ -464,7 +465,7 @@
                         <ParameterBlock Id="%AID%_PB-12" Name="Scenes" Text="Szenen" Icon="movie-open-outline">
                           <ParameterBlock Id="%AID%_PB-13" Name="Scenes" Text="" Inline="true" Layout="Table">
                             <Rows>
-                              <op:usePart name="LED_RGB_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='Rows']/*" />
+                              <op:usePart name="LED_RGBTW_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='Rows']/*" />
                             </Rows>
 
                             <Columns>
@@ -478,7 +479,7 @@
                             </Columns>
 
                             <!-- Scene Control-->
-                            <op:usePart name="LED_RGB_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='SceneSelectionRGB']/*" />
+                            <op:usePart name="LED_RGBTW_SC" xpath="//Dynamic/ChannelIndependentBlock[@Name='SceneSelectionRGBTW']/*" />
 
                           </ParameterBlock>
                           <ParameterSeparator Id="%AID%_PS-nnn" Text="Fix: Wenn aktiv kann diese Szene nicht im Betrieb per Speichern überschrieben werden." />
@@ -504,7 +505,7 @@
                       <when test="1">
                         <Assign TargetParamRefRef="%AID%_P-2603001_R-260300101" Value="42" />
                       </when>
-                    </choose>                                   
+                    </choose>                                                       
 
                   </ParameterBlock>
                 </when>

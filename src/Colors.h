@@ -54,6 +54,10 @@ class Colors
         // uint16_t Blue() { return _UFP16_TO_U8(_blue, 2); }
         uint16_t Blue() { return _blue; }
 
+        uint16_t WarmWhite() { return _red; }
+        uint16_t ColdWhite() { return _green; }
+        uint16_t White() { return _red; }
+
         uint16_t _red;
         uint16_t _green;
         uint16_t _blue;

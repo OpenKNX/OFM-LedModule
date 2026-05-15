@@ -462,6 +462,15 @@ void TWChannel::setBrightness(uint16_t bright)
     _brightness.setTargetValue(bright, dimmingTimeON());
 }
 
+void TWChannel::setBrightnessNoDim(uint16_t bright)
+{
+    _boost = false;
+    _sceneNumberActive = 0;
+    //logDebugP("setBrightness: %3X", bright);
+    bright = checkMinMaxBrightness(bright);
+    _brightness.setTargetValue(bright, 1);
+}
+
 void TWChannel::setNight(bool night)
 {
     if (ParamLED_TW_ChScenesDisableNightSw || (!ParamLED_TW_ChScenesDisableNightSw && _sceneNumberActive == 0))
@@ -520,6 +529,15 @@ void TWChannel::setColorTemperature(uint16_t colorTemp)
     _colorTemperature.setTargetValue(colorTemp, dimmingTimeON());
 }
 
+void TWChannel::setColorTemperatureNoDim(uint16_t colorTemp)
+{
+    _boost = false;
+    _sceneNumberActive = 0;
+    //logDebugP("setColorTemperature (colorTemp=%u)", colorTemp);
+    colorTemp = checkMinMaxColorTemp(colorTemp);
+    _colorTemperature.setTargetValue(colorTemp, 1);
+}
+
 void TWChannel::relDimUpColor()
 {
     _boost = false;
@@ -542,4 +560,17 @@ void TWChannel::relDimStopColor()
     _sceneNumberActive = 0;
     logDebugP("relDim_STOP");
     _colorTemperature.setTargetValue(_colorTemperature.value(), 1);
+}
+
+bool TWChannel::getCO1()
+{
+    return ParamLED_TW_ChCO1;
+}
+bool TWChannel::getCO2()
+{
+    return ParamLED_TW_ChCO2;
+}
+bool TWChannel::getCO3()
+{
+    return ParamLED_TW_ChCO3;
 }

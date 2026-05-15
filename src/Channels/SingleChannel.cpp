@@ -379,3 +379,16 @@ void SingleChannel::relDimStop()
     _brightness.setTargetValue(_brightness.value(), 1);
     _sceneNumberActive = 0;
 }
+
+bool SingleChannel::getCO1()
+{
+    return ParamLED_SC_ChCO1;
+}
+bool SingleChannel::getCO2()
+{
+    return ParamLED_SC_ChCO2;
+}
+bool SingleChannel::getCO3()
+{
+    return ParamLED_SC_ChCO3;
+}

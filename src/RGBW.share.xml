@@ -9,20 +9,21 @@
           <Static>
             <ParameterTypes>
 
-              <ParameterType Id="%AID%_PT-RGBLights" Name="RGBLights">
+              <ParameterType Id="%AID%_PT-RGBWLights" Name="RGBWLights">
                 <TypeNumber SizeInBit="8" Type="signedInt" minInclusive="0" maxInclusive="%N%" />
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-RGBAssignment" Name="RGB-Assignment">
+              <ParameterType Id="%AID%_PT-RGBWAssignment" Name="RGBW-Assignment">
                 <TypeRestriction Base="Value" SizeInBit="3">
-                  <Enumeration Text="-" Value="0" Id="%ENID%" />
-                  <Enumeration Text="Rot" Value="1" Id="%ENID%" />
+                  <Enumeration Text="-"    Value="0" Id="%ENID%" />
+                  <Enumeration Text="Rot"  Value="1" Id="%ENID%" />
                   <Enumeration Text="Grün" Value="2" Id="%ENID%" />
                   <Enumeration Text="Blau" Value="3" Id="%ENID%" />
+                  <Enumeration Text="Weiß" Value="4" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-RGBValueType" Name="RGBValueType">
+              <ParameterType Id="%AID%_PT-RGBWValueType" Name="RGBW ValueType">
                 <TypeRestriction Base="Value" SizeInBit="3" UIHint="DropDown">
                   <Enumeration Text="Helligkeit" Value="0" Id="%ENID%" />
                   <Enumeration Text="Farbe" Value="1" Id="%ENID%" />
@@ -31,7 +32,7 @@
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-RGBSequence" Name="RGBSequence">
+              <ParameterType Id="%AID%_PT-RGBWSequence" Name="RGBWSequence">
                 <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="Ablauf 1" Value="0" Id="%ENID%" />
                   <Enumeration Text="Ablauf 2" Value="1" Id="%ENID%" />
@@ -39,14 +40,14 @@
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-RGBFunction" Name="RGBFunction">
+              <ParameterType Id="%AID%_PT-RGBWFunction" Name="RGBWFunction">
                 <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="Ein" Value="0" Id="%ENID%" />
                   <Enumeration Text="Aus" Value="1" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
 
-              <ParameterType Id="%AID%_PT-LightColorRGB" Name="LightColorRGB">
+              <ParameterType Id="%AID%_PT-LightColorRGBW" Name="LightColorRGBW">
                 <TypeColor Space="RGB" />
               </ParameterType>
 
@@ -90,10 +91,12 @@
 
           <Dynamic>
             <ChannelIndependentBlock>
-              <ParameterBlock Text="RGB - Rot/Grün/Blau" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
+            <!-- 
+              <ParameterBlock Text="RGBW - Rot/Grün/Blau/Weiß" Id="%AID%_PB-nnn" HelpContext="Empty" Icon="palette">
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Dimmkanäle erscheinen automatisch, wenn sie konfiguriert sind." />
-                <op:include href="RGB.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_RGB" IsInner="true" />
+                <op:include href="RGBW.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="LED_RGBW" IsInner="true" />
               </ParameterBlock>
+              -->
             </ChannelIndependentBlock>
           </Dynamic>
 

@@ -28,19 +28,26 @@ class TWChannel : public LightChannel
     uint16_t checkMinMaxColorTemp(uint16_t colorTemp);
     int32_t getLastOnValueTemp() { return _lastOnValueTemp; }
     void setLastOnValueTemp(int32_t lastOnValueTemp) { _lastOnValueTemp = lastOnValueTemp; }
+    int32_t getCurrentTempValue() { return _colorTemperature.value(); }
 
     void setSwitch(bool switchOn) override;
     void setSwitchNoDim(bool switchOn) override;
     void setBoost(bool switchOn);
     void setBrightness(uint16_t bright);
+    void setBrightnessNoDim(uint16_t bright);
     void setNight(bool night) override;
     void relDimUp();
     void relDimDown();
     void relDimStop();
     void setColorTemperature(uint16_t colorTemp);
+    void setColorTemperatureNoDim(uint16_t colorTemp);
     void relDimUpColor();
     void relDimDownColor();
     void relDimStopColor();
+
+    bool getCO1();
+    bool getCO2();
+    bool getCO3();
 
   private:
     const std::string name() override;

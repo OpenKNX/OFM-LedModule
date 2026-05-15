@@ -4,14 +4,12 @@
 
 #include "Colors.h"
 
-const std::string LedModule::name()
-{
-    return LEDMODULE_HARDWARE_NAME;
-}
+const std::string LedModule::name() { return LEDMODULE_HARDWARE_NAME; }
 
 const std::string LedModule::version()
 {
-    // hides the module in the version output on the console, because the firmware version is sufficient.
+    // hides the module in the version output on the console, because the firmware
+    // version is sufficient.
     return "";
 }
 
@@ -22,19 +20,24 @@ void LedModule::setup(bool configured)
 
 #if defined(LEDMODULE_DIMMER_PCA9685)
     logInfoP("LEDMODULE_DIMMER_PCA9685");
-    _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685, LEDMODULE_PCA_ADDR, LEDMODULE_PCA_PWMFREQUENCY);
+    _pDimmer = new HWDimmerPCA(HWDimmerPCA::PCAType::PCA9685, LEDMODULE_PCA_ADDR,
+                               LEDMODULE_PCA_PWMFREQUENCY);
     logInfoP("LEDMODULE_DIMMER_PCA9685 SET");
 #else
     #if defined(LEDMODULE_DIMMMER_RP2040)
-    _pDimmer = new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS, (ParamLED_PwmFrequency + 1) * PWM_FREQUENCY_FACTOR);
+    _pDimmer =
+        new HWDimmerRP2040(dimPins, LEDMODULE_MAX_LIGHT_CHANNELS,
+                           (ParamLED_PwmFrequency + 1) * PWM_FREQUENCY_FACTOR);
     logInfoP("LEDMODULE_DIMMER_RP2040");
     #else
         #if defined(LEDMODULE_DIMMMER_WS)
-    _pDimmer = new HWDimmerWS(HWDimmerWS::WSType::WS2811, LEDMODULE_WS_PIN, LEDMOPDULE_WS_NUM_LEDS);
+    _pDimmer = new HWDimmerWS(HWDimmerWS::WSType::WS2811, LEDMODULE_WS_PIN,
+                              LEDMOPDULE_WS_NUM_LEDS);
     logInfoP("LEDMODULE_DIMMER_WS");
         #else // create dummy driver to have dimmer initialized
     dimmer = new HWDimmer(1);
-    logErrorP("Unknown PWM driver %s ('RP2040' and 'PCA9685PW' are supported)", LEDMODULE_PWMDRIVER);
+    logErrorP("Unknown PWM driver %s ('RP2040' and 'PCA9685PW' are supported)",
+              LEDMODULE_PWMDRIVER);
         #endif
     #endif
 #endif
@@ -65,8 +68,11 @@ void LedModule::setupChannels()
     memset(_SC_HWChannels, 0xFF, LED_SC_ChannelCount);
     memset(_TW_HWChannels, 0xFF, LED_TW_ChannelCount * 2);
     memset(_RGB_HWChannels, 0xFF, LED_RGB_ChannelCount * 3);
+    memset(_RGBW_HWChannels, 0xFF, LED_RGBW_ChannelCount * 4);
+    memset(_RGBTW_HWChannels, 0xFF, LED_RGBTW_ChannelCount * 5);
 
-    for (uint8_t _channelIndex = 0; _channelIndex < LED_ChannelCount; _channelIndex++)
+    for (uint8_t _channelIndex = 0; _channelIndex < LED_ChannelCount;
+         _channelIndex++)
     {
         switch (ParamLED_CH_Lighttype)
         {
@@ -92,7 +98,31 @@ void LedModule::setupChannels()
 
             // TODO: Add other light type implementations here
             case LightType::RGBW:
+                if (ParamLED_CH_RGBW_Function == 1)
+                    _RGBW_HWChannels[ParamLED_CH_RGBW_Light - 1][0] = _channelIndex;
+                else if (ParamLED_CH_RGBW_Function == 2)
+                    _RGBW_HWChannels[ParamLED_CH_RGB_Light - 1][1] = _channelIndex;
+                else if (ParamLED_CH_RGBW_Function == 3)
+                    _RGBW_HWChannels[ParamLED_CH_RGBW_Light - 1][2] = _channelIndex;
+                else if (ParamLED_CH_RGBW_Function == 4)
+                    _RGBW_HWChannels[ParamLED_CH_RGBW_Light - 1][3] = _channelIndex;
+                break;
             case LightType::RGBTW:
+                if (ParamLED_CH_RGBTW_Function == 1)
+                    _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][0] = _channelIndex;
+                else if (ParamLED_CH_RGBTW_Function == 2)
+                    _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][1] = _channelIndex;
+                else if (ParamLED_CH_RGBTW_Function == 3)
+                    _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][2] = _channelIndex;
+                else if (ParamLED_CH_RGBTW_Function == 4)
+                    _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][3] = _channelIndex;
+                else if (ParamLED_CH_RGBTW_Function == 5)
+                    _RGBTW_HWChannels[ParamLED_CH_RGBTW_Light - 1][4] = _channelIndex;
+                break;
+            case LightType::CentralObject:
+                _CO_HWChannels[ParamLED_CH_CO_Light - 1][0] = _channelIndex;
+                break;
+
             default:
                 break;
         }
@@ -100,11 +130,42 @@ void LedModule::setupChannels()
     for (uint8_t ch = 0; ch < LED_ChannelCount; ch++)
     {
         if (ch < LED_SC_ChannelCount)
+        {
             _singleChannels[ch] = new SingleChannel(ch, _pDimmer, _SC_HWChannels[ch]);
+            _CO_Active_SC[ch][0] = _singleChannels[ch]->getCO1();
+            _CO_Active_SC[ch][1] = _singleChannels[ch]->getCO2();
+            _CO_Active_SC[ch][2] = _singleChannels[ch]->getCO3();
+        }
         if (ch < LED_TW_ChannelCount)
+        {
             _twChannels[ch] = new TWChannel(ch, _pDimmer, _TW_HWChannels[ch]);
+            _CO_Active_TW[ch][0] = _twChannels[ch]->getCO1();
+            _CO_Active_TW[ch][1] = _twChannels[ch]->getCO2();
+            _CO_Active_TW[ch][2] = _twChannels[ch]->getCO3();
+        }
         if (ch < LED_RGB_ChannelCount)
+        {
             _rgbChannels[ch] = new RGBChannel(ch, _pDimmer, _RGB_HWChannels[ch]);
+            _CO_Active_RGB[ch][0] = _rgbChannels[ch]->getCO1();
+            _CO_Active_RGB[ch][1] = _rgbChannels[ch]->getCO2();
+            _CO_Active_RGB[ch][2] = _rgbChannels[ch]->getCO3();
+        }
+        if (ch < LED_RGBW_ChannelCount)
+        {
+            _rgbwChannels[ch] = new RGBWChannel(ch, _pDimmer, _RGBW_HWChannels[ch]);
+            _CO_Active_RGBW[ch][0] = _rgbwChannels[ch]->getCO1();
+            _CO_Active_RGBW[ch][1] = _rgbwChannels[ch]->getCO2();
+            _CO_Active_RGBW[ch][2] = _rgbwChannels[ch]->getCO3();
+        }
+        if (ch < LED_RGBTW_ChannelCount)
+        {
+            _rgbtwChannels[ch] = new RGBTWChannel(ch, _pDimmer, _RGBTW_HWChannels[ch]);
+            _CO_Active_RGBTW[ch][0] = _rgbtwChannels[ch]->getCO1();
+            _CO_Active_RGBTW[ch][1] = _rgbtwChannels[ch]->getCO2();
+            _CO_Active_RGBTW[ch][2] = _rgbtwChannels[ch]->getCO3();
+        }
+        if (ch < LED_CO_ChannelCount)
+            _coChannels[ch] = new COChannel(ch, _pDimmer, _CO_HWChannels[ch]);
     }
 
     logDebugP("Channel setup finished.");
@@ -133,7 +194,8 @@ void LedModule::setupFrontPlate()
     logDebugP("Front plate used");
     for (uint8_t i = 0; i < LEDMODULE_MAX_LIGHT_CHANNELS; i++)
     {
-        openknx.gpio.pinMode(0x0100 + i, OUTPUT, true, !OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON);
+        openknx.gpio.pinMode(0x0100 + i, OUTPUT, true,
+                             !OPENKNX_LED_GPIO_OUTPUT_ACTIVE_ON);
         openknx.gpio.pinMode(0x0200 + i, INPUT);
     }
 #endif
@@ -144,7 +206,8 @@ void LedModule::setupVoltageMeasurement()
 #ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
     pinMode(LEDMODULE_VOLTAGE_MEASURE_PIN, INPUT);
     analogReadResolution(12);
-    logDebugP("Voltage Measurement: PIN: %u, resolution: %u bits", LEDMODULE_VOLTAGE_MEASURE_PIN, 12);
+    logDebugP("Voltage Measurement: PIN: %u, resolution: %u bits",
+              LEDMODULE_VOLTAGE_MEASURE_PIN, 12);
 #endif
 }
 
@@ -152,8 +215,10 @@ void LedModule::setupConstantCurrentMode()
 {
 #ifdef LEDMODULE_DIM_TYPE_PIN
     pinMode(LEDMODULE_DIM_TYPE_PIN, OUTPUT);
-    digitalWrite(LEDMODULE_DIM_TYPE_PIN, ParamLED_DimmerCcType); // HIGH = PWM-only, LOW = hybrid
-    logDebugP("Constant Current: PIN: %u, mode: %u", LEDMODULE_DIM_TYPE_PIN, ParamLED_DimmerCcType);
+    digitalWrite(LEDMODULE_DIM_TYPE_PIN,
+                 ParamLED_DimmerCcType); // HIGH = PWM-only, LOW = hybrid
+    logDebugP("Constant Current: PIN: %u, mode: %u", LEDMODULE_DIM_TYPE_PIN,
+              ParamLED_DimmerCcType);
 #endif
 }
 
@@ -164,8 +229,9 @@ void LedModule::setupCustomFlash()
 #ifdef ARDUINO_ARCH_ESP32
     _ledStorage.init("ledModule");
 #else
-    // TODO: Reactivate flash storage when values are know and functionality is needed
-    // _ledStorage.init("ledModule", LEDMODULE_FLASH_OFFSET, LEDMODULE_FLASH_SIZE);
+    // TODO: Reactivate flash storage when values are know and functionality is
+    // needed _ledStorage.init("ledModule", LEDMODULE_FLASH_OFFSET,
+    // LEDMODULE_FLASH_SIZE);
 #endif
 
     // logTraceP("write ledModule data");
@@ -195,7 +261,8 @@ void LedModule::loop(bool configured)
     {
         if (delayCheck(_timerCheckConnection, 500))
         {
-            // If PWM side of the Adum1251 has no power and power returns, the PWM lib is not initialized
+            // If PWM side of the Adum1251 has no power and power returns, the PWM lib
+            // is not initialized
             if (!_pDimmer->checkConnection())
             {
                 if (_doResetPwm)
@@ -216,6 +283,12 @@ void LedModule::loop(bool configured)
         for (size_t i = 0; i < LED_RGB_ChannelCount; i++)
             _rgbChannels[i]->loop();
 
+        for (size_t i = 0; i < LED_RGBW_ChannelCount; i++)
+            _rgbwChannels[i]->loop();
+
+        for (size_t i = 0; i < LED_RGBTW_ChannelCount; i++)
+            _rgbtwChannels[i]->loop();
+
         _pDimmer->loop();
 
         float temperature = TEMPERATURE_INVALID;
@@ -225,13 +298,28 @@ void LedModule::loop(bool configured)
         temperature = _pDimmer->getTemperatureAvg();
 #endif
         if (temperature > TEMPERATURE_INVALID)
-            LightChannel::processSendValue(KoLED_Temperature, DPT_Value_Temp, ParamLED_TemperatureChangeSend, ParamLED_TemperatureMinChangePercent, ParamLED_TemperatureMinChangeAbsolute, ParamLED_TemperatureCyclicTimeMS, _temperaturSendTimer, _lastTemperatureSent, temperature);
-        
+            LightChannel::processSendValue(
+                KoLED_Temperature, DPT_Value_Temp, ParamLED_TemperatureChangeSend,
+                ParamLED_TemperatureMinChangePercent,
+                ParamLED_TemperatureMinChangeAbsolute,
+                ParamLED_TemperatureCyclicTimeMS, _temperaturSendTimer,
+                _lastTemperatureSent, temperature);
+
         float totalCurrent = _pDimmer->getTotalCurrent();
-        LightChannel::processSendValue(KoLED_TotalCurrent, DPT_Value_Electric_Current, ParamLED_TotalCurrentSend, ParamLED_TotalCurrentSendMinChangeAbsolute, ParamLED_TotalCurrentSendMinChangeAbsolute, ParamLED_TotalCurrentSendCyclicTimeMS, _totalCurrentSendTimer, _lastTotalCurrentSent, totalCurrent);
-        
+        LightChannel::processSendValue(
+            KoLED_TotalCurrent, DPT_Value_Electric_Current,
+            ParamLED_TotalCurrentSend, ParamLED_TotalCurrentSendMinChangeAbsolute,
+            ParamLED_TotalCurrentSendMinChangeAbsolute,
+            ParamLED_TotalCurrentSendCyclicTimeMS, _totalCurrentSendTimer,
+            _lastTotalCurrentSent, totalCurrent);
+
         float totalPower = _pDimmer->getTotalPower();
-        LightChannel::processSendValue(KoLED_TotalPower, DPT_Value_Power, ParamLED_TotalPowerSend, ParamLED_TotalPowerSendMinChangeAbsolute, ParamLED_TotalPowerSendMinChangeAbsolute, ParamLED_TotalPowerSendCyclicTimeMS, _totalPowerSendTimer, _lastTotalPowerSent, totalPower);
+        LightChannel::processSendValue(
+            KoLED_TotalPower, DPT_Value_Power, ParamLED_TotalPowerSend,
+            ParamLED_TotalPowerSendMinChangeAbsolute,
+            ParamLED_TotalPowerSendMinChangeAbsolute,
+            ParamLED_TotalPowerSendCyclicTimeMS, _totalPowerSendTimer,
+            _lastTotalPowerSent, totalPower);
     }
 }
 
@@ -253,7 +341,7 @@ void LedModule::loop1(bool configured)
 }
 #endif
 
-void LedModule::processInputKo(GroupObject &ko)
+void LedModule::processInputKo(GroupObject& ko)
 {
     // logDebugP("proc.Ko GA%04X", ko.asap());
     // logHexDebugP(ko.valueRef(), ko.valueSize());
@@ -273,11 +361,37 @@ void LedModule::processInputKo(GroupObject &ko)
         logDebugP("TW %d", channelnumber);
         _twChannels[channelnumber]->processInputKo(ko);
     }
-    else if (asap >= LED_RGB_KoBlockOffset && asap < (LED_RGB_KoBlockOffset + LED_RGB_ChannelCount * LED_RGB_KoBlockSize))
+    else if (asap >= LED_RGB_KoBlockOffset &&
+             asap < (LED_RGB_KoBlockOffset +
+                     LED_RGB_ChannelCount * LED_RGB_KoBlockSize))
     {
         channelnumber = (asap - LED_RGB_KoBlockOffset) / LED_RGB_KoBlockSize;
         logDebugP("RGB %d", channelnumber);
         _rgbChannels[channelnumber]->processInputKo(ko);
+    }
+    else if (asap >= LED_RGBW_KoBlockOffset &&
+             asap < (LED_RGBW_KoBlockOffset +
+                     LED_RGBW_ChannelCount * LED_RGBW_KoBlockSize))
+    {
+        channelnumber = (asap - LED_RGBW_KoBlockOffset) / LED_RGBW_KoBlockSize;
+        logDebugP("RGBW %d", channelnumber);
+        _rgbwChannels[channelnumber]->processInputKo(ko);
+    }
+    else if (asap >= LED_RGBTW_KoBlockOffset &&
+             asap < (LED_RGBTW_KoBlockOffset +
+                     LED_RGBTW_ChannelCount * LED_RGBTW_KoBlockSize))
+    {
+        channelnumber = (asap - LED_RGBTW_KoBlockOffset) / LED_RGBTW_KoBlockSize;
+        logDebugP("RGBTW %d", channelnumber);
+        _rgbtwChannels[channelnumber]->processInputKo(ko);
+    }
+    else if (asap >= LED_CO_KoBlockOffset &&
+             asap < (LED_CO_KoBlockOffset +
+                     LED_CO_ChannelCount * LED_CO_KoBlockSize))
+    {
+        channelnumber = (asap - LED_CO_KoBlockOffset) / LED_CO_KoBlockSize;
+        logDebugP("CO %d", channelnumber);
+        _coChannels[channelnumber]->processInputKo(ko);
     }
 }
 
@@ -296,7 +410,8 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
 
     if (cmd.length() == 8 && cmd.substr(4, 4) == "info")
     {
-        logInfoP("======================== Information ===========================================");
+        logInfoP("======================== Information "
+                 "===========================================");
         logIndentUp();
         logInfoP("LED MODULE INFORMATION");
         logInfoP("PWM driver:              %s", LEDMODULE_PWMDRIVER);
@@ -314,39 +429,64 @@ bool LedModule::processCommand(const std::string cmd, bool diagnoseKo)
         logInfoP("%s", tmp.c_str());
 #endif
         logInfoP("HW Channel configuration:");
-        logInfoP("CH\tTYPE\tSC\tTW\tFunc\tRGB\tFunc");
-        for (int _channelIndex = 0; _channelIndex < LED_ChannelCount; _channelIndex++)
-            logInfoP("%d\t%d\t%d\t%d\t%d\t%d\t%d", _channelIndex, ParamLED_CH_Lighttype, ParamLED_CH_SC_Light, ParamLED_CH_TW_Light, ParamLED_CH_TW_Function, ParamLED_CH_RGB_Light, ParamLED_CH_RGB_Function);
+        logInfoP("CH\tTYPE\tSC\tTW\tFunc\tRGB\tFunc\tRGBW\tFunc\tRGBTW\tFunc");
+        for (int _channelIndex = 0; _channelIndex < LED_ChannelCount;
+             _channelIndex++)
+            logInfoP("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d", _channelIndex,
+                     ParamLED_CH_Lighttype, ParamLED_CH_SC_Light,
+                     ParamLED_CH_TW_Light, ParamLED_CH_TW_Function,
+                     ParamLED_CH_RGB_Light, ParamLED_CH_RGB_Function,
+                     ParamLED_CH_RGBW_Light, ParamLED_CH_RGBW_Function,
+                     ParamLED_CH_RGBTW_Light, ParamLED_CH_RGBTW_Function);
         for (int i = 0; i < LED_SC_ChannelCount; i++)
-            logInfoP("SC %d: CH: %d", i, _SC_HWChannels[i][0]);
+            logInfoP("SC %d: CH: %d CO1: %d CO2: %d CO3: %d",
+                     i, _SC_HWChannels[i][0],
+                     _singleChannels[i]->getCO1(), _singleChannels[i]->getCO2(), _singleChannels[i]->getCO3());
         for (int i = 0; i < LED_TW_ChannelCount; i++)
-            logInfoP("TW %d: Cold: %d, Warm: %d", i, _TW_HWChannels[i][0], _TW_HWChannels[i][1]);
+            logInfoP("TW %d: Cold: %d, Warm: %d CO1: %d CO2: %d CO3: %d",
+                     i, _TW_HWChannels[i][0], _TW_HWChannels[i][1],
+                     _twChannels[i]->getCO1(), _twChannels[i]->getCO2(), _twChannels[i]->getCO3());
         for (int i = 0; i < LED_RGB_ChannelCount; i++)
-            logInfoP("RGB %d: Red: %d, Green: %d, Blue: %d", i, _RGB_HWChannels[i][0], _RGB_HWChannels[i][1], _RGB_HWChannels[i][2]);
+            logInfoP("RGB %d: Red: %d, Green: %d, Blue: %d CO1: %d CO2: %d CO3: %d",
+                     i, _RGB_HWChannels[i][0], _RGB_HWChannels[i][1], _RGB_HWChannels[i][2],
+                     _rgbChannels[i]->getCO1(), _rgbChannels[i]->getCO2(), _rgbChannels[i]->getCO3());
+        for (int i = 0; i < LED_RGBW_ChannelCount; i++)
+            logInfoP("RGBW %d: Red: %d, Green: %d, Blue: %d, White: %d CO1: %d CO2: %d CO3: %d",
+                     i, _RGBW_HWChannels[i][0], _RGBW_HWChannels[i][1], _RGBW_HWChannels[i][2], _RGBW_HWChannels[i][3],
+                     _rgbwChannels[i]->getCO1(), _rgbwChannels[i]->getCO2(), _rgbwChannels[i]->getCO3());
+        for (int i = 0; i < LED_RGBTW_ChannelCount; i++)
+            logInfoP("RGBTW %d: Red: %d, Green: %d, Blue: %d, WarmWhite: %d, CoolWhite: %d CO1: %d CO2: %d CO3: %d",
+                     i, _RGBTW_HWChannels[i][0], _RGBTW_HWChannels[i][1], _RGBTW_HWChannels[i][2], _RGBTW_HWChannels[i][3], _RGBTW_HWChannels[i][4],
+                     _rgbtwChannels[i]->getCO1(), _rgbtwChannels[i]->getCO2(), _rgbtwChannels[i]->getCO3());
         logIndentDown();
-        logInfoP("--------------------------------------------------------------------------------");
+        logInfoP("-----------------------------------------------------------------"
+                 "---------------");
         return true;
     }
 
     if (cmd.length() == 9 && cmd.substr(4, 5) == "state")
     {
-        logInfoP("======================== Information ===========================================");
+        logInfoP("======================== Information "
+                 "===========================================");
         logInfoP("LED MODULE STATE INFORMATION");
         for (int i = 0; i < LED_ChannelCount; i++)
             logInfoP("CH%d: %d", i, _pDimmer->getLevel(i));
-        logInfoP("--------------------------------------------------------------------------------");
+        logInfoP("-----------------------------------------------------------------"
+                 "---------------");
         return true;
     }
 
     if (cmd.length() == 7 && cmd.substr(4, 3) == "lut")
     {
-        logInfoP("======================== Information ===========================================");
+        logInfoP("======================== Information "
+                 "===========================================");
         logInfoP("LED MODULE LUT INFORMATION");
 
         //_pDimmer->outputLUT();
         // HWDimmer::outputLUT();
 
-        logInfoP("--------------------------------------------------------------------------------");
+        logInfoP("-----------------------------------------------------------------"
+                 "---------------");
         return true;
     }
 
@@ -369,6 +509,39 @@ void LedModule::savePower()
         //  uint8_t value = knx.paramByte(LED_SceneEmergency_LEDCH0 + i );
         //  pwm.setPWM(i, 0, value);
     }
+}
+
+SingleChannel* LedModule::getSingleChannel(uint8_t channel)
+{
+    if (channel >= LED_SC_ChannelCount)
+    {
+        logErrorP("Invalid single channel requested: %d", channel);
+        return nullptr;
+    }
+
+    return _singleChannels[channel];
+}
+
+TWChannel* LedModule::getTWChannel(uint8_t channel)
+{
+    if (channel >= LED_TW_ChannelCount)
+    {
+        logErrorP("Invalid tunable white channel requested: %d", channel);
+        return nullptr;
+    }
+
+    return _twChannels[channel];
+}
+
+RGBChannel* LedModule::getRGBChannel(uint8_t channel)
+{
+    if (channel >= LED_RGB_ChannelCount)
+    {
+        logErrorP("Invalid RGB channel requested: %d", channel);
+        return nullptr;
+    }
+
+    return _rgbChannels[channel];
 }
 
 LedModule openknxLedModule;
