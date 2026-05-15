@@ -4,6 +4,7 @@
     "dependencies": {
         "adafruit/Adafruit PWM Servo Driver Library": "3.0.2",
         "adafruit/Adafruit NeoPixel": "1.12.4",
+        "adafruit/Adafruit BusIO": "^1.17.4",
         "robtillaart/INA238": "^0.1.1",
         "robtillaart/PCT2075": "^0.1.1"
     },

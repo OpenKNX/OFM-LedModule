@@ -1,7 +1,6 @@
 #pragma once
 #include "OpenKNX.h"
 #include <Adafruit_NeoPixel.h>
-#include <Adafruit_PWMServoDriver.h>
 #include <SPI.h>
 #include <Wire.h>
 #ifdef OPENKNX_LED_TEMPSENS_ADDR
@@ -9,6 +8,7 @@
 #endif
 #include "HWDimmer/HWDimmer.h"
 #ifdef LEDMODULE_DIMMER_PCA9685
+#include <Adafruit_PWMServoDriver.h>
 #include "HWDimmer/HWDimmerPCA.h"
 #endif
 #ifdef LEDMODULE_DIMMMER_RP2040
