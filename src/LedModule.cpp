@@ -179,10 +179,12 @@ void LedModule::setupTemperatureSensor()
             return;
         #endif
     #endif
+    #ifdef OPENKNX_LED_TEMPSENS_WIRE
     OPENKNX_LED_TEMPSENS_WIRE.setSDA(OPENKNX_LED_TEMPSENS_PIN_SDA);
     OPENKNX_LED_TEMPSENS_WIRE.setSCL(OPENKNX_LED_TEMPSENS_PIN_SCL);
     OPENKNX_LED_TEMPSENS_WIRE.begin();
     _temperature.begin();
+    #endif
     #ifdef OPENKNX_LED_TEMPSENS_TYPE_TMP100
     _temperature.setConfiguration(0x60);    // change to 12bit mode for compatibility with PTC2075 lib
     #endif
