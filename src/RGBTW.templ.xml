@@ -78,33 +78,33 @@
                 <Parameter Id="%AID%_UP-%TT%%CC%029" Name="Ch%C%StairCaseBase"         ParameterType="%AID%_PT-DelayBase" Offset="1" BitOffset="0" Text="Zeitbasis" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%030" Name="Ch%C%StairCaseTime"         ParameterType="%AID%_PT-DelayTime" Offset="1" BitOffset="2" Text="Zeit" Value="0" />
               </Union>
-              <Union SizeInBit="48">
+              <Union SizeInBit="64">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="33" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%032" Name="Ch%C%ColorDay"              ParameterType="%AID%_PT-ColorPicker" Offset="0" BitOffset="0" Text="Farbe Tag" Value="13" />
                 <!-- 3 bits free -->
                 <Parameter Id="%AID%_UP-%TT%%CC%033" Name="Ch%C%ColorDayPicker"        ParameterType="%AID%_PT-ValueColor" Offset="1" BitOffset="0" Text="Farbe Tag 3-Byte-RGB" Value="#FFFFFF" />
-                <Parameter Id="%AID%_UP-%TT%%CC%034" Name="Ch%C%ColorDayTemp"          ParameterType="%AID%_PT-ColorTemperature" Offset="2" BitOffset="0" Text="Farbtemperatur Tag" Value="4000" />
-                <Parameter Id="%AID%_UP-%TT%%CC%035" Name="Ch%C%ColorDayBase"          ParameterType="%AID%_PT-DelayBase" Offset="4" BitOffset="0" Text="Zeitbasis" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%036" Name="Ch%C%ColorDayTime"          ParameterType="%AID%_PT-DelayTime" Offset="4" BitOffset="2" Text="Zeit" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%034" Name="Ch%C%ColorDayTemp"          ParameterType="%AID%_PT-ColorTemperature" Offset="4" BitOffset="0" Text="Farbtemperatur Tag" Value="4000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%035" Name="Ch%C%ColorDayBase"          ParameterType="%AID%_PT-DelayBase" Offset="6" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%036" Name="Ch%C%ColorDayTime"          ParameterType="%AID%_PT-DelayTime" Offset="6" BitOffset="2" Text="Zeit" Value="0" />
               </Union>              
               <Union SizeInBit="8">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="39" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="41" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%048" Name="Ch%C%CO1"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="0" Text="Zentralobjekt 1" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%049" Name="Ch%C%CO2"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="1" Text="Zentralobjekt 2" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%050" Name="Ch%C%CO3"     ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="2" Text="Zentralobjekt 3" Value="0" />
                 <!-- 5 bits free -->
               </Union> 
-              <Union SizeInBit="48">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="40" BitOffset="0" />
+              <Union SizeInBit="64">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="42" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%037" Name="Ch%C%ColorNight"            ParameterType="%AID%_PT-ColorPicker" Offset="0" BitOffset="0" Text="Farbe Nacht" Value="13" />
                 <!-- 3 bits free -->
                 <Parameter Id="%AID%_UP-%TT%%CC%038" Name="Ch%C%ColorNightPicker"      ParameterType="%AID%_PT-ValueColor" Offset="1" BitOffset="0" Text="Farbe Nacht 3-Byte-RGB" Value="#FFFFFF" />
-                <Parameter Id="%AID%_UP-%TT%%CC%039" Name="Ch%C%ColorNightTemp"        ParameterType="%AID%_PT-ColorTemperature" Offset="2" BitOffset="0" Text="Farbtemperatur Nacht" Value="4000" />
-                <Parameter Id="%AID%_UP-%TT%%CC%040" Name="Ch%C%ColorNightBase"        ParameterType="%AID%_PT-DelayBase" Offset="4" BitOffset="0" Text="Zeitbasis" Value="0" />
-                <Parameter Id="%AID%_UP-%TT%%CC%041" Name="Ch%C%ColorNightTime"        ParameterType="%AID%_PT-DelayTime" Offset="4" BitOffset="2" Text="Zeit" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%039" Name="Ch%C%ColorNightTemp"        ParameterType="%AID%_PT-ColorTemperature" Offset="4" BitOffset="0" Text="Farbtemperatur Nacht" Value="4000" />
+                <Parameter Id="%AID%_UP-%TT%%CC%040" Name="Ch%C%ColorNightBase"        ParameterType="%AID%_PT-DelayBase" Offset="6" BitOffset="0" Text="Zeitbasis" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%041" Name="Ch%C%ColorNightTime"        ParameterType="%AID%_PT-DelayTime" Offset="6" BitOffset="2" Text="Zeit" Value="0" />
               </Union>
               <Union SizeInBit="8">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="46" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="50" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%042" Name="Ch%C%ScenesActive"          ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Szenen aktivieren" Value="0" />
                 <Parameter Id="%AID%_UP-%TT%%CC%043" Name="Ch%C%ScenesDisableNightSw"  ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Deaktivierung bei Nachtumschaltung" Value="0" />
                 <!-- 6 bits free -->
@@ -112,12 +112,12 @@
                            
 
               <Union SizeInBit="320"> <!-- 8 Scenes * 5 bytes: total 40 bytes -->
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="47" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="51" BitOffset="0" />
                 <!-- Scenes -->
                 <op:usePart name="LED_RGBTW_SC" xpath="//Static/Parameters/Block[@Name='ScenesRGBTW']/*" />
               </Union>
               <Union SizeInBit="200">
-                <Memory CodeSegment="%AID%_RS-04-00000" Offset="87" BitOffset="0" />
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="91" BitOffset="0" />
                 <op:usePart name="MEASUREPROTRGBTW" xpath="//Static/Parameters/Union/*[position()>1]" />
               </Union>
             </Parameters>
