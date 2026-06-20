@@ -33,39 +33,10 @@ void SingleChannel::update()
     uint16_t tmpBrightness = _brightness.value();
     bool stateOn = tmpBrightness > 0;
 
-    if (ParamLED_SC_ChStatusOnOffSend)
-    {
-        if ((bool)KoLED_SC_ChStateOnOff.value(DPT_State) != stateOn)
-            KoLED_SC_ChStateOnOff.value(stateOn, DPT_State);
+    StatusOutput::sendSwitch(KoLED_SC_ChStateOnOff, ParamLED_SC_ChStatusOnOffSend, stateOn, ParamLED_SC_ChStatusOnOffTimeMS, _statusSendOnOffTimer);
 
-        if (ParamLED_SC_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_SC_ChStatusOnOffTimeMS))
-        {
-            KoLED_SC_ChStateOnOff.value(stateOn, DPT_State);
-            _statusSendOnOffTimer = delayTimerInit();
-        }
-    }
-
-    if (ParamLED_SC_ChStatusBrightnessSend)
-    {
-        uint8_t koValue = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
-
-        uint16_t brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if (brightnessDifference > 0 &&
-            (uint8_t)KoLED_SC_ChBrightnessStatus.value(DPT_Scaling) != koValue)
-        {
-            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_SC_ChStatusBrightnessMinChangePercent / 100.0f &&
-                brightnessDifference >= ParamLED_SC_ChStatusBrightnessMinChangeAbsolute)
-                KoLED_SC_ChBrightnessStatus.value(koValue, DPT_Scaling);
-            else
-                KoLED_SC_ChBrightnessStatus.valueNoSend(koValue, DPT_Scaling);
-        }
-
-        if (ParamLED_SC_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_SC_ChStatusBrightnessTimeMS))
-        {
-            KoLED_SC_ChBrightnessStatus.value(koValue, DPT_Scaling);
-            _statusSendBrightnessTimer = delayTimerInit();
-        }
-    }
+    uint8_t koBrightness = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+    StatusOutput::sendValue<uint8_t>(KoLED_SC_ChBrightnessStatus, DPT_Scaling, ParamLED_SC_ChStatusBrightnessSend, _brightness.dimming(), koBrightness, _statusBrightness, ParamLED_SC_ChStatusBrightnessTimeMS, ParamLED_SC_ChStatusBrightnessMinChangePercent, ParamLED_SC_ChStatusBrightnessMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
     if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
     {
@@ -78,11 +49,11 @@ void SingleChannel::update()
     _lastBrightnessLevel = tmpBrightness;
 
     float current = _pDimmer->getCurrent(_pHWChannels[0]);
-    processSendValue(KoLED_SC_ChCurrent, DPT_Value_Electric_Current, ParamLED_SC_ChCurrentSend, ParamLED_SC_ChCurrentSendMinChangePercent, ParamLED_SC_ChCurrentSendMinChangeAbsolute, ParamLED_SC_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
+    StatusOutput::sendValue<float>(KoLED_SC_ChCurrent, DPT_Value_Electric_Current, ParamLED_SC_ChCurrentSend, false, current, _statusCurrent, ParamLED_SC_ChCurrentSendCyclicTimeMS, ParamLED_SC_ChCurrentSendMinChangePercent, ParamLED_SC_ChCurrentSendMinChangeAbsolute, STATUS_SEND_RATE_MS, true, 1000.0f);
 
     float voltage = _pDimmer->getVoltage(_pHWChannels[0]);
     float power = (voltage * current) / 1000.0f;
-    processSendValue(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, ParamLED_SC_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
+    StatusOutput::sendValue<float>(KoLED_SC_ChPower, DPT_Value_Power, ParamLED_SC_ChPowerSend, false, power, _statusPower, ParamLED_SC_ChPowerSendCyclicTimeMS, ParamLED_SC_ChPowerSendMinChangePercent, ParamLED_SC_ChPowerSendMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
     processDeviceProtection(KoLED_SC_ChDeviceProtConstCurrent, KoLED_SC_ChDeviceProtOverload, ParamLED_SC_ChDeviceProtActive, ParamLED_SC_ChDeviceProtConstCurrent, ParamLED_SC_ChDeviceProtOverloadPercent, ParamLED_SC_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_SC_ChDeviceProtCutOff, current);
 

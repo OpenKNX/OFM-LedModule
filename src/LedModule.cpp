@@ -300,28 +300,23 @@ void LedModule::loop(bool configured)
         temperature = _pDimmer->getTemperatureAvg();
 #endif
         if (temperature > TEMPERATURE_INVALID)
-            LightChannel::processSendValue(
-                KoLED_Temperature, DPT_Value_Temp, ParamLED_TemperatureChangeSend,
-                ParamLED_TemperatureMinChangePercent,
-                ParamLED_TemperatureMinChangeAbsolute,
-                ParamLED_TemperatureCyclicTimeMS, _temperaturSendTimer,
-                _lastTemperatureSent, temperature);
+            StatusOutput::sendValue<float>(
+                KoLED_Temperature, DPT_Value_Temp, ParamLED_TemperatureChangeSend, false,
+                temperature, _statusTemperature, ParamLED_TemperatureCyclicTimeMS,
+                ParamLED_TemperatureMinChangePercent, ParamLED_TemperatureMinChangeAbsolute,
+                STATUS_SEND_RATE_MS);
 
         float totalCurrent = _pDimmer->getTotalCurrent();
-        LightChannel::processSendValue(
-            KoLED_TotalCurrent, DPT_Value_Electric_Current,
-            ParamLED_TotalCurrentSend, ParamLED_TotalCurrentSendMinChangeAbsolute,
-            ParamLED_TotalCurrentSendMinChangeAbsolute,
-            ParamLED_TotalCurrentSendCyclicTimeMS, _totalCurrentSendTimer,
-            _lastTotalCurrentSent, totalCurrent);
+        StatusOutput::sendValue<float>(
+            KoLED_TotalCurrent, DPT_Value_Electric_Current, ParamLED_TotalCurrentSend, false,
+            totalCurrent, _statusTotalCurrent, ParamLED_TotalCurrentSendCyclicTimeMS,
+            0, ParamLED_TotalCurrentSendMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
         float totalPower = _pDimmer->getTotalPower();
-        LightChannel::processSendValue(
-            KoLED_TotalPower, DPT_Value_Power, ParamLED_TotalPowerSend,
-            ParamLED_TotalPowerSendMinChangeAbsolute,
-            ParamLED_TotalPowerSendMinChangeAbsolute,
-            ParamLED_TotalPowerSendCyclicTimeMS, _totalPowerSendTimer,
-            _lastTotalPowerSent, totalPower);
+        StatusOutput::sendValue<float>(
+            KoLED_TotalPower, DPT_Value_Power, ParamLED_TotalPowerSend, false,
+            totalPower, _statusTotalPower, ParamLED_TotalPowerSendCyclicTimeMS,
+            0, ParamLED_TotalPowerSendMinChangeAbsolute, STATUS_SEND_RATE_MS);
     }
 }
 

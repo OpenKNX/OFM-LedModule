@@ -3,6 +3,7 @@
 #include "Colors.h"
 #include "HWDimmer/HWDimmer.h"
 #include "OpenKNX.h"
+#include "StatusOutput.h"
 #include <Arduino.h>
 
 #define DIMLOOP_DELAY 20 // ms
@@ -38,8 +39,6 @@ class LightChannel : public OpenKNX::Channel
     virtual bool getCO1() = 0;
     virtual bool getCO2() = 0; 
     virtual bool getCO3() = 0;
-
-    static void processSendValue(GroupObject &ko, Dpt dpt, bool send, uint8_t sendMinChangePercent, uint16_t sendMinChangeAbsolute, uint32_t sendCyclicTimeMS, uint32_t &cyclicSendTimer, float &lastSentValue, float currentValue, uint16_t checkMultiply = 1);
 
     template <typename T>
     class DimmableValue
@@ -111,6 +110,12 @@ class LightChannel : public OpenKNX::Channel
             return (uint16_t)targetValue;
         }
 
+        // true while a fade/transition towards the target value is in progress
+        bool dimming() const
+        {
+            return isDimming != 0;
+        }
+
       private:
         uint8_t isDimming = 0;
 
@@ -157,10 +162,8 @@ class LightChannel : public OpenKNX::Channel
     uint32_t _lastDimTimestamp = 0;
     uint16_t _lastBrightnessLevel = 0;
 
-    float _lastSentCurrent = 0.0f;
-    float _lastSentPower = 0.0f;
-    uint32_t _currentCyclicSendTimer = 0;
-    uint32_t _powerCyclicSendTimer = 0;
+    StatusValueState _statusCurrent;
+    StatusValueState _statusPower;
     uint32_t _deviceProtOverloadTimer = 0;
     uint32_t _lampProtOverloadTimer = 0;
 
@@ -172,7 +175,7 @@ class LightChannel : public OpenKNX::Channel
     uint8_t _sceneNumberActive = 0;
 
     uint32_t _statusSendOnOffTimer = 0;
-    uint32_t _statusSendBrightnessTimer = 0;
+    StatusValueState _statusBrightness;
 
     SceneConfig *_scenes;
 

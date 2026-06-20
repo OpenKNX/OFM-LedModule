@@ -35,64 +35,12 @@ void TWChannel::update()
     uint16_t tmpColor = _colorTemperature.value();
     bool stateOn = tmpBrightness > 0;
 
-    if (ParamLED_TW_ChStatusOnOffSend)
-    {
-        if ((bool)KoLED_TW_ChStateOnOff.value(DPT_State) != stateOn)
-            KoLED_TW_ChStateOnOff.value(stateOn, DPT_State);
+    StatusOutput::sendSwitch(KoLED_TW_ChStateOnOff, ParamLED_TW_ChStatusOnOffSend, stateOn, ParamLED_TW_ChStatusOnOffTimeMS, _statusSendOnOffTimer);
 
-        if (ParamLED_TW_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_TW_ChStatusOnOffTimeMS))
-        {
-            KoLED_TW_ChStateOnOff.value(stateOn, DPT_State);
-            _statusSendOnOffTimer = delayTimerInit();
-        }
-    }
+    uint8_t koBrightness = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+    StatusOutput::sendValue<uint8_t>(KoLED_TW_ChBrightnessStatus, DPT_Scaling, ParamLED_TW_ChStatusBrightnessSend, _brightness.dimming(), koBrightness, _statusBrightness, ParamLED_TW_ChStatusBrightnessTimeMS, ParamLED_TW_ChStatusBrightnessMinChangePercent, ParamLED_TW_ChStatusBrightnessMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
-    if (ParamLED_TW_ChStatusBrightnessSend)
-    {
-        uint8_t koValue = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
-
-        uint16_t brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if (brightnessDifference > 0 &&
-            (uint8_t)KoLED_TW_ChBrightnessStatus.value(DPT_Scaling) != koValue)
-        {
-            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_TW_ChStatusBrightnessMinChangePercent / 100.0f &&
-                brightnessDifference >= ParamLED_TW_ChStatusBrightnessMinChangeAbsolute)
-                KoLED_TW_ChBrightnessStatus.value(koValue, DPT_Scaling);
-            else
-                KoLED_TW_ChBrightnessStatus.valueNoSend(koValue, DPT_Scaling);
-        }
-
-        if (ParamLED_TW_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_TW_ChStatusBrightnessTimeMS))
-        {
-            KoLED_TW_ChBrightnessStatus.value(koValue, DPT_Scaling);
-            _statusSendBrightnessTimer = delayTimerInit();
-        }
-    }
-
-    if (ParamLED_TW_ChStatusTempSend)
-    {
-        uint16_t colorDifference = abs(_lastColorTemp - tmpColor);
-        if (colorDifference > 0 &&
-            (uint16_t)KoLED_TW_ChColorTemperatureStatus.value(Dpt(7, 600)) != tmpColor)
-        {
-            if (stateOn &&
-                (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_TW_ChStatusTempMinChangePercent / 100.0f &&
-                 colorDifference >= ParamLED_TW_ChStatusTempMinChangeAbsolute))
-                KoLED_TW_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
-            else
-                KoLED_TW_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
-        }
-
-        if (ParamLED_TW_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_TW_ChStatusTempTimeMS))
-        {
-            if (stateOn)
-                KoLED_TW_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
-            else
-                KoLED_TW_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
-
-            _statusSendTemperaturTimer = delayTimerInit();
-        }
-    }
+    StatusOutput::sendValue<uint16_t>(KoLED_TW_ChColorTemperatureStatus, Dpt(7, 600), ParamLED_TW_ChStatusTempSend, _colorTemperature.dimming(), tmpColor, _statusColorTemp, ParamLED_TW_ChStatusTempTimeMS, ParamLED_TW_ChStatusTempMinChangePercent, ParamLED_TW_ChStatusTempMinChangeAbsolute, STATUS_SEND_RATE_MS, stateOn);
 
     if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
     {
@@ -111,12 +59,12 @@ void TWChannel::update()
     float current0 = _pDimmer->getCurrent(_pHWChannels[0]);
     float current1 = _pDimmer->getCurrent(_pHWChannels[1]);
     float current = current0 + current1;
-    processSendValue(KoLED_TW_ChCurrent, DPT_Value_Electric_Current, ParamLED_TW_ChCurrentSend, ParamLED_TW_ChCurrentSendMinChangePercent, ParamLED_TW_ChCurrentSendMinChangeAbsolute, ParamLED_TW_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
+    StatusOutput::sendValue<float>(KoLED_TW_ChCurrent, DPT_Value_Electric_Current, ParamLED_TW_ChCurrentSend, false, current, _statusCurrent, ParamLED_TW_ChCurrentSendCyclicTimeMS, ParamLED_TW_ChCurrentSendMinChangePercent, ParamLED_TW_ChCurrentSendMinChangeAbsolute, STATUS_SEND_RATE_MS, true, 1000.0f);
 
     float voltage0 = _pDimmer->getVoltage(_pHWChannels[0]);
     float voltage1 = _pDimmer->getVoltage(_pHWChannels[1]);
     float power = (voltage0 * current0 + voltage1 * current1) / 1000.0f;
-    processSendValue(KoLED_TW_ChPower, DPT_Value_Power, ParamLED_TW_ChPowerSend, ParamLED_TW_ChPowerSendMinChangePercent, ParamLED_TW_ChPowerSendMinChangeAbsolute, ParamLED_TW_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
+    StatusOutput::sendValue<float>(KoLED_TW_ChPower, DPT_Value_Power, ParamLED_TW_ChPowerSend, false, power, _statusPower, ParamLED_TW_ChPowerSendCyclicTimeMS, ParamLED_TW_ChPowerSendMinChangePercent, ParamLED_TW_ChPowerSendMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
     processDeviceProtection(KoLED_TW_ChDeviceProtConstCurrent, KoLED_TW_ChDeviceProtOverload, ParamLED_TW_ChDeviceProtActive, ParamLED_TW_ChDeviceProtConstCurrent, ParamLED_TW_ChDeviceProtOverloadPercent, ParamLED_TW_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_TW_ChDeviceProtCutOff, current);
 

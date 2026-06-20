@@ -40,103 +40,20 @@ void RGBChannel::update()
     Colors::HSV hsv(tmpHue, tmpSat, tmpBrightness);
     bool stateOn = tmpBrightness > 0;
 
-    if (ParamLED_RGB_ChStatusOnOffSend)
-    {
-        if ((bool)KoLED_RGB_ChStateOnOff.value(DPT_State) != stateOn)
-            KoLED_RGB_ChStateOnOff.value(stateOn, DPT_State);
+    StatusOutput::sendSwitch(KoLED_RGB_ChStateOnOff, ParamLED_RGB_ChStatusOnOffSend, stateOn, ParamLED_RGB_ChStatusOnOffTimeMS, _statusSendOnOffTimer);
 
-        if (ParamLED_RGB_ChStatusOnOffTimeMS > 0 && delayCheckMillis(_statusSendOnOffTimer, ParamLED_RGB_ChStatusOnOffTimeMS))
-        {
-            KoLED_RGB_ChStateOnOff.value(stateOn, DPT_State);
-            _statusSendOnOffTimer = delayTimerInit();
-        }
-    }
+    uint8_t koBrightness = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+    StatusOutput::sendValue<uint8_t>(KoLED_RGB_ChBrightnessStatus, DPT_Scaling, ParamLED_RGB_ChStatusBrightnessSend, _brightness.dimming(), koBrightness, _statusBrightness, ParamLED_RGB_ChStatusBrightnessTimeMS, ParamLED_RGB_ChStatusBrightnessMinChangePercent, ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
-    if (ParamLED_RGB_ChStatusBrightnessSend)
-    {
-        uint8_t koValue = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+    // colour temperature is CPU intensive to derive, so only recompute when hue/saturation changed
+    if (ParamLED_RGB_ChStatusTempSend && (_lastHueValue != tmpHue || _lastSatValue != tmpSat))
+        tmpColor = conv_RGB2Temp(Colors::hsv2rgb(hsv).toUint32());
+    StatusOutput::sendValue<uint16_t>(KoLED_RGB_ChColorTemperatureStatus, Dpt(7, 600), ParamLED_RGB_ChStatusTempSend, _hue.dimming() || _saturation.dimming(), tmpColor, _statusColorTemp, ParamLED_RGB_ChStatusTempTimeMS, ParamLED_RGB_ChStatusTempMinChangePercent, ParamLED_RGB_ChStatusTempMinChangeAbsolute, STATUS_SEND_RATE_MS, stateOn);
 
-        uint16_t brightnessDifference = abs(_lastBrightnessLevel - tmpBrightness);
-        if (brightnessDifference > 0 &&
-            (uint8_t)KoLED_RGB_ChBrightnessStatus.value(DPT_Scaling) != koValue)
-        {
-            if (_lastBrightnessLevel > 0 && brightnessDifference >= _lastBrightnessLevel * ParamLED_RGB_ChStatusBrightnessMinChangePercent / 100.0f &&
-                brightnessDifference >= ParamLED_RGB_ChStatusBrightnessMinChangeAbsolute)
-                KoLED_RGB_ChBrightnessStatus.value(koValue, DPT_Scaling);
-            else
-                KoLED_RGB_ChBrightnessStatus.valueNoSend(koValue, DPT_Scaling);
-        }
+    bool colorInTransition = _hue.dimming() || _saturation.dimming() || _brightness.dimming();
+    StatusOutput::sendValue<uint32_t>(KoLED_RGB_ChRGBStatus, DPT_Colour_RGB, ParamLED_RGB_ChStatusRGBSend, colorInTransition, Colors::hsv2rgb(hsv).toUint32(), _statusRgb, ParamLED_RGB_ChStatusRGBTimeMS, 0, 0, STATUS_SEND_RATE_MS, stateOn);
 
-        if (ParamLED_RGB_ChStatusBrightnessTimeMS > 0 && delayCheckMillis(_statusSendBrightnessTimer, ParamLED_RGB_ChStatusBrightnessTimeMS))
-        {
-            KoLED_RGB_ChBrightnessStatus.value(koValue, DPT_Scaling);
-            _statusSendBrightnessTimer = delayTimerInit();
-        }
-    }
-
-    if (ParamLED_RGB_ChStatusTempSend)
-    {
-
-        // as color temperature calculation is quite CPU intensive,
-        // we only do this when status sending is enabled
-        // and color temperature can only change if hue or saturation changes
-        if (_lastHueValue != tmpHue || _lastSatValue != tmpSat)
-        {
-            Colors::RGB rgb_value = Colors::hsv2rgb(hsv).toUint32();
-            u32_t rgb_value_ = rgb_value.toUint32();
-            tmpColor = conv_RGB2Temp(rgb_value_);
-        }
-
-        uint16_t colorDifference = abs(_lastColorTemp - tmpColor);
-        if (colorDifference > 0 &&
-            (uint16_t)KoLED_RGB_ChColorTemperatureStatus.value(Dpt(7, 600)) != tmpColor)
-        {
-            if (stateOn &&
-                (_lastColorTemp > 0 && colorDifference >= _lastColorTemp * ParamLED_RGB_ChStatusTempMinChangePercent / 100.0f &&
-                 colorDifference >= ParamLED_RGB_ChStatusTempMinChangeAbsolute))
-                KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
-            else
-                KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
-        }
-
-        if (ParamLED_RGB_ChStatusTempTimeMS > 0 && delayCheckMillis(_statusSendTemperaturTimer, ParamLED_RGB_ChStatusTempTimeMS))
-        {
-            if (stateOn)
-                KoLED_RGB_ChColorTemperatureStatus.value(tmpColor, Dpt(7, 600));
-            else
-                KoLED_RGB_ChColorTemperatureStatus.valueNoSend(tmpColor, Dpt(7, 600));
-
-            _statusSendTemperaturTimer = delayTimerInit();
-        }
-    }
-
-    if (ParamLED_RGB_ChStatusRGBSend)
-    {
-        if (_lastHueValue != tmpHue || _lastSatValue != tmpSat ||
-            ParamLED_RGB_ChStatusRGBTimeMS > 0 && delayCheckMillis(_statusSendRgbTimer, ParamLED_RGB_ChStatusRGBTimeMS))
-        {
-            if (stateOn)
-                KoLED_RGB_ChRGBStatus.value(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
-            else
-                KoLED_RGB_ChRGBStatus.valueNoSend(Colors::hsv2rgb(hsv).toUint32(), DPT_Colour_RGB);
-
-            _statusSendRgbTimer = delayTimerInit();
-        }
-    }
-
-    if (ParamLED_RGB_ChStatusHSVSend)
-    {
-        if (_lastHueValue != tmpHue || _lastSatValue != tmpSat ||
-            ParamLED_RGB_ChStatusHSVTimeMS > 0 && delayCheckMillis(_statusSendHsvTimer, ParamLED_RGB_ChStatusHSVTimeMS))
-        {
-            if (stateOn)
-                KoLED_RGB_ChHSVStatus.value(hsv.toUint32(), DPT_Colour_RGB);
-            else
-                KoLED_RGB_ChHSVStatus.valueNoSend(hsv.toUint32(), DPT_Colour_RGB);
-
-            _statusSendHsvTimer = delayTimerInit();
-        }
-    }
+    StatusOutput::sendValue<uint32_t>(KoLED_RGB_ChHSVStatus, DPT_Colour_RGB, ParamLED_RGB_ChStatusHSVSend, colorInTransition, hsv.toUint32(), _statusHsv, ParamLED_RGB_ChStatusHSVTimeMS, 0, 0, STATUS_SEND_RATE_MS, stateOn);
 
     if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
     {
@@ -175,13 +92,13 @@ void RGBChannel::update()
     float current1 = _pDimmer->getCurrent(_pHWChannels[1]);
     float current2 = _pDimmer->getCurrent(_pHWChannels[2]);
     float current = current0 + current1 + current2;
-    processSendValue(KoLED_RGB_ChCurrent, DPT_Value_Electric_Current, ParamLED_RGB_ChCurrentSend, ParamLED_RGB_ChCurrentSendMinChangePercent, ParamLED_RGB_ChCurrentSendMinChangeAbsolute, ParamLED_RGB_ChCurrentSendCyclicTimeMS, _currentCyclicSendTimer, _lastSentCurrent, current, 1000);
+    StatusOutput::sendValue<float>(KoLED_RGB_ChCurrent, DPT_Value_Electric_Current, ParamLED_RGB_ChCurrentSend, false, current, _statusCurrent, ParamLED_RGB_ChCurrentSendCyclicTimeMS, ParamLED_RGB_ChCurrentSendMinChangePercent, ParamLED_RGB_ChCurrentSendMinChangeAbsolute, STATUS_SEND_RATE_MS, true, 1000.0f);
 
     float voltage0 = _pDimmer->getVoltage(_pHWChannels[0]);
     float voltage1 = _pDimmer->getVoltage(_pHWChannels[1]);
     float voltage2 = _pDimmer->getVoltage(_pHWChannels[2]);
     float power = (voltage0 * current0 + voltage1 * current1 + voltage2 * current2) / 1000.0f;
-    processSendValue(KoLED_RGB_ChPower, DPT_Value_Power, ParamLED_RGB_ChPowerSend, ParamLED_RGB_ChPowerSendMinChangePercent, ParamLED_RGB_ChPowerSendMinChangeAbsolute, ParamLED_RGB_ChPowerSendCyclicTimeMS, _powerCyclicSendTimer, _lastSentPower, power);
+    StatusOutput::sendValue<float>(KoLED_RGB_ChPower, DPT_Value_Power, ParamLED_RGB_ChPowerSend, false, power, _statusPower, ParamLED_RGB_ChPowerSendCyclicTimeMS, ParamLED_RGB_ChPowerSendMinChangePercent, ParamLED_RGB_ChPowerSendMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
     processDeviceProtection(KoLED_RGB_ChDeviceProtConstCurrent, KoLED_RGB_ChDeviceProtOverload, ParamLED_RGB_ChDeviceProtActive, ParamLED_RGB_ChDeviceProtConstCurrent, ParamLED_RGB_ChDeviceProtOverloadPercent, ParamLED_RGB_ChDeviceProtOverloadTimeMS, _deviceProtOverloadTimer, ParamLED_RGB_ChDeviceProtCutOff, current);
 
@@ -605,7 +522,8 @@ void RGBChannel::setColorTemperature(uint16_t colorTemp)
     if (_brightness.value() > 0)
         setBrightness(_brightness.value());
 
-    KoLED_RGB_ChColorTemperatureStatus.value(colorTemp, Dpt(7, 600));
+    // Colour-temperature status is emitted from update() once the hue/saturation fade settles
+    // (the derived value that the lamp actually shows), so it is no longer sent directly here.
 }
 
 void RGBChannel::relDimUpColor()

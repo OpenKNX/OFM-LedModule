@@ -57,7 +57,7 @@ class TWChannel : public LightChannel
 
     int32_t _lastOnValueTemp = (ParamLED_TW_ChColorTempCW + ParamLED_TW_ChColorTempWW) / 2;
     bool _boost = false;
-    uint32_t _statusSendTemperaturTimer = 0;
+    StatusValueState _statusColorTemp;
 
     void handleScene(uint8_t sceneNr);
     enum ValueType

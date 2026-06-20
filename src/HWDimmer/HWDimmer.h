@@ -1,5 +1,6 @@
 #pragma once
 #include <OpenKNX.h>
+#include "StatusOutput.h"
 
 #ifdef LEDMODULE_CURRENT_ADDR
     #include <INA238.h>
@@ -114,6 +115,5 @@ class HWDimmer
     float _powerSupplyVoltage = 0;
     uint32_t _powerSupplyLastRequest = 0;
     uint32_t _powerShutdownTimer = 0;
-    uint16_t _lastVoltageSent = 0;
-    uint32_t _voltageSendTimer = 0;
+    StatusValueState _statusVoltage;
 };

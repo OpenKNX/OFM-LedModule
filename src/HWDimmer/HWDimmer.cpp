@@ -65,28 +65,13 @@ void HWDimmer::checkPowerSupply()
     int voltageAnalog = analogRead(LEDMODULE_VOLTAGE_MEASURE_PIN);
     _powerSupplyVoltage = (float)voltageAnalog / 4095 * (float)3.3 * (float)LEDMODULE_VOLTAGE_MEASURE_FACTOR;
 
-    if (ParamLED_PowerSupplyVoltageChangeSend)
-    {
-        float voltageDifference = abs(_lastVoltageSent - _powerSupplyVoltage);
-        if (voltageDifference > 0)
-        {
-            if (voltageDifference >= _lastVoltageSent * ParamLED_PowerSupplyVoltageMinChangePercent / 100.0f &&
-                voltageDifference >= ParamLED_PowerSupplyVoltageMinChangeAbsolute / 1000.0f)
-            {
-                KoLED_PowerSupplyVoltage.value(_powerSupplyVoltage, DPT_Value_Electric_Potential);
-                _lastVoltageSent = _powerSupplyVoltage;
-            }
-            else
-                KoLED_PowerSupplyVoltage.valueNoSend(_powerSupplyVoltage, DPT_Value_Electric_Potential);
-        }
-
-        if (ParamLED_PowerSupplyVoltageCyclicTimeMS > 0 && delayCheck(_voltageSendTimer, ParamLED_PowerSupplyVoltageCyclicTimeMS))
-        {
-            KoLED_PowerSupplyVoltage.value(_powerSupplyVoltage, DPT_Value_Electric_Potential);
-            _lastVoltageSent = _powerSupplyVoltage;
-            _voltageSendTimer = delayTimerInit();
-        }
-    }
+    // Supply voltage is a continuously measured value (never in a fade); scale 1000 keeps
+    // millivolt resolution so the absolute threshold (in mV) and percent threshold apply directly.
+    StatusOutput::sendValue<float>(KoLED_PowerSupplyVoltage, DPT_Value_Electric_Potential,
+                                   ParamLED_PowerSupplyVoltageChangeSend, false, _powerSupplyVoltage,
+                                   _statusVoltage, ParamLED_PowerSupplyVoltageCyclicTimeMS,
+                                   ParamLED_PowerSupplyVoltageMinChangePercent, ParamLED_PowerSupplyVoltageMinChangeAbsolute,
+                                   STATUS_SEND_RATE_MS, true, 1000.0f);
 
     if (KoLED_PowerSupplyRelayStatus.value(DPT_Switch))
     {
