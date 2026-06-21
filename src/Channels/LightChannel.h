@@ -3,7 +3,8 @@
 #include "Colors.h"
 #include "HWDimmer/HWDimmer.h"
 #include "OpenKNX.h"
-#include "StatusOutput.h"
+#include "LedStatusOutput.h"
+#include "hardware.h"
 #include <Arduino.h>
 
 #define DIMLOOP_DELAY 20 // ms
@@ -37,8 +38,38 @@ class LightChannel : public OpenKNX::Channel
     void setLock(bool lock);
     bool isActive() { return _channelActive; };
     virtual bool getCO1() = 0;
-    virtual bool getCO2() = 0; 
+    virtual bool getCO2() = 0;
     virtual bool getCO3() = 0;
+
+    // A command just (re)set this channel's demand; LedModule arbitrates the combined
+    // max-total-brightness budget after dispatch. No-op on boards without the budget define,
+    // so call sites need no #ifdef guard.
+    void markBudgetRequest(uint16_t dimTime)
+    {
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+        _budgetRequester = true;
+        _budgetDimTime = dimTime;
+#else
+        (void)dimTime;
+#endif
+    }
+
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+    // --- Combined max-total-brightness budget (see LEDMODULE_MAX_TOTAL_BRIGHTNESS) ---------
+    // Sum of this channel's physical PWM component fractions at its TARGET, in channel-worths
+    // (1.0 = one pin at 100 %). Overridden per channel type to mirror its loop() output.
+    virtual float budgetFootprint() { return 0.0f; }
+    // Scale the channel's brightness target (preserves colour/CCT). Does NOT mark a request,
+    // so the arbiter can call it without recursing back into arbitration.
+    virtual void applyBudgetScale(float factor, uint16_t dimTime)
+    {
+        _brightness.setTargetValue((uint16_t)((float)_brightness.target() * factor + 0.5f), dimTime);
+        _sceneNumberActive = 0;
+    }
+    bool budgetRequester() const { return _budgetRequester; }
+    uint16_t budgetDimTime() const { return _budgetDimTime; }
+    void clearBudgetRequest() { _budgetRequester = false; }
+#endif
 
     template <typename T>
     class DimmableValue
@@ -176,6 +207,11 @@ class LightChannel : public OpenKNX::Channel
 
     uint32_t _statusSendOnOffTimer = 0;
     StatusValueState _statusBrightness;
+
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+    bool _budgetRequester = false;
+    uint16_t _budgetDimTime = 0;
+#endif
 
     SceneConfig *_scenes;
 

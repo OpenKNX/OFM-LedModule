@@ -170,6 +170,11 @@ void LedModule::setupChannels()
 
     logDebugP("Channel setup finished.");
     logIndentDown();
+
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+    // Safety net: if restored/startup brightnesses already exceed the budget, fit them now.
+    enforceTotalBrightness();
+#endif
 }
 
 void LedModule::setupTemperatureSensor()
@@ -390,7 +395,109 @@ void LedModule::processInputKo(GroupObject& ko)
         logDebugP("CO %d", channelnumber);
         _coChannels[channelnumber]->processInputKo(ko);
     }
+
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+    // The command above (individual channel, or a central object fanned out to many channels)
+    // flagged its requester(s) via markBudgetRequest. Arbitrate the combined budget now.
+    enforceTotalBrightness();
+#endif
 }
+
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+void LedModule::enforceTotalBrightness()
+{
+    const float budget = (float)LEDMODULE_MAX_TOTAL_BRIGHTNESS;
+    constexpr uint8_t MAX_CH = LED_SC_ChannelCount + LED_TW_ChannelCount + LED_RGB_ChannelCount + LED_RGBW_ChannelCount + LED_RGBTW_ChannelCount;
+
+    // Collect all active light channels (each physical channel is exactly one active type).
+    LightChannel* chans[MAX_CH];
+    uint8_t n = 0;
+    for (uint8_t i = 0; i < LED_SC_ChannelCount; i++)
+        if (_singleChannels[i]->isActive()) chans[n++] = _singleChannels[i];
+    for (uint8_t i = 0; i < LED_TW_ChannelCount; i++)
+        if (_twChannels[i]->isActive()) chans[n++] = _twChannels[i];
+    for (uint8_t i = 0; i < LED_RGB_ChannelCount; i++)
+        if (_rgbChannels[i]->isActive()) chans[n++] = _rgbChannels[i];
+    for (uint8_t i = 0; i < LED_RGBW_ChannelCount; i++)
+        if (_rgbwChannels[i]->isActive()) chans[n++] = _rgbwChannels[i];
+    for (uint8_t i = 0; i < LED_RGBTW_ChannelCount; i++)
+        if (_rgbtwChannels[i]->isActive()) chans[n++] = _rgbtwChannels[i];
+
+    // Footprints + partition. The most recently commanded channels (REQ) win; every other
+    // active channel (FLEX) can be reduced to make room (any channel's brightness may be
+    // lowered, regardless of lock state).
+    float fp[MAX_CH];
+    float total = 0.0f, fReq = 0.0f, fFlex = 0.0f;
+    uint16_t dimTime = 0;
+    for (uint8_t i = 0; i < n; i++)
+    {
+        fp[i] = chans[i]->budgetFootprint();
+        total += fp[i];
+        if (chans[i]->budgetRequester())
+        {
+            fReq += fp[i];
+            if (chans[i]->budgetDimTime() > dimTime) dimTime = chans[i]->budgetDimTime();
+        }
+        else
+            fFlex += fp[i];
+    }
+
+    if (total <= budget)
+    {
+        for (uint8_t i = 0; i < n; i++) chans[i]->clearBudgetRequest();
+        return;
+    }
+
+    // (a) Reduce FLEX by equal-ABSOLUTE footprint, water-filling down to 0 (deficit of a
+    //     channel that can't give its full share is redistributed across the rest).
+    if (fFlex > 0.0f)
+    {
+        bool act[MAX_CH];
+        uint8_t actCount = 0;
+        for (uint8_t i = 0; i < n; i++)
+        {
+            act[i] = !chans[i]->budgetRequester() && fp[i] > 0.0f;
+            if (act[i]) actCount++;
+        }
+        float remove = total - budget; // total footprint to take out of the FLEX set
+        while (actCount > 0 && remove > 0.0001f)
+        {
+            float share = remove / actCount;
+            bool capped = false;
+            for (uint8_t i = 0; i < n; i++)
+            {
+                if (act[i] && fp[i] <= share)
+                {
+                    chans[i]->applyBudgetScale(0.0f, dimTime); // can't give a full share → off
+                    remove -= fp[i];
+                    act[i] = false;
+                    actCount--;
+                    capped = true;
+                }
+            }
+            if (!capped)
+            {
+                for (uint8_t i = 0; i < n; i++)
+                    if (act[i]) chans[i]->applyBudgetScale((fp[i] - share) / fp[i], dimTime);
+                remove = 0.0f;
+                break;
+            }
+        }
+    }
+
+    // (b) If the requesters alone still exceed the budget, scale them all proportionally so
+    //     they fit (group fair-split).
+    if (fReq > budget)
+    {
+        float factor = budget / fReq;
+        for (uint8_t i = 0; i < n; i++)
+            if (chans[i]->budgetRequester() && fp[i] > 0.0f)
+                chans[i]->applyBudgetScale(factor, dimTime);
+    }
+
+    for (uint8_t i = 0; i < n; i++) chans[i]->clearBudgetRequest();
+}
+#endif
 
 void LedModule::showHelp()
 {

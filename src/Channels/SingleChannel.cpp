@@ -187,7 +187,10 @@ void SingleChannel::handleScene(uint8_t sceneNr)
 
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
+                    {
                         _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness() * VALUE_KNX_MULTIPLY), dimmingTime(1));
+                        markBudgetRequest(dimmingTime(1));
+                    }
                     break;
 
                 case SceneConfig::FuncType::FUNCTION:
@@ -277,6 +280,7 @@ void SingleChannel::setSwitch(bool switchOn)
     logDebugP("dimmingValTarget: %6X", dimmingValTarget(switchOn));
     logDebugP("dimmingTime: %5X", dimmingTime(switchOn));
     _sceneNumberActive = 0;
+    markBudgetRequest(dimmingTime(switchOn));
 }
 
 void SingleChannel::setSwitchNoDim(bool switchOn)
@@ -293,6 +297,7 @@ void SingleChannel::setSwitchNoDim(bool switchOn)
         _brightness.setTargetValue(dimmingValTarget(switchOn), 1);
     }
     _sceneNumberActive = 0;
+    markBudgetRequest(1);
 }
 
 void SingleChannel::setBrightness(uint16_t bright)
@@ -301,6 +306,7 @@ void SingleChannel::setBrightness(uint16_t bright)
     bright = checkMinMaxBrightness(bright);
     _brightness.setTargetValue(bright, dimmingTimeON());
     _sceneNumberActive = 0;
+    markBudgetRequest(dimmingTimeON());
 }
 
 void SingleChannel::setNight(bool night)
@@ -328,6 +334,7 @@ void SingleChannel::setNight(bool night)
                 _brightness.setTargetValue(ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmNightOnTime);
         }
     }
+    markBudgetRequest(2 * dimmingTimeON());
 }
 
 void SingleChannel::relDimUp()
@@ -335,6 +342,7 @@ void SingleChannel::relDimUp()
     logDebugP("relDim_UP");
     _brightness.setTargetValue(dimmingValMax(), ParamLED_SC_ChLightDimmRelTime);
     _sceneNumberActive = 0;
+    markBudgetRequest(ParamLED_SC_ChLightDimmRelTime);
 }
 
 void SingleChannel::relDimDown()
@@ -342,6 +350,7 @@ void SingleChannel::relDimDown()
     logDebugP("relDim_DOWN");
     _brightness.setTargetValue(dimmingValMin(), ParamLED_SC_ChLightDimmRelTime);
     _sceneNumberActive = 0;
+    markBudgetRequest(ParamLED_SC_ChLightDimmRelTime);
 }
 
 void SingleChannel::relDimStop()

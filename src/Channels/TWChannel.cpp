@@ -89,7 +89,18 @@ void TWChannel::loop()
 
         uint16_t ww = ((uint32_t)brightValue * (colorTempValue - ParamLED_TW_ChColorTempWW)) / (ParamLED_TW_ChColorTempCW - ParamLED_TW_ChColorTempWW);
         uint16_t cw = ((uint32_t)brightValue * (ParamLED_TW_ChColorTempCW - colorTempValue)) / (ParamLED_TW_ChColorTempCW - ParamLED_TW_ChColorTempWW);
-        if (!_boost)
+        if (_boost)
+        {
+            // Boost: both pins driven from the scalable _boostLevel (equal) so the budget
+            // arbiter can reduce both together.
+            uint16_t boostLevel = _pDimmer->scale(_boostLevel.step(_lastDimTimestamp), (HWDimmer::DimLUTType)ParamLED_TW_ChDimCurve);
+            if (_pHWChannels[0] < LED_ChannelCount)
+                _pDimmer->setLevel(boostLevel, _pHWChannels[0]);
+
+            if (_pHWChannels[1] < LED_ChannelCount)
+                _pDimmer->setLevel(boostLevel, _pHWChannels[1]);
+        }
+        else
         {
             if (_pHWChannels[0] < LED_ChannelCount)
                 _pDimmer->setLevel(ww, _pHWChannels[0]);
@@ -230,7 +241,10 @@ void TWChannel::handleScene(uint8_t sceneNr)
 
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS || _scenes[i].valueType == ValueType::COMBINED)
+                    {
                         _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness() * VALUE_KNX_MULTIPLY), dimmingTime(1));
+                        markBudgetRequest(dimmingTime(1));
+                    }
                     if (_scenes[i].valueType == ValueType::TEMTPERATURE || _scenes[i].valueType == ValueType::COMBINED)
                         _colorTemperature.setTargetValue(_scenes[i].ColorTemperature(), dimmingTime(1));
                     logDebugP("Scene: %d, BR: %d, CT: %d", sceneNr, _scenes[i].Brightness(), _scenes[i].ColorTemperature());
@@ -352,6 +366,7 @@ void TWChannel::setSwitch(bool switchOn)
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(switchOn));
     logDebugP("dimmingTempTarget: %3X", dimmingTempTarget(switchOn));
     logDebugP("dimmingTime: %5X", dimmingTime(switchOn));
+    markBudgetRequest(dimmingTime(switchOn));
 }
 
 void TWChannel::setSwitchNoDim(bool switchOn)
@@ -371,6 +386,7 @@ void TWChannel::setSwitchNoDim(bool switchOn)
         setLastOnValueTemp(_colorTemperature.value());
         _brightness.setTargetValue(dimmingValTarget(switchOn), 1);
     }
+    markBudgetRequest(1);
 }
 
 void TWChannel::setBoost(bool switchOn)
@@ -378,23 +394,15 @@ void TWChannel::setBoost(bool switchOn)
     if (switchOn)
     {
         logDebugP("Boost_ON");
-        //_brightness.setTargetValue(dimmingValTarget(switchOn), 1);
-        //_pDimmer->setLevel(0xFFF, _pHWChannels[0]);
-        //_pDimmer->setLevel(0xFFF, _pHWChannels[1]);
         _boost = true;
-        uint16_t ww = _pDimmer->getScaleMax((HWDimmer::DimLUTType)ParamLED_TW_ChDimCurve);
-        uint16_t cw = _pDimmer->getScaleMax((HWDimmer::DimLUTType)ParamLED_TW_ChDimCurve);
-
-        if (_pHWChannels[0] < LED_ChannelCount)
-            _pDimmer->setLevel(ww, _pHWChannels[0]);
-
-        if (_pHWChannels[1] < LED_ChannelCount)
-            _pDimmer->setLevel(cw, _pHWChannels[1]);
+        // Snap boost to full; the loop drives both pins from _boostLevel so the budget
+        // arbiter can scale it (both pins drop equally) without losing the boost character.
+        _boostLevel.setTargetValue(VALUE_KNX_COUNT, 1);
+        markBudgetRequest(dimmingTimeON());
     }
     else
     {
         logDebugP("Boost_OFF");
-        //_brightness.setTargetValue(dimmingValTarget(switchOn), 1);
         _boost = false;
         _pDimmer->setLevel(0x0, _pHWChannels[0]);
         _pDimmer->setLevel(0x0, _pHWChannels[1]);
@@ -408,6 +416,7 @@ void TWChannel::setBrightness(uint16_t bright)
     logDebugP("setBrightness: %3X", bright);
     bright = checkMinMaxBrightness(bright);
     _brightness.setTargetValue(bright, dimmingTimeON());
+    markBudgetRequest(dimmingTimeON());
 }
 
 void TWChannel::setBrightnessNoDim(uint16_t bright)
@@ -417,6 +426,7 @@ void TWChannel::setBrightnessNoDim(uint16_t bright)
     //logDebugP("setBrightness: %3X", bright);
     bright = checkMinMaxBrightness(bright);
     _brightness.setTargetValue(bright, 1);
+    markBudgetRequest(1);
 }
 
 void TWChannel::setNight(bool night)
@@ -442,6 +452,7 @@ void TWChannel::setNight(bool night)
                 _brightness.setTargetValue(ParamLED_TW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_TW_ChLightDimmNightOnTime);
         }
     }
+    markBudgetRequest(2 * dimmingTimeON());
 }
 
 void TWChannel::relDimUp()
@@ -450,6 +461,7 @@ void TWChannel::relDimUp()
     _sceneNumberActive = 0;
     logDebugP("relDim_UP");
     _brightness.setTargetValue(dimmingValMax(), ParamLED_TW_ChLightDimmRelTime);
+    markBudgetRequest(ParamLED_TW_ChLightDimmRelTime);
 }
 
 void TWChannel::relDimDown()
@@ -458,6 +470,7 @@ void TWChannel::relDimDown()
     _sceneNumberActive = 0;
     logDebugP("relDim_DOWN");
     _brightness.setTargetValue(dimmingValMin(), ParamLED_TW_ChLightDimmRelTime);
+    markBudgetRequest(ParamLED_TW_ChLightDimmRelTime);
 }
 
 void TWChannel::relDimStop()

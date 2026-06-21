@@ -1,6 +1,6 @@
 #pragma once
 #include <OpenKNX.h>
-#include "StatusOutput.h"
+#include "LedStatusOutput.h"
 
 #ifdef LEDMODULE_CURRENT_ADDR
     #include <INA238.h>

@@ -298,6 +298,7 @@ void RGBTWChannel::handleScene(uint8_t sceneNr)
                     if (_scenes[i].valueType == ValueType::SATURATION)
                         _saturation.setTargetValue(_scenes[i].value[2], dimmingTime(1));
 
+                    markBudgetRequest(dimmingTime(1));
                     break;
 
                 case SceneConfig::FuncType::FUNCTION:
@@ -419,6 +420,7 @@ void RGBTWChannel::setSwitch(bool switchOn)
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(switchOn));
     logDebugP("dimmingTime: %5X", dimmingTime(switchOn));
     logDebugP("parammaxday: %5X", (ParamLED_RGBTW_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY));
+    markBudgetRequest(dimmingTime(switchOn));
 }
 
 void RGBTWChannel::setSwitchNoDim(bool switchOn)
@@ -438,6 +440,7 @@ void RGBTWChannel::setSwitchNoDim(bool switchOn)
         setLastOnValueSat(_saturation.value());
         _brightness.setTargetValue(dimmingValTarget(switchOn), 1);
     }
+    markBudgetRequest(1);
 }
 
 void RGBTWChannel::setHue(uint16_t hue)
@@ -446,6 +449,7 @@ void RGBTWChannel::setHue(uint16_t hue)
     logDebugP("setHue: %3X", hue);
     // hue max 16384
     _hue.setTargetValue(hue, dimmingTimeON());
+    markBudgetRequest(dimmingTimeON());
 }
 
 void RGBTWChannel::setSaturation(uint16_t saturation)
@@ -454,6 +458,7 @@ void RGBTWChannel::setSaturation(uint16_t saturation)
     logDebugP("setSaturation: %3X", saturation);
     // saturation max 1024
     _saturation.setTargetValue(saturation, dimmingTimeON());
+    markBudgetRequest(dimmingTimeON());
 }
 
 void RGBTWChannel::setBrightness(uint16_t bright)
@@ -462,6 +467,7 @@ void RGBTWChannel::setBrightness(uint16_t bright)
     logDebugP("setBrightness: %3X", bright);
     bright = checkMinMaxBrightness(bright);
     _brightness.setTargetValue(bright, dimmingTimeON());
+    markBudgetRequest(dimmingTimeON());
 }
 
 void RGBTWChannel::setNight(bool night)
@@ -487,18 +493,21 @@ void RGBTWChannel::setNight(bool night)
                 _brightness.setTargetValue(ParamLED_RGBTW_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_RGBTW_ChLightDimmNightOnTime);
         }
     }
+    markBudgetRequest(2 * dimmingTimeON());
 }
 
 void RGBTWChannel::relDimUp()
 {
     _sceneNumberActive = 0;
     _brightness.setTargetValue(dimmingValMax(), ParamLED_RGBTW_ChLightDimmRelTime);
+    markBudgetRequest(ParamLED_RGBTW_ChLightDimmRelTime);
 }
 
 void RGBTWChannel::relDimDown()
 {
     _sceneNumberActive = 0;
     _brightness.setTargetValue(dimmingValMin(), ParamLED_RGBTW_ChLightDimmRelTime);
+    markBudgetRequest(ParamLED_RGBTW_ChLightDimmRelTime);
 }
 
 void RGBTWChannel::relDimStop()

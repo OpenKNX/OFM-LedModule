@@ -49,6 +49,24 @@ class TWChannel : public LightChannel
     bool getCO2();
     bool getCO3();
 
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+    // Boost drives BOTH pins to full → 2 channel-worths. Reducible like any channel: the
+    // arbiter scales _boostLevel, dropping both pins equally.
+    float budgetFootprint() override
+    {
+        if (!_channelActive) return 0.0f;
+        if (_boost) return 2.0f * (float)_boostLevel.target() / (float)VALUE_KNX_COUNT;
+        return (float)_brightness.target() / (float)VALUE_KNX_COUNT;
+    }
+    void applyBudgetScale(float factor, uint16_t dimTime) override
+    {
+        if (_boost)
+            _boostLevel.setTargetValue((uint16_t)((float)_boostLevel.target() * factor + 0.5f), dimTime);
+        else
+            LightChannel::applyBudgetScale(factor, dimTime);
+    }
+#endif
+
   private:
     const std::string name() override;
 
@@ -57,6 +75,9 @@ class TWChannel : public LightChannel
 
     int32_t _lastOnValueTemp = (ParamLED_TW_ChColorTempCW + ParamLED_TW_ChColorTempWW) / 2;
     bool _boost = false;
+    // Loop-driven boost output level (brightness domain, 0..VALUE_KNX_COUNT); both pins are
+    // driven from this while _boost so it can be scaled for the total-brightness budget.
+    DimmableValue<uint16_t> _boostLevel{0, 0, VALUE_KNX_COUNT};
     StatusValueState _statusColorTemp;
 
     void handleScene(uint8_t sceneNr);

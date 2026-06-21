@@ -53,6 +53,16 @@ class RGBTWChannel : public LightChannel
     bool getCO2();
     bool getCO3();
 
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+    // Footprint mirrors the 5 driven pins: R, G, B, WarmWhite, ColdWhite (see loop()).
+    float budgetFootprint() override
+    {
+        if (!_channelActive || _brightness.target() == 0) return 0.0f;
+        Colors::RGB rgb = Colors::hsv2rgb(Colors::HSV(_hue.target(), _saturation.target(), _brightness.target()));
+        return (float)((uint32_t)rgb.Red() + rgb.Green() + rgb.Blue() + rgb.WarmWhite() + rgb.ColdWhite()) / (float)VALUE_KNX_COUNT;
+    }
+#endif
+
   private:
     const std::string name() override;
 

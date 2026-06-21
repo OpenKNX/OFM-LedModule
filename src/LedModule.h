@@ -66,6 +66,13 @@ class LedModule : public OpenKNX::Module
     void setupVoltageMeasurement();
     void setupConstantCurrentMode();
 
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+    // Enforce the combined max-total-brightness budget across all physical PWM channels:
+    // the most recently commanded channel(s) (flagged via markBudgetRequest) win; other
+    // channels are reduced equally to fit, last-request-wins. See LEDMODULE_MAX_TOTAL_BRIGHTNESS.
+    void enforceTotalBrightness();
+#endif
+
   public:
     void loop(bool configured) override;
     void setup(bool configured) override;

@@ -34,6 +34,13 @@ class SingleChannel : public LightChannel
     bool getCO2();
     bool getCO3();
 
+#ifdef LEDMODULE_MAX_TOTAL_BRIGHTNESS
+    float budgetFootprint() override
+    {
+        return _channelActive ? (float)_brightness.target() / (float)VALUE_KNX_COUNT : 0.0f;
+    }
+#endif
+
   private:
     const std::string name() override;
 

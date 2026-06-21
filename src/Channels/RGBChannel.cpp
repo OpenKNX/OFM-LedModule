@@ -302,6 +302,7 @@ void RGBChannel::handleScene(uint8_t sceneNr)
                     if (_scenes[i].valueType == ValueType::SATURATION)
                         _saturation.setTargetValue(_scenes[i].value[2], dimmingTime(1));
 
+                    markBudgetRequest(dimmingTime(1));
                     break;
 
                 case SceneConfig::FuncType::FUNCTION:
@@ -423,6 +424,7 @@ void RGBChannel::setSwitch(bool switchOn)
     logDebugP("dimmingValTarget: %3X", dimmingValTarget(switchOn));
     logDebugP("dimmingTime: %5X", dimmingTime(switchOn));
     logDebugP("parammaxday: %5X", (ParamLED_RGB_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY));
+    markBudgetRequest(dimmingTime(switchOn));
 }
 
 void RGBChannel::setSwitchNoDim(bool switchOn)
@@ -442,6 +444,7 @@ void RGBChannel::setSwitchNoDim(bool switchOn)
         setLastOnValueSat(_saturation.value());
         _brightness.setTargetValue(dimmingValTarget(switchOn), 1);
     }
+    markBudgetRequest(1);
 }
 
 void RGBChannel::setHue(uint16_t hue)
@@ -450,6 +453,7 @@ void RGBChannel::setHue(uint16_t hue)
     logDebugP("setHue: %3X", hue);
     // hue max 16384
     _hue.setTargetValue(hue, dimmingTimeON());
+    markBudgetRequest(dimmingTimeON());
 }
 
 void RGBChannel::setSaturation(uint16_t saturation)
@@ -458,6 +462,7 @@ void RGBChannel::setSaturation(uint16_t saturation)
     logDebugP("setSaturation: %3X", saturation);
     // saturation max 1024
     _saturation.setTargetValue(saturation, dimmingTimeON());
+    markBudgetRequest(dimmingTimeON());
 }
 
 void RGBChannel::setBrightness(uint16_t bright)
@@ -466,6 +471,7 @@ void RGBChannel::setBrightness(uint16_t bright)
     logDebugP("setBrightness: %3X", bright);
     bright = checkMinMaxBrightness(bright);
     _brightness.setTargetValue(bright, dimmingTimeON());
+    markBudgetRequest(dimmingTimeON());
 }
 
 void RGBChannel::setNight(bool night)
@@ -491,18 +497,21 @@ void RGBChannel::setNight(bool night)
                 _brightness.setTargetValue(ParamLED_RGB_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_RGB_ChLightDimmNightOnTime);
         }
     }
+    markBudgetRequest(2 * dimmingTimeON());
 }
 
 void RGBChannel::relDimUp()
 {
     _sceneNumberActive = 0;
     _brightness.setTargetValue(dimmingValMax(), ParamLED_RGB_ChLightDimmRelTime);
+    markBudgetRequest(ParamLED_RGB_ChLightDimmRelTime);
 }
 
 void RGBChannel::relDimDown()
 {
     _sceneNumberActive = 0;
     _brightness.setTargetValue(dimmingValMin(), ParamLED_RGB_ChLightDimmRelTime);
+    markBudgetRequest(ParamLED_RGB_ChLightDimmRelTime);
 }
 
 void RGBChannel::relDimStop()
