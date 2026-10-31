@@ -26,8 +26,8 @@ class SingleChannel : public LightChannel
     void setSwitchNoDim(bool switchOn) override;
     void setBrightness(uint16_t bright);
     void setNight(bool night) override;
-    void relDimUp();
-    void relDimDown();
+    void relDimUp(uint8_t stepCode = 1);
+    void relDimDown(uint8_t stepCode = 1);
     void relDimStop();
 
     bool getCO1();

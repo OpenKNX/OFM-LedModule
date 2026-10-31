@@ -108,4 +108,6 @@ class Colors
 
     static RGB hsv2rgb(HSV hsv);
     static HSV rgb2hsv(RGB rgb);
+    static uint32_t temp2rgb(uint16_t temp);
+    static uint16_t rgb2temp(uint32_t rgb);
 };

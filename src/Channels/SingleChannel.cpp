@@ -35,7 +35,7 @@ void SingleChannel::update()
 
     StatusOutput::sendSwitch(KoLED_SC_ChStateOnOff, ParamLED_SC_ChStatusOnOffSend, stateOn, ParamLED_SC_ChStatusOnOffTimeMS, _statusSendOnOffTimer);
 
-    uint8_t koBrightness = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+    uint8_t koBrightness = brightnessPercent(tmpBrightness);
     StatusOutput::sendValue<uint8_t>(KoLED_SC_ChBrightnessStatus, DPT_Scaling, ParamLED_SC_ChStatusBrightnessSend, _brightness.dimming(), koBrightness, _statusBrightness, ParamLED_SC_ChStatusBrightnessTimeMS, ParamLED_SC_ChStatusBrightnessMinChangePercent, ParamLED_SC_ChStatusBrightnessMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
     if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
@@ -134,15 +134,15 @@ void SingleChannel::processInputKo(GroupObject& ko)
             case LED_SC_KoChBrightnessRel:
                 if (!getLock())
                 {
-                    int16_t tmpu16;
-                    tmpu16 = *KoLED_SC_ChBrightnessRel.valueRef();
+                    uint8_t tmpu8 = *KoLED_SC_ChBrightnessRel.valueRef();
+                    uint8_t stepCode = tmpu8 & 0x07;
 
-                    if (tmpu16 >= 0x09)
-                        relDimUp();
-                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                        relDimDown();
-                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                    if (stepCode == 0)
                         relDimStop();
+                    else if (tmpu8 & 0x08)
+                        relDimUp(stepCode);
+                    else
+                        relDimDown(stepCode);
                 }
                 break;
 
@@ -337,20 +337,20 @@ void SingleChannel::setNight(bool night)
     markBudgetRequest(2 * dimmingTimeON());
 }
 
-void SingleChannel::relDimUp()
+void SingleChannel::relDimUp(uint8_t stepCode)
 {
     logDebugP("relDim_UP");
-    _brightness.setTargetValue(dimmingValMax(), ParamLED_SC_ChLightDimmRelTime);
+    uint16_t dimTime = _brightness.relDim(true, stepCode, dimmingValMax(), VALUE_KNX_COUNT - 1, ParamLED_SC_ChLightDimmRelTime);
     _sceneNumberActive = 0;
-    markBudgetRequest(ParamLED_SC_ChLightDimmRelTime);
+    markBudgetRequest(dimTime);
 }
 
-void SingleChannel::relDimDown()
+void SingleChannel::relDimDown(uint8_t stepCode)
 {
     logDebugP("relDim_DOWN");
-    _brightness.setTargetValue(dimmingValMin(), ParamLED_SC_ChLightDimmRelTime);
+    uint16_t dimTime = _brightness.relDim(false, stepCode, dimmingValMin(), VALUE_KNX_COUNT - 1, ParamLED_SC_ChLightDimmRelTime);
     _sceneNumberActive = 0;
-    markBudgetRequest(ParamLED_SC_ChLightDimmRelTime);
+    markBudgetRequest(dimTime);
 }
 
 void SingleChannel::relDimStop()

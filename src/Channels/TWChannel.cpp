@@ -37,7 +37,7 @@ void TWChannel::update()
 
     StatusOutput::sendSwitch(KoLED_TW_ChStateOnOff, ParamLED_TW_ChStatusOnOffSend, stateOn, ParamLED_TW_ChStatusOnOffTimeMS, _statusSendOnOffTimer);
 
-    uint8_t koBrightness = (uint8_t)(round((float)(((uint32_t)tmpBrightness / VALUE_KNX_MULTIPLY * 1000) / 100)) / 10.0);
+    uint8_t koBrightness = brightnessPercent(tmpBrightness);
     StatusOutput::sendValue<uint8_t>(KoLED_TW_ChBrightnessStatus, DPT_Scaling, ParamLED_TW_ChStatusBrightnessSend, _brightness.dimming(), koBrightness, _statusBrightness, ParamLED_TW_ChStatusBrightnessTimeMS, ParamLED_TW_ChStatusBrightnessMinChangePercent, ParamLED_TW_ChStatusBrightnessMinChangeAbsolute, STATUS_SEND_RATE_MS);
 
     StatusOutput::sendValue<uint16_t>(KoLED_TW_ChColorTemperatureStatus, Dpt(7, 600), ParamLED_TW_ChStatusTempSend, _colorTemperature.dimming(), tmpColor, _statusColorTemp, ParamLED_TW_ChStatusTempTimeMS, ParamLED_TW_ChStatusTempMinChangePercent, ParamLED_TW_ChStatusTempMinChangeAbsolute, STATUS_SEND_RATE_MS, stateOn);
@@ -167,15 +167,15 @@ void TWChannel::processInputKo(GroupObject& ko)
             case LED_TW_KoChBrightnessRel:
                 if (!getLock())
                 {
-                    int16_t tmpu16;
-                    tmpu16 = *KoLED_TW_ChBrightnessRel.valueRef();
+                    uint8_t tmpu8 = *KoLED_TW_ChBrightnessRel.valueRef();
+                    uint8_t stepCode = tmpu8 & 0x07;
 
-                    if (tmpu16 >= 0x09)
-                        relDimUp();
-                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                        relDimDown();
-                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                    if (stepCode == 0)
                         relDimStop();
+                    else if (tmpu8 & 0x08)
+                        relDimUp(stepCode);
+                    else
+                        relDimDown(stepCode);
                 }
                 break;
 
@@ -195,15 +195,15 @@ void TWChannel::processInputKo(GroupObject& ko)
             case LED_TW_KoChColorTemperatureRel:
                 if (!getLock())
                 {
-                    int16_t tmpu16;
-                    tmpu16 = *KoLED_TW_ChColorTemperatureRel.valueRef();
+                    uint8_t tmpu8 = *KoLED_TW_ChColorTemperatureRel.valueRef();
+                    uint8_t stepCode = tmpu8 & 0x07;
 
-                    if (tmpu16 >= 0x09)
-                        relDimUpColor();
-                    if (tmpu16 > 0x00 && tmpu16 < 0x08)
-                        relDimDownColor();
-                    if (tmpu16 == 0x00 || tmpu16 == 0x08)
+                    if (stepCode == 0)
                         relDimStopColor();
+                    else if (tmpu8 & 0x08)
+                        relDimUpColor(stepCode);
+                    else
+                        relDimDownColor(stepCode);
                 }
                 break;
 
@@ -455,22 +455,22 @@ void TWChannel::setNight(bool night)
     markBudgetRequest(2 * dimmingTimeON());
 }
 
-void TWChannel::relDimUp()
+void TWChannel::relDimUp(uint8_t stepCode)
 {
     _boost = false;
     _sceneNumberActive = 0;
     logDebugP("relDim_UP");
-    _brightness.setTargetValue(dimmingValMax(), ParamLED_TW_ChLightDimmRelTime);
-    markBudgetRequest(ParamLED_TW_ChLightDimmRelTime);
+    uint16_t dimTime = _brightness.relDim(true, stepCode, dimmingValMax(), VALUE_KNX_COUNT - 1, ParamLED_TW_ChLightDimmRelTime);
+    markBudgetRequest(dimTime);
 }
 
-void TWChannel::relDimDown()
+void TWChannel::relDimDown(uint8_t stepCode)
 {
     _boost = false;
     _sceneNumberActive = 0;
     logDebugP("relDim_DOWN");
-    _brightness.setTargetValue(dimmingValMin(), ParamLED_TW_ChLightDimmRelTime);
-    markBudgetRequest(ParamLED_TW_ChLightDimmRelTime);
+    uint16_t dimTime = _brightness.relDim(false, stepCode, dimmingValMin(), VALUE_KNX_COUNT - 1, ParamLED_TW_ChLightDimmRelTime);
+    markBudgetRequest(dimTime);
 }
 
 void TWChannel::relDimStop()
@@ -499,20 +499,20 @@ void TWChannel::setColorTemperatureNoDim(uint16_t colorTemp)
     _colorTemperature.setTargetValue(colorTemp, 1);
 }
 
-void TWChannel::relDimUpColor()
+void TWChannel::relDimUpColor(uint8_t stepCode)
 {
     _boost = false;
     _sceneNumberActive = 0;
     logDebugP("relDim_UP");
-    _colorTemperature.setTargetValue(ParamLED_TW_ChColorTempCW, ParamLED_TW_ChLightDimmRelTime);
+    _colorTemperature.relDim(true, stepCode, ParamLED_TW_ChColorTempCW, ParamLED_TW_ChColorTempCW - ParamLED_TW_ChColorTempWW, ParamLED_TW_ChLightDimmRelTime);
 }
 
-void TWChannel::relDimDownColor()
+void TWChannel::relDimDownColor(uint8_t stepCode)
 {
     _boost = false;
     _sceneNumberActive = 0;
     logDebugP("relDim_DOWN");
-    _colorTemperature.setTargetValue(ParamLED_TW_ChColorTempWW, ParamLED_TW_ChLightDimmRelTime);
+    _colorTemperature.relDim(false, stepCode, ParamLED_TW_ChColorTempWW, ParamLED_TW_ChColorTempCW - ParamLED_TW_ChColorTempWW, ParamLED_TW_ChLightDimmRelTime);
 }
 
 void TWChannel::relDimStopColor()

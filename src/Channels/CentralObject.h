@@ -36,8 +36,8 @@ class COChannel : public LightChannel
     void setSaturation(uint16_t saturation);
     void setBrightness(uint16_t bright);
     void setNight(bool night) override;
-    void relDimUp();
-    void relDimDown();
+    void relDimUp(uint8_t stepCode = 1);
+    void relDimDown(uint8_t stepCode = 1);
     void relDimStop();
     void setColorTemperature(uint16_t colorTemp);
     void relDimUpColor();
@@ -46,8 +46,6 @@ class COChannel : public LightChannel
     void RGBpicker(uint8_t selection);
     void setRGB(uint32_t RGBvalue);
     void setHSV(uint32_t HSVvalue);
-    uint32_t conv_Temp2RGB(int temp);
-    int conv_RGB2Temp(uint32_t target_rgb);
 
     bool getCO1();
     bool getCO2();

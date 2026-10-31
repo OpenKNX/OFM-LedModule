@@ -41,6 +41,13 @@ class LightChannel : public OpenKNX::Channel
     virtual bool getCO2() = 0;
     virtual bool getCO3() = 0;
 
+    // Recalls a scene from this channel's own scene table (e.g. forwarded by a central object).
+    void callScene(uint8_t sceneNr)
+    {
+        handleScene(sceneNr);
+        _sceneNumberActive = sceneNr + 1;
+    }
+
     // A command just (re)set this channel's demand; LedModule arbitrates the combined
     // max-total-brightness budget after dispatch. No-op on boards without the budget define,
     // so call sites need no #ifdef guard.
@@ -147,6 +154,36 @@ class LightChannel : public OpenKNX::Channel
             return isDimming != 0;
         }
 
+        // Relative dimming (DPT 3.007) towards limit: the step code (1..7) selects the step width
+        // (100 %, 50 %, ... 1.56 % of fullRange) and the fade runs at a constant speed, i.e. the
+        // full range always takes fullRangeTime. Previously every telegram restarted a fade over
+        // the full time to the limit, so repeated telegrams only approached min/max asymptotically.
+        // Never moves against the requested direction. Returns the fade time used.
+        uint16_t relDim(bool up, uint8_t stepCode, uint16_t limit, uint16_t fullRange, uint16_t fullRangeTime)
+        {
+            const int32_t current = (uint16_t)currentValue;
+            int32_t target = current;
+            if (fullRange > 0 && stepCode >= 1 && stepCode <= 7)
+            {
+                int32_t step = (int32_t)fullRange >> (stepCode - 1);
+                if (step < 1)
+                    step = 1;
+
+                if (up)
+                    target = current + step < limit ? current + step : limit;
+                else
+                    target = current - step > limit ? current - step : limit;
+
+                if (up ? target < current : target > current)
+                    target = current;
+            }
+
+            const uint32_t distance = target >= current ? target - current : current - target;
+            const uint16_t dimTime = fullRange > 0 ? (uint32_t)fullRangeTime * distance / fullRange : 0;
+            setTargetValue((uint16_t)target, dimTime);
+            return dimTime;
+        }
+
       private:
         uint8_t isDimming = 0;
 
@@ -174,7 +211,11 @@ class LightChannel : public OpenKNX::Channel
       public:
         uint16_t ColorTemperature() { return value[2] + (value[1] << 8); }
         uint16_t Brightness() { return value[0]; }
-        Colors::HSV HSV() { return Colors::rgb2hsv(Colors::RGB(value[0], value[1], value[2])); }
+        // 8 bit RGB from ETS -> internal HSV ranges (hue 0..H_PART-1, sat 0..VAL_RANGE, val 0..VALUE_KNX_COUNT-1)
+        Colors::HSV HSV() { return Colors::rgb2hsv(Colors::RGB((uint32_t)value[0] << 16 | (uint32_t)value[1] << 8 | value[2])); }
+        // hue and saturation scenes store a single 8 bit value in value[0] (same scaling as the HSV KO)
+        uint16_t Hue() { return _UFP16(value[0], 6); }
+        uint16_t Saturation() { return map(value[0], 0, 255, 0, VAL_RANGE); }
         enum FuncType
         {
             INACTIVE = 0,
@@ -219,6 +260,15 @@ class LightChannel : public OpenKNX::Channel
 
     virtual void update() = 0;
     virtual void handleScene(uint8_t sceneNr) = 0;
+
+    // Internal brightness -> DPT 5.001 percent for the status KO: rounded to the nearest percent
+    // (truncating reported e.g. 99.9 % as 99 %), but never 0 % while the light is still on, so it
+    // cannot contradict the on/off status.
+    static uint8_t brightnessPercent(uint16_t brightness)
+    {
+        uint8_t percent = (uint8_t)(brightness / VALUE_KNX_MULTIPLY + 0.5);
+        return (percent == 0 && brightness > 0) ? 1 : percent;
+    }
 
     void processDeviceProtection(GroupObject &koConstCurrent, GroupObject &koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current);
     void processLampProtection(GroupObject &koConstCurrent, GroupObject &koOverload, bool active, uint16_t cableLength, uint8_t cableCrossSect, uint8_t constPower, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current, float voltage, uint8_t channelCount = 1);

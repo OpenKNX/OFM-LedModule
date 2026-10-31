@@ -36,18 +36,16 @@ class RGBWChannel : public LightChannel
     void setSaturation(uint16_t saturation);
     void setBrightness(uint16_t bright);
     void setNight(bool night) override;
-    void relDimUp();
-    void relDimDown();
+    void relDimUp(uint8_t stepCode = 1);
+    void relDimDown(uint8_t stepCode = 1);
     void relDimStop();
     void setColorTemperature(uint16_t colorTemp);
-    void relDimUpColor();
-    void relDimDownColor();
+    void relDimUpColor(uint8_t stepCode = 1);
+    void relDimDownColor(uint8_t stepCode = 1);
     void relDimStopColor();
     void RGBpicker(uint8_t selection);
     void setRGB(uint32_t RGBvalue);
     void setHSV(uint32_t HSVvalue);
-    uint32_t conv_Temp2RGB(int temp);
-    int conv_RGB2Temp(uint32_t target_rgb);
 
     bool getCO1();
     bool getCO2();
@@ -79,6 +77,18 @@ class RGBWChannel : public LightChannel
     StatusValueState _statusColorTemp;
     StatusValueState _statusRgb;
     StatusValueState _statusHsv;
+    bool _colorTempDirty = true;
+    uint32_t _colorTempCalcTimer = 0;
+
+    // relative colour temperature dimming: _relColorTemp fades along the black body curve and
+    // hue/saturation follow it until another colour command changes their targets
+    DimmableValue<uint16_t> _relColorTemp;
+    bool _relColorTempActive = false;
+    uint16_t _relColorTempHue = 0;
+    uint16_t _relColorTempSat = 0;
+
+    void relDimColorTemp(bool up, uint8_t stepCode);
+    void stepRelColorTemp(uint32_t timestamp);
 
     void handleScene(uint8_t sceneNr);
     enum ValueType

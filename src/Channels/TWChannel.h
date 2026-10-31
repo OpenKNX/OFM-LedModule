@@ -36,13 +36,13 @@ class TWChannel : public LightChannel
     void setBrightness(uint16_t bright);
     void setBrightnessNoDim(uint16_t bright);
     void setNight(bool night) override;
-    void relDimUp();
-    void relDimDown();
+    void relDimUp(uint8_t stepCode = 1);
+    void relDimDown(uint8_t stepCode = 1);
     void relDimStop();
     void setColorTemperature(uint16_t colorTemp);
     void setColorTemperatureNoDim(uint16_t colorTemp);
-    void relDimUpColor();
-    void relDimDownColor();
+    void relDimUpColor(uint8_t stepCode = 1);
+    void relDimDownColor(uint8_t stepCode = 1);
     void relDimStopColor();
 
     bool getCO1();
