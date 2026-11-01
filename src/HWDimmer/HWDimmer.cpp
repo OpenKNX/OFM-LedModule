@@ -72,36 +72,62 @@ void HWDimmer::checkPowerSupply()
                                    _statusVoltage, ParamLED_PowerSupplyVoltageCyclicTimeMS,
                                    ParamLED_PowerSupplyVoltageMinChangePercent, ParamLED_PowerSupplyVoltageMinChangeAbsolute,
                                    STATUS_SEND_RATE_MS, true, 1000.0f);
+#endif
 
-    if (KoLED_PowerSupplyRelayStatus.value(DPT_Switch))
+    if (!ParamLED_PowerSupplyRelay)
+        return;
+
+#ifndef LEDMODULE_VOLTAGE_MEASURE_PIN
+    // without voltage measurement the relay status is the only indicator: read it once after startup,
+    // so a relay that was already switched on before the dimmer started is known
+    if (!_powerSupplyStatusRead && openknx.afterStartupDelay())
     {
-        bool powerNeeded = false;
-        for (int i = 0; i < numChannels; i++)
-        {
-            if (getLevel(i) > 0)
-            {
-                powerNeeded = true;
-                break;
-            }
-        }
+        KoLED_PowerSupplyRelayStatus.requestObjectRead();
+        _powerSupplyStatusRead = true;
+    }
+#endif
 
-        if (powerNeeded)
-            _powerShutdownTimer = 0;
-        else
+    bool powerNeeded = false;
+    for (int i = 0; i < numChannels; i++)
+    {
+        if (getLevel(i) > 0 || _currentManualMode[i])
         {
-            if (_powerShutdownTimer == 0)
-                _powerShutdownTimer = delayTimerInit();
-            else if (delayCheck(_powerShutdownTimer, ParamLED_PowerSupplyRelayOffDelayTimeMS))
-            {
-                if (delayCheck(_powerSupplyLastRequest, POWER_SUPPLY_REQUEST_DELAY))
-                {
-                    KoLED_PowerSupplyRelay.value(false, DPT_Switch);
-                    _powerSupplyLastRequest = delayTimerInit();
-                    _powerShutdownTimer = 0;
-                }
-            }
+            powerNeeded = true;
+            break;
         }
     }
+
+    // switch off only once (not repeated, so a failed actor or missing status does not flood the bus),
+    // and only if the relay was requested by the dimmer or is switched on
+    if (powerNeeded || _powerSupplyRequest == PowerSupplyRequest::Off ||
+        (_powerSupplyRequest == PowerSupplyRequest::Unknown && !powerSupplyAvailable()))
+    {
+        _powerShutdownTimer = 0;
+        return;
+    }
+
+    if (_powerShutdownTimer == 0)
+        _powerShutdownTimer = delayTimerInit();
+    else if (delayCheck(_powerShutdownTimer, ParamLED_PowerSupplyRelayOffDelayTimeMS) &&
+             delayCheck(_powerSupplyLastRequest, POWER_SUPPLY_REQUEST_DELAY))
+    {
+        KoLED_PowerSupplyRelay.value(false, DPT_Switch);
+        _powerSupplyRequest = PowerSupplyRequest::Off;
+        _powerSupplyLastRequest = delayTimerInit();
+        _powerShutdownTimer = 0;
+    }
+}
+
+/**
+ * @brief Power supply is available: measured voltage reached the configured minimum or, without
+ * voltage measurement, the relay status is on
+ */
+bool HWDimmer::powerSupplyAvailable()
+{
+#ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
+    return _powerSupplyVoltage >= ParamLED_PowerSupplyRelayMinVoltage;
+#else
+    return KoLED_PowerSupplyRelayStatus.value(DPT_Switch);
 #endif
 }
 
@@ -197,19 +223,40 @@ bool HWDimmer::powerSupplyAvailableOrRequest()
     if (!ParamLED_PowerSupplyRelay)
         return true;
 
-    if (!KoLED_PowerSupplyRelayStatus.value(DPT_Switch))
-    {
-        if (delayCheck(_powerSupplyLastRequest, POWER_SUPPLY_REQUEST_DELAY))
-        {
-            KoLED_PowerSupplyRelay.value(true, DPT_Switch);
-            _powerSupplyLastRequest = delayTimerInit();
-        }
-    }
-
     _powerShutdownTimer = 0;
 
-    bool available = _powerSupplyVoltage >= ParamLED_PowerSupplyRelayMinVoltage;
-    return available && KoLED_PowerSupplyRelayStatus.value(DPT_Switch);
+    // after an off request the voltage/status may not have dropped yet, so the relay is requested again
+    if (_powerSupplyRequest != PowerSupplyRequest::Off && powerSupplyAvailable())
+    {
+        // relay is on (requested or switched on externally), so switch it off after the off delay later on
+        _powerSupplyRequest = PowerSupplyRequest::On;
+        return true;
+    }
+
+    // new power demand: limited number of requests, so a failed actor does not flood the bus
+    if (_powerSupplyRequest != PowerSupplyRequest::On)
+    {
+        _powerSupplyRequest = PowerSupplyRequest::On;
+        _powerSupplyRequestCount = 0;
+    }
+
+    if (_powerSupplyRequestCount < POWER_SUPPLY_REQUEST_COUNT &&
+        (_powerSupplyRequestCount == 0 || delayCheck(_powerSupplyLastRequest, POWER_SUPPLY_REQUEST_DELAY)))
+    {
+        KoLED_PowerSupplyRelay.value(true, DPT_Switch);
+        _powerSupplyRequestCount++;
+        _powerSupplyLastRequest = delayTimerInit();
+    }
+
+#ifdef LEDMODULE_VOLTAGE_MEASURE_PIN
+    // keep waiting without further requests: dimming starts as soon as the voltage is present
+    return false;
+#else
+    // no status received after all requests: dim anyway, as the relay might have switched without
+    // sending its status, and nothing else could tell otherwise
+    return _powerSupplyRequestCount >= POWER_SUPPLY_REQUEST_COUNT &&
+           delayCheck(_powerSupplyLastRequest, POWER_SUPPLY_REQUEST_DELAY);
+#endif
 }
 
 void HWDimmer::processFrontInput()
