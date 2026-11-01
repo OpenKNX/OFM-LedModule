@@ -12,7 +12,8 @@
 #define VALUE_KNX_MULTIPLY 40.95
 
 #define FRONT_INPUT_DEBOUNCE 250
-#define POWER_SUPPLY_REQUEST_DELAY 1000
+#define POWER_SUPPLY_REQUEST_DELAY 3000 // retry interval for the power supply relay request
+#define POWER_SUPPLY_REQUEST_COUNT 3    // max. number of switch on requests per power demand
 #define VOLTAGE_MIN_DIFFERENCE 500
 
 class HWDimmer
@@ -94,7 +95,15 @@ class HWDimmer
     static LUT<VALUE_KNX_COUNT> dimLUT[3];
 
   private:
+    enum class PowerSupplyRequest : uint8_t
+    {
+        Unknown, // nothing requested yet since startup
+        On,
+        Off
+    };
+
     void checkPowerSupply();
+    bool powerSupplyAvailable();
     void processCurrentSense();
     void processFrontInput();
     void processFrontOutput();
@@ -113,7 +122,12 @@ class HWDimmer
 #endif
 
     float _powerSupplyVoltage = 0;
+    PowerSupplyRequest _powerSupplyRequest = PowerSupplyRequest::Unknown;
+    uint8_t _powerSupplyRequestCount = 0;
     uint32_t _powerSupplyLastRequest = 0;
     uint32_t _powerShutdownTimer = 0;
+#ifndef LEDMODULE_VOLTAGE_MEASURE_PIN
+    bool _powerSupplyStatusRead = false;
+#endif
     StatusValueState _statusVoltage;
 };
