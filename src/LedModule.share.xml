@@ -135,11 +135,15 @@
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-MinDim" Name="MinDimValue">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="99" />
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="249" Increment="1" DisplayFactor="0.4" />
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-MaxDim" Name="MaxDimValue">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="100" />
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="250" Increment="1" DisplayFactor="0.4" />
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-LedBrightness" Name="LedBrightness">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="250" Increment="1" DisplayFactor="0.4" />
               </ParameterType>
 
               <ParameterType Id="%AID%_PT-DimTime" Name="DimTime">
@@ -232,7 +236,7 @@
                 <Parameter Id="%AID%_UP-%TT%00011" Name="FrontControlOutput"                  ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="LED-Ausgabe aktivieren" Value="1" />
                 <Parameter Id="%AID%_UP-%TT%00012" Name="FrontControlInput"                   ParameterType="%AID%_PT-OnOffYesNo" Offset="0" BitOffset="1" Text="Frontbedienung aktivieren" Value="1" />
                 <!-- 6 bits free -->
-                <Parameter Id="%AID%_UP-%TT%00013" Name="FrontControlManualBrightness"        ParameterType="%AID%_PT-ValueDpt5001" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="50" SuffixText="%" />
+                <Parameter Id="%AID%_UP-%TT%00013" Name="FrontControlManualBrightness"        ParameterType="%AID%_PT-LedBrightness" Offset="1" BitOffset="0" Text="Helligkeit bei An" Value="125" SuffixText="%" />
               </Union>
               <Union SizeInBit="88">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="18" BitOffset="0" />

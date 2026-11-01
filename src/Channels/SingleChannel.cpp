@@ -12,7 +12,7 @@ SingleChannel::SingleChannel(uint8_t index, HWDimmer* pDimmer, uint8_t hwChannel
     _channelActive = hwChannels[0] != LED_INVALID_HW_CHANNEL;
 
     KoLED_SC_ChStateOnOff.value(false, DPT_State);
-    KoLED_SC_ChBrightnessStatus.value((uint16_t)(_brightness.value() / VALUE_KNX_MULTIPLY), DPT_Scaling);
+    KoLED_SC_ChBrightnessStatus.value(LedBrightness::levelToKnx(_brightness.value()), DPT_Value_1_Ucount);
 
 #ifdef EXT_DEBUG_LOG
     logDebugP("Idx\tScNr\tFUNC\tVAL\tLkObj\tLkFnc\tFix\tval0\tval1\tval2");
@@ -35,8 +35,8 @@ void SingleChannel::update()
 
     StatusOutput::sendSwitch(KoLED_SC_ChStateOnOff, ParamLED_SC_ChStatusOnOffSend, stateOn, ParamLED_SC_ChStatusOnOffTimeMS, _statusSendOnOffTimer);
 
-    uint8_t koBrightness = brightnessPercent(tmpBrightness);
-    StatusOutput::sendValue<uint8_t>(KoLED_SC_ChBrightnessStatus, DPT_Scaling, ParamLED_SC_ChStatusBrightnessSend, _brightness.dimming(), koBrightness, _statusBrightness, ParamLED_SC_ChStatusBrightnessTimeMS, ParamLED_SC_ChStatusBrightnessMinChangePercent, ParamLED_SC_ChStatusBrightnessMinChangeAbsolute, STATUS_SEND_RATE_MS);
+    uint8_t koBrightness = brightnessRaw(tmpBrightness);
+    StatusOutput::sendValue<uint8_t>(KoLED_SC_ChBrightnessStatus, DPT_Value_1_Ucount, ParamLED_SC_ChStatusBrightnessSend, _brightness.dimming(), koBrightness, _statusBrightness, ParamLED_SC_ChStatusBrightnessTimeMS, ParamLED_SC_ChStatusBrightnessMinChangePercent, LedBrightness::parameterToKnx(ParamLED_SC_ChStatusBrightnessMinChangeAbsolute), STATUS_SEND_RATE_MS);
 
     if (delayCheckMillis(_debugTimer, DEBUG_DELAY))
     {
@@ -126,8 +126,8 @@ void SingleChannel::processInputKo(GroupObject& ko)
             case LED_SC_KoChBrightness:
                 if (!getLock())
                 {
-                    setBrightness((uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
-                    logDebugP("Brightness KO: %d -> BR.value %d", (uint16_t)ko.value(DPT_Scaling), (uint16_t)((uint16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
+                    setBrightness(LedBrightness::knxToLevel(*ko.valueRef()));
+                    logDebugP("Brightness KO raw: %d -> BR.value %d", *ko.valueRef(), LedBrightness::knxToLevel(*ko.valueRef()));
                 }
                 break;
 
@@ -188,7 +188,7 @@ void SingleChannel::handleScene(uint8_t sceneNr)
                 case SceneConfig::FuncType::VALUE:
                     if (_scenes[i].valueType == ValueType::BRIGHTNESS)
                     {
-                        _brightness.setTargetValue(checkMinMaxBrightness(_scenes[i].Brightness() * VALUE_KNX_MULTIPLY), dimmingTime(1));
+                        _brightness.setTargetValue(checkMinMaxBrightness(LedBrightness::parameterToLevel(_scenes[i].Brightness())), dimmingTime(1));
                         markBudgetRequest(dimmingTime(1));
                     }
                     break;
@@ -226,12 +226,12 @@ uint16_t SingleChannel::dimmingValStartup()
 
 uint16_t SingleChannel::dimmingValMin()
 {
-    return ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY;
+    return LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMin);
 }
 
 uint16_t SingleChannel::dimmingValMax()
 {
-    return getNight() ? (ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY) : (ParamLED_SC_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY);
+    return getNight() ? LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMaxNight) : LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMaxDay);
 }
 
 uint16_t SingleChannel::dimmingValTarget(bool switchOn)
@@ -241,8 +241,8 @@ uint16_t SingleChannel::dimmingValTarget(bool switchOn)
 
 uint16_t SingleChannel::checkMinMaxBrightness(uint16_t bright)
 {
-    if (bright < (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY))
-        bright = (ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY);
+    if (bright < LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMin))
+        bright = LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMin);
     if (bright > dimmingValMax())
         bright = dimmingValMax();
     return bright;
@@ -253,7 +253,7 @@ void SingleChannel::setSwitch(bool switchOn)
     if (switchOn)
     {
         logDebugP("switch_ON");
-        _brightness.setTargetValue(ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY, 1);
+        _brightness.setTargetValue(LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMin), 1);
         // in case of stairway light
         if (ParamLED_SC_ChStairCaseActive && ParamLED_SC_ChStairCaseTrigger == 0)
         {
@@ -316,22 +316,22 @@ void SingleChannel::setNight(bool night)
     logDebugP("treppenlicht %d ", ParamLED_SC_ChStairCaseActive);
     if (ParamLED_SC_ChScenesDisableNightSw || (!ParamLED_SC_ChScenesDisableNightSw && _sceneNumberActive == 0))
     {
-        logDebugP("Nachtmodus:  %d > %d", _brightness.value(), (ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY));
+        logDebugP("Nachtmodus:  %d > %d", _brightness.value(), LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMaxNight));
         _isNight = night;
-        _brightness.setRange(ParamLED_SC_ChBrightnessMin * VALUE_KNX_MULTIPLY, dimmingValMax());
+        _brightness.setRange(LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMin), dimmingValMax());
         if (!night)
         {
             logDebugP("Tag");
 
-            if (_brightness.value() == ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
-                _brightness.setTargetValue(ParamLED_SC_ChBrightnessMaxDay * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmDayOnTime);
+            if (_brightness.value() == LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMaxNight))
+                _brightness.setTargetValue(LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMaxDay), 2 * ParamLED_SC_ChLightDimmDayOnTime);
         }
         else
         {
             logDebugP("Nacht");
 
-            if (_brightness.value() > ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY)
-                _brightness.setTargetValue(ParamLED_SC_ChBrightnessMaxNight * VALUE_KNX_MULTIPLY, 2 * ParamLED_SC_ChLightDimmNightOnTime);
+            if (_brightness.value() > LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMaxNight))
+                _brightness.setTargetValue(LedBrightness::parameterToLevel(ParamLED_SC_ChBrightnessMaxNight), 2 * ParamLED_SC_ChLightDimmNightOnTime);
         }
     }
     markBudgetRequest(2 * dimmingTimeON());

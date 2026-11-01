@@ -304,7 +304,7 @@ uint16_t HWDimmer::getLevel(uint8_t channel)
     if (channel < numChannels)
     {
         if (_currentManualMode[channel])
-            tmpLevel = ParamLED_FrontControlManualBrightness * VALUE_KNX_MULTIPLY;
+            tmpLevel = scale(LedBrightness::parameterToLevel(ParamLED_FrontControlManualBrightness), Linear);
         else
             tmpLevel = levels[channel];
     }

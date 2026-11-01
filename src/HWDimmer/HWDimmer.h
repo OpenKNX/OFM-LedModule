@@ -1,15 +1,15 @@
 #pragma once
 #include <OpenKNX.h>
 #include "LedStatusOutput.h"
+#include "Brightness.h"
+
+static_assert(LED_ModuleVersion >= 14, "Regenerate knxprod.h for the 0.4 percent brightness parameter format");
 
 #ifdef LEDMODULE_CURRENT_ADDR
     #include <INA238.h>
 #endif
 
-// #define VALUE_KNX_COUNT 256
-// #define VALUE_KNX_COUNT 101
-#define VALUE_KNX_COUNT 4096
-#define VALUE_KNX_MULTIPLY 40.95
+#define VALUE_KNX_COUNT (LedBrightness::LevelMax + 1)
 
 #define FRONT_INPUT_DEBOUNCE 250
 #define POWER_SUPPLY_REQUEST_DELAY 1000

@@ -56,8 +56,7 @@ void COChannel::processInputKo(GroupObject &ko)
 
             case LED_CO_KoChBrightness:
                 if (!getLock())
-                    setBrightness(
-                        (u_int16_t)((u_int16_t)ko.value(DPT_Scaling) * VALUE_KNX_MULTIPLY));
+                    setBrightness(LedBrightness::knxToLevel(*ko.valueRef()));
                 break;
 
             case LED_CO_KoChBrightnessRel:
