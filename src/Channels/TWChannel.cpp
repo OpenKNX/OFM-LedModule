@@ -246,7 +246,7 @@ void TWChannel::handleScene(uint8_t sceneNr)
                         markBudgetRequest(dimmingTime(1));
                     }
                     if (_scenes[i].valueType == ValueType::TEMTPERATURE || _scenes[i].valueType == ValueType::COMBINED)
-                        _colorTemperature.setTargetValue(_scenes[i].ColorTemperature(), dimmingTime(1));
+                        _colorTemperature.setTargetValue(checkMinMaxColorTemp(_scenes[i].ColorTemperature()), dimmingTime(1));
                     logDebugP("Scene: %d, BR: %d, CT: %d", sceneNr, _scenes[i].Brightness(), _scenes[i].ColorTemperature());
                     break;
 
