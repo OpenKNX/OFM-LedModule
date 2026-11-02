@@ -261,13 +261,11 @@ class LightChannel : public OpenKNX::Channel
     virtual void update() = 0;
     virtual void handleScene(uint8_t sceneNr) = 0;
 
-    // Internal brightness -> DPT 5.001 percent for the status KO: rounded to the nearest percent
-    // (truncating reported e.g. 99.9 % as 99 %), but never 0 % while the light is still on, so it
-    // cannot contradict the on/off status.
-    static uint8_t brightnessPercent(uint16_t brightness)
+    // Keep status nonzero while the light is on, including fine intermediate fade levels.
+    static uint8_t brightnessRaw(uint16_t brightness)
     {
-        uint8_t percent = (uint8_t)(brightness / VALUE_KNX_MULTIPLY + 0.5);
-        return (percent == 0 && brightness > 0) ? 1 : percent;
+        const uint8_t raw = LedBrightness::levelToKnx(brightness);
+        return (raw == 0 && brightness > 0) ? 1 : raw;
     }
 
     void processDeviceProtection(GroupObject &koConstCurrent, GroupObject &koOverload, bool active, uint8_t constCurrent, uint8_t overloadPercent, uint32_t overloadTimeMS, uint32_t &overloadTimer, bool cutOff, float current);
